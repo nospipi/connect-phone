@@ -1,0 +1,42 @@
+{
+  "name": "connect-phone",
+  "private": true,
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo run dev",
+    "lint": "turbo lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "run-all-local-installs": "cd apps/cms && npm install && cd ../api && npm install && cd ../../packages/database && npm install",
+    "cms": "cd apps/cms && node -e require('fs-extra').remove('.next') && turbo run dev",
+    "api": "cd apps/api && npm run build && turbo run dev",
+    "clean-cms": "cd apps/cms && node -e require('fs-extra').remove('.next')",
+    "prisma-generate": "cd packages/database && prisma generate",
+    "prisma-migrate": "cd packages/database && prisma migrate dev --skip-generate",
+    "prisma-reset": "cd packages/database && prisma migrate reset --force",
+    "prisma-deploy": "cd packages/database && prisma migrate deploy",
+    "prisma-studio": "cd packages/database && npx prisma studio",
+    "prisma-update": "cd packages/database && npm i --save-dev prisma@latest @prisma/client@latest",
+    "prisma-seed": "cd packages/database/prisma && tsx seed.ts",
+    "run-local-db": "docker-compose up -d",
+    "stop-local-db": "docker-compose down",
+    "delete-all-builds": "cd apps/api && node -e require('fs-extra').remove('dist') && cd ../cms && node -e require('fs-extra').remove('.next') && cd ../../packages/database && node -e require('fs-extra').remove('dist')"
+  },
+  "devDependencies": {
+    "prettier": "^3.5.0",
+    "turbo": "^2.4.1",
+    "typescript": "^5.7.3"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "packageManager": "npm@10.8.2",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "dependencies": {
+    "@faker-js/faker": "^9.5.0",
+    "fs-extra": "^11.3.0",
+    "moment": "^2.30.1"
+  }
+}

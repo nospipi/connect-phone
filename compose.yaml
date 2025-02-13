@@ -1,0 +1,17 @@
+services:
+  dev-db:
+    image: postgres:13
+    volumes:
+      - db_data:/data/db:ro
+    ports:
+      - 5434:5432
+    environment:
+      POSTGRES_USER: demo
+      POSTGRES_PASSWORD: demo123
+      POSTGRES_DB: demo_db
+    networks:
+      - my_app
+networks:
+  my_app:
+volumes:
+  db_data:
