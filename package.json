@@ -9,6 +9,7 @@
     "run-all-local-installs": "cd apps/cms && npm install && cd ../api && npm install && cd ../../packages/database && npm install",
     "cms": "cd apps/cms && node -e require('fs-extra').remove('.next') && turbo run dev",
     "api": "cd apps/api && npm run build && turbo run dev",
+    "test-api": "cd apps/api && npm run test",
     "clean-cms": "cd apps/cms && node -e require('fs-extra').remove('.next')",
     "prisma-generate": "cd packages/database && prisma generate",
     "prisma-migrate": "cd packages/database && prisma migrate dev --skip-generate",
@@ -36,7 +37,7 @@
   ],
   "dependencies": {
     "@faker-js/faker": "^9.5.0",
-    "fs-extra": "^11.3.0",
-    "moment": "^2.30.1"
+    "date-fns": "^4.1.0",
+    "fs-extra": "^11.3.0"
   }
 }

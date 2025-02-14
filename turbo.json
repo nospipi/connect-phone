@@ -13,14 +13,11 @@
     "check-types": {
       "dependsOn": ["^check-types"]
     },
-    "dev": {
-      "cache": false,
-      "persistent": true,
-      "dependsOn": ["cms#clean"]
+    "cms#dev": {
+      "dependsOn": ["cms#clean", "database#build"]
     },
-    "cms#clean": {
-      "cache": false,
-      "persistent": false
+    "api#dev": {
+      "dependsOn": ["database#build", "database#generate"]
     }
   },
   "globalEnv": ["DATABASE_URL", "DIRECT_URL"]

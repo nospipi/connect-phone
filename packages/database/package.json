@@ -11,7 +11,8 @@
   "scripts": {
     "postinstall": "prisma generate",
     "dev": "tsc --build --force tsconfig.json && npx prisma generate && npx prisma migrate && tsc -w",
-    "build": "tsc --build --force tsconfig.json"
+    "build": "tsc --build --force tsconfig.json",
+    "generate": "npx prisma generate"
   },
   "devDependencies": {
     "typescript": "^5.7.3"

@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import * as moment from 'moment';
+import { format } from 'date-fns';
 import { getUsers } from 'database';
 import { User } from 'database';
 //https://stackoverflow.com/a/75356810
 
 @Injectable()
 export class AppService {
-  async getHello(): Promise<string> {
-    const currentDate = moment().format('YYYY-MM-DD HH:mm:ss');
+  getHello = async (): Promise<string> => {
+    const currentDate = format(new Date(), 'yyyy-MM-dd HH:mm:ss');
     const users = await getUsers();
     const names = users.map((user: User) => user.name).join('<br>');
 
-    return `Hello World!<br><br>${currentDate}<br><br>${names}`;
-  }
+    return `Hello World!<br><br>${currentDate}${names && `<br><br>${names}`}`;
+  };
 }
