@@ -5,15 +5,20 @@ import { getUsers, createUser, createUser1, User } from 'database';
 
 //https://docs.nestjs.com/exception-filters#exception-filters-1
 //https://docs.nestjs.com/pipes
+//https://www.youtube.com/watch?v=2gtiffE3__U --WATCH END OF VIDEO FOR GUARDS ON ENDPOINTS (AUTH etc)
+//https://www.youtube.com/watch?v=i-howKMrtCM --> AUTHENTICATION
+//https://www.youtube.com/watch?v=DG0uZ0E8DBs --> API DOCUMENTATION SWAGGER PLUGIN
 
 @Injectable()
 export class UsersService {
   async create(createUserDto: CreateUserDto) {
     try {
       console.log('createUserDto', createUserDto);
-      const createdUser: User = await createUser(createUserDto);
+      // const createdUser: User = await createUser(createUserDto);
 
-      return createdUser;
+      // return createdUser;
+      //return a new promise that simple resolves to string "User created"
+      return Promise.resolve('User created');
     } catch (error: unknown) {
       console.log('createUserDto', createUserDto, error);
       const message = (error as Error).message ?? 'An error occurred';
