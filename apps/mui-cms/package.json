@@ -10,22 +10,22 @@
     "clean": "node -e require('fs-extra').remove('.next')"
   },
   "dependencies": {
-    "react": "^19",
-    "react-dom": "^19",
-    "@toolpad/core": "0.12.0",
-    "@mui/material": "^6",
-    "@mui/material-nextjs": "^6",
-    "@mui/icons-material": "^6",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
-    "next": "^15"
+    "@mui/icons-material": "^6",
+    "@mui/material": "^6",
+    "@mui/material-nextjs": "^6",
+    "@toolpad/core": "0.12.0",
+    "next": "^15",
+    "react": "^19",
+    "react-dom": "^19"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "^15",
-    "@types/node": "^20"
+    "typescript": "^5"
   }
 }

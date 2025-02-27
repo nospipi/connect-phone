@@ -45,6 +45,7 @@ export default function RootLayout({
           <Suspense fallback={<LinearProgress />}>
             <NextAppProvider
               navigation={NAVIGATION}
+              session={null}
               branding={BRANDING}
               theme={theme}
             >

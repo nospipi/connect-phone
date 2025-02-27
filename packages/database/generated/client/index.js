@@ -136,7 +136,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\nospi\\Desktop\\node_projects\\connect-phone\\packages\\database\\generated\\client",
+      "value": "C:\\Users\\getaw_l8rlulk\\Desktop\\node_projects\\connect-phone\\packages\\database\\generated\\client",
       "fromEnvVar": null
     },
     "config": {
@@ -154,7 +154,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\nospi\\Desktop\\node_projects\\connect-phone\\packages\\database\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\Users\\getaw_l8rlulk\\Desktop\\node_projects\\connect-phone\\packages\\database\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
