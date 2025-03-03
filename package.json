@@ -9,6 +9,7 @@
     "run-all-local-installs": "cd apps/cms && npm install && cd ../api && npm install && cd ../../packages/database && npm install",
     "cms": "cd apps/cms && node -e require('fs-extra').remove('.next') && turbo run dev",
     "mui-cms": "cd apps/mui-cms && node -e require('fs-extra').remove('.next') && turbo run dev",
+    "tremor-cms": "cd apps/tremor-cms && node -e require('fs-extra').remove('.next') && turbo run dev",
     "api": "cd apps/api && npm run build && turbo run dev",
     "test-api": "cd apps/api && npm run test",
     "clean-cms": "cd apps/cms && node -e require('fs-extra').remove('.next')",
@@ -49,6 +50,9 @@
     "@toolpad/core": "^0.12.0",
     "axios": "^1.8.1",
     "date-fns": "^4.1.0",
-    "fs-extra": "^11.3.0"
+    "fs-extra": "^11.3.0",
+    "next": "^15.2.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   }
 }

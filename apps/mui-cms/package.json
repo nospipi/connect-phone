@@ -18,10 +18,10 @@
     "@mui/material-nextjs": "^6",
     "@tailwindcss/postcss": "^4.0.9",
     "@toolpad/core": "0.12.0",
-    "next": "^15",
     "postcss": "^8.5.3",
-    "react": "^19",
-    "react-dom": "^19",
+    "next": "^15.2.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "tailwindcss": "^4.0.9"
   },
   "devDependencies": {
