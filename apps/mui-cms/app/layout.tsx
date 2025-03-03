@@ -1,5 +1,14 @@
 import { Suspense } from "react";
 import { NextAppProvider } from "@toolpad/core/nextjs";
+import {
+  ClerkProvider,
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+  RedirectToSignIn,
+} from "@clerk/nextjs";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
@@ -20,7 +29,7 @@ const NAVIGATION: Navigation = [
     title: "Dashboard",
     icon: <DashboardIcon />,
   },
-  { kind: "divider" },
+  //{ kind: "divider" },
   {
     segment: "orders",
     title: "Orders",
@@ -38,22 +47,26 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  //<AppRouterCacheProvider options={{ enableCssLayer: true }}>
   return (
-    <html lang="en" data-toolpad-color-scheme="light" suppressHydrationWarning>
-      <body>
-        <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-          <Suspense fallback={<LinearProgress />}>
+    <ClerkProvider>
+      <html lang="en" suppressHydrationWarning>
+        <body>
+          <AppRouterCacheProvider options={{ enableCssLayer: true }}>
             <NextAppProvider
               navigation={NAVIGATION}
               session={null}
               branding={BRANDING}
               theme={theme}
             >
-              {children}
+              <SignedIn>{children}</SignedIn>
+              <SignedOut>
+                <SignInButton />
+              </SignedOut>
             </NextAppProvider>
-          </Suspense>
-        </AppRouterCacheProvider>
-      </body>
-    </html>
+          </AppRouterCacheProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

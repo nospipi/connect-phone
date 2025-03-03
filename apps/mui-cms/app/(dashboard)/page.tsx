@@ -1,14 +1,23 @@
-import * as React from "react";
-import Typography from "@mui/material/Typography";
-import Link from "next/link";
+import { auth } from "@clerk/nextjs/server";
+import AuthForm from "./AuthForm";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const { getToken } = await auth();
+
+  const token = await getToken();
+
+  console.log("Token:", token);
+
+  // const response = await axios.get("/api/auth/me", {
+  //   headers: {
+  //     Authorization: `Bearer ${token}`,
+  //   },
+  // });
+
   return (
-    <Typography>
-      Welcome to{" "}
-      <Link href="https://mui.com/toolpad/core/introduction">
-        Toolpad Core!
-      </Link>
-    </Typography>
+    <div>
+      <span className="bg-white">Dashboard Base</span>
+      <AuthForm />
+    </div>
   );
 }

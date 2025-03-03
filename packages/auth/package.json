@@ -1,0 +1,12 @@
+{
+  "name": "auth",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "dependencies": {
+    "database": "*",
+    "axios": "^1.8.1",
+    "react": "^19"
+  },
+  "peerDependencies": {}
+}
