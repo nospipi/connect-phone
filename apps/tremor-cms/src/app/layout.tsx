@@ -11,7 +11,8 @@ import {
   SignedOut,
   UserButton,
   RedirectToSignIn,
-} from "@clerk/nextjs";
+  SignOutButton,
+} from "@clerk/nextjs"
 
 import { Sidebar } from "@/components/ui/navigation/Sidebar"
 

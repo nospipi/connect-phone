@@ -21,6 +21,7 @@ import {
   RiSunLine,
 } from "@remixicon/react"
 import { useTheme } from "next-themes"
+import { SignOutButton } from "@clerk/nextjs"
 import * as React from "react"
 
 export type DropdownUserProfileProps = {
@@ -117,7 +118,9 @@ export function DropdownUserProfile({
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem>Sign out</DropdownMenuItem>
+            <SignOutButton>
+              <DropdownMenuItem>Sign out</DropdownMenuItem>
+            </SignOutButton>
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
