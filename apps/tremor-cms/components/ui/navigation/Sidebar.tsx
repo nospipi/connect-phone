@@ -57,6 +57,7 @@ export function Sidebar() {
     }
     return pathname === itemHref || pathname.startsWith(itemHref)
   }
+
   return (
     <>
       {/* sidebar (lg+) */}

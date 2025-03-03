@@ -21,8 +21,23 @@ import {
   RiSunLine,
 } from "@remixicon/react"
 import { useTheme } from "next-themes"
-import { SignOutButton } from "@clerk/nextjs"
 import * as React from "react"
+import { SignOutButton } from "@clerk/nextjs"
+
+import {
+  ClerkProvider,
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+  useAuth,
+  useUser,
+  useOrganization,
+  useClerk,
+} from "@clerk/nextjs"
+
+//-------------------------------------------------------------------------
 
 export type DropdownUserProfileProps = {
   children: React.ReactNode
@@ -39,15 +54,21 @@ export function DropdownUserProfile({
     setMounted(true)
   }, [])
 
+  const { user } = useUser()
+  const { openUserProfile } = useClerk()
+
   if (!mounted) {
     return null
   }
+
   return (
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
         <DropdownMenuContent align={align}>
-          <DropdownMenuLabel>emma.stone@acme.com</DropdownMenuLabel>
+          <DropdownMenuLabel>
+            {user?.emailAddresses[0].emailAddress}
+          </DropdownMenuLabel>
           <DropdownMenuGroup>
             <DropdownMenuSubMenu>
               <DropdownMenuSubMenuTrigger>Theme</DropdownMenuSubMenuTrigger>
@@ -91,6 +112,13 @@ export function DropdownUserProfile({
                 </DropdownMenuRadioGroup>
               </DropdownMenuSubMenuContent>
             </DropdownMenuSubMenu>
+            <DropdownMenuItem
+              onClick={() => {
+                openUserProfile()
+              }}
+            >
+              My Profile
+            </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>

@@ -38,6 +38,7 @@
     "packages/*"
   ],
   "dependencies": {
+    "@clerk/nextjs": "^6.12.2",
     "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
@@ -50,6 +51,9 @@
     "@toolpad/core": "^0.12.0",
     "axios": "^1.8.1",
     "date-fns": "^4.1.0",
-    "fs-extra": "^11.3.0"
+    "fs-extra": "^11.3.0",
+    "next": "^15.2.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   }
 }

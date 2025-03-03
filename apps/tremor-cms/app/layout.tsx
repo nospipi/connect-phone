@@ -13,6 +13,7 @@ import {
   RedirectToSignIn,
   SignOutButton,
 } from "@clerk/nextjs"
+import { dark } from "@clerk/themes"
 
 import { Sidebar } from "@/components/ui/navigation/Sidebar"
 
@@ -53,25 +54,29 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <ClerkProvider>
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${inter.className} overflow-y-scroll scroll-auto antialiased selection:bg-indigo-100 selection:text-indigo-700 dark:bg-gray-950`}
-        suppressHydrationWarning
-      >
-        <div className="mx-auto max-w-screen-2xl">
+    <ClerkProvider
+      appearance={
+        {
+          //baseTheme: dark, //issues on input fields
+        }
+      }
+    >
+      <html lang="en" suppressHydrationWarning>
+        <body
+          className={`${inter.className} overflow-y-scroll scroll-auto antialiased selection:bg-indigo-100 selection:text-indigo-700 dark:bg-gray-950`}
+          suppressHydrationWarning
+        >
           <ThemeProvider defaultTheme="system" attribute="class">
-             <SignedIn> 
+            <SignedIn>
               <Sidebar />
-            <main className="lg:pl-72">{children}</main>
+              <main className="lg:pl-72">{children}</main>
             </SignedIn>
-             <SignedOut>
-                <SignInButton />
-              </SignedOut>
+            <SignedOut>
+              <SignInButton />
+            </SignedOut>
           </ThemeProvider>
-        </div>
-      </body>
-    </html>
+        </body>
+      </html>
     </ClerkProvider>
   )
 }
