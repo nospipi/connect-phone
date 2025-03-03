@@ -22,6 +22,7 @@ export class UsersController {
 
   @Get()
   findAll() {
+    console.log('http://localhost:3000/users');
     return this.usersService.findAll();
   }
 

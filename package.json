@@ -8,6 +8,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "run-all-local-installs": "cd apps/cms && npm install && cd ../api && npm install && cd ../../packages/database && npm install",
     "cms": "cd apps/cms && node -e require('fs-extra').remove('.next') && turbo run dev",
+    "mui-cms": "cd apps/mui-cms && node -e require('fs-extra').remove('.next') && turbo run dev",
     "api": "cd apps/api && npm run build && turbo run dev",
     "test-api": "cd apps/api && npm run test",
     "clean-cms": "cd apps/cms && node -e require('fs-extra').remove('.next')",
@@ -36,7 +37,17 @@
     "packages/*"
   ],
   "dependencies": {
+    "@emotion/cache": "^11.14.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "@faker-js/faker": "^9.5.0",
+    "@mui/icons-material": "^6.4.5",
+    "@mui/material": "^6.4.5",
+    "@mui/material-nextjs": "^6.4.3",
+    "@tanstack/react-query": "^5.66.9",
+    "@tanstack/react-query-devtools": "^5.66.9",
+    "@toolpad/core": "^0.12.0",
+    "axios": "^1.8.1",
     "date-fns": "^4.1.0",
     "fs-extra": "^11.3.0"
   }

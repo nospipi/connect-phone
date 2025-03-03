@@ -1,0 +1,35 @@
+{
+  "name": "mui-cms",
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "next dev --turbopack --port 3000",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint --max-warnings 0",
+    "check-types": "tsc --noEmit",
+    "clean": "node -e require('fs-extra').remove('.next')"
+  },
+  "dependencies": {
+    "@clerk/nextjs": "^6.12.2",
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
+    "@mui/icons-material": "^6",
+    "@mui/material": "^6",
+    "@mui/material-nextjs": "^6",
+    "@tailwindcss/postcss": "^4.0.9",
+    "@toolpad/core": "0.12.0",
+    "next": "^15",
+    "postcss": "^8.5.3",
+    "react": "^19",
+    "react-dom": "^19",
+    "tailwindcss": "^4.0.9"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "^15",
+    "typescript": "^5"
+  }
+}

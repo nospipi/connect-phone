@@ -4,6 +4,7 @@ import { getUsers } from "database";
 //--------------------------------------------
 
 export default async function Home() {
+
   const users = await getUsers();
 
   const currentDate = format(new Date(), "yyyy-MM-dd HH:mm:ss");

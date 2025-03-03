@@ -16,6 +16,9 @@
     "cms#dev": {
       "dependsOn": ["cms#clean", "database#build"]
     },
+    "mui-cms#dev": {
+      "dependsOn": ["cms#clean", "database#build"]
+    },
     "api#dev": {
       "dependsOn": ["database#build", "database#generate"]
     }
