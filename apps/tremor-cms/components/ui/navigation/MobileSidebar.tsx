@@ -23,11 +23,11 @@ import { usePathname } from "next/navigation"
 const navigation = [
   { name: "Overview", href: siteConfig.baseLinks.overview, icon: RiHome2Line },
   { name: "Details", href: siteConfig.baseLinks.details, icon: RiListCheck },
-  {
-    name: "Settings",
-    href: siteConfig.baseLinks.settings.general,
-    icon: RiSettings5Line,
-  },
+  // {
+  //   name: "Settings",
+  //   href: siteConfig.baseLinks.settings.general,
+  //   icon: RiSettings5Line,
+  // },
 ] as const
 
 const shortcuts = [
@@ -111,7 +111,7 @@ export default function MobileSidebar() {
               </ul>
               <div>
                 <span className="text-sm font-medium leading-6 text-gray-500 sm:text-xs">
-                  Shortcuts
+                  Settings
                 </span>
                 <ul aria-label="shortcuts" role="list" className="space-y-0.5">
                   {shortcuts.map((item) => (

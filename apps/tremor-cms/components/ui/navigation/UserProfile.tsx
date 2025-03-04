@@ -21,7 +21,6 @@ import {
 
 export const UserProfileDesktop = () => {
   const { user } = useUser()
-  const { organization } = useOrganization()
 
   return (
     <DropdownUserProfile>
@@ -38,11 +37,9 @@ export const UserProfileDesktop = () => {
             className="flex size-8 shrink-0 items-center justify-center rounded-full border border-gray-300 bg-white text-xs text-gray-700 dark:border-gray-800 dark:bg-gray-950 dark:text-gray-300"
             aria-hidden="true"
           >
-            ES
+            <UserButton />
           </span>
-          <span>
-            {user?.firstName} {user?.lastName}
-          </span>
+          <span>{user?.fullName}</span>
         </span>
         <RiMore2Fill
           className="size-4 shrink-0 text-gray-500 group-hover:text-gray-700 group-hover:dark:text-gray-400"
@@ -55,7 +52,6 @@ export const UserProfileDesktop = () => {
 
 export const UserProfileMobile = () => {
   const { user } = useUser()
-  const { organization } = useOrganization()
 
   return (
     <DropdownUserProfile align="end">
@@ -70,7 +66,7 @@ export const UserProfileMobile = () => {
           className="flex size-7 shrink-0 items-center justify-center rounded-full border border-gray-300 bg-white text-xs text-gray-700 dark:border-gray-800 dark:bg-gray-950 dark:text-gray-300"
           aria-hidden="true"
         >
-          {user?.firstName} {user?.lastName}
+          <UserButton />
         </span>
       </Button>
     </DropdownUserProfile>

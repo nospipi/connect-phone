@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+/* clerk-widget - hide clerk logo*/
+.cl-internal-df7v37{
+    display: none;
+}

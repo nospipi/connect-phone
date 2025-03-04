@@ -6,6 +6,8 @@ import {
   RiLinkM,
   RiListCheck,
   RiSettings5Line,
+  RiGroupLine,
+  RiFlagLine,
 } from "@remixicon/react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -19,33 +21,23 @@ import { UserProfileDesktop, UserProfileMobile } from "./UserProfile"
 const navigation = [
   { name: "Overview", href: siteConfig.baseLinks.overview, icon: RiHome2Line },
   { name: "Details", href: siteConfig.baseLinks.details, icon: RiListCheck },
-  {
-    name: "Settings",
-    href: siteConfig.baseLinks.settings.general,
-    icon: RiSettings5Line,
-  },
+  // {
+  //   name: "Settings",
+  //   href: siteConfig.baseLinks.settings.general,
+  //   icon: RiSettings5Line,
+  // },
 ] as const
 
 const shortcuts = [
   {
-    name: "Add new user",
+    name: "Users",
     href: "/settings/users",
-    icon: RiLinkM,
+    icon: RiGroupLine,
   },
   {
-    name: "Workspace usage",
+    name: "Countries",
     href: "/settings/billing#billing-overview",
-    icon: RiLinkM,
-  },
-  {
-    name: "Cost spend control",
-    href: "/settings/billing#cost-spend-control",
-    icon: RiLinkM,
-  },
-  {
-    name: "Overview – Rows written",
-    href: "/overview#usage-overview",
-    icon: RiLinkM,
+    icon: RiFlagLine,
   },
 ] as const
 
@@ -89,7 +81,7 @@ export function Sidebar() {
             </ul>
             <div>
               <span className="text-xs font-medium leading-6 text-gray-500">
-                Shortcuts
+                Settings
               </span>
               <ul aria-label="shortcuts" role="list" className="space-y-0.5">
                 {shortcuts.map((item) => (

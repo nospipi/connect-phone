@@ -6,9 +6,9 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 
 const navigationSettings = [
-  { name: "General", href: siteConfig.baseLinks.settings.general },
-  { name: "Billing & Usage", href: siteConfig.baseLinks.settings.billing },
-  { name: "Users", href: siteConfig.baseLinks.settings.users },
+  { name: "Admins", href: siteConfig.baseLinks.settings.general },
+  { name: "Moderators", href: siteConfig.baseLinks.settings.billing },
+  { name: "Clients", href: siteConfig.baseLinks.settings.users },
 ]
 
 export default function Layout({
@@ -20,7 +20,7 @@ export default function Layout({
   return (
     <div className="p-4 sm:px-6 sm:pb-10 sm:pt-10 lg:px-10 lg:pt-7">
       <h1 className="text-lg font-semibold text-gray-900 sm:text-xl dark:text-gray-50">
-        Settings
+        Users
       </h1>
       <TabNavigation className="mt-4 sm:mt-6 lg:mt-10">
         {navigationSettings.map((item) => (
