@@ -8,6 +8,11 @@ import {
   RiSettings5Line,
   RiGroupLine,
   RiFlagLine,
+  RiCoupon2Line,
+  RiSimCard2Line,
+  RiSimCardLine,
+  RiLineChartLine,
+  RiBuildingLine,
 } from "@remixicon/react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -19,8 +24,13 @@ import {
 import { UserProfileDesktop, UserProfileMobile } from "./UserProfile"
 
 const navigation = [
-  { name: "Overview", href: siteConfig.baseLinks.overview, icon: RiHome2Line },
-  { name: "Details", href: siteConfig.baseLinks.details, icon: RiListCheck },
+  {
+    name: "Overview",
+    href: siteConfig.baseLinks.overview,
+    icon: RiLineChartLine,
+  },
+  { name: "Offers", href: siteConfig.baseLinks.overview, icon: RiCoupon2Line },
+  { name: "E-Sims", href: siteConfig.baseLinks.details, icon: RiSimCardLine },
   // {
   //   name: "Settings",
   //   href: siteConfig.baseLinks.settings.general,
@@ -30,13 +40,18 @@ const navigation = [
 
 const shortcuts = [
   {
+    name: "Organization",
+    href: "/auth/unauthorized",
+    icon: RiBuildingLine,
+  },
+  {
     name: "Users",
     href: "/settings/users",
     icon: RiGroupLine,
   },
   {
     name: "Countries",
-    href: "/settings/billing#billing-overview",
+    href: "/settings/countries",
     icon: RiFlagLine,
   },
 ] as const

@@ -14,15 +14,10 @@ import {
   DropdownMenuSubMenuTrigger,
   DropdownMenuTrigger,
 } from "@/components/Dropdown"
-import {
-  RiArrowRightUpLine,
-  RiComputerLine,
-  RiMoonLine,
-  RiSunLine,
-} from "@remixicon/react"
+import { RiComputerLine, RiMoonLine, RiSunLine } from "@remixicon/react"
 import { useTheme } from "next-themes"
 import * as React from "react"
-import { SignOutButton } from "@clerk/nextjs"
+import { Signout } from "./Signout"
 
 import {
   ClerkProvider,
@@ -33,7 +28,7 @@ import {
   UserButton,
   useAuth,
   useUser,
-  useOrganization,
+  //useOrganization,
   useClerk,
 } from "@clerk/nextjs"
 
@@ -55,7 +50,8 @@ export function DropdownUserProfile({
   }, [])
 
   const { user } = useUser()
-  const { openUserProfile } = useClerk()
+  const primaryEmail = user?.primaryEmailAddress?.emailAddress
+  const { openUserProfile, signOut } = useClerk()
 
   if (!mounted) {
     return null
@@ -65,9 +61,7 @@ export function DropdownUserProfile({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
       <DropdownMenuContent align={align}>
-        <DropdownMenuLabel>
-          {user?.emailAddresses[0].emailAddress}
-        </DropdownMenuLabel>
+        <DropdownMenuLabel>{primaryEmail}</DropdownMenuLabel>
         <DropdownMenuGroup>
           <DropdownMenuSubMenu>
             <DropdownMenuSubMenuTrigger>Theme</DropdownMenuSubMenuTrigger>
@@ -141,12 +135,10 @@ export function DropdownUserProfile({
             </DropdownMenuItem>
           </DropdownMenuGroup> */}
 
-        <DropdownMenuSeparator />
+        {/* <DropdownMenuSeparator /> */}
 
         <DropdownMenuGroup>
-          <SignOutButton>
-            <DropdownMenuItem>Sign out</DropdownMenuItem>
-          </SignOutButton>
+          <Signout />
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>

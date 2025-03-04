@@ -1,10 +1,16 @@
-import { clerkMiddleware } from "@clerk/nextjs/server";
-import { NextRequest } from "next/server";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server"
+//import { NextRequest } from "next/server"
 
-const middleware = (req: NextRequest) => {
-  console.log("Middleware is running!", req.nextUrl.pathname);
-  return clerkMiddleware()(req);
-};
+const isPublicRoute = createRouteMatcher(["/sign-in(.*)", "/sign-up(.*)"])
+
+export default clerkMiddleware(
+  async (auth, request) => {
+    if (!isPublicRoute(request)) {
+      await auth.protect()
+    }
+  },
+  //{ debug: true },
+)
 
 export const config = {
   matcher: [
@@ -13,6 +19,4 @@ export const config = {
     // Always run for API routes
     "/(api|trpc)(.*)",
   ],
-};
-
-export default middleware;
+}

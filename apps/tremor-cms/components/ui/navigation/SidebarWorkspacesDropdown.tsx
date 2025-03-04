@@ -17,7 +17,7 @@ import { ModalAddWorkspace } from "./ModalAddWorkspace"
 const workspaces = [
   {
     value: "retail-analytics",
-    name: "Retail analytics",
+    name: "Organization Name",
     initials: "RA",
     role: "Member",
     color: "bg-indigo-600 dark:bg-indigo-500",
@@ -43,7 +43,6 @@ export const WorkspacesDropdownDesktop = () => {
   }
   return (
     <>
-      {/* sidebar (lg+) */}
       <DropdownMenu
         open={dropdownOpen}
         onOpenChange={setDropdownOpen}
@@ -65,11 +64,12 @@ export const WorkspacesDropdownDesktop = () => {
             <div className="flex w-full items-center justify-between gap-x-4 truncate">
               <div className="truncate">
                 <p className="truncate whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-50">
-                  Retail analytics
+                  Organization Name
                 </p>
-                <p className="whitespace-nowrap text-left text-xs text-gray-700 dark:text-gray-300">
+
+                {/* <p className="whitespace-nowrap text-left text-xs text-gray-700 dark:text-gray-300">
                   Member
-                </p>
+                </p> */}
               </div>
               <RiExpandUpDownLine
                 className="size-5 shrink-0 text-gray-500"
@@ -90,7 +90,7 @@ export const WorkspacesDropdownDesktop = () => {
         >
           <DropdownMenuGroup>
             <DropdownMenuLabel>
-              Workspaces ({workspaces.length})
+              Organizations ({workspaces.length})
             </DropdownMenuLabel>
             {workspaces.map((workspace) => (
               <DropdownMenuItem key={workspace.value}>
@@ -108,20 +108,23 @@ export const WorkspacesDropdownDesktop = () => {
                     <p className="text-sm font-medium text-gray-900 dark:text-gray-50">
                       {workspace.name}
                     </p>
-                    <p className="text-xs text-gray-700 dark:text-gray-400">
+
+                    {/* <p className="text-xs text-gray-700 dark:text-gray-400">
                       {workspace.role}
-                    </p>
+                    </p> */}
                   </div>
                 </div>
               </DropdownMenuItem>
             ))}
           </DropdownMenuGroup>
-          <DropdownMenuSeparator />
-          <ModalAddWorkspace
+
+          {/* <DropdownMenuSeparator /> */}
+
+          {/* <ModalAddWorkspace
             onSelect={handleDialogItemSelect}
             onOpenChange={handleDialogItemOpenChange}
             itemName="Add workspace"
-          />
+          /> */}
         </DropdownMenuContent>
       </DropdownMenu>
     </>
@@ -168,7 +171,7 @@ export const WorkspacesDropdownMobile = () => {
             />
             <div className="flex w-full items-center justify-between gap-x-3 truncate">
               <p className="truncate whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-50">
-                Retail analytics
+                Organization Name
               </p>
               <RiExpandUpDownLine
                 className="size-4 shrink-0 text-gray-500"
@@ -190,7 +193,7 @@ export const WorkspacesDropdownMobile = () => {
         >
           <DropdownMenuGroup>
             <DropdownMenuLabel>
-              Workspaces ({workspaces.length})
+              Organizations ({workspaces.length})
             </DropdownMenuLabel>
             {workspaces.map((workspace) => (
               <DropdownMenuItem key={workspace.value}>
@@ -208,20 +211,23 @@ export const WorkspacesDropdownMobile = () => {
                     <p className="text-sm font-medium text-gray-900 dark:text-gray-50">
                       {workspace.name}
                     </p>
-                    <p className="text-xs text-gray-700 dark:text-gray-300">
+
+                    {/* <p className="text-xs text-gray-700 dark:text-gray-300">
                       {workspace.role}
-                    </p>
+                    </p> */}
                   </div>
                 </div>
               </DropdownMenuItem>
             ))}
           </DropdownMenuGroup>
-          <DropdownMenuSeparator />
-          <ModalAddWorkspace
+
+          {/* <DropdownMenuSeparator /> */}
+
+          {/* <ModalAddWorkspace
             onSelect={handleDialogItemSelect}
             onOpenChange={handleDialogItemOpenChange}
             itemName="Add workspace"
-          />
+          /> */}
         </DropdownMenuContent>
       </DropdownMenu>
     </>

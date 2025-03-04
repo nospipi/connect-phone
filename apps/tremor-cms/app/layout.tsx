@@ -9,11 +9,7 @@ import {
   SignUpButton,
   SignedIn,
   SignedOut,
-  UserButton,
-  RedirectToSignIn,
-  SignOutButton,
 } from "@clerk/nextjs"
-import { dark } from "@clerk/themes"
 
 import { Sidebar } from "@/components/ui/navigation/Sidebar"
 
@@ -66,7 +62,7 @@ export default function RootLayout({
           className={`${inter.className} overflow-y-scroll scroll-auto antialiased selection:bg-indigo-100 selection:text-indigo-700 dark:bg-gray-950`}
           suppressHydrationWarning
         >
-          <ThemeProvider defaultTheme="system" attribute="class">
+          <ThemeProvider defaultTheme="dark" attribute="class">
             <SignedIn>
               <Sidebar />
               <main className="lg:pl-72">{children}</main>

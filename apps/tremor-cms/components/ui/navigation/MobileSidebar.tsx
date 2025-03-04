@@ -16,13 +16,24 @@ import {
   RiListCheck,
   RiMenuLine,
   RiSettings5Line,
+  RiCoupon2Line,
+  RiLineChartLine,
+  RiSimCardLine,
+  RiBuildingLine,
+  RiGroupLine,
+  RiFlagLine,
 } from "@remixicon/react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
 const navigation = [
-  { name: "Overview", href: siteConfig.baseLinks.overview, icon: RiHome2Line },
-  { name: "Details", href: siteConfig.baseLinks.details, icon: RiListCheck },
+  {
+    name: "Overview",
+    href: siteConfig.baseLinks.overview,
+    icon: RiLineChartLine,
+  },
+  { name: "Offers", href: siteConfig.baseLinks.overview, icon: RiCoupon2Line },
+  { name: "E-Sims", href: siteConfig.baseLinks.details, icon: RiSimCardLine },
   // {
   //   name: "Settings",
   //   href: siteConfig.baseLinks.settings.general,
@@ -32,24 +43,19 @@ const navigation = [
 
 const shortcuts = [
   {
-    name: "Add new user",
+    name: "Organization",
+    href: "/settings/organization",
+    icon: RiBuildingLine,
+  },
+  {
+    name: "Users",
     href: "/settings/users",
-    icon: RiLinkM,
+    icon: RiGroupLine,
   },
   {
-    name: "Workspace usage",
-    href: "/settings/billing#billing-overview",
-    icon: RiLinkM,
-  },
-  {
-    name: "Cost spend control",
-    href: "/settings/billing#cost-spend-control",
-    icon: RiLinkM,
-  },
-  {
-    name: "Overview – Rows written",
-    href: "/overview#usage-overview",
-    icon: RiLinkM,
+    name: "Countries",
+    href: "/settings/countries",
+    icon: RiFlagLine,
   },
 ] as const
 
@@ -78,7 +84,7 @@ export default function MobileSidebar() {
         </DrawerTrigger>
         <DrawerContent className="sm:max-w-lg">
           <DrawerHeader>
-            <DrawerTitle>Retail Analytics</DrawerTitle>
+            <DrawerTitle>Organization Name</DrawerTitle>
           </DrawerHeader>
           <DrawerBody>
             <nav
