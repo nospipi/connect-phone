@@ -2,10 +2,12 @@ import axios from "axios"
 
 const Page = async () => {
   try {
+    console.log("Invitation")
+
     const invitation = await axios.post(
       "https://api.clerk.com/v1/invitations",
       {
-        email_address: "getaways.magonezos@gmail.com",
+        email_address: "nospipian@gmail.com",
         redirect_url: "/",
         public_metadata: { role: "admin" },
       },
