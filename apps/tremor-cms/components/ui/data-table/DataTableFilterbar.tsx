@@ -31,7 +31,19 @@ export function Filterbar<TData>({ table }: DataTableToolbarProps<TData>) {
 
   return (
     <div className="flex flex-wrap items-center justify-between gap-2 sm:gap-x-6">
-      <div className="flex w-full flex-col gap-2 sm:w-fit sm:flex-row sm:items-center">
+      <div className="flex w-full flex-col flex-wrap gap-2 sm:flex-row sm:items-center">
+        {table.getColumn("owner")?.getIsVisible() && (
+          <Searchbar
+            type="search"
+            placeholder="Search by owner..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+            className="w-full sm:max-w-[250px] sm:[&>input]:h-[30px]"
+            style={{
+              minWidth: "180px",
+            }}
+          />
+        )}
         {table.getColumn("status")?.getIsVisible() && (
           <DataTableFilter
             column={table.getColumn("status")}
@@ -55,15 +67,6 @@ export function Filterbar<TData>({ table }: DataTableToolbarProps<TData>) {
             type="number"
             options={conditions}
             formatter={formatters.currency}
-          />
-        )}
-        {table.getColumn("owner")?.getIsVisible() && (
-          <Searchbar
-            type="search"
-            placeholder="Search by owner..."
-            value={searchTerm}
-            onChange={handleSearchChange}
-            className="w-full sm:max-w-[250px] sm:[&>input]:h-[30px]"
           />
         )}
         {isFiltered && (

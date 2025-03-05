@@ -1,5 +1,5 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server"
-//import { NextRequest } from "next/server"
+import { NextResponse } from "next/server"
 
 const isPublicRoute = createRouteMatcher(["/sign-in(.*)", "/sign-up(.*)"])
 
@@ -8,6 +8,16 @@ export default clerkMiddleware(
     if (!isPublicRoute(request)) {
       await auth.protect()
     }
+
+    const headers = new Headers(request.headers)
+    headers.set("x-current-path", request.nextUrl.pathname)
+    console.log("Intercepted path:", request.nextUrl.pathname)
+
+    return NextResponse.next({
+      request: {
+        headers: headers, //https://github.com/vercel/next.js/issues/50659#issuecomment-2211256368
+      },
+    })
   },
   //{ debug: true },
 )

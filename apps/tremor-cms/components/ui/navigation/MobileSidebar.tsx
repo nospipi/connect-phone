@@ -1,3 +1,4 @@
+import { headers } from "next/headers"
 import { siteConfig } from "@/app/siteConfig"
 import { Button } from "@/components/Button"
 import {
@@ -24,7 +25,7 @@ import {
   RiFlagLine,
 } from "@remixicon/react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+//import { usePathname } from "next/navigation"
 
 const navigation = [
   {
@@ -59,13 +60,15 @@ const shortcuts = [
   },
 ] as const
 
-export default function MobileSidebar() {
-  const pathname = usePathname()
+export default async function MobileSidebar() {
+  const headerList = await headers()
+  const pathname = headerList.get("x-current-path")
+
   const isActive = (itemHref: string) => {
     if (itemHref === siteConfig.baseLinks.settings.general) {
-      return pathname.startsWith("/settings")
+      return pathname?.startsWith("/settings")
     }
-    return pathname === itemHref || pathname.startsWith(itemHref)
+    return pathname === itemHref || pathname?.startsWith(itemHref)
   }
   return (
     <>
@@ -125,7 +128,8 @@ export default function MobileSidebar() {
                       <Link
                         href={item.href}
                         className={cx(
-                          pathname === item.href || pathname.includes(item.href)
+                          pathname === item.href ||
+                            pathname?.includes(item.href)
                             ? "text-indigo-600 dark:text-indigo-400"
                             : "text-gray-700 hover:text-gray-900 dark:text-gray-400 hover:dark:text-gray-50",
                           "flex items-center gap-x-2.5 rounded-md px-2 py-1.5 font-medium transition hover:bg-gray-100 sm:text-sm hover:dark:bg-gray-900",

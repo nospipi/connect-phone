@@ -21,7 +21,7 @@ import {
   DialogTrigger,
 } from "@/components/Dialog"
 
-import { PeriodValue } from "@/app/(main)/overview/page"
+import { PeriodValue } from "@/app/overview/page"
 import { Button } from "@/components/Button"
 import { Checkbox } from "@/components/Checkbox"
 import { DateRangePicker } from "@/components/DatePicker"

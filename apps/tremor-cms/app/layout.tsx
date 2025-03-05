@@ -7,9 +7,14 @@ import {
   ClerkProvider,
   SignInButton,
   SignUpButton,
+  SignIn,
   SignedIn,
   SignedOut,
+  OrganizationSwitcher,
+  CreateOrganization,
 } from "@clerk/nextjs"
+import { dark } from "@clerk/themes"
+import Invite from "./Invite"
 
 import { Sidebar } from "@/components/ui/navigation/Sidebar"
 
@@ -51,25 +56,26 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider
-      appearance={
-        {
-          //baseTheme: dark, //issues on input fields
-        }
-      }
+      appearance={{
+        baseTheme: dark,
+        elements: {
+          input: "text-black text-sm",
+        },
+      }}
     >
-      <html lang="en" suppressHydrationWarning>
+      <html lang="en" suppressHydrationWarning className="overflow-hidden">
         <body
-          className={`${inter.className} overflow-y-scroll scroll-auto antialiased selection:bg-indigo-100 selection:text-indigo-700 dark:bg-gray-950`}
+          className={`${inter.className} overflow-hidden antialiased selection:bg-indigo-100 selection:text-indigo-700 dark:bg-gray-950`}
           suppressHydrationWarning
         >
           <ThemeProvider defaultTheme="dark" attribute="class">
-            <SignedIn>
-              <Sidebar />
-              <main className="lg:pl-72">{children}</main>
-            </SignedIn>
-            <SignedOut>
-              <SignInButton />
-            </SignedOut>
+            <SignedIn>{children}</SignedIn>
+
+            {/* <SignedOut>
+              <SignIn signUpForceRedirectUrl={"/"} />
+              <span>SIGNED OUT</span>
+              <Invite />
+            </SignedOut> */}
           </ThemeProvider>
         </body>
       </html>

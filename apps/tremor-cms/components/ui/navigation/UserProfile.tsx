@@ -1,26 +1,14 @@
-"use client"
-
 import { Button } from "@/components/Button"
 import { cx, focusRing } from "@/lib/utils"
 import { RiMore2Fill } from "@remixicon/react"
 import { DropdownUserProfile } from "./DropdownUserProfile"
-
-import {
-  ClerkProvider,
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-  useAuth,
-  useUser,
-  useOrganization,
-} from "@clerk/nextjs"
+import { UserButton } from "@clerk/nextjs"
+import { currentUser } from "@clerk/nextjs/server"
 
 //-------------------------------------------------------------------------
 
-export const UserProfileDesktop = () => {
-  const { user } = useUser()
+export const UserProfileDesktop = async () => {
+  const user = await currentUser()
   const fullName = user?.fullName
   const primaryEmail = user?.primaryEmailAddress?.emailAddress
 
@@ -53,8 +41,6 @@ export const UserProfileDesktop = () => {
 }
 
 export const UserProfileMobile = () => {
-  const { user } = useUser()
-
   return (
     <DropdownUserProfile align="end">
       <Button

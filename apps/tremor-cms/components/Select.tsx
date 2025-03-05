@@ -1,7 +1,11 @@
 // Custom Select [v0.0.0]
 
 import * as SelectPrimitives from "@radix-ui/react-select"
-import { RiArrowDownSLine, RiArrowUpSLine, RiCheckLine } from "@remixicon/react"
+import {
+  RiExpandUpDownLine,
+  RiArrowUpSLine,
+  RiCheckLine,
+} from "@remixicon/react"
 import { format } from "date-fns"
 import React from "react"
 
@@ -58,7 +62,7 @@ const SelectTrigger = React.forwardRef<
     >
       <span className="truncate">{children}</span>
       <SelectPrimitives.Icon asChild>
-        <RiArrowDownSLine
+        <RiExpandUpDownLine
           className={cx(
             // base
             "-mr-1 size-5 shrink-0",
@@ -104,7 +108,7 @@ const SelectScrollDownButton = React.forwardRef<
     )}
     {...props}
   >
-    <RiArrowDownSLine className="size-3 shrink-0" aria-hidden="true" />
+    <RiExpandUpDownLine className="size-3 shrink-0" aria-hidden="true" />
   </SelectPrimitives.ScrollDownButton>
 ))
 SelectScrollDownButton.displayName =

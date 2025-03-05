@@ -2,8 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-
 /* clerk-widget - hide clerk logo*/
-.cl-internal-df7v37{
-    display: none;
+.cl-internal-1dauvpw {
+  display: none;
 }

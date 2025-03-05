@@ -1,6 +1,7 @@
-"use client"
+import { headers } from "next/headers"
 import { siteConfig } from "@/app/siteConfig"
 import { cx, focusRing } from "@/lib/utils"
+import OrganizationsSelector from "./OrganizationsSelector"
 import {
   RiHome2Line,
   RiLinkM,
@@ -15,7 +16,7 @@ import {
   RiBuildingLine,
 } from "@remixicon/react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+//import { usePathname } from "next/navigation"
 import MobileSidebar from "./MobileSidebar"
 import {
   WorkspacesDropdownDesktop,
@@ -41,7 +42,7 @@ const navigation = [
 const shortcuts = [
   {
     name: "Organization",
-    href: "/auth/unauthorized",
+    href: "/org_id/organization",
     icon: RiBuildingLine,
   },
   {
@@ -56,13 +57,15 @@ const shortcuts = [
   },
 ] as const
 
-export function Sidebar() {
-  const pathname = usePathname()
+export async function Sidebar() {
+  const headerList = await headers()
+  const pathname = headerList.get("x-current-path")
+
   const isActive = (itemHref: string) => {
     if (itemHref === siteConfig.baseLinks.settings.general) {
-      return pathname.startsWith("/settings")
+      return pathname?.startsWith("/settings")
     }
-    return pathname === itemHref || pathname.startsWith(itemHref)
+    return pathname === itemHref || pathname?.startsWith(itemHref)
   }
 
   return (
@@ -70,7 +73,7 @@ export function Sidebar() {
       {/* sidebar (lg+) */}
       <nav className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
         <aside className="flex grow flex-col gap-y-6 overflow-y-auto border-r border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-950">
-          <WorkspacesDropdownDesktop />
+          <OrganizationsSelector />
           <nav
             aria-label="core navigation links"
             className="flex flex-1 flex-col space-y-10"
@@ -104,7 +107,8 @@ export function Sidebar() {
                     <Link
                       href={item.href}
                       className={cx(
-                        pathname === item.href || pathname.startsWith(item.href)
+                        pathname === item.href ||
+                          pathname?.startsWith(item.href)
                           ? "text-indigo-600 dark:text-indigo-400"
                           : "text-gray-700 hover:text-gray-900 dark:text-gray-400 hover:dark:text-gray-50",
                         "flex items-center gap-x-2.5 rounded-md px-2 py-1.5 text-sm font-medium transition hover:bg-gray-100 hover:dark:bg-gray-900",

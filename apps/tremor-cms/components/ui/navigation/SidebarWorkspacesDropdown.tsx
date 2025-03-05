@@ -31,16 +31,6 @@ export const WorkspacesDropdownDesktop = () => {
   const dropdownTriggerRef = React.useRef<null | HTMLButtonElement>(null)
   const focusRef = React.useRef<null | HTMLButtonElement>(null)
 
-  const handleDialogItemSelect = () => {
-    focusRef.current = dropdownTriggerRef.current
-  }
-
-  const handleDialogItemOpenChange = (open: boolean) => {
-    setHasOpenDialog(open)
-    if (open === false) {
-      setDropdownOpen(false)
-    }
-  }
   return (
     <>
       <DropdownMenu
@@ -119,7 +109,6 @@ export const WorkspacesDropdownDesktop = () => {
           </DropdownMenuGroup>
 
           {/* <DropdownMenuSeparator /> */}
-
           {/* <ModalAddWorkspace
             onSelect={handleDialogItemSelect}
             onOpenChange={handleDialogItemOpenChange}
@@ -137,16 +126,6 @@ export const WorkspacesDropdownMobile = () => {
   const dropdownTriggerRef = React.useRef<null | HTMLButtonElement>(null)
   const focusRef = React.useRef<null | HTMLButtonElement>(null)
 
-  const handleDialogItemSelect = () => {
-    focusRef.current = dropdownTriggerRef.current
-  }
-
-  const handleDialogItemOpenChange = (open: boolean) => {
-    setHasOpenDialog(open)
-    if (open === false) {
-      setDropdownOpen(false)
-    }
-  }
   return (
     <>
       {/* sidebar (xs-lg) */}
