@@ -1,7 +1,7 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { getUsers, createUser, createUser1, User } from 'database';
+import { getUsers, User } from 'database';
 
 //https://docs.nestjs.com/exception-filters#exception-filters-1
 //https://docs.nestjs.com/pipes

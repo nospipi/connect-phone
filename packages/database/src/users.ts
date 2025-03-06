@@ -14,15 +14,18 @@ export async function getUsers(): Promise<User[]> {
   }
 }
 
-export async function createUser(data: User): Promise<User> {
+export async function getUser(id: number): Promise<User | null> {
   try {
-    const user = await db.user.create({ data });
+    const user = await db.user.findUnique({
+      where: { id },
+    });
     return user;
   } catch (error: unknown) {
     throw new Error(error as any);
   }
 }
-export async function createUser1(data: User): Promise<User> {
+
+export async function createUser(data: User): Promise<User> {
   try {
     const user = await db.user.create({ data });
     return user;

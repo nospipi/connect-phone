@@ -25,6 +25,7 @@
     "delete-all-builds": "cd apps/api && node -e require('fs-extra').remove('dist') && cd ../cms && node -e require('fs-extra').remove('.next') && cd ../../packages/database && node -e require('fs-extra').remove('dist')"
   },
   "devDependencies": {
+    "@types/lodash": "^4.17.16",
     "prettier": "^3.5.0",
     "turbo": "^2.4.4",
     "typescript": "^5.7.3"

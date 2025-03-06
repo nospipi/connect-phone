@@ -4,12 +4,16 @@ import { RiMore2Fill } from "@remixicon/react"
 import { DropdownUserProfile } from "./DropdownUserProfile"
 import { UserButton } from "@clerk/nextjs"
 import { currentUser } from "@clerk/nextjs/server"
+import _ from "lodash"
 
 //-------------------------------------------------------------------------
 
 export const UserProfileDesktop = async () => {
   const user = await currentUser()
-  const fullName = user?.fullName
+  const fullName = user?.fullName || ""
+  const truncated = _.truncate(fullName, {
+    length: 18,
+  })
   const primaryEmail = user?.primaryEmailAddress?.emailAddress
 
   return (
@@ -29,7 +33,7 @@ export const UserProfileDesktop = async () => {
           >
             <UserButton />
           </span>
-          <span>{fullName || primaryEmail}</span>
+          <span>{truncated || primaryEmail}</span>
         </span>
         <RiMore2Fill
           className="size-4 shrink-0 text-gray-500 group-hover:text-gray-700 group-hover:dark:text-gray-400"

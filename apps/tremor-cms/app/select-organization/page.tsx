@@ -2,9 +2,9 @@ import { Card } from "@/components/Card"
 import { Button } from "@/components/Button"
 import { Divider } from "@/components/Divider"
 import { RiAddLine } from "@remixicon/react"
+import { getUsers, getUser, createUser } from "database"
 import Link from "next/link"
 import OrganizationsSelector from "./OrganizationsSelector.client"
-import UserButton from "./UserButton"
 
 const organizations = [
   {
@@ -39,10 +39,7 @@ const organizations = [
 
 const OrganizationSelectPage = () => {
   return (
-    <div className="relative flex min-h-screen flex-col items-center justify-center bg-gray-50 p-4 dark:bg-gray-900">
-      <div className="absolute right-4 top-4">
-        <UserButton />
-      </div>
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 p-4 dark:bg-gray-900">
       <div className="w-full max-w-md">
         <div className="mb-6 flex justify-center">
           <h1>App Name</h1>

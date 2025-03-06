@@ -39,31 +39,28 @@ const main = async () => {
       await db.organization.create({
         data: {
           name: faker.company.name(),
-          users: {
-            create: {
-              name: faker.person.fullName(),
-              email: faker.internet.email(),
-              role: "ADMIN",
-            },
-          },
         },
       });
     }
 
     for (const i of Array.from({ length: 10 })) {
-      const roles = ["VIEWER", "MODERATOR", "CLIENT"] as Role[];
-      const randomRole = _.sample(roles);
+      const roles: Role[] = ["VIEWER", "MODERATOR", "CLIENT"];
+      const randomRole: Role = _.sample(roles) as Role;
 
       await db.user.create({
         data: {
           name: faker.person.fullName(),
           email: faker.internet.email(),
-          organization: {
-            connect: {
-              id: 1,
+          organizations: {
+            create: {
+              organization: {
+                connect: {
+                  id: 1,
+                },
+              },
+              role: randomRole,
             },
           },
-          role: randomRole,
         },
       });
     }

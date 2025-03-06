@@ -1,22 +1,10 @@
 import type { Metadata } from "next"
 import { ThemeProvider } from "next-themes"
 import { Inter } from "next/font/google"
-import "./globals.css"
 import { siteConfig } from "./siteConfig"
-import {
-  ClerkProvider,
-  SignInButton,
-  SignUpButton,
-  SignIn,
-  SignedIn,
-  SignedOut,
-  OrganizationSwitcher,
-  CreateOrganization,
-} from "@clerk/nextjs"
+import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs"
 import { dark } from "@clerk/themes"
-import Invite from "./Invite"
-
-import { Sidebar } from "@/components/ui/navigation/Sidebar"
+import "./globals.css"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -31,11 +19,11 @@ export const metadata: Metadata = {
   keywords: [],
   authors: [
     {
-      name: "yourname",
+      name: "Vaggelis Magonezos",
       url: "",
     },
   ],
-  creator: "yourname",
+  creator: "Vaggelis Magonezos",
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -58,6 +46,7 @@ export default function RootLayout({
     <ClerkProvider
       appearance={{
         baseTheme: dark,
+        variables: { colorBackground: "#111828" },
         elements: {
           input: "text-black text-sm",
         },
@@ -70,12 +59,7 @@ export default function RootLayout({
         >
           <ThemeProvider defaultTheme="dark" attribute="class">
             <SignedIn>{children}</SignedIn>
-
-            {/* <SignedOut>
-              <SignIn signUpForceRedirectUrl={"/"} />
-              <span>SIGNED OUT</span>
-              <Invite />
-            </SignedOut> */}
+            <SignedOut>{children}</SignedOut>
           </ThemeProvider>
         </body>
       </html>

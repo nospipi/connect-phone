@@ -51,7 +51,7 @@ export function DropdownUserProfile({
 
   const { user } = useUser()
   const primaryEmail = user?.primaryEmailAddress?.emailAddress
-  const { openUserProfile, signOut } = useClerk()
+  const { openUserProfile } = useClerk()
 
   if (!mounted) {
     return null

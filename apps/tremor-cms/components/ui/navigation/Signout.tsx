@@ -50,10 +50,14 @@ export const Signout = () => {
             <DialogClose asChild>
               <Button
                 className="w-full !bg-red-400 !text-white sm:w-fit"
-                //onClick={() => signOut()}
-                onClickCapture={async () => {
-                  await signOut({ redirectUrl: "/sign-in" })
-                }}
+                onClick={() =>
+                  signOut({
+                    redirectUrl: "/sign-in",
+                  })
+                }
+                // onClickCapture={async () => {
+                //   await signOut()
+                // }}
               >
                 Sign out
               </Button>

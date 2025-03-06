@@ -25,7 +25,7 @@ const workspaces = [
   // Add more workspaces...
 ]
 
-export const WorkspacesDropdownDesktop = () => {
+export const OrganizationsDropdownDesktop = () => {
   const [dropdownOpen, setDropdownOpen] = React.useState(false)
   const [hasOpenDialog, setHasOpenDialog] = React.useState(false)
   const dropdownTriggerRef = React.useRef<null | HTMLButtonElement>(null)
@@ -120,7 +120,7 @@ export const WorkspacesDropdownDesktop = () => {
   )
 }
 
-export const WorkspacesDropdownMobile = () => {
+export const OrganizationsDropdownMobile = () => {
   const [dropdownOpen, setDropdownOpen] = React.useState(false)
   const [hasOpenDialog, setHasOpenDialog] = React.useState(false)
   const dropdownTriggerRef = React.useRef<null | HTMLButtonElement>(null)
