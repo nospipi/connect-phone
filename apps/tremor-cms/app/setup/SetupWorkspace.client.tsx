@@ -2,6 +2,8 @@
 
 import { useEffect, useCallback } from "react"
 import { stepOne, stepTwo, stepThree, resetSetup } from "./server_actions"
+import { Button } from "@/components/Button"
+import { RiArrowRightLine, RiRefreshLine } from "@remixicon/react"
 import Link from "next/link"
 
 interface StepDisplayProps {
@@ -38,10 +40,6 @@ const SetupWorkspace = ({ currentStep, isComplete }: StepDisplayProps) => {
 
   return (
     <div className="rounded-lg bg-white p-8 shadow-md dark:bg-gray-800">
-      <h1 className="mb-6 text-xl font-semibold text-gray-900 dark:text-white">
-        Setting Up Your Workspace
-      </h1>
-
       {isComplete ? (
         <div className="text-center">
           <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100 dark:bg-green-900">
@@ -59,29 +57,35 @@ const SetupWorkspace = ({ currentStep, isComplete }: StepDisplayProps) => {
               />
             </svg>
           </div>
-          <h2 className="mb-2 text-lg font-medium text-gray-900 dark:text-white">
+          <h2 className="mb-4 text-lg font-medium text-gray-900 dark:text-white">
             Setup Complete!
           </h2>
-          <p className="mb-6 text-gray-600 dark:text-gray-300">
-            All steps have been successfully completed.
-          </p>
 
-          <Link href="/org_id/overview">
-            <button className="rounded bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
-              Take me there !
-            </button>
-          </Link>
+          <div className="flex w-full max-w-md flex-col gap-4 sm:flex-row">
+            <Link href="/create-organization" className="flex-1">
+              <Button className="group flex w-full items-center justify-center gap-2 rounded-lg px-5 py-3 font-medium !text-white transition-colors duration-200">
+                Create your first organization
+                <RiArrowRightLine className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+              </Button>
+            </Link>
+          </div>
 
           <button
             onClick={handleReset}
-            className="fixed right-2 top-2 rounded bg-slate-800 px-4 py-2 text-white transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+            className="fixed right-2 top-2 flex flex-1 items-center justify-center gap-2 rounded-lg border border-gray-300 px-5 py-3 font-medium text-gray-700 transition-colors duration-200 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800/50"
           >
-            reset
+            <RiRefreshLine className="h-5 w-5" />
+            Reset Setup
           </button>
         </div>
       ) : (
         <>
           {/* Progress bar */}
+
+          <h1 className="mb-6 text-xl font-semibold text-gray-900 dark:text-white">
+            Setting Up Your Workspace
+          </h1>
+
           <div className="mb-6">
             <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
               <span>Progress</span>
