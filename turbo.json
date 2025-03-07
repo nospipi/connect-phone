@@ -17,10 +17,10 @@
       "dependsOn": ["cms#clean", "database#build"]
     },
     "mui-cms#dev": {
-      "dependsOn": ["mui-cms#clean", "database#build"]
+      "dependsOn": ["mui-cms#clean", "database#build", "database#generate"]
     },
     "tremor-cms#dev": {
-      "dependsOn": ["tremor-cms#clean", "database#build"]
+      "dependsOn": ["tremor-cms#clean", "database#build", "database#generate"]
     },
     "api#dev": {
       "dependsOn": ["database#build", "database#generate"]

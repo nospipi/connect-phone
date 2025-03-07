@@ -1,6 +1,8 @@
 "use client"
 
 import { useState, useRef } from "react"
+import logo from "@/public/logo.png"
+import Image from "next/image"
 
 export default function LogoUpload() {
   const [logoPreview, setLogoPreview] = useState<string | null>(null)
@@ -35,7 +37,13 @@ export default function LogoUpload() {
         >
           {!logoPreview && (
             <div className="p-2 text-center text-sm text-gray-400">
-              Logo Preview
+              <Image
+                src={logo}
+                alt="logo"
+                width={50}
+                height={50}
+                className="transition-all duration-200 dark:invert"
+              />
             </div>
           )}
         </div>
@@ -104,7 +112,7 @@ export default function LogoUpload() {
           htmlFor="ip-confirm"
           className="text-sm text-gray-700 dark:text-gray-300"
         >
-          I confirm that this image is my intellectual property, and I take full
+          I confirm that i own the rights to this image , and I take full
           responsibility for sharing it
         </label>
       </div>

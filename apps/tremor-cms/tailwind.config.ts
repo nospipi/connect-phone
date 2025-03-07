@@ -58,6 +58,9 @@ const config: Config = {
         dialogContentShow:
           "dialogContentShow 150ms cubic-bezier(0.16, 1, 0.3, 1)",
       },
+      backgroundImage: {
+        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+      },
     },
   },
   plugins: [require("@tailwindcss/forms")],

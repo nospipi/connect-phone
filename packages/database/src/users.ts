@@ -25,6 +25,17 @@ export async function getUser(id: number): Promise<User | null> {
   }
 }
 
+export async function getUserByEmail(email: string): Promise<User | null> {
+  try {
+    const user = await db.user.findUnique({
+      where: { email },
+    });
+    return user;
+  } catch (error: unknown) {
+    throw new Error(error as any);
+  }
+}
+
 export async function createUser(data: User): Promise<User> {
   try {
     const user = await db.user.create({ data });

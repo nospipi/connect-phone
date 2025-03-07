@@ -13,6 +13,7 @@ import { cx, focusInput } from "@/lib/utils"
 import { RiArrowRightSLine, RiExpandUpDownLine } from "@remixicon/react"
 import React from "react"
 import { ModalAddWorkspace } from "./ModalAddWorkspace"
+import { useRouter } from "next/navigation"
 
 const workspaces = [
   {
@@ -26,6 +27,7 @@ const workspaces = [
 ]
 
 export const OrganizationsDropdownDesktop = () => {
+  const router = useRouter()
   const [dropdownOpen, setDropdownOpen] = React.useState(false)
   const [hasOpenDialog, setHasOpenDialog] = React.useState(false)
   const dropdownTriggerRef = React.useRef<null | HTMLButtonElement>(null)
@@ -108,12 +110,14 @@ export const OrganizationsDropdownDesktop = () => {
             ))}
           </DropdownMenuGroup>
 
-          {/* <DropdownMenuSeparator /> */}
-          {/* <ModalAddWorkspace
-            onSelect={handleDialogItemSelect}
-            onOpenChange={handleDialogItemOpenChange}
-            itemName="Add workspace"
-          /> */}
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            onClick={() => {
+              router.push("/create-organization")
+            }}
+          >
+            Add Organization
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </>

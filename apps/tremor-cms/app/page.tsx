@@ -5,6 +5,10 @@ import { RiAddLine } from "@remixicon/react"
 import Link from "next/link"
 import OrganizationsSelector from "./OrganizationsSelector.client"
 import UserButton from "./UserButton"
+import Image from "next/image"
+import logo from "@/public/logo.png"
+
+//----------------------------------------------------------------------
 
 const organizations = [
   {
@@ -45,7 +49,13 @@ const OrganizationSelectPage = () => {
       </div>
       <div className="w-full max-w-md">
         <div className="mb-6 flex justify-center">
-          <h1>App Name</h1>
+          <Image
+            src={logo}
+            alt="logo"
+            width={50}
+            height={50}
+            className="transition-all duration-200 dark:invert"
+          />
         </div>
 
         <Card className="shadow-md">
@@ -58,7 +68,7 @@ const OrganizationSelectPage = () => {
 
             <Divider className="my-4">or</Divider>
 
-            <Link href="/org_id/overview">
+            <Link href="/create-organization">
               <Button
                 variant="secondary"
                 className="flex w-full items-center justify-center gap-2"
