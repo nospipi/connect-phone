@@ -8,6 +8,5 @@
     "rootDir": "./"
   },
   "include": ["src"],
-  "exclude": ["dist", "build", "node_modules"],
-  "skipLibCheck": true
+  "exclude": ["dist", "build", "node_modules"]
 }

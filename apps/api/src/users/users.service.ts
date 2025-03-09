@@ -29,9 +29,6 @@ export class UsersService {
 
   async findAll(): Promise<any> {
     const allUsers = await getAllUsers();
-
-    console.log('allUsers', allUsers);
-
     return allUsers;
   }
   findOne(id: number) {
