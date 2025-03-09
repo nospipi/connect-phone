@@ -7,9 +7,11 @@ import { ClerkClientProvider } from 'src/providers/clerk-client.provider';
 import { AuthModule } from 'src/auth/auth.module';
 import { ClerkAuthGuard } from './auth/clerk-auth.guard';
 import { APP_GUARD } from '@nestjs/core';
+import { DbModule } from './db.module';
 
 @Module({
   imports: [
+    DbModule,
     UsersModule,
     ConfigModule.forRoot({
       isGlobal: true,

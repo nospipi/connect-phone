@@ -1,8 +1,7 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, Inject, BadRequestException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { getUsers, User } from 'database';
-import { getAllUsers } from 'db/dist/index.js';
+import { User } from '../db.module';
 
 //https://docs.nestjs.com/exception-filters#exception-filters-1
 //https://docs.nestjs.com/pipes
@@ -10,8 +9,16 @@ import { getAllUsers } from 'db/dist/index.js';
 //https://www.youtube.com/watch?v=i-howKMrtCM --> AUTHENTICATION
 //https://www.youtube.com/watch?v=DG0uZ0E8DBs --> API DOCUMENTATION SWAGGER PLUGIN
 
+interface DbQueries {
+  getAllUsers(): Promise<User[]>;
+  getUserByEmail(email: string): Promise<User | null>;
+  // Other methods...
+}
+
 @Injectable()
 export class UsersService {
+  constructor(@Inject('DB') private readonly db: DbQueries) {}
+
   async create(createUserDto: CreateUserDto) {
     try {
       console.log('createUserDto', createUserDto);
@@ -27,9 +34,9 @@ export class UsersService {
     }
   }
 
-  async findAll(): Promise<any> {
-    const allUsers = await getAllUsers();
-    return allUsers;
+  async findAll(): Promise<User[]> {
+    const users: User[] = await this.db.getAllUsers();
+    return users;
   }
   findOne(id: number) {
     return `This action returns a #${id} user`;

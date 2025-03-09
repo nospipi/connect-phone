@@ -111,8 +111,8 @@
 
 // repositories/users.ts
 import { desc, eq, sql, and } from "drizzle-orm";
-import { users, usersInOrganizations, User, Organization } from "../../schema";
-import { db } from "../../index";
+import { users, usersInOrganizations, User, Organization } from "../schema";
+import { db } from "../index";
 
 /**
  * Get all users
