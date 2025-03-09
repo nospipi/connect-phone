@@ -118,14 +118,14 @@ import { db } from "../../index";
  * Get all users
  */
 export const getAllUsers = async (): Promise<User[]> => {
-  return db.query.users.findMany();
+  return await db.query.users.findMany();
 };
 
 /**
  * Get a user by email
  */
 export const getUserByEmail = async (email: string) => {
-  return db.query.users.findFirst({
+  return await db.query.users.findFirst({
     where: eq(users.email, email),
   });
 };

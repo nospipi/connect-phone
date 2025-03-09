@@ -23,7 +23,7 @@
       "dependsOn": ["tremor-cms#clean", "db#generate"]
     },
     "api#dev": {
-      "dependsOn": ["db#generate"]
+      "dependsOn": ["db#build", "db#generate"]
     }
   },
   "globalEnv": ["DATABASE_URL", "DIRECT_URL"]

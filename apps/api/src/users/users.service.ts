@@ -2,6 +2,7 @@ import { Injectable, BadRequestException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { getUsers, User } from 'database';
+import { getAllUsers } from 'db/dist/index.js';
 
 //https://docs.nestjs.com/exception-filters#exception-filters-1
 //https://docs.nestjs.com/pipes
@@ -26,8 +27,12 @@ export class UsersService {
     }
   }
 
-  async findAll(): Promise<User[]> {
-    return await getUsers();
+  async findAll(): Promise<any> {
+    const allUsers = await getAllUsers();
+
+    console.log('allUsers', allUsers);
+
+    return allUsers;
   }
   findOne(id: number) {
     return `This action returns a #${id} user`;

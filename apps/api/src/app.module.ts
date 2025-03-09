@@ -19,11 +19,11 @@ import { APP_GUARD } from '@nestjs/core';
   controllers: [AppController],
   providers: [
     AppService,
-    ClerkClientProvider,
-    {
-      provide: APP_GUARD,
-      useClass: ClerkAuthGuard,
-    },
+    // ClerkClientProvider,
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: ClerkAuthGuard,
+    // },
   ],
 })
 export class AppModule {}
