@@ -3,7 +3,7 @@ import logo from "@/public/logo.png"
 import PulsingRingProvider from "./PulsingRingProvider.client"
 import { currentUser } from "@clerk/nextjs/server"
 import { UserButton } from "@clerk/nextjs"
-import { getUserByEmail, getUsers } from "database"
+import { getAllUsers } from "db"
 
 //----------------------------------------------------------------------
 
@@ -17,12 +17,19 @@ const Page = async () => {
 
   //   console.log(userFromDB)
 
-  const users = await getUsers()
+  //const users = await getUsers()
+  //console.log(users)
+
+  // const users = await db.user.findMany({
+  //   orderBy: { id: "desc" },
+  // })
+
+  const users = await getAllUsers()
   console.log(users)
 
   return (
     <div className="flex h-screen flex-col items-center justify-center gap-10">
-      <PulsingRingProvider color="indigo" ringCount={3} size={2} speed={3}>
+      <PulsingRingProvider color="blue" ringCount={3} size={2} speed={3}>
         <Image
           src={logo}
           alt="logo"
@@ -31,9 +38,18 @@ const Page = async () => {
           className="transition-all duration-200 dark:invert"
         />
       </PulsingRingProvider>
-      <div className="flex items-center gap-3">
+      <div className="flex flex-col items-center gap-3">
         <UserButton />
-        <span className="text-xs">{fullName}</span>
+        <span className="text-xs">{primaryEmail}</span>
+        {users.map((user) => (
+          <div
+            key={user.id}
+            className="bottom-1 flex min-w-full flex-col gap-2 border-b-2 border-dashed border-b-slate-600 border-opacity-50 pb-2"
+          >
+            <span>{user.email}</span>
+            <span>{user.fullName}</span>
+          </div>
+        ))}
       </div>
     </div>
   )

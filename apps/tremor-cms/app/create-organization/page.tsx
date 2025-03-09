@@ -1,7 +1,8 @@
-import LogoUpload from "./LogoUpload.client"
+import LogoUpload from "./[organization_id]/add-logo/LogoUpload.client"
 import Link from "next/link"
 import FormAnimationProvider from "./FormAnimationProvider.client"
 import BackButton from "../BackButton"
+import { db } from "db"
 
 //--------------------------------------------
 
@@ -22,8 +23,8 @@ export default function CreateOrganizationPage() {
 
                 <form>
                   <div className="grid grid-cols-1 gap-y-8">
-                    <LogoUpload />
-                    <div className="my-2 border-t border-gray-200 dark:border-gray-700"></div>
+                    {/* <LogoUpload /> */}
+                    {/* <div className="my-2 border-t border-gray-200 dark:border-gray-700"></div> */}
 
                     <div>
                       <label
@@ -72,7 +73,7 @@ export default function CreateOrganizationPage() {
                     </div>
 
                     <div className="mt-8">
-                      <Link href="/setup-organization">
+                      <Link href="/create-organization/165465/add-logo">
                         <button
                           //type="submit"
                           className="w-full rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"

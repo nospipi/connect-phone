@@ -20,10 +20,10 @@
       "dependsOn": ["mui-cms#clean", "database#build", "database#generate"]
     },
     "tremor-cms#dev": {
-      "dependsOn": ["tremor-cms#clean", "database#build", "database#generate"]
+      "dependsOn": ["tremor-cms#clean", "db#generate"]
     },
     "api#dev": {
-      "dependsOn": ["database#build", "database#generate"]
+      "dependsOn": ["db#generate"]
     }
   },
   "globalEnv": ["DATABASE_URL", "DIRECT_URL"]
