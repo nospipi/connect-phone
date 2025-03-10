@@ -1,6 +1,6 @@
 import { Module, Global } from '@nestjs/common';
 import * as db from 'db/dist/queries/index.js';
-export { User, Organization } from 'db/dist';
+export * from 'db/dist';
 
 // Provider definition
 const DB_PROVIDER = {

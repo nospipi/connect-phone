@@ -14,13 +14,7 @@
       "dependsOn": ["^check-types"]
     },
     "cms#dev": {
-      "dependsOn": ["cms#clean", "database#build"]
-    },
-    "mui-cms#dev": {
-      "dependsOn": ["mui-cms#clean", "database#build", "database#generate"]
-    },
-    "tremor-cms#dev": {
-      "dependsOn": ["tremor-cms#clean", "db#generate"]
+      "dependsOn": ["cms#clean", "db#generate"]
     },
     "api#dev": {
       "dependsOn": ["db#build", "db#generate"]

@@ -3,9 +3,9 @@ import { Request } from 'express';
 
 //--------------------------------------------
 
-export const CurrentUser = createParamDecorator(
+export const CurrentUserEmail = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest<Request>();
-    return request.user;
+    return request?.user?.primaryEmailAddress?.emailAddress || null;
   }
 );

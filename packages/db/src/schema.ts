@@ -14,7 +14,7 @@ import { relations, SQL, sql } from "drizzle-orm";
 //---------------------------------------------------------------------------------------------
 
 //ORGANIZATIONS
-export const organizations = pgTable("organization", {
+export const organizations = pgTable("organizations", {
   id: integer().primaryKey(),
   uuid: uuid().notNull().unique(),
   createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
@@ -32,10 +32,11 @@ export const organizationsRelations = relations(organizations, ({ many }) => ({
 
 //USERS
 export const roleEnum = pgEnum("role_type", [
-  "ADMIN",
-  "MODERATOR",
-  "VIEWER",
-  "CLIENT",
+  "SYS_ADMIN",
+  "ORG_ADMIN",
+  "ORG_MODERATOR",
+  "ORG_VIEWER",
+  "ORG_CLIENT",
 ]);
 
 export const users = pgTable("users", {

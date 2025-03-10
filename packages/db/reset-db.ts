@@ -1,4 +1,4 @@
-import { db } from "./index";
+import { db } from "./src/index";
 
 async function resetDatabase() {
   console.log("Starting complete database reset...");
@@ -13,7 +13,7 @@ async function resetDatabase() {
       await tx.execute(`
         DROP TABLE IF EXISTS "usersInOrganizations" CASCADE;
         DROP TABLE IF EXISTS "users" CASCADE;
-        DROP TABLE IF EXISTS "organization" CASCADE;
+        DROP TABLE IF EXISTS "organizations" CASCADE;
         
         -- Drop any enum types
         DROP TYPE IF EXISTS role_type CASCADE;

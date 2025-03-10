@@ -10,6 +10,7 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { RequiresOrganization } from '../decorators/requires-organization.decorator';
 
 @Controller('users')
 export class UsersController {
@@ -21,6 +22,7 @@ export class UsersController {
   }
 
   @Get()
+  @RequiresOrganization()
   findAll() {
     console.log('http://localhost:3000/users');
     return this.usersService.findAll();

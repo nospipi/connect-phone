@@ -1,11 +1,11 @@
 {
-  "id": "25fb1dd7-3b48-463d-a2e4-1f8049efccf6",
+  "id": "4e9e29f6-ab39-430f-b5fb-abeee0d4dfec",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.organization": {
-      "name": "organization",
+    "public.organizations": {
+      "name": "organizations",
       "schema": "",
       "columns": {
         "id": {
@@ -50,15 +50,15 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "organization_uuid_unique": {
-          "name": "organization_uuid_unique",
+        "organizations_uuid_unique": {
+          "name": "organizations_uuid_unique",
           "nullsNotDistinct": false,
           "columns": [
             "uuid"
           ]
         },
-        "organization_slug_unique": {
-          "name": "organization_slug_unique",
+        "organizations_slug_unique": {
+          "name": "organizations_slug_unique",
           "nullsNotDistinct": false,
           "columns": [
             "slug"
@@ -129,10 +129,10 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "users_loggedToOrganizationId_organization_id_fk": {
-          "name": "users_loggedToOrganizationId_organization_id_fk",
+        "users_loggedToOrganizationId_organizations_id_fk": {
+          "name": "users_loggedToOrganizationId_organizations_id_fk",
           "tableFrom": "users",
-          "tableTo": "organization",
+          "tableTo": "organizations",
           "columnsFrom": [
             "loggedToOrganizationId"
           ],
@@ -223,10 +223,10 @@
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "usersInOrganizations_organizationId_organization_id_fk": {
-          "name": "usersInOrganizations_organizationId_organization_id_fk",
+        "usersInOrganizations_organizationId_organizations_id_fk": {
+          "name": "usersInOrganizations_organizationId_organizations_id_fk",
           "tableFrom": "usersInOrganizations",
-          "tableTo": "organization",
+          "tableTo": "organizations",
           "columnsFrom": [
             "organizationId"
           ],
@@ -249,10 +249,11 @@
       "name": "role_type",
       "schema": "public",
       "values": [
-        "ADMIN",
-        "MODERATOR",
-        "VIEWER",
-        "CLIENT"
+        "SYS_ADMIN",
+        "ORG_ADMIN",
+        "ORG_MODERATOR",
+        "ORG_VIEWER",
+        "ORG_CLIENT"
       ]
     }
   },

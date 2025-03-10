@@ -1,5 +1,5 @@
 import { seed, reset } from "drizzle-seed";
-import { db, users, organizations, usersInOrganizations } from "./index";
+import { db, users, organizations, usersInOrganizations } from "./src/index";
 
 const main = async () => {
   try {

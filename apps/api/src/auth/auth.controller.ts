@@ -6,7 +6,10 @@ import { CurrentUser } from 'src/decorators/current-user.decorator';
 export class AuthController {
   @Get('me')
   async getProfile(@CurrentUser() user: User) {
-    console.log('GET /auth/me endpoint called by user:', user.id);
+    console.log(
+      'GET /auth/me endpoint called by user:',
+      user?.primaryEmailAddress?.emailAddress
+    );
     return user;
   }
 }

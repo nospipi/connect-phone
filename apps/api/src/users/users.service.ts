@@ -1,6 +1,7 @@
 import { Injectable, Inject, BadRequestException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { RequestContextService } from '../core/request-context.service';
 import { User } from '../db.module';
 
 //https://docs.nestjs.com/exception-filters#exception-filters-1
@@ -17,15 +18,15 @@ interface DbQueries {
 
 @Injectable()
 export class UsersService {
-  constructor(@Inject('DB') private readonly db: DbQueries) {}
+  constructor(
+    @Inject('DB') private readonly db: DbQueries,
+    private readonly requestContext: RequestContextService
+  ) {}
 
   async create(createUserDto: CreateUserDto) {
     try {
       console.log('createUserDto', createUserDto);
       // const createdUser: User = await createUser(createUserDto);
-
-      // return createdUser;
-      //return a new promise that simple resolves to string "User created"
       return Promise.resolve('User created');
     } catch (error: unknown) {
       console.log('createUserDto', createUserDto, error);
@@ -35,6 +36,9 @@ export class UsersService {
   }
 
   async findAll(): Promise<User[]> {
+    const currentUserEmail = this.requestContext.getEmail();
+    console.log('Current user email from users service:', currentUserEmail);
+
     const users: User[] = await this.db.getAllUsers();
     return users;
   }
