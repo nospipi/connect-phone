@@ -1,7 +1,7 @@
 CREATE TYPE "public"."role_type" AS ENUM('SYS_ADMIN', 'ORG_ADMIN', 'ORG_MODERATOR', 'ORG_VIEWER', 'ORG_CLIENT');--> statement-breakpoint
 CREATE TABLE "organizations" (
-	"id" integer PRIMARY KEY NOT NULL,
-	"uuid" uuid NOT NULL,
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "organizations_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 285500 CACHE 1),
+	"uuid" uuid DEFAULT gen_random_uuid() NOT NULL,
 	"createdAt" timestamp with time zone DEFAULT now() NOT NULL,
 	"name" text NOT NULL,
 	"slug" varchar(255) NOT NULL,
@@ -11,8 +11,8 @@ CREATE TABLE "organizations" (
 );
 --> statement-breakpoint
 CREATE TABLE "users" (
-	"id" integer PRIMARY KEY NOT NULL,
-	"uuid" uuid NOT NULL,
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "users_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 675500 CACHE 1),
+	"uuid" uuid DEFAULT gen_random_uuid() NOT NULL,
 	"createdAt" timestamp with time zone DEFAULT now() NOT NULL,
 	"email" varchar(255) NOT NULL,
 	"firstName" varchar(255) NOT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE "users" (
 );
 --> statement-breakpoint
 CREATE TABLE "usersInOrganizations" (
-	"id" integer PRIMARY KEY NOT NULL,
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "usersInOrganizations_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 100000 CACHE 1),
 	"userId" integer NOT NULL,
 	"organizationId" integer NOT NULL,
 	"role" "role_type" NOT NULL

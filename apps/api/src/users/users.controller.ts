@@ -8,7 +8,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserDto, BlankUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { RequiresOrganization } from '../decorators/requires-organization.decorator';
 
@@ -21,10 +21,14 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
+  @Post('create_blank')
+  createBlankUser(@Body() createBlankUserDto: BlankUserDto) {
+    return this.usersService.createBlankUser(createBlankUserDto);
+  }
+
   @Get()
   @RequiresOrganization()
   findAll() {
-    console.log('http://localhost:3000/users');
     return this.usersService.findAll();
   }
 

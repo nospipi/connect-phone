@@ -8,6 +8,7 @@ import {
   //index,
   varchar,
   uuid,
+  smallserial,
 } from "drizzle-orm/pg-core";
 import { relations, SQL, sql } from "drizzle-orm";
 
@@ -15,8 +16,8 @@ import { relations, SQL, sql } from "drizzle-orm";
 
 //ORGANIZATIONS
 export const organizations = pgTable("organizations", {
-  id: integer().primaryKey(),
-  uuid: uuid().notNull().unique(),
+  id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 285500 }),
+  uuid: uuid().defaultRandom().notNull().unique(),
   createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
   name: text().notNull(),
   slug: varchar({ length: 255 }).notNull().unique(),
@@ -40,8 +41,8 @@ export const roleEnum = pgEnum("role_type", [
 ]);
 
 export const users = pgTable("users", {
-  id: integer().primaryKey(),
-  uuid: uuid().notNull().unique(),
+  id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 675500 }),
+  uuid: uuid().defaultRandom().notNull().unique(),
   createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
   email: varchar({ length: 255 }).notNull().unique(),
   firstName: varchar({ length: 255 }).notNull().unique(),
@@ -65,7 +66,7 @@ export const usersRelations = relations(users, ({ one, many }) => ({
 }));
 
 export const usersInOrganizations = pgTable("usersInOrganizations", {
-  id: integer().primaryKey(),
+  id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 100000 }),
   userId: integer()
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),

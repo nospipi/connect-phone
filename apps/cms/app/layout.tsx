@@ -4,6 +4,7 @@ import { Inter } from "next/font/google"
 import { siteConfig } from "./siteConfig"
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs"
 import { dark } from "@clerk/themes"
+import { ToastContainer } from "react-toastify"
 import "./globals.css"
 
 const inter = Inter({
@@ -37,6 +38,8 @@ export const metadata: Metadata = {
   },
 }
 
+//---------------------------------------------------------------------------
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -61,6 +64,7 @@ export default function RootLayout({
             <SignedIn>{children}</SignedIn>
             <SignedOut>{children}</SignedOut>
           </ThemeProvider>
+          <ToastContainer position="bottom-right" limit={1} />
         </body>
       </html>
     </ClerkProvider>

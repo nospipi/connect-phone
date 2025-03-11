@@ -1,8 +1,14 @@
-import { Injectable, Inject, BadRequestException } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
+import {
+  Injectable,
+  Inject,
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
+import { CreateUserDto, BlankUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { RequestContextService } from '../core/request-context.service';
-import { User } from '../db.module';
+import { User, createBlankUser } from '../db.module';
 
 //https://docs.nestjs.com/exception-filters#exception-filters-1
 //https://docs.nestjs.com/pipes
@@ -13,7 +19,7 @@ import { User } from '../db.module';
 interface DbQueries {
   getAllUsers(): Promise<User[]>;
   getUserByEmail(email: string): Promise<User | null>;
-  // Other methods...
+  createBlankUser(createBlankUserDto: BlankUserDto): Promise<User>;
 }
 
 @Injectable()
@@ -22,6 +28,23 @@ export class UsersService {
     @Inject('DB') private readonly db: DbQueries,
     private readonly requestContext: RequestContextService
   ) {}
+
+  async createBlankUser(createBlankUserDto: BlankUserDto) {
+    try {
+      console.log('Creating blank user:', createBlankUserDto);
+      const newBlankUser = await this.db.createBlankUser(createBlankUserDto);
+      console.log('New organization:', newBlankUser);
+      return newBlankUser;
+    } catch (error: unknown) {
+      let errorMessage = 'An error occurred while creating the user';
+      if (error && typeof error === 'object' && 'detail' in error) {
+        errorMessage = error.detail as string;
+      } else if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+      throw new HttpException(errorMessage, HttpStatus.BAD_REQUEST);
+    }
+  }
 
   async create(createUserDto: CreateUserDto) {
     try {

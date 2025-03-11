@@ -1,13 +1,11 @@
-import Link from "next/link"
 import FormAnimationProvider from "./FormAnimationProvider.client"
-import BackButton from "../BackButton"
+import { createOrganization } from "../server_actions"
 
 //--------------------------------------------
 
-export default function CreateOrganizationPage() {
+const Page = async () => {
   return (
     <div className="h-screen w-full bg-gray-50 p-8 dark:bg-gray-900">
-      <BackButton />
       <div className="mx-auto flex h-full w-full items-center justify-center">
         <FormAnimationProvider>
           <div className="w-full min-w-[320px] max-w-xl">
@@ -19,7 +17,7 @@ export default function CreateOrganizationPage() {
                   </h1>
                 </div>
 
-                <form>
+                <form action={createOrganization}>
                   <div className="grid grid-cols-1 gap-y-8">
                     <div>
                       <label
@@ -68,14 +66,13 @@ export default function CreateOrganizationPage() {
                     </div>
 
                     <div className="mt-8">
-                      <Link href="/create-organization/165465/add-logo">
-                        <button
-                          //type="submit"
-                          className="w-full rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
-                        >
-                          Create Organization
-                        </button>
-                      </Link>
+                      {/* <Link href="/create-organization/1/add-logo"></Link> */}
+                      <button
+                        type="submit"
+                        className="w-full rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+                      >
+                        Create Organization
+                      </button>
                       <p className="mt-3 text-center text-xs text-gray-500">
                         By creating an organization, you agree to our Terms of
                         Service and Privacy Policy
@@ -91,3 +88,5 @@ export default function CreateOrganizationPage() {
     </div>
   )
 }
+
+export default Page

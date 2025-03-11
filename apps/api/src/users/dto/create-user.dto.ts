@@ -18,7 +18,28 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsString()
   @Length(3, 50)
-  name: string;
+  firstName: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @Length(3, 50)
+  lastName: string;
+
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
+}
+
+export class BlankUserDto {
+  @IsNotEmpty()
+  @IsString()
+  @Length(3, 50)
+  firstName: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @Length(3, 50)
+  lastName: string;
 
   @IsNotEmpty()
   @IsEmail()

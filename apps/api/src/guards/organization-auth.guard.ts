@@ -67,7 +67,12 @@ export class OrganizationAuthGuard implements CanActivate {
       organizationId
     );
 
-    console.log('Is user in organization:', isUserInOrganization);
+    console.log(
+      'Is user in organization:',
+      isUserInOrganization,
+      userFromDb?.id,
+      organizationId
+    );
 
     if (!isUserInOrganization) {
       throw new UnauthorizedException(

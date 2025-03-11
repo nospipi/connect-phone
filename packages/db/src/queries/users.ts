@@ -2,25 +2,40 @@ import { desc, eq, sql, and } from "drizzle-orm";
 import { users, usersInOrganizations, User, Organization } from "../schema";
 import { db } from "../index";
 
-/**
- * Get all users
- */
+//----------------------------------------------------------------------
+
+export const createUser = async (userDto: User): Promise<User | null> => {
+  const user = await db
+    .insert(users)
+    .values(userDto)
+    .returning()
+    .then((res) => res[0] ?? null);
+
+  return user;
+};
+
+export const createBlankUser = async (
+  blankUserDto: User
+): Promise<User | null> => {
+  const user = await db
+    .insert(users)
+    .values(blankUserDto)
+    .returning()
+    .then((res) => res[0] ?? null);
+
+  return user;
+};
+
 export const getAllUsers = async (): Promise<User[]> => {
   return await db.query.users.findMany();
 };
 
-/**
- * Get a user by email
- */
 export const getUserByEmail = async (email: string) => {
   return await db.query.users.findFirst({
     where: eq(users.email, email),
   });
 };
 
-/**
- * Check if a user belongs to an organization
- */
 export const isUserInOrganization = async (
   userId: number,
   organizationId: number
@@ -35,9 +50,6 @@ export const isUserInOrganization = async (
   return membership !== undefined;
 };
 
-/**
- * Check if a user with a specific email belongs to an organization
- */
 export const isUserWithEmailInOrganization = async (
   email: string,
   organizationId: number
@@ -54,9 +66,6 @@ export const isUserWithEmailInOrganization = async (
   return user !== undefined && user.organizations.length > 0;
 };
 
-/**
- * Check if a user is an admin in an organization
- */
 export const isUserAdminInOrganization = async (
   userId: number,
   organizationId: number
@@ -72,9 +81,6 @@ export const isUserAdminInOrganization = async (
   return membership !== undefined;
 };
 
-/**
- * Check if a user with a specific email is an admin in an organization
- */
 export const isUserWithEmailAdminInOrganization = async (
   email: string,
   organizationId: number
@@ -94,9 +100,6 @@ export const isUserWithEmailAdminInOrganization = async (
   return user !== undefined && user.organizations.length > 0;
 };
 
-/**
- * Get all organizations a user belongs to with their roles
- */
 export const getUserOrganizations = async (userId: number) => {
   const user = await db.query.users.findFirst({
     where: eq(users.id, userId),
