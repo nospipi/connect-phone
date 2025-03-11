@@ -13,23 +13,25 @@ const Page = async () => {
           TESTS
         </h5>
 
+        {Boolean(loggedUserInDb) ? (
+          <p className="pl-1 text-xs text-green-800 dark:text-green-500">
+            User already has an account
+          </p>
+        ) : (
+          <p className="pl-1 text-xs text-red-800 dark:text-red-500">
+            User does not have an account
+          </p>
+        )}
+
         <form action={createBlankUser} className="flex flex-col gap-1">
           <button
-            disabled={!Boolean(loggedUserInDb)}
+            disabled={Boolean(loggedUserInDb)}
             type="submit"
             className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
             Create MERCHANT account
           </button>
-          {Boolean(loggedUserInDb) ? (
-            <p className="pl-1 text-xs text-green-800 dark:text-green-500">
-              User exists in database
-            </p>
-          ) : (
-            <p className="pl-1 text-xs text-red-800 dark:text-red-500">
-              This user is not in the database
-            </p>
-          )}
+
           <p className="pl-1 text-xs text-gray-600 dark:text-gray-400">
             Creates a professional MERCHANT account for this user
           </p>
