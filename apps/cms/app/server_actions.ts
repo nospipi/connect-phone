@@ -107,3 +107,17 @@ export const createBlankUser = async (): Promise<void> => {
   // redirect returns error by default, so cant be used in the try block
   redirect(`/create-organization`)
 }
+
+export const isLoggedUserInDb = async (): Promise<void> => {
+  try {
+    const api = createApiClient()
+    const Dbuser = await api.get(`/users/logged_user_in_db`)
+    return Dbuser.data
+  } catch (error: unknown) {
+    const messageFallback = (error as Error).message ?? "An error occurred"
+    const errorMessage =
+      (error as AxiosError<ErrorResponse>).response?.data.message ??
+      messageFallback
+    throw new Error(errorMessage)
+  }
+}

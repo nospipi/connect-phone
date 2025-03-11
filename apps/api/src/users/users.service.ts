@@ -58,6 +58,12 @@ export class UsersService {
     }
   }
 
+  async isLoggedUserInDb(): Promise<User | null> {
+    const currentUserEmail = this.requestContext.getEmail();
+    const user = await this.db.getUserByEmail(currentUserEmail || '');
+    return user;
+  }
+
   async findAll(): Promise<User[]> {
     const currentUserEmail = this.requestContext.getEmail();
     console.log('Current user email from users service:', currentUserEmail);

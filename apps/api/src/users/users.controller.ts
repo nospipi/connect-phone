@@ -26,6 +26,11 @@ export class UsersController {
     return this.usersService.createBlankUser(createBlankUserDto);
   }
 
+  @Get('logged_user_in_db')
+  isLoggedUserInDb() {
+    return this.usersService.isLoggedUserInDb();
+  }
+
   @Get()
   @RequiresOrganization()
   findAll() {
