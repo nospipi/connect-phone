@@ -11,7 +11,6 @@ import {
 import { Button } from "@/components/Button"
 import { RiArrowRightSLine } from "@remixicon/react"
 import { cx } from "@/lib/utils"
-import Link from "next/link"
 import { useRouter } from "next/navigation"
 
 //-----------------------------------------------------------------------------

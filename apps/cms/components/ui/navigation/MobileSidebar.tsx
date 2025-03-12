@@ -12,11 +12,7 @@ import {
 } from "@/components/Drawer"
 import { cx, focusRing } from "@/lib/utils"
 import {
-  RiHome2Line,
-  RiLinkM,
-  RiListCheck,
   RiMenuLine,
-  RiSettings5Line,
   RiCoupon2Line,
   RiLineChartLine,
   RiSimCardLine,
