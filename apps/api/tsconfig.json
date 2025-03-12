@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "nodenext",
+    "module": "commonjs",
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
@@ -16,9 +16,6 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
-    "noFallthroughCasesInSwitch": false,
-    "allowJs": true,
-    "typeRoots": ["./node_modules/@types"]
-  },
-  "include": ["src/**/*", "**/*.spec.ts", "**/*.test.ts"]
+    "noFallthroughCasesInSwitch": false
+  }
 }

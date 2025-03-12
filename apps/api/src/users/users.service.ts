@@ -58,10 +58,16 @@ export class UsersService {
     }
   }
 
-  async isLoggedUserInDb(): Promise<User | null> {
+  async isLoggedUserInDb(): Promise<boolean | null> {
     const currentUserEmail = this.requestContext.getEmail();
     const user = await this.db.getUserByEmail(currentUserEmail || '');
-    return user;
+    return user ? true : null;
+  }
+
+  async getLoggedUserFromDb(): Promise<User | null> {
+    const currentUserEmail = this.requestContext.getEmail();
+    const user = await this.db.getUserByEmail(currentUserEmail || '');
+    return user || null;
   }
 
   async findAll(): Promise<User[]> {

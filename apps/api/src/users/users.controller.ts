@@ -26,9 +26,20 @@ export class UsersController {
     return this.usersService.createBlankUser(createBlankUserDto);
   }
 
-  @Get('logged_user_in_db')
+  @Get('logged_user_is_in_db')
   isLoggedUserInDb() {
     return this.usersService.isLoggedUserInDb();
+  }
+
+  @Get('logged_user_in_db')
+  getLoggedUserFromDb() {
+    return this.usersService.getLoggedUserFromDb();
+  }
+
+  @Get('test')
+  handleTestRoute(): string {
+    console.log('Test route has been called');
+    return 'Test route has been called';
   }
 
   @Get()

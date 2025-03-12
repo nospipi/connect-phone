@@ -8,7 +8,10 @@ import {
   Delete,
 } from '@nestjs/common';
 import { OrganizationsService } from './organizations.service';
-import { CreateOrganizationDto } from './dto/create-organization.dto';
+import {
+  CreateOrganizationDto,
+  AddUrlDto,
+} from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
 import { RequiresOrganization } from '../decorators/requires-organization.decorator';
 
@@ -21,6 +24,11 @@ export class OrganizationsController {
   @Post()
   create(@Body() createOrganizationDto: CreateOrganizationDto) {
     return this.organizationsService.create(createOrganizationDto);
+  }
+
+  @Post('add_logo_url_to_organization')
+  addLogoUrlToOrganization(@Body() addUrlDto: AddUrlDto) {
+    return this.organizationsService.addLogoUrlToOrganization(addUrlDto);
   }
 
   @Get()

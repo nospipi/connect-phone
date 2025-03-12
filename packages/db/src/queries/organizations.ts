@@ -19,3 +19,22 @@ export const createOrganization = async (
 
   return organization;
 };
+
+export const addLogoUrlToOrganization = async (
+  createOrganizationDto: Organization
+): Promise<Organization | null> => {
+  console.log(
+    "Adding logo URL to organization in db package",
+    createOrganizationDto
+  );
+  const organization = await db
+    .update(organizations)
+    .set({
+      logoUrl: createOrganizationDto.logoUrl,
+    })
+    .where(eq(organizations.id, createOrganizationDto.id))
+    .returning()
+    .then((res) => res[0] ?? null);
+
+  return organization;
+};

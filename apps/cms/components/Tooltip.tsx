@@ -1,5 +1,3 @@
-// Tremor Raw Tooltip [v0.0.1]
-
 "use client"
 
 import * as TooltipPrimitives from "@radix-ui/react-tooltip"
@@ -18,10 +16,12 @@ interface TooltipProps
   side?: "bottom" | "left" | "top" | "right"
   showArrow?: boolean
   triggerAsChild?: boolean
+  disabled?: boolean
+  defaultStyles?: boolean
 }
 
 const Tooltip = React.forwardRef<
-  React.ElementRef<typeof TooltipPrimitives.Content>,
+  React.ComponentRef<typeof TooltipPrimitives.Content>,
   TooltipProps
 >(
   (
@@ -29,8 +29,10 @@ const Tooltip = React.forwardRef<
       children,
       className,
       content,
+      defaultStyles = true,
       delayDuration,
       defaultOpen,
+      disabled = false,
       open,
       onClick,
       onOpenChange,
@@ -42,6 +44,11 @@ const Tooltip = React.forwardRef<
     }: TooltipProps,
     forwardedRef,
   ) => {
+    // If disabled is true, just render the children without the tooltip
+    if (disabled) {
+      return <>{children}</>
+    }
+
     return (
       <TooltipPrimitives.Provider delayDuration={150}>
         <TooltipPrimitives.Root
@@ -60,15 +67,19 @@ const Tooltip = React.forwardRef<
               sideOffset={sideOffset}
               align="center"
               className={cx(
-                // base
-                "max-w-60 select-none rounded-md px-2.5 py-1.5 text-sm leading-5 shadow-md",
-                // text color
-                "text-gray-50 dark:text-gray-900",
-                // background color
-                "bg-gray-900 dark:bg-gray-50",
-                // transition
-                "will-change-[transform,opacity]",
-                "data-[side=bottom]:animate-slideDownAndFade data-[side=left]:animate-slideLeftAndFade data-[side=right]:animate-slideRightAndFade data-[side=top]:animate-slideUpAndFade data-[state=closed]:animate-hide",
+                defaultStyles
+                  ? cx(
+                      // base
+                      "max-w-60 select-none rounded-md px-2.5 py-1.5 text-xs leading-5 shadow-md",
+                      // text color
+                      "text-gray-50 dark:text-gray-300",
+                      // background color
+                      "bg-gray-900 dark:bg-gray-800",
+                      // transition
+                      "will-change-[transform,opacity]",
+                      "data-[side=bottom]:animate-slideDownAndFade data-[side=left]:animate-slideLeftAndFade data-[side=right]:animate-slideRightAndFade data-[side=top]:animate-slideUpAndFade data-[state=closed]:animate-hide",
+                    )
+                  : "",
                 className,
               )}
               {...props}
@@ -76,7 +87,7 @@ const Tooltip = React.forwardRef<
               {content}
               {showArrow ? (
                 <TooltipPrimitives.Arrow
-                  className="border-none fill-gray-900 dark:fill-gray-50"
+                  className="border-none fill-gray-900 dark:fill-gray-800"
                   width={12}
                   height={7}
                   aria-hidden="true"

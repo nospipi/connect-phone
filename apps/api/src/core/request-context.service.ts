@@ -19,4 +19,8 @@ export class RequestContextService {
 
     return user?.primaryEmailAddress?.emailAddress || null;
   }
+
+  getCurrentUser() {
+    return this.request.user || null;
+  }
 }

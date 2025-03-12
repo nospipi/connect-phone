@@ -1,19 +1,29 @@
 import { UserButton } from "@clerk/nextjs"
-import { createBlankUser, isLoggedUserInDb } from "@/app/server_actions"
+import {
+  createBlankUser,
+  isLoggedUserInDb,
+  getAuthToken,
+} from "@/app/server_actions"
+import AuthTokenDisplay from "./AuthTokenDisplay.client"
+import UserDataDisplayClerk from "./UserDataDisplayClerk"
+import UserDataDisplayInternalDb from "./UserDataDisplayInternalDb"
+import { Tooltip } from "@/components/Tooltip"
 
 //----------------------------------------------------------------------
 
 const Page = async () => {
   const loggedUserInDb = await isLoggedUserInDb()
 
+  const authToken = await getAuthToken()
+
   return (
-    <div className="relative flex min-h-screen flex-col items-center justify-center bg-gray-50 p-4 dark:bg-gray-900">
-      <div className="flex max-w-xs flex-col gap-4">
+    <div className="relative flex h-screen min-h-screen flex-col overflow-auto bg-gray-50 p-4 dark:bg-gray-900">
+      <div className="flex max-w-xs flex-1 flex-col gap-4">
         <h5 className="text-md font-semibold text-gray-900 dark:text-white">
           TESTS
         </h5>
 
-        {Boolean(loggedUserInDb) ? (
+        {loggedUserInDb ? (
           <p className="pl-1 text-xs text-green-800 dark:text-green-500">
             User already has an account
           </p>
@@ -24,13 +34,23 @@ const Page = async () => {
         )}
 
         <form action={createBlankUser} className="flex flex-col gap-1">
-          <button
-            disabled={Boolean(loggedUserInDb)}
-            type="submit"
-            className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          <Tooltip
+            content="The user has already an account"
+            triggerAsChild
+            side="right"
+            disabled={!loggedUserInDb}
           >
-            Create MERCHANT account
-          </button>
+            <button
+              className={`rounded bg-blue-600 p-2 text-white hover:bg-blue-700 ${loggedUserInDb ? "cursor-not-allowed opacity-50" : ""}`}
+              disabled={loggedUserInDb}
+              // onClick={async () => {
+              //   // Implement merchant account creation logic
+              // }}
+              type="submit"
+            >
+              Create MERCHANT account
+            </button>
+          </Tooltip>
 
           <p className="pl-1 text-xs text-gray-600 dark:text-gray-400">
             Creates a professional MERCHANT account for this user
@@ -39,7 +59,7 @@ const Page = async () => {
 
         <div className="flex flex-col gap-1">
           <button
-            className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            className={`rounded bg-blue-600 p-2 text-white hover:bg-blue-700 ${loggedUserInDb ? "cursor-not-allowed opacity-50" : ""}`}
             // onClick={() => {
             //   toast.dismiss()
             //   toast.error("Not implemented yet")
@@ -55,7 +75,7 @@ const Page = async () => {
         </div>
         <div className="flex flex-col gap-1">
           <button
-            className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            className={`rounded bg-blue-600 p-2 text-white hover:bg-blue-700 ${loggedUserInDb ? "cursor-not-allowed opacity-50" : ""}`}
             // onClick={() => {
             //   toast.dismiss()
             //   toast.error("Not implemented yet")
@@ -67,8 +87,12 @@ const Page = async () => {
             Creates a CLIENT account for this user
           </p>
         </div>
+        <AuthTokenDisplay token={authToken} />
+        <UserDataDisplayInternalDb />
+        <UserDataDisplayClerk />
       </div>
-      <div className="absolute right-4 top-4">
+
+      <div className="fixed right-4 top-4">
         <UserButton />
       </div>
     </div>
