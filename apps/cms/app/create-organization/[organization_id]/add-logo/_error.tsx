@@ -1,14 +1,3 @@
-// "use client"
-
-// const ErrorPage = () => {
-//   return (
-//     <div>
-//       <h1>Error</h1>
-//     </div>
-//   )
-// }
-// export default ErrorPage
-
 "use client"
 
 import Link from "next/link"
