@@ -33,7 +33,7 @@ export class UsersService {
     try {
       console.log('Creating blank user:', createBlankUserDto);
       const newBlankUser = await this.db.createBlankUser(createBlankUserDto);
-      console.log('New organization:', newBlankUser);
+      console.log('newBlankUser:', newBlankUser);
       return newBlankUser;
     } catch (error: unknown) {
       let errorMessage = 'An error occurred while creating the user';

@@ -30,6 +30,7 @@
     "delete-all-builds": "cd apps/api && node -e require('fs-extra').remove('dist') && cd ../cms && node -e require('fs-extra').remove('.next') && cd ../../packages/database && node -e require('fs-extra').remove('dist')"
   },
   "devDependencies": {
+    "@types/jest": "^29.5.14",
     "@types/lodash": "^4.17.16",
     "install": "^0.13.0",
     "npm": "^11.2.0",
@@ -63,6 +64,7 @@
     "axios": "^1.8.1",
     "date-fns": "^4.1.0",
     "fs-extra": "^11.3.0",
+    "jest": "^29.7.0",
     "lodash": "^4.17.21",
     "lottie-react": "^2.4.1",
     "next": "^15.2.0",
