@@ -2,16 +2,8 @@
 
 import Link from "next/link"
 import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
 
-const ErrorPage = ({
-  error,
-  reset,
-}: {
-  error?: Error | string | unknown
-  reset?: () => void
-}) => {
-  const router = useRouter()
+const ErrorPage = ({ error }: { error?: Error | string | unknown }) => {
   const [countdown, setCountdown] = useState(15)
 
   // Extract error message properly based on type

@@ -1,16 +1,13 @@
 import { headers } from "next/headers"
 import { siteConfig } from "@/app/siteConfig"
 import { cx, focusRing } from "@/lib/utils"
-import OrganizationsSelector from "./OrganizationsSelector"
+//import OrganizationsSelector from "./OrganizationsSelector"
 import {
-  RiHome2Line,
-  RiLinkM,
-  RiListCheck,
-  RiSettings5Line,
+
   RiGroupLine,
   RiFlagLine,
   RiCoupon2Line,
-  RiSimCard2Line,
+
   RiSimCardLine,
   RiLineChartLine,
   RiBuildingLine,
