@@ -14,16 +14,24 @@ function getSubtree(
     return typeof content === "function" ? content(children) : content
 
   const firstChild = React.Children.only(children) as React.ReactElement
+
   return React.cloneElement(firstChild, {
-    children:
-      typeof content === "function"
-        ? content(firstChild.props.children)
-        : content,
+    ...(firstChild.props as React.PropsWithChildren<{}>),
+    ...("children" in (firstChild.props as React.PropsWithChildren<{}>)
+      ? {
+          children:
+            typeof content === "function"
+              ? content(
+                  (firstChild.props as React.PropsWithChildren<{}>).children,
+                )
+              : content,
+        }
+      : {}),
   })
 }
 
 const TabNavigation = React.forwardRef<
-  React.ElementRef<typeof NavigationMenuPrimitives.Root>,
+  React.ComponentRef<typeof NavigationMenuPrimitives.Root>,
   Omit<
     React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitives.Root>,
     "orientation" | "defaultValue" | "dir"
