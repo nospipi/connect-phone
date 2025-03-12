@@ -7,7 +7,6 @@ import Image from "next/image"
 import { upload } from "@vercel/blob/client"
 import { type PutBlobResult } from "@vercel/blob"
 import { useRouter } from "next/navigation"
-import axios from "axios"
 import { addLogoUrlToOrganization } from "@/app/server_actions"
 
 //----------------------------------------------------------------------
