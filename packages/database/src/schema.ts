@@ -1,3 +1,5 @@
+/* eslint-disable prettier/prettier */
+
 import {
   pgTable,
   serial,
@@ -94,48 +96,3 @@ export const usersInOrganizationsRelations = relations(
 
 export type Organization = typeof organizations.$inferSelect;
 export type User = typeof users.$inferSelect;
-
-// export type NewUser = typeof users.$inferInsert;
-// export type UserInOrganization = typeof usersInOrganizations.$inferSelect;
-// export type NewUserInOrganization = typeof usersInOrganizations.$inferInsert;
-
-// // Define the junction table for users in organizations
-// export const usersInOrganizations = pgTable("users_in_organizations", {
-//   id: serial().primaryKey(),
-//   userId: integer()
-//     .notNull()
-//     .references(() => users.id, { onDelete: "cascade" }),
-//   organizationId: integer()
-//     .notNull()
-//     .references(() => organization.id, { onDelete: "cascade" }),
-//   role: roleEnum().notNull(),
-// });
-
-// // Define relations
-// export const usersRelations = relations(users, ({ one, many }) => ({
-//   organizations: many(usersInOrganizations),
-//   loggedToOrganization: one(organization, {
-//     fields: [users.loggedToOrganizationId],
-//     references: [organization.id],
-//   }),
-// }));
-
-// export const usersInOrganizationsRelations = relations(
-//   usersInOrganizations,
-//   ({ one }) => ({
-//     user: one(users, {
-//       fields: [usersInOrganizations.userId],
-//       references: [users.id],
-//     }),
-//     organization: one(organization, {
-//       fields: [usersInOrganizations.organizationId],
-//       references: [organization.id],
-//     }),
-//   }
-// ));
-
-// Define relations
-// export const organizationRelations = relations(organization, ({ many }) => ({
-//   users: many(usersInOrganizations),
-//   loggedInUsers: many(users, { relationName: "loggedToOrganization" }),
-// }));

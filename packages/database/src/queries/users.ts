@@ -1,3 +1,5 @@
+/* eslint-disable prettier/prettier */
+
 import { desc, eq, sql, and } from "drizzle-orm";
 import { users, usersInOrganizations, User, Organization } from "../schema";
 import { db } from "../index";
@@ -27,9 +29,20 @@ export const createBlankUser = async (
 };
 
 export const getAllUsers = async (): Promise<User[]> => {
-  return await db.query.users.findMany();
+  return await db.query.users.findMany({
+    columns: {
+      id: true,
+      uuid: true,
+      createdAt: true,
+      email: true,
+      firstName: true,
+      lastName: true,
+      fullName: true,
+      loggedToOrganizationId: true,
+    },
+    // Don't include any relations
+  });
 };
-
 export const getUserByEmail = async (email: string) => {
   return await db.query.users.findFirst({
     where: eq(users.email, email),

@@ -26,7 +26,9 @@ async function resetDatabase() {
     process.exit(0);
   } catch (error) {
     console.error("Error during database reset:", error);
-    console.error(error.stack);
+    if (error instanceof Error) {
+      console.error(error.stack);
+    }
     process.exit(1);
   }
 }

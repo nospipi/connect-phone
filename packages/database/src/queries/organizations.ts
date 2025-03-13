@@ -1,3 +1,5 @@
+/* eslint-disable prettier/prettier */
+
 import { desc, eq, sql, and } from "drizzle-orm";
 import {
   users,
@@ -30,19 +32,21 @@ export const getOrganizationById = async (
   return organization ?? null;
 };
 
+type OrganizationUpdate = {
+  name?: string;
+  slug?: string;
+  logoUrl?: string | null;
+};
+
 export const addLogoUrlToOrganization = async (
-  createOrganizationDto: Organization,
+  updates: OrganizationUpdate,
   organizationId: number
 ): Promise<Organization | null> => {
-  console.log(
-    "Adding logo URL to organization in db package",
-    createOrganizationDto
-  );
+  console.log("Adding logo URL to organization in db package", updates);
+
   const organization = await db
     .update(organizations)
-    .set({
-      logoUrl: createOrganizationDto.logoUrl,
-    })
+    .set(updates)
     .where(eq(organizations.id, organizationId))
     .returning()
     .then((res) => res[0] ?? null);

@@ -1,0 +1,14 @@
+/* eslint-disable prettier/prettier */
+
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "src/**/*",
+    "reset-db.ts",
+    "seed.ts",
+    "drizzle.config.ts",
+    "*.js",
+    "*.ts"
+  ],
+  "exclude": ["node_modules", "dist"]
+}
