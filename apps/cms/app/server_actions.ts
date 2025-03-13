@@ -1,6 +1,6 @@
 "use server"
 
-import { User } from "db"
+import { Organization, User } from "db"
 import axios, { AxiosInstance, AxiosError } from "axios"
 import { isRedirectError } from "next/dist/client/components/redirect-error"
 import { redirect, permanentRedirect } from "next/navigation"
@@ -164,6 +164,21 @@ export const getCurrentUserFromBackend = async (): Promise<User | null> => {
     return null
   }
 }
+
+export const getCurrentUserOrganization =
+  async (): Promise<Partial<Organization> | null> => {
+    try {
+      const api = createApiClient()
+      const organization = await api.get(`/users/current_user_organization`)
+      return organization.data
+    } catch (error: unknown) {
+      const messageFallback = (error as Error).message ?? "An error occurred"
+      const errorMessage =
+        (error as AxiosError<ErrorResponse>).response?.data.message ??
+        messageFallback
+      throw new Error(errorMessage)
+    }
+  }
 
 export const addLogoUrlToOrganization = async (
   logoUrl: string,

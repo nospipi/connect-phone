@@ -1,7 +1,7 @@
 import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 import {
   CreateOrganizationDto,
-  AddUrlDto,
+  AddOrganizationUrlDto,
 } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
 import { Organization } from '../db.module';
@@ -12,7 +12,10 @@ interface DbQueries {
   createOrganization(
     createOrganizationDto: CreateOrganizationDto
   ): Promise<Organization>;
-  addLogoUrlToOrganization(addUrlDto: AddUrlDto): Promise<boolean>;
+  addLogoUrlToOrganization(
+    addUrlDto: AddOrganizationUrlDto,
+    organizationId: number
+  ): Promise<boolean>;
 }
 
 @Injectable()
@@ -40,11 +43,17 @@ export class OrganizationsService {
     }
   }
 
-  async addLogoUrlToOrganization(addUrlDto: AddUrlDto): Promise<boolean> {
+  async addLogoUrlToOrganization(
+    addUrlDto: AddOrganizationUrlDto,
+    organizationId: number
+  ): Promise<boolean> {
     try {
       console.log('Adding logo URL to organization:', addUrlDto);
 
-      const result = await this.db.addLogoUrlToOrganization(addUrlDto);
+      const result = await this.db.addLogoUrlToOrganization(
+        addUrlDto,
+        organizationId
+      );
       return result ? true : false;
     } catch (error: unknown) {
       let errorMessage = 'An error occurred while adding the logo URL';

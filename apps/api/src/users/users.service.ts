@@ -8,7 +8,7 @@ import {
 import { CreateUserDto, BlankUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { RequestContextService } from '../core/request-context.service';
-import { User, createBlankUser } from '../db.module';
+import { User, Organization } from '../db.module';
 
 //https://docs.nestjs.com/exception-filters#exception-filters-1
 //https://docs.nestjs.com/pipes
@@ -20,6 +20,7 @@ interface DbQueries {
   getAllUsers(): Promise<User[]>;
   getUserByEmail(email: string): Promise<User | null>;
   createBlankUser(createBlankUserDto: BlankUserDto): Promise<User>;
+  getOrganizationById(organizationId: number): Promise<Organization | null>;
 }
 
 @Injectable()
@@ -70,22 +71,28 @@ export class UsersService {
     return user || null;
   }
 
-  async findAll(): Promise<User[]> {
-    const currentUserEmail = this.requestContext.getEmail();
-    console.log('Current user email from users service:', currentUserEmail);
+  async getUserOrganization(
+    organization: Organization | null
+  ): Promise<Organization | null> {
+    const organizationId = organization?.id;
+    const organizationFromDb = await this.db.getOrganizationById(
+      organizationId || 0
+    );
 
-    const users: User[] = await this.db.getAllUsers();
-    return users;
-  }
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
-
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+    return organizationFromDb || null;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
-  }
+  //--------------------------------------------
+
+  // findOne(id: number) {
+  //   return `This action returns a #${id} user`;
+  // }
+
+  // update(id: number, updateUserDto: UpdateUserDto) {
+  //   return `This action updates a #${id} user`;
+  // }
+
+  // remove(id: number) {
+  //   return `This action removes a #${id} user`;
+  // }
 }

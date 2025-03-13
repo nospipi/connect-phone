@@ -10,10 +10,12 @@ import {
 import { OrganizationsService } from './organizations.service';
 import {
   CreateOrganizationDto,
-  AddUrlDto,
+  AddOrganizationUrlDto,
 } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
 import { RequiresOrganization } from '../decorators/requires-organization.decorator';
+import { CurrentUserOrganizationFromClerk } from 'src/decorators/current-user-organization.decorator';
+import { Organization } from '../db.module';
 
 //------------------------------------------------------------------------
 
@@ -27,8 +29,14 @@ export class OrganizationsController {
   }
 
   @Post('add_logo_url_to_organization')
-  addLogoUrlToOrganization(@Body() addUrlDto: AddUrlDto) {
-    return this.organizationsService.addLogoUrlToOrganization(addUrlDto);
+  addLogoUrlToOrganization(
+    @Body() addUrlDto: AddOrganizationUrlDto,
+    @CurrentUserOrganizationFromClerk() organization: Organization | null
+  ) {
+    return this.organizationsService.addLogoUrlToOrganization(
+      addUrlDto,
+      organization?.id || 0
+    );
   }
 
   @Get()

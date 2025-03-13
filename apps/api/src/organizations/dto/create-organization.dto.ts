@@ -20,11 +20,7 @@ export class CreateOrganizationDto {
   slug: string;
 }
 
-export class AddUrlDto {
-  @IsNotEmpty()
-  @IsString()
-  id: string;
-
+export class AddOrganizationUrlDto {
   @IsNotEmpty()
   @IsString()
   @IsUrl()

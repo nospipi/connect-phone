@@ -1,8 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsersService } from './users.service';
 import { BlankUserDto } from './dto/create-user.dto';
 import { RequestContextService } from '../core/request-context.service';
-import { User } from '../db.module';
+import { User, Organization } from '../db.module';
 
 //----------------------------------------------------
 
@@ -305,5 +308,76 @@ describe('UsersService - getLoggedUserFromDb', () => {
     await expect(service.getLoggedUserFromDb()).rejects.toThrow(dbError);
     expect(mockRequestContextService.getEmail).toHaveBeenCalled();
     expect(mockDb.getUserByEmail).toHaveBeenCalledWith(email);
+  });
+});
+
+describe('OrganizationService', () => {
+  let service: UsersService;
+
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        UsersService,
+        {
+          provide: 'DB',
+          useValue: {},
+        },
+        {
+          provide: RequestContextService,
+          useValue: {},
+        },
+      ],
+    }).compile();
+
+    service = module.get<UsersService>(UsersService);
+  });
+
+  it('should be defined', () => {
+    expect(service).toBeDefined();
+  });
+
+  describe('getUserOrganization', () => {
+    it('should fetch organization by ID', async () => {
+      // Arrange
+      const organizationId = 1;
+      const mockOrganization = {
+        id: organizationId,
+        uuid: '123e4567-e89b-12d3-a456-426614174000',
+        createdAt: new Date(),
+        name: 'Test Organization',
+        slug: 'test-organization',
+        logoUrl: 'https://example.com/logo.png',
+      };
+
+      // Create a module with properly mocked dependencies
+      const mockDb = {
+        getOrganizationById: jest.fn().mockResolvedValue(mockOrganization),
+      };
+
+      const module: TestingModule = await Test.createTestingModule({
+        providers: [
+          UsersService,
+          {
+            provide: 'DB',
+            useValue: mockDb,
+          },
+          {
+            provide: RequestContextService,
+            useValue: {},
+          },
+        ],
+      }).compile();
+
+      const service = module.get<UsersService>(UsersService);
+
+      // Act
+      const result = await service.getUserOrganization(mockOrganization);
+
+      // Assert
+      expect(mockDb.getOrganizationById).toHaveBeenCalledWith(
+        organizationId || 0
+      );
+      expect(result).toEqual(mockOrganization);
+    });
   });
 });
