@@ -14,10 +14,10 @@
       "dependsOn": ["^check-types"]
     },
     "cms#dev": {
-      "dependsOn": ["cms#clean", "db#generate"]
+      "dependsOn": []
     },
     "api#dev": {
-      "dependsOn": ["db#build", "db#generate"]
+      "dependsOn": []
     }
   },
   "globalEnv": ["DATABASE_URL", "DIRECT_URL"]
