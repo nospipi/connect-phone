@@ -1,6 +1,5 @@
 {
   "name": "api",
-  "packageManager": "npm@11.2.0",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -10,8 +9,7 @@
     "node": "23.x"
   },
   "scripts": {
-    "heroku-postbuild": "turbo run build --filter=db --filter=api",
-    "build": "turbo run build",
+    "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "dev": "nest start --watch",
@@ -65,7 +63,6 @@
     "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
-    "turbo": "^2.4.4",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.20.0"
   },

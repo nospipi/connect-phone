@@ -2,7 +2,8 @@
   "name": "connect-phone",
   "private": true,
   "scripts": {
-    "build": "turbo build",
+    "heroku-postbuild": "turbo run build --filter=db --filter=api",
+    "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
