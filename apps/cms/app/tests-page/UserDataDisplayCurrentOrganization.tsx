@@ -13,7 +13,7 @@ const UserDataDisplayCurrentOrganization = async () => {
     <div className="flex h-full flex-col rounded-md border border-gray-200 bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-800">
       <div className="flex items-center justify-between">
         <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-          Current Organization
+          Current Organization Internal DB
         </span>
 
         <RevalidateButton />
