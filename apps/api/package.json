@@ -9,6 +9,8 @@
     "node": "23.x"
   },
   "scripts": {
+    "postbuild": "turbo run build --filter=db && turbo run build --filter=api",
+    "heroku-postbuild": "npm run postbuild",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
