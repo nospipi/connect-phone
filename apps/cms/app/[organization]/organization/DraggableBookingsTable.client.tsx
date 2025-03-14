@@ -15,6 +15,7 @@ import { RiDraggable, RiArrowUpDownLine } from "@remixicon/react"
 import { useEffect, useRef, useState } from "react"
 
 // Import Atlaskit drag and drop libraries
+import { autoScrollWindowForElements } from "@atlaskit/pragmatic-drag-and-drop-auto-scroll/element"
 import { triggerPostMoveFlash } from "@atlaskit/pragmatic-drag-and-drop-flourish/trigger-post-move-flash"
 import {
   attachClosestEdge,
@@ -190,9 +191,9 @@ export function DraggableBookingsTable({
     }
   }
 
-  // Set up drop monitoring
+  // Set up drop monitoring and auto-scroll
   useEffect(() => {
-    return monitorForElements({
+    const cleanupMonitor = monitorForElements({
       canMonitor({ source }) {
         return isItemData(source.data) && source.data.instanceId === instanceId
       },
@@ -265,7 +266,19 @@ export function DraggableBookingsTable({
         }
       },
     })
-  }, [bookings, instanceId, onDropFromAnotherGroup])
+
+    // Add auto-scrolling functionality
+    const cleanupAutoScroll = autoScrollWindowForElements({
+      canScroll: true,
+      minScroll: 5,
+      maxScroll: 20,
+    })
+
+    return () => {
+      cleanupMonitor()
+      cleanupAutoScroll()
+    }
+  }, [bookings, instanceId, onDropFromAnotherGroup, reorderItem])
 
   // Handle post-drop actions for visual feedback
   useEffect(() => {
