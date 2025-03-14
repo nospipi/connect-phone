@@ -17,7 +17,6 @@ import { User, Organization } from '../db.module';
 //https://www.youtube.com/watch?v=DG0uZ0E8DBs --> API DOCUMENTATION SWAGGER PLUGIN
 
 interface DbQueries {
-  getAllUsers(): Promise<User[]>;
   getUserByEmail(email: string): Promise<User | null>;
   createBlankUser(createBlankUserDto: BlankUserDto): Promise<User>;
   getOrganizationById(organizationId: number): Promise<Organization | null>;

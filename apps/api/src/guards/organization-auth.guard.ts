@@ -14,7 +14,6 @@ import { REQUIRES_ORGANIZATION_KEY } from '../decorators/requires-organization.d
 //----------------------------------------------------------------------
 
 interface DbQueries {
-  getAllUsers(): Promise<User[]>;
   getUserByEmail(email: string | null | undefined): Promise<User | null>;
   isUserInOrganization(
     userId: number | null | undefined,

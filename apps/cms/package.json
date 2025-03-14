@@ -35,6 +35,7 @@
     "@react-stately/datepicker": "^3.11.0",
     "@remixicon/react": "^4.6.0",
     "@tanstack/react-table": "^8.20.6",
+    "@nospipi/database": "0.0.7",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
     "next": "^15.2.0",

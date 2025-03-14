@@ -10,10 +10,7 @@ const Page = async ({
 }) => {
   // throw new Error("Test error")
   const { organization_id } = await params
-  // console.log("Organization:", organization_id)
 
-  // const users = await getAllUsers(organization_id)
-  // console.log("Users:", users)
 
   return (
     <div className="h-screen w-full bg-gray-50 p-8 dark:bg-gray-900">

@@ -28,21 +28,6 @@ export const createBlankUser = async (
   return user;
 };
 
-export const getAllUsers = async (): Promise<User[]> => {
-  return await db.query.users.findMany({
-    columns: {
-      id: true,
-      uuid: true,
-      createdAt: true,
-      email: true,
-      firstName: true,
-      lastName: true,
-      fullName: true,
-      loggedToOrganizationId: true,
-    },
-    // Don't include any relations
-  });
-};
 export const getUserByEmail = async (email: string) => {
   return await db.query.users.findFirst({
     where: eq(users.email, email),

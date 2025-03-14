@@ -1,6 +1,6 @@
 "use server"
 
-import { Organization, User } from "db"
+import { Organization, User } from "@nospipi/database"
 import axios, { AxiosInstance, AxiosError } from "axios"
 import { isRedirectError } from "next/dist/client/components/redirect-error"
 import { redirect, permanentRedirect } from "next/navigation"
@@ -16,7 +16,7 @@ interface ErrorResponse {
   message: string
 }
 
-const createApiClient = (organizationId?: string): AxiosInstance => {
+const createApiClient = (): AxiosInstance => {
   const api = axios.create({
     baseURL: process.env.BACKEND_URL,
     headers: {
@@ -31,8 +31,6 @@ const createApiClient = (organizationId?: string): AxiosInstance => {
       if (token) {
         config.headers.Authorization = `Bearer ${token}`
       }
-      // Use the provided organizationId to be used in Organization guard in nest backend
-      config.headers.Organization = organizationId
     } catch (error) {
       console.error("Error getting authentication token:", error)
     }
@@ -44,24 +42,6 @@ const createApiClient = (organizationId?: string): AxiosInstance => {
 }
 
 //----------------------------------------------------------------------
-
-export const getAllUsers = async (organizationId: string): Promise<User[]> => {
-  console.log("Getting all users...", organizationId)
-  try {
-    const api = createApiClient(organizationId)
-    // const { getToken } = await auth()
-    // const token = await getToken()
-
-    const response = await api.get("/users")
-    return response.data
-  } catch (error: unknown) {
-    const messageFallback = (error as Error).message ?? "An error occurred"
-    const errorMessage =
-      (error as AxiosError<ErrorResponse>).response?.data.message ??
-      messageFallback
-    throw new Error(errorMessage)
-  }
-}
 
 export const createOrganization = async (formData: FormData): Promise<void> => {
   let organizationId: string = "0" // Default fallback ID
@@ -184,20 +164,8 @@ export const addLogoUrlToOrganization = async (
   logoUrl: string,
 ): Promise<void> => {
   try {
-    const user = await currentUser()
-
-    interface InternalOrgData {
-      id: string
-    }
-
-    const internalOrgData = user?.privateMetadata?.internalOrgData as
-      | InternalOrgData
-      | undefined
-    const organizationId: string = internalOrgData?.id ?? "0"
-
-    const api = createApiClient(organizationId)
+    const api = createApiClient()
     await api.post(`/organizations/add_logo_url_to_organization`, {
-      id: organizationId.toString(),
       logoUrl: logoUrl,
     })
   } catch (error: unknown) {
