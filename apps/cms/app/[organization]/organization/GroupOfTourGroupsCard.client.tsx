@@ -71,7 +71,7 @@ export function GroupOfTourGroupsCard({
       {/* Tour Groups */}
       <div className="divide-y divide-gray-100 dark:divide-gray-800">
         {group.tourGroupData && group.tourGroupData.length > 0 ? (
-          group.tourGroupData.map((tourGroup) => (
+          group.tourGroupData.map((tourGroup, index) => (
             <TourGroupSection
               key={tourGroup.id}
               tourGroup={tourGroup}
@@ -81,6 +81,7 @@ export function GroupOfTourGroupsCard({
               onBookingMove={handleBookingMove}
               groupInstanceId={groupInstanceId}
               groupTourGroups={group.tourGroupData || []}
+              groupNumber={index + 1} // Pass the group number (1-based index)
             />
           ))
         ) : (
