@@ -1,6 +1,9 @@
 # Ignore CMS (Deployed in Vercel)
 /apps/cms
 
+# Ignore base files
+node_modules
+
 # Ignore common development files
 .git
 .github
