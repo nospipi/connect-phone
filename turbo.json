@@ -14,10 +14,13 @@
       "dependsOn": ["^check-types"]
     },
     "cms#dev": {
-      "dependsOn": []
+      "dependsOn": ["cms#clean"]
+    },
+    "api#dev-clean": {
+      "dependsOn": ["clean"]
     },
     "api#dev": {
-      "dependsOn": []
+      "dependsOn": ["install"]
     }
   },
   "globalEnv": ["DATABASE_URL", "DIRECT_URL"]

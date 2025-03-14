@@ -1,6 +1,6 @@
 {
   "name": "api",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "",
   "author": "",
   "private": true,
@@ -9,10 +9,9 @@
     "node": "23.x"
   },
   "scripts": {
-    "heroku-prebuild": "node ./scripts/update-dependencies.js",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "postinstall": "echo \"@nospipi:registry=https://npm.pkg.github.com\" > .npmrc && echo \"//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}\" >> .npmrc",
+    "preinstall_": "echo '@nospipi:registry=https://npm.pkg.github.com' > .npmrc && echo '//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}' >> .npmrc",
     "start": "nest start",
     "dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
@@ -22,7 +21,9 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "clean": "node -e require('fs-extra').remove('node_modules') && node -e require('fs-extra').remove('dist') && npm install",
+    "install": "npm install"
   },
   "dependencies": {
     "@clerk/backend": "^1.24.3",
@@ -32,7 +33,7 @@
     "@nestjs/mapped-types": "^2.1.0",
     "@nestjs/passport": "^11.0.5",
     "@nestjs/platform-express": "^11.0.1",
-    "@nospipi/database": "git+https://${GITHUB_TOKEN}:x-oauth-basic@github.com/nospipi/connect-phone.git#main:packages/database",
+    "@nospipi/database": "0.0.7",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "passport": "^0.7.0",

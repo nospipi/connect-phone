@@ -27,6 +27,7 @@
     "driz-seed": "cd packages/db && tsx seed.ts",
     "db-reset": "cd packages/db && tsx reset-db.ts && npx drizzle-kit drop && npx drizzle-kit generate && npx drizzle-kit migrate && npx drizzle-kit push && npm run build && tsx seed.ts && echo All done!",
     "delete-node-modules": "node -e require('fs-extra').remove('node_modules') && cd apps/cms && node -e require('fs-extra').remove('node_modules') && cd ../api && node -e require('fs-extra').remove('node_modules') && cd ../../packages/database && node -e require('fs-extra').remove('node_modules')",
+    "delete-node-modules-api": "cd apps/api && node -e require('fs-extra').remove('node_modules')",
     "run-local-db": "docker-compose up -d",
     "stop-local-db": "docker-compose down",
     "delete-all-builds": "cd apps/api && node -e require('fs-extra').remove('dist') && cd ../cms && node -e require('fs-extra').remove('.next') && cd ../../packages/database && node -e require('fs-extra').remove('dist')"
