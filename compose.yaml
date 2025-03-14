@@ -1,3 +1,4 @@
+#this creates a local postgres database 
 services:
   dev-db:
     image: postgres:13

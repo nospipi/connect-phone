@@ -22,8 +22,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "clean": "node -e require('fs-extra').remove('node_modules') && node -e require('fs-extra').remove('dist') && npm install",
-    "install": "npm install"
+    "clean": "node -e require('fs-extra').remove('node_modules') && node -e require('fs-extra').remove('dist') && npm install"
   },
   "dependencies": {
     "@clerk/backend": "^1.24.3",

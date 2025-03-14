@@ -2,8 +2,6 @@
   "name": "connect-phone",
   "private": true,
   "scripts": {
-    "publish-packages": "changeset version && changeset publish",
-    "heroku-postbuild": "turbo run build --filter=db --filter=api",
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo lint",

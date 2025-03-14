@@ -20,7 +20,7 @@
       "dependsOn": ["clean"]
     },
     "api#dev": {
-      "dependsOn": ["install"]
+      "dependsOn": []
     }
   },
   "globalEnv": ["DATABASE_URL", "DIRECT_URL"]
