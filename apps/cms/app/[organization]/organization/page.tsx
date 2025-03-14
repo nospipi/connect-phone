@@ -1,115 +1,238 @@
 "use client"
 
-import { useState } from "react"
-import { DraggableBookingsTable } from "./DraggableBookingsTable.client"
-import { Badge } from "@/components/Badge"
-import { RiTicketLine, RiArrowUpDownLine, RiAddLine } from "@remixicon/react"
-import { Button } from "@/components/Button"
+import { useEffect, useState } from "react"
+import { GroupOfTourGroups, Booking } from "./types"
+import {
+  fetchProduct,
+  fetchTourGroups,
+  fetchBookings,
+  updateTourGroupBookings,
+  groupsOfTourGroups as initialGroupsData,
+} from "./mockData"
+import { RiCalendarLine, RiAddLine, RiRefreshLine } from "@remixicon/react"
+import { GroupOfTourGroupsCard } from "./GroupOfTourGroupsCard.client"
 
-// Mock data
-const initialBookings = [
-  {
-    id: "booking-1",
-    name: "John Doe",
-    date: "2025-04-10",
-    status: "Confirmed",
-    amount: 249.99,
-  },
-  {
-    id: "booking-2",
-    name: "Emma Johnson",
-    date: "2025-04-12",
-    status: "Pending",
-    amount: 149.5,
-  },
-  {
-    id: "booking-3",
-    name: "Michael Smith",
-    date: "2025-04-15",
-    status: "Confirmed",
-    amount: 399.0,
-  },
-  {
-    id: "booking-4",
-    name: "Sarah Williams",
-    date: "2025-04-18",
-    status: "Cancelled",
-    amount: 199.99,
-  },
-  {
-    id: "booking-5",
-    name: "James Brown",
-    date: "2025-04-20",
-    status: "Confirmed",
-    amount: 299.5,
-  },
-]
+export default function GroupedToursPage() {
+  const [groupsOfTourGroups, setGroupsOfTourGroups] = useState<
+    GroupOfTourGroups[]
+  >([])
+  const [loading, setLoading] = useState(true)
 
-export default function BookingsPage() {
-  const [bookings, setBookings] = useState(initialBookings)
-  const [reorderCount, setReorderCount] = useState(0)
+  // Fetch initial data
+  useEffect(() => {
+    const fetchInitialData = async () => {
+      setLoading(true)
+      try {
+        // Start with our initial groups data
+        const groupsWithData = await Promise.all(
+          initialGroupsData.map(async (group) => {
+            // Fetch product data for each group
+            const productData = await fetchProduct(group.product_id)
 
-  // Handle reordering of bookings
-  const handleReorder = (newBookings: any[]) => {
-    setBookings(newBookings)
-    setReorderCount((prev) => prev + 1)
-    console.log("Bookings reordered:", newBookings)
+            // Fetch tour groups data
+            const tourGroupData = await fetchTourGroups(group.tour_groups)
+
+            // For each tour group, fetch its bookings data
+            const tourGroupsWithBookings = await Promise.all(
+              tourGroupData.map(async (tourGroup) => {
+                const bookingData = await fetchBookings(tourGroup.bookings)
+                return { ...tourGroup, bookingData }
+              }),
+            )
+
+            return {
+              ...group,
+              productData,
+              tourGroupData: tourGroupsWithBookings,
+            }
+          }),
+        )
+
+        setGroupsOfTourGroups(groupsWithData)
+      } catch (error) {
+        console.error("Error fetching initial data:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchInitialData()
+  }, [])
+
+  // Handle moving a booking between tour groups
+  const handleMoveBooking = async (
+    sourceTourGroupId: string,
+    targetTourGroupId: string,
+    booking: Booking,
+    targetIndex: number,
+  ) => {
+    try {
+      // Find the groups containing the source and target tour groups
+      const sourceGroupIndex = groupsOfTourGroups.findIndex((group) =>
+        group.tourGroupData?.some((tg) => tg.id === sourceTourGroupId),
+      )
+
+      const targetGroupIndex = groupsOfTourGroups.findIndex((group) =>
+        group.tourGroupData?.some((tg) => tg.id === targetTourGroupId),
+      )
+
+      if (sourceGroupIndex === -1 || targetGroupIndex === -1) return
+
+      // Make sure the operation is within the same group of tour groups
+      if (sourceGroupIndex !== targetGroupIndex) {
+        console.error(
+          "Cannot move bookings between different groups of tour groups",
+        )
+        return
+      }
+
+      // Find the source and target tour groups
+      const sourceTourGroupIndex = groupsOfTourGroups[
+        sourceGroupIndex
+      ].tourGroupData?.findIndex((tg) => tg.id === sourceTourGroupId)
+
+      const targetTourGroupIndex = groupsOfTourGroups[
+        sourceGroupIndex
+      ].tourGroupData?.findIndex((tg) => tg.id === targetTourGroupId)
+
+      if (
+        sourceTourGroupIndex === undefined ||
+        sourceTourGroupIndex === -1 ||
+        targetTourGroupIndex === undefined ||
+        targetTourGroupIndex === -1
+      )
+        return
+
+      // Get the source and target tour groups
+      const sourceTourGroup =
+        groupsOfTourGroups[sourceGroupIndex].tourGroupData?.[
+          sourceTourGroupIndex
+        ]
+      const targetTourGroup =
+        groupsOfTourGroups[sourceGroupIndex].tourGroupData?.[
+          targetTourGroupIndex
+        ]
+
+      if (!sourceTourGroup || !targetTourGroup) return
+
+      // Get the source booking data and index
+      const sourceBookingIndex = sourceTourGroup.bookingData?.findIndex(
+        (b) => b.id === booking.id,
+      )
+      if (sourceBookingIndex === undefined || sourceBookingIndex === -1) return
+
+      // Remove the booking from the source tour group
+      const updatedSourceBookings = [...(sourceTourGroup.bookings || [])]
+      updatedSourceBookings.splice(sourceBookingIndex, 1)
+
+      // Add the booking to the target tour group at the specified index
+      const updatedTargetBookings = [...(targetTourGroup.bookings || [])]
+      updatedTargetBookings.splice(targetIndex, 0, booking.id)
+
+      // Update the tour groups' bookings in the mock API
+      await Promise.all([
+        updateTourGroupBookings(sourceTourGroupId, updatedSourceBookings),
+        updateTourGroupBookings(targetTourGroupId, updatedTargetBookings),
+      ])
+
+      // Update local state
+      const updatedGroups = [...groupsOfTourGroups]
+      const updatedSourceTourGroup = {
+        ...sourceTourGroup,
+        bookings: updatedSourceBookings,
+      }
+
+      if (updatedSourceTourGroup.bookingData) {
+        updatedSourceTourGroup.bookingData =
+          updatedSourceTourGroup.bookingData.filter((b) => b.id !== booking.id)
+      }
+
+      const updatedTargetTourGroup = {
+        ...targetTourGroup,
+        bookings: updatedTargetBookings,
+      }
+
+      if (updatedTargetTourGroup.bookingData && sourceTourGroup.bookingData) {
+        const targetBookingData = [...updatedTargetTourGroup.bookingData]
+        const bookingToMove = sourceTourGroup.bookingData[sourceBookingIndex]
+        targetBookingData.splice(targetIndex, 0, bookingToMove)
+        updatedTargetTourGroup.bookingData = targetBookingData
+      }
+
+      // Update the tour groups in the state
+      updatedGroups[sourceGroupIndex].tourGroupData![sourceTourGroupIndex] =
+        updatedSourceTourGroup
+      updatedGroups[sourceGroupIndex].tourGroupData![targetTourGroupIndex] =
+        updatedTargetTourGroup
+
+      setGroupsOfTourGroups(updatedGroups)
+
+      console.log(
+        `Moved booking ${booking.id} from tour group ${sourceTourGroupId} to ${targetTourGroupId}`,
+      )
+    } catch (error) {
+      console.error("Error moving booking between tour groups:", error)
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="h-10 w-10 animate-spin rounded-full border-4 border-indigo-600 border-t-transparent"></div>
+          <p className="text-gray-700 dark:text-gray-300">
+            Loading tour groups...
+          </p>
+        </div>
+      </div>
+    )
   }
 
   return (
     <div className="h-screen overflow-y-auto p-4 sm:p-6 lg:p-8">
       <div className="mb-6">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
-              Bookings
-            </h1>
-            <Badge variant="neutral" className="mt-1">
-              {bookings.length} total
-            </Badge>
+          <div className="flex gap-2">
+            <button
+              className="inline-flex items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
+              onClick={() => console.log("Refreshing data...")}
+            >
+              <RiRefreshLine className="size-4" />
+              Refresh
+            </button>
+            <button className="inline-flex items-center justify-center gap-2 rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 dark:bg-indigo-600 dark:hover:bg-indigo-700">
+              <RiAddLine className="size-4" />
+              New Group
+            </button>
           </div>
-          <Button variant="primary" className="hidden gap-2 sm:flex">
-            <RiAddLine className="size-4" />
-            New Booking
-          </Button>
         </div>
-        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-          View and manage your bookings. Drag rows to change priority order.
-        </p>
       </div>
 
-      {/* Reorder count notification */}
-      {reorderCount > 0 && (
-        <div className="mb-4 flex items-center gap-2 rounded-md bg-indigo-50 p-3 text-sm text-indigo-700 dark:bg-indigo-900/20 dark:text-indigo-400">
-          <RiArrowUpDownLine className="size-5 flex-shrink-0" />
-          <span>
-            Bookings have been reordered <strong>{reorderCount}</strong>{" "}
-            {reorderCount === 1 ? "time" : "times"}
-          </span>
+      {groupsOfTourGroups.length > 0 ? (
+        <div className="space-y-8">
+          {groupsOfTourGroups.map((group) => (
+            <GroupOfTourGroupsCard
+              key={group.id}
+              group={group}
+              onReorderBookings={handleMoveBooking}
+            />
+          ))}
         </div>
-      )}
-
-      {bookings.length > 0 ? (
-        <DraggableBookingsTable
-          bookings={bookings}
-          onReorder={handleReorder}
-          className="shadow-sm"
-        />
       ) : (
         <div className="flex h-64 flex-col items-center justify-center rounded-lg border border-dashed border-gray-300 p-8 dark:border-gray-700">
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-900/30">
-            <RiTicketLine className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
+            <RiCalendarLine className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
           </div>
           <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-white">
-            No bookings
+            No tour groups
           </h3>
           <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-            Get started by creating a new booking.
+            Get started by creating a new tour group.
           </p>
-          <Button variant="primary" className="mt-4 gap-2">
+          <button className="mt-4 inline-flex items-center justify-center gap-2 rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 dark:bg-indigo-600 dark:hover:bg-indigo-700">
             <RiAddLine className="size-4" />
-            New Booking
-          </Button>
+            New Tour Group
+          </button>
         </div>
       )}
     </div>

@@ -1,5 +1,6 @@
 "use client"
 
+import { EmptyTableDropTarget } from "./EmptyTableDropTarget.client"
 import { Button } from "@/components/Button"
 import {
   Table,
@@ -33,52 +34,71 @@ import { pointerOutsideOfPreview } from "@atlaskit/pragmatic-drag-and-drop/eleme
 import { setCustomNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview"
 import { reorder } from "@atlaskit/pragmatic-drag-and-drop/reorder"
 
-// Booking type definition
-interface Booking {
+// Symbol for item data identification - exported to share with EmptyTableDropTarget
+export const itemKey = Symbol("item")
+
+// Type definition of a booking item
+export interface BookingForTable {
   id: string
   name: string
-  date?: string
-  status?: string
-  amount?: number
+  date: string
+  status: "Confirmed" | "Pending" | "Cancelled"
+  amount: number
+  email?: string
+  phone?: string
+  guests?: number
+}
+
+// Type definition for item data during drag and drop
+export type ItemData = {
+  [itemKey]: true
+  booking: BookingForTable
+  index: number
+  instanceId: symbol
+  tourGroupId?: string
+}
+
+// Helper function to check if data is valid item data - exported to share
+export function isItemData(
+  data: Record<string | symbol, unknown>,
+): data is ItemData {
+  return data[itemKey] === true
 }
 
 // Props for the component
 interface DraggableBookingsTableProps {
-  bookings: Booking[]
-  onReorder?: (bookings: Booking[]) => void
+  bookings: BookingForTable[]
+  onReorder?: (bookings: BookingForTable[]) => void
+  onDropFromAnotherGroup?: (
+    booking: BookingForTable,
+    targetIndex: number,
+    sourceTourGroupId: string,
+  ) => void
   className?: string
-}
-
-// Symbol for item data identification
-const itemKey = Symbol("item")
-
-// Type definition for item data during drag and drop
-type ItemData = {
-  [itemKey]: true
-  booking: Booking
-  index: number
-  instanceId: symbol
+  showDragHeader?: boolean
+  tourGroupId?: string
+  groupInstanceId?: symbol
+  groupTourGroups?: any[]
 }
 
 function getItemData({
   booking,
   index,
   instanceId,
+  tourGroupId,
 }: {
-  booking: Booking
+  booking: BookingForTable
   index: number
   instanceId: symbol
+  tourGroupId?: string
 }): ItemData {
   return {
     [itemKey]: true,
     booking,
     index,
     instanceId,
+    tourGroupId,
   }
-}
-
-function isItemData(data: Record<string | symbol, unknown>): data is ItemData {
-  return data[itemKey] === true
 }
 
 type DraggableState =
@@ -93,21 +113,26 @@ const draggingState: DraggableState = { type: "dragging" }
 export function DraggableBookingsTable({
   bookings: initialBookings,
   onReorder,
+  onDropFromAnotherGroup,
   className,
+  showDragHeader = true,
+  tourGroupId,
+  groupInstanceId,
+  groupTourGroups = [],
 }: DraggableBookingsTableProps) {
   // State for bookings and drag-related information
-  const [bookings, setBookings] = useState<Booking[]>(initialBookings)
+  const [bookings, setBookings] = useState<BookingForTable[]>(initialBookings)
   const [closestEdgeMap, setClosestEdgeMap] = useState<
     Map<string, Edge | null>
   >(new Map())
   const [lastBookingMoved, setLastBookingMoved] = useState<{
-    booking: Booking
+    booking: BookingForTable
     previousIndex: number
     currentIndex: number
   } | null>(null)
 
   // Instance ID to isolate drag and drop context
-  const instanceId = useRef(Symbol("instance-id")).current
+  const instanceId = useRef(groupInstanceId || Symbol("instance-id")).current
 
   // Registry to keep track of row elements
   const rowRegistry = useRef(new Map<string, HTMLTableRowElement>()).current
@@ -195,22 +220,52 @@ export function DraggableBookingsTable({
 
         const closestEdgeOfTarget = extractClosestEdge(targetData)
 
-        reorderItem({
-          startIndex: sourceData.index,
-          indexOfTarget,
-          closestEdgeOfTarget,
-        })
+        // Check if the drop is from another tour group
+        if (
+          sourceData.tourGroupId &&
+          targetData.tourGroupId &&
+          sourceData.tourGroupId !== targetData.tourGroupId &&
+          onDropFromAnotherGroup
+        ) {
+          // This is a cross-tour-group drop
+          const finishIndex = getReorderDestinationIndex({
+            startIndex: 0, // Doesn't matter for cross-group drops
+            indexOfTarget,
+            closestEdgeOfTarget,
+            axis: "vertical",
+          })
 
-        // Log the reordering event
-        console.log("Booking reordered:", {
-          booking: sourceData.booking,
-          from: sourceData.index,
-          to: indexOfTarget,
-          edge: closestEdgeOfTarget,
-        })
+          // Call the handler for cross-group drops
+          onDropFromAnotherGroup(
+            sourceData.booking,
+            finishIndex,
+            sourceData.tourGroupId,
+          )
+
+          console.log("Cross-tour-group drop:", {
+            booking: sourceData.booking,
+            fromTourGroup: sourceData.tourGroupId,
+            toTourGroup: targetData.tourGroupId,
+            toIndex: finishIndex,
+          })
+        } else {
+          // This is a drop within the same tour group
+          reorderItem({
+            startIndex: sourceData.index,
+            indexOfTarget,
+            closestEdgeOfTarget,
+          })
+
+          console.log("Within-tour-group drop:", {
+            booking: sourceData.booking,
+            from: sourceData.index,
+            to: indexOfTarget,
+            edge: closestEdgeOfTarget,
+          })
+        }
       },
     })
-  }, [bookings, instanceId])
+  }, [bookings, instanceId, onDropFromAnotherGroup])
 
   // Handle post-drop actions for visual feedback
   useEffect(() => {
@@ -255,20 +310,28 @@ export function DraggableBookingsTable({
         className,
       )}
     >
-      {/* Table header with drag instructions */}
-      <div className="flex items-center justify-between border-b border-gray-200 bg-gray-50 px-4 py-2 dark:border-gray-800 dark:bg-gray-900">
-        <div className="flex items-center gap-2">
-          <RiArrowUpDownLine className="size-4 text-gray-500 dark:text-gray-400" />
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-            Drag to reorder bookings
-          </span>
+      {/* Table header with drag instructions - only show if showDragHeader is true */}
+      {showDragHeader && (
+        <div className="flex items-center justify-between border-b border-gray-200 bg-gray-50 px-4 py-2 dark:border-gray-800 dark:bg-gray-900">
+          <div className="flex items-center gap-2">
+            <RiArrowUpDownLine className="size-4 text-gray-500 dark:text-gray-400" />
+            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              Drag to reorder bookings
+            </span>
+          </div>
+          <div className="text-xs text-gray-500 dark:text-gray-400">
+            {bookings.length} {bookings.length === 1 ? "booking" : "bookings"}
+          </div>
         </div>
-        <div className="text-xs text-gray-500 dark:text-gray-400">
-          {bookings.length} {bookings.length === 1 ? "booking" : "bookings"}
-        </div>
-      </div>
+      )}
 
-      <div className="overflow-x-auto">
+      <div
+        className={cx(
+          "overflow-x-auto",
+          bookings.length === 0 &&
+            "rounded-md border-2 border-dashed border-gray-300 dark:border-gray-700",
+        )}
+      >
         <Table>
           <TableHead>
             <TableRow>
@@ -279,7 +342,9 @@ export function DraggableBookingsTable({
               <TableHeaderCell className="text-right">Amount</TableHeaderCell>
             </TableRow>
           </TableHead>
-          <TableBody>
+          <TableBody
+            className={bookings.length === 0 ? "relative min-h-[100px]" : ""}
+          >
             {bookings.map((booking, index) => (
               <BookingRow
                 key={booking.id}
@@ -289,8 +354,18 @@ export function DraggableBookingsTable({
                 registerRow={registerRow}
                 setClosestEdge={setClosestEdge}
                 closestEdge={closestEdgeMap.get(booking.id) || null}
+                tourGroupId={tourGroupId}
               />
             ))}
+
+            {/* Empty placeholder for empty tables that serves as a drop target */}
+            {bookings.length === 0 && tourGroupId && onDropFromAnotherGroup && (
+              <EmptyTableDropTarget
+                instanceId={instanceId}
+                tourGroupId={tourGroupId}
+                onDropFromAnotherGroup={onDropFromAnotherGroup}
+              />
+            )}
           </TableBody>
         </Table>
       </div>
@@ -299,12 +374,13 @@ export function DraggableBookingsTable({
 }
 
 interface BookingRowProps {
-  booking: Booking
+  booking: BookingForTable
   index: number
   instanceId: symbol
   registerRow: (id: string, element: HTMLTableRowElement) => () => void
   setClosestEdge: (id: string, edge: Edge | null) => void
   closestEdge: Edge | null
+  tourGroupId?: string
 }
 
 function BookingRow({
@@ -314,6 +390,7 @@ function BookingRow({
   registerRow,
   setClosestEdge,
   closestEdge,
+  tourGroupId,
 }: BookingRowProps) {
   const rowRef = useRef<HTMLTableRowElement>(null)
   const dragHandleRef = useRef<HTMLButtonElement>(null)
@@ -327,7 +404,7 @@ function BookingRow({
 
     if (!element || !dragHandle) return
 
-    const data = getItemData({ booking, index, instanceId })
+    const data = getItemData({ booking, index, instanceId, tourGroupId })
 
     const cleanup = combine(
       // Register the row element
