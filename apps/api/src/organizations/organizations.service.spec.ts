@@ -5,7 +5,7 @@ import {
   AddOrganizationUrlDto,
 } from './dto/create-organization.dto';
 import { HttpException, HttpStatus } from '@nestjs/common';
-
+//
 describe('OrganizationsService', () => {
   let service: OrganizationsService;
   let mockDb: { createOrganization: jest.Mock };
