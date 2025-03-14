@@ -32,3 +32,6 @@ yarn-error.log
 # Ignore build caches
 .turbo
 .cache
+
+# Miscellaneous
+**/commands.txt

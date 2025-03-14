@@ -1,5 +1,17 @@
 # @nospipi/database
 
+## 0.0.8
+
+### Patch Changes
+
+- none
+- none
+- none
+- none
+- none
+- dgfhdgfh
+- none
+
 ## 0.0.7
 
 ### Patch Changes

@@ -1,0 +1,4 @@
+# connect to bash within a heroku repo
+heroku run bash (in root)
+#show all files
+du 
