@@ -1,5 +1,5 @@
 # Ignore CMS (Deployed in Vercel)
-#/apps/cms
+/apps/cms
 
 # Ignore common development files
 .git
@@ -14,6 +14,17 @@ yarn-error.log
 **/tests
 **/spec
 **/coverage
+
+# Ignore test files
+**/*.test.*
+**/*.spec.*
+**/__tests__/**
+**/__mocks__/**
+**/jest.config.*
+**/vitest.config.*
+**/cypress/**
+**/e2e/**
+**/storybook/**
 
 # Ignore build caches
 .turbo
