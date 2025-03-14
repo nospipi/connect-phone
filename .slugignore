@@ -1,5 +1,5 @@
 # Ignore CMS (Deployed in Vercel)
-/apps/cms
+#/apps/cms
 
 # Ignore common development files
 .git
