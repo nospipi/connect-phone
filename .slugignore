@@ -3,7 +3,7 @@
 
 # Ignore root node_modules and package files
 /node_modules
-/package.json
+#/package.json
 /package-lock.json
 
 # Ignore common development files
