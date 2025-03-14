@@ -1,1 +1,20 @@
+# Ignore CMS (Deployed in Vercel)
 /apps/cms
+
+# Ignore common development files
+.git
+.github
+.vscode
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Ignore test directories
+**/test
+**/tests
+**/spec
+**/coverage
+
+# Ignore build caches
+.turbo
+.cache
