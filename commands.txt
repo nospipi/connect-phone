@@ -9,3 +9,8 @@
 -- heroku plugins:install @heroku-cli/heroku-builds
 # 2. Clear cache
 -- heroku builds:cache:purge
+
+
+# clean npm cache
+-- npm cache clean --force
+-- npm cache verify

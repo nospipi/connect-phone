@@ -20,7 +20,7 @@ const UserDataDisplayClerk = async () => {
         </div>
       ) : (
         <div className="mt-2 flex flex-1 flex-col overflow-hidden rounded bg-gray-50 p-2 dark:bg-gray-900">
-          <pre className="h-full w-full overflow-y-auto break-all font-mono text-xs text-gray-600 dark:text-gray-400">
+          <pre className="h-full w-full overflow-y-auto break-all font-mono text-xs text-gray-600 dark:text-green-600">
             {JSON.stringify(user, null, 2)}
           </pre>
         </div>

@@ -81,7 +81,7 @@ const AuthTokenDisplay = ({ token }: AuthTokenDisplayProps) => {
         </div>
       ) : showToken ? (
         <div className="mt-2 max-h-32 overflow-y-auto rounded bg-gray-50 p-2 dark:bg-gray-900">
-          <p className="break-all font-mono text-xs text-gray-600 dark:text-gray-400">
+          <p className="break-all font-mono text-xs text-gray-600 dark:text-green-600">
             {token}
           </p>
         </div>

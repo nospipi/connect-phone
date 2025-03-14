@@ -11,7 +11,6 @@ const Page = async ({
   // throw new Error("Test error")
   const { organization_id } = await params
 
-
   return (
     <div className="h-screen w-full bg-gray-50 p-8 dark:bg-gray-900">
       <div className="mx-auto flex h-full w-full items-center justify-center">

@@ -33,8 +33,6 @@
   "devDependencies": {
     "@types/jest": "^29.5.14",
     "@types/lodash": "^4.17.16",
-    "install": "^0.13.0",
-    "npm": "^11.2.0",
     "prettier": "^3.5.0",
     "turbo": "^2.4.4",
     "typescript": "^5.7.3"
@@ -73,7 +71,6 @@
     "next": "^15.2.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-toastify": "^11.0.5",
-    "sharp": "^0.33.5"
+    "react-toastify": "^11.0.5"
   }
 }
