@@ -3,13 +3,13 @@ export const siteConfig = {
   url: "https://dashboard.tremor.so",
   description: "The only dashboard you will ever need.",
   baseLinks: {
-    home: "/",
-    overview: "/overview",
-    details: "/details",
+    home: "/org_id/overview",
+    overview: "/org_id/overview",
+    details: "/org_id/details",
     settings: {
-      general: "/settings/general",
-      billing: "/settings/billing",
-      users: "/settings/users",
+      general: "org_id/settings/general",
+      billing: "/org_id/settings/billing",
+      users: "/org_id/settings/users",
     },
   },
 }
