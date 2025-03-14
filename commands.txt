@@ -1,4 +1,11 @@
-# connect to bash within a heroku repo
-heroku run bash (in root)
+# connect to bash within a heroku repo (in root)
+-- heroku run bash 
 #show all files
-du 
+-- du 
+
+#Clearing cache 
+
+# 1. Install heroku-builds plugin
+-- heroku plugins:install @heroku-cli/heroku-builds
+# 2. Clear cache
+-- heroku builds:cache:purge

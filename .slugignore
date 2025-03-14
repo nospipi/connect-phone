@@ -1,8 +1,10 @@
 # Ignore CMS (Deployed in Vercel)
 /apps/cms
 
-# Ignore base files
-node_modules
+# Ignore root node_modules and package files
+/node_modules
+/package.json
+/package-lock.json
 
 # Ignore common development files
 .git
@@ -35,3 +37,5 @@ yarn-error.log
 
 # Miscellaneous
 **/commands.txt
+**/README.md
+**/compose.yaml
