@@ -15,6 +15,7 @@ import {
   RiMenuLine,
   RiCoupon2Line,
   RiLineChartLine,
+  RiBox3Fill,
   RiSimCardLine,
   RiBuildingLine,
   RiGroupLine,
@@ -33,7 +34,7 @@ const navigation = [
   {
     name: "Packages",
     href: siteConfig.baseLinks.packages,
-    icon: RiCoupon2Line,
+    icon: RiBox3Fill,
   },
   { name: "E-Sims", href: siteConfig.baseLinks.details, icon: RiSimCardLine },
   // {

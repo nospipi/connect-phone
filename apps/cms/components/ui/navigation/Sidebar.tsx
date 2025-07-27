@@ -3,11 +3,10 @@ import { siteConfig } from "@/app/siteConfig"
 import { cx, focusRing } from "@/lib/utils"
 //import OrganizationsSelector from "./OrganizationsSelector"
 import {
-
   RiGroupLine,
   RiFlagLine,
   RiCoupon2Line,
-
+  RiBox3Fill,
   RiSimCardLine,
   RiLineChartLine,
   RiBuildingLine,
@@ -31,7 +30,7 @@ const navigation = [
   {
     name: "Packages",
     href: siteConfig.baseLinks.packages,
-    icon: RiCoupon2Line,
+    icon: RiBox3Fill,
   },
   { name: "E-Sims", href: siteConfig.baseLinks.details, icon: RiSimCardLine },
   // {
