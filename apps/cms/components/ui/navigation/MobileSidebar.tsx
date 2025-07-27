@@ -29,7 +29,12 @@ const navigation = [
     href: siteConfig.baseLinks.overview,
     icon: RiLineChartLine,
   },
-  { name: "Offers", href: siteConfig.baseLinks.overview, icon: RiCoupon2Line },
+  { name: "Offers", href: siteConfig.baseLinks.offers, icon: RiCoupon2Line },
+  {
+    name: "Packages",
+    href: siteConfig.baseLinks.packages,
+    icon: RiCoupon2Line,
+  },
   { name: "E-Sims", href: siteConfig.baseLinks.details, icon: RiSimCardLine },
   // {
   //   name: "Settings",

@@ -13,8 +13,8 @@ import {
   AddOrganizationUrlDto,
 } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
-import { RequiresOrganization } from '../decorators/requires-organization.decorator';
-import { CurrentUserOrganizationFromClerk } from 'src/decorators/current-user-organization.decorator';
+import { RequiresOrganization } from '../guards/decorators/requires-organization.decorator';
+import { CurrentUserOrganizationFromClerk } from 'src/guards/decorators/current-user-organization.decorator';
 import { Organization } from '../db.module';
 
 //------------------------------------------------------------------------

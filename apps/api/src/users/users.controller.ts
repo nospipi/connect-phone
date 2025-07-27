@@ -11,8 +11,8 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto, BlankUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { RequiresOrganization } from '../decorators/requires-organization.decorator';
-import { CurrentUserOrganizationFromClerk } from 'src/decorators/current-user-organization.decorator';
+import { RequiresOrganization } from '../guards/decorators/requires-organization.decorator';
+import { CurrentUserOrganizationFromClerk } from 'src/guards/decorators/current-user-organization.decorator';
 import { Organization } from '../db.module';
 
 @Controller('users')

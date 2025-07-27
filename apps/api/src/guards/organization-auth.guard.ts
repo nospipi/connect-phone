@@ -9,7 +9,7 @@ import {
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
 import { User } from '../db.module';
-import { REQUIRES_ORGANIZATION_KEY } from '../decorators/requires-organization.decorator';
+import { REQUIRES_ORGANIZATION_KEY } from './decorators/requires-organization.decorator';
 
 //----------------------------------------------------------------------
 

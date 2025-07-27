@@ -5,6 +5,8 @@ export const siteConfig = {
   baseLinks: {
     home: "/org_id/overview",
     overview: "/org_id/overview",
+    offers: "/org_id/offers",
+    packages: "/org_id/packages",
     details: "/org_id/details",
     settings: {
       general: "org_id/settings/general",
