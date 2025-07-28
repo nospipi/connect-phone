@@ -5,6 +5,7 @@ import { siteConfig } from "./siteConfig"
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs"
 import { dark } from "@clerk/themes"
 import { ToastContainer } from "react-toastify"
+import { Sidebar } from "@/components/ui/navigation/Sidebar"
 import "./globals.css"
 
 const inter = Inter({
@@ -61,7 +62,10 @@ export default function RootLayout({
           suppressHydrationWarning
         >
           <ThemeProvider defaultTheme="dark" attribute="class">
-            <SignedIn>{children}</SignedIn>
+            <SignedIn>
+              <Sidebar />
+              <main className="overflow-hidden lg:pl-72">{children}</main>
+            </SignedIn>
             <SignedOut>{children}</SignedOut>
           </ThemeProvider>
           <ToastContainer position="bottom-right" limit={1} />

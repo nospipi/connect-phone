@@ -1,4 +1,5 @@
-import { headers } from "next/headers"
+"use client"
+
 import { siteConfig } from "@/app/siteConfig"
 import { Button } from "@/components/Button"
 import {
@@ -22,7 +23,7 @@ import {
   RiFlagLine,
 } from "@remixicon/react"
 import Link from "next/link"
-//import { usePathname } from "next/navigation"
+import { usePathname } from "next/navigation"
 
 const navigation = [
   {
@@ -36,7 +37,11 @@ const navigation = [
     href: siteConfig.baseLinks.packages,
     icon: RiBox3Fill,
   },
-  { name: "E-Sims", href: siteConfig.baseLinks.details, icon: RiSimCardLine },
+  {
+    name: "E-Sims Marketplace",
+    href: siteConfig.baseLinks.e_sims,
+    icon: RiSimCardLine,
+  },
   // {
   //   name: "Settings",
   //   href: siteConfig.baseLinks.settings.general,
@@ -62,9 +67,8 @@ const shortcuts = [
   },
 ] as const
 
-export default async function MobileSidebar() {
-  const headerList = await headers()
-  const pathname = headerList.get("x-current-path")
+export default function MobileSidebar() {
+  const pathname = usePathname()
 
   const isActive = (itemHref: string) => {
     if (itemHref === siteConfig.baseLinks.settings.general) {

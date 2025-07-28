@@ -1,4 +1,4 @@
-import { PeriodValue } from "@/app/[organization]/overview/Client.client"
+import { PeriodValue } from "@/app/overview/Client.client"
 import { Badge } from "@/components/Badge"
 import { LineChart } from "@/components/LineChart"
 import { overviews } from "@/data/overview-data"

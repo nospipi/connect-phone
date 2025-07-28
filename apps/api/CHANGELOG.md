@@ -1,5 +1,19 @@
 # api
 
+## 0.0.8
+
+### Patch Changes
+
+- Updated dependencies
+- Updated dependencies
+- Updated dependencies
+- Updated dependencies
+- Updated dependencies
+- Updated dependencies
+- Updated dependencies
+- Updated dependencies
+  - @nospipi/database@1.0.0
+
 ## 0.0.7
 
 ### Patch Changes

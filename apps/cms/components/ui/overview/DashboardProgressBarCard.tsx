@@ -1,7 +1,7 @@
 import { Badge } from "@/components/Badge"
 import { ProgressBar } from "@/components/ProgressBar"
 
-import { KpiEntry } from "@/app/[organization]/overview/Client.client"
+import { KpiEntry } from "@/app/overview/Client.client"
 
 export type CardProps = {
   title: string

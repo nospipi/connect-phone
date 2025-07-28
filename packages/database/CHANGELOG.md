@@ -1,5 +1,21 @@
 # @nospipi/database
 
+## 1.0.0
+
+### Major Changes
+
+- updates
+
+### Patch Changes
+
+- none
+- none
+- none
+- none
+- none
+- dgfhdgfh
+- none
+
 ## 0.0.8
 
 ### Patch Changes
