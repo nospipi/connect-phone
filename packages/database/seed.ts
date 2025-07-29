@@ -1,3 +1,5 @@
+/* eslint-disable prettier/prettier */
+
 import { seed, reset } from "drizzle-seed";
 import {
   db,

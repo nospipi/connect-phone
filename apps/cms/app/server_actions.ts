@@ -10,6 +10,7 @@ import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 import { first } from "lodash"
 import { id } from "date-fns/locale"
+import { SalesChannel } from "@nospipi/database"
 const BACKEND_URL = process.env.BACKEND_URL
 
 interface ErrorResponse {
@@ -168,6 +169,41 @@ export const addLogoUrlToOrganization = async (
     await api.post(`/organizations/add_logo_url_to_organization`, {
       logoUrl: logoUrl,
     })
+  } catch (error: unknown) {
+    const messageFallback = (error as Error).message ?? "An error occurred"
+    const errorMessage =
+      (error as AxiosError<ErrorResponse>).response?.data.message ??
+      messageFallback
+    throw new Error(errorMessage)
+  }
+}
+
+export const getAllSalesChannelsOfOrganizationPaginated = async ({
+  organizationId,
+  cursor,
+  pageSize,
+}: {
+  organizationId: number
+  cursor?: number
+  pageSize?: number
+}): Promise<SalesChannel[]> => {
+  try {
+    console.log("Fetching sales channels for organization ID:", organizationId)
+
+    const api = createApiClient()
+    const response = await api.get("/sales-channels/paginated", {
+      params: {
+        organizationId,
+        cursor,
+        pageSize,
+      },
+    })
+
+    if (response.status !== 200) {
+      throw new Error("Failed to fetch sales channels")
+    }
+
+    return response.data
   } catch (error: unknown) {
     const messageFallback = (error as Error).message ?? "An error occurred"
     const errorMessage =
