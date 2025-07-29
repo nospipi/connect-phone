@@ -2,7 +2,7 @@
 "use client"
 
 import { usePathname } from "next/navigation"
-import { siteConfig } from "@/app/siteConfig"
+import { siteConfig } from "@/components/siteConfig"
 import { cx, focusRing } from "@/lib/utils"
 import {
   RiGroupLine,

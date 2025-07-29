@@ -1,4 +1,4 @@
-import { Button } from "@/components/Button"
+import { Button } from "@/components/common/Button"
 import {
   Dialog,
   DialogClose,
@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/Dialog"
+} from "@/components/common/Dialog"
 import { cx } from "@/lib/utils"
 import { useClerk } from "@clerk/nextjs"
 

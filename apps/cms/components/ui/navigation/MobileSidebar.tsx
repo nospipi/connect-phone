@@ -1,7 +1,7 @@
 "use client"
 
-import { siteConfig } from "@/app/siteConfig"
-import { Button } from "@/components/Button"
+import { siteConfig } from "@/components/siteConfig"
+import { Button } from "@/components/common/Button"
 import {
   Drawer,
   DrawerBody,
@@ -10,7 +10,7 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@/components/Drawer"
+} from "@/components/common/Drawer"
 import { cx, focusRing } from "@/lib/utils"
 import {
   RiMenuLine,

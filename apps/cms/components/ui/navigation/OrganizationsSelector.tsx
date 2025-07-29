@@ -4,13 +4,10 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/Select"
+} from "@/components/common/Select"
 import { Organization } from "@clerk/nextjs/server"
 
 const OrganizationsSelector = () => {
-
-
-
   const data = [
     {
       value: "organization-name-1",

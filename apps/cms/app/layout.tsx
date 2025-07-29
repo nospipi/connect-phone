@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import { ThemeProvider } from "next-themes"
 import { Inter } from "next/font/google"
-import { siteConfig } from "./siteConfig"
+import { siteConfig } from "@/components/siteConfig"
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs"
 import { dark } from "@clerk/themes"
 import { ToastContainer } from "react-toastify"

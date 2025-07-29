@@ -1,6 +1,6 @@
 "use client"
 
-import { Button } from "@/components/Button"
+import { Button } from "@/components/common/Button"
 import { RiMoreFill } from "@remixicon/react"
 import { Row } from "@tanstack/react-table"
 
@@ -9,7 +9,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/Dropdown"
+} from "@/components/common/Dropdown"
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>

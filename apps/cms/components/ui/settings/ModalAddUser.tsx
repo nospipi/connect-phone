@@ -1,4 +1,4 @@
-import { Button } from "@/components/Button"
+import { Button } from "@/components/common/Button"
 import {
   Dialog,
   DialogClose,
@@ -8,16 +8,16 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/Dialog"
-import { Input } from "@/components/Input"
-import { Label } from "@/components/Label"
+} from "@/components/common/Dialog"
+import { Input } from "@/components/common/Input"
+import { Label } from "@/components/common/Label"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/Select"
+} from "@/components/common/Select"
 import { roles } from "@/data/data"
 
 export type ModalAddUserProps = {
