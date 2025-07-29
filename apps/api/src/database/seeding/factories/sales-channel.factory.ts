@@ -1,13 +1,14 @@
 import * as Faker from 'faker';
 import { define } from 'typeorm-seeding';
-
 import { SalesChannel } from '../../entities/sales-channel.entity';
 
 define(SalesChannel, (faker: typeof Faker) => {
-  const newChannel = new SalesChannel();
-  newChannel.uuid = faker.datatype.uuid();
-  newChannel.name = faker.commerce.department();
-  newChannel.description = faker.commerce.productDescription();
-  newChannel.organizationId = faker.datatype.number();
-  return newChannel;
+  const salesChannel = new SalesChannel();
+  salesChannel.uuid = faker.datatype.uuid();
+  salesChannel.name = `${faker.commerce.department()} ${faker.random.arrayElement(['Store', 'Online', 'Mobile', 'Retail'])}`;
+  salesChannel.description = faker.random.boolean()
+    ? faker.commerce.productDescription()
+    : null;
+  // organizationId will be set when creating the sales channel in the seed
+  return salesChannel;
 });
