@@ -111,7 +111,6 @@ export const salesChannels = pgTable("salesChannels", {
     .references(() => organizations.id, { onDelete: "cascade" }),
   name: text().notNull(),
   description: text(),
-  imageUrl: text(),
 });
 
 export const salesChannelsRelations = relations(

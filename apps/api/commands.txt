@@ -1,0 +1,2 @@
+// create a resource with module,service,specs etc
+nest g resource [name]

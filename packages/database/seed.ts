@@ -12,6 +12,21 @@ import {
 } from "./src/index";
 import { faker } from "@faker-js/faker";
 
+const companyNames = Array.from({ length: 100 }, () => faker.company.name());
+const descriptions = Array.from({ length: 100 }, () =>
+  faker.company.catchPhrase()
+);
+const imageUrls = Array.from({ length: 100 }, () =>
+  faker.image.urlPicsumPhotos({
+    width: 128,
+    height: 128,
+    blur: 0,
+  })
+);
+const productDescriptions = Array.from({ length: 100 }, () =>
+  faker.commerce.productDescription()
+);
+
 const main = async () => {
   try {
     console.log("Resetting database...");
@@ -50,29 +65,33 @@ const main = async () => {
       },
       offerImages: {
         columns: {
-          url: f.default({
-            defaultValue: faker.image.urlPicsumPhotos({
-              width: 128,
-              height: 128,
-              blur: 0,
-            }),
+          url: f.valuesFromArray({
+            values: imageUrls,
           }),
-          description: f.default({
-            defaultValue: faker.commerce.productDescription(),
+          description: f.valuesFromArray({
+            values: productDescriptions,
+          }),
+        },
+      },
+      salesChannels: {
+        columns: {
+          name: f.valuesFromArray({
+            values: companyNames,
+            isUnique: true,
+          }),
+          description: f.valuesFromArray({
+            values: descriptions,
+            isUnique: true,
           }),
         },
       },
       salesChannelImages: {
         columns: {
-          url: f.default({
-            defaultValue: faker.image.urlPicsumPhotos({
-              width: 128,
-              height: 128,
-              blur: 0,
-            }),
+          url: f.valuesFromArray({
+            values: imageUrls,
           }),
-          description: f.default({
-            defaultValue: faker.commerce.productDescription(),
+          description: f.valuesFromArray({
+            values: productDescriptions,
           }),
         },
       },

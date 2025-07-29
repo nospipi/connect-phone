@@ -11,6 +11,9 @@ import { ClerkAuthGuard } from './auth/clerk-auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { DbModule } from './db.module';
 import { OrganizationAuthGuard } from './guards/organization-auth.guard';
+import { SalesChannelsService } from './sales-channels/sales-channels.service';
+import { SalesChannelsModule } from './sales-channels/sales-channels.module';
+import { SalesChannelsModule } from './sales-channels/sales-channels.module';
 
 @Module({
   imports: [
@@ -22,6 +25,7 @@ import { OrganizationAuthGuard } from './guards/organization-auth.guard';
     CoreModule,
     UsersModule,
     OrganizationsModule,
+    SalesChannelsModule,
   ],
   controllers: [AppController],
   providers: [
@@ -35,6 +39,7 @@ import { OrganizationAuthGuard } from './guards/organization-auth.guard';
       provide: APP_GUARD,
       useClass: OrganizationAuthGuard,
     },
+    SalesChannelsService,
   ],
 })
 export class AppModule {}

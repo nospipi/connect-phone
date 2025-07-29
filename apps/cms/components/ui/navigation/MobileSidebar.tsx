@@ -31,15 +31,14 @@ const navigation = [
     href: siteConfig.baseLinks.overview,
     icon: RiLineChartLine,
   },
-  { name: "Offers", href: siteConfig.baseLinks.offers, icon: RiCoupon2Line },
   {
-    name: "Packages",
-    href: siteConfig.baseLinks.packages,
-    icon: RiBox3Fill,
+    name: "Inventory",
+    href: siteConfig.baseLinks.inventory.products,
+    icon: RiCoupon2Line,
   },
   {
-    name: "E-Sims Marketplace",
-    href: siteConfig.baseLinks.e_sims,
+    name: "E-Sims",
+    href: siteConfig.baseLinks.e_sims.my_e_sims,
     icon: RiSimCardLine,
   },
   // {
@@ -71,10 +70,13 @@ export default function MobileSidebar() {
   const pathname = usePathname()
 
   const isActive = (itemHref: string) => {
-    if (itemHref === siteConfig.baseLinks.settings.general) {
-      return pathname?.startsWith("/settings")
-    }
-    return pathname === itemHref || pathname?.startsWith(itemHref)
+    if (pathname === itemHref) return true
+
+    // Extract the first path segment from both pathname and itemHref
+    const currentFirstSegment = pathname?.split("/")[1]
+    const itemFirstSegment = itemHref.split("/")[1]
+
+    return currentFirstSegment === itemFirstSegment
   }
   return (
     <>
