@@ -13,7 +13,6 @@ import { DbModule } from './db.module';
 import { OrganizationAuthGuard } from './guards/organization-auth.guard';
 import { SalesChannelsService } from './sales-channels/sales-channels.service';
 import { SalesChannelsModule } from './sales-channels/sales-channels.module';
-import { SalesChannelsModule } from './sales-channels/sales-channels.module';
 
 @Module({
   imports: [
