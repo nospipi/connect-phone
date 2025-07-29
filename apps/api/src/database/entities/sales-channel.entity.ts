@@ -1,0 +1,32 @@
+// src/database/entities/sales-channel.entity.ts
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
+import { SalesChannel as ISalesChannel } from '@connect-phone/shared-types';
+import { Organization } from './organization.entity';
+
+@Entity('sales_channels')
+export class SalesChannel implements ISalesChannel {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column({ unique: true })
+  uuid: string;
+
+  @Column()
+  name: string;
+
+  @Column({ nullable: true })
+  description: string;
+
+  @Column()
+  organizationId: number;
+
+  @ManyToOne(() => Organization, (organization) => organization.salesChannels)
+  @JoinColumn({ name: 'organizationId' })
+  organization: Organization;
+}
