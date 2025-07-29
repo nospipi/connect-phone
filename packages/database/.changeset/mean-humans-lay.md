@@ -1,5 +1,0 @@
----
-"@nospipi/database": major
----
-
-updates

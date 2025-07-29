@@ -1,6 +1,6 @@
 import { Module, Global } from '@nestjs/common';
 import * as db from '@nospipi/database';
-export type { User, Organization } from '@nospipi/database';
+export type { User, Organization, SalesChannel } from '@nospipi/database';
 const DB_PROVIDER = {
   provide: 'DB',
   useValue: db,
