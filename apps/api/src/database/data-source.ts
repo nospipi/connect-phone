@@ -2,10 +2,12 @@
 import { DataSource } from 'typeorm';
 import { Organization } from './entities/organization.entity';
 import { SalesChannel } from './entities/sales-channel.entity';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
-  url: 'postgres://neondb_owner:npg_bLanm9lyor0v@ep-billowing-frog-a2q2l4h5-pooler.eu-central-1.aws.neon.tech/neondb?sslmode=require',
+  url: process.env.DATABASE_URL,
   entities: [Organization, SalesChannel],
   migrations: ['src/database/migrations/*.ts'],
   ssl: {

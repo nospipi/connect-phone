@@ -1,9 +1,10 @@
-// src/database/database.module.ts
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Organization } from './entities/organization.entity';
 import { SalesChannel } from './entities/sales-channel.entity';
+
+//--------------------------------------------------------------
 
 @Module({
   imports: [
