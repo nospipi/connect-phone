@@ -39,7 +39,7 @@ async function seed() {
           uuid: faker.random.uuid(),
           name: `${faker.commerce.department()} ${faker.random.arrayElement(['Store', 'Online', 'Mobile', 'Retail', 'Platform'])}`,
           description: faker.random.boolean()
-            ? faker.commerce.productDescription()
+            ? faker.company.catchPhrase()
             : null,
           organizationId: org.id,
         });
