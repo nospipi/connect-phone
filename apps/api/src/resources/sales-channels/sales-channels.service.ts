@@ -89,7 +89,7 @@ export class SalesChannelsService {
       .where('salesChannel.organizationId = :organizationId', {
         organizationId,
       })
-      .orderBy('salesChannel.id', 'ASC');
+      .orderBy('salesChannel.id', 'DESC'); // Order by ID descending
 
     // Use nestjs-typeorm-paginate to handle pagination
     return paginate<SalesChannel>(queryBuilder, options);

@@ -1,17 +1,22 @@
 "use client"
 
-import { createARandomSalesChannel } from "@/app/server_actions"
+import { createARandomSalesChannel } from "@/app/(backend)/server_actions/createARandomSalesChannel"
+import { Button } from "@/components/common/Button"
+import { RiAddLine } from "@remixicon/react"
 
-const CreateRandomButton = () => {
+//--------------------------------------------------------------
+
+const AddChannelButton = () => {
   return (
-    <button
-      className="mb-4 mt-4 rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+    <Button
+      className="flex items-center gap-2"
       onClick={async () => {
         await createARandomSalesChannel()
       }}
     >
-      Create Random Sales Channel
-    </button>
+      <RiAddLine className="h-4 w-4" />
+      Add Channel
+    </Button>
   )
 }
-export default CreateRandomButton
+export default AddChannelButton

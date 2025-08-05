@@ -47,7 +47,7 @@ export class SalesChannelsController {
   }
 
   //---------------------------------------
-  @Public()
+  //@Public()
   @Get('organization/:organizationId/paginated')
   async findAllByOrganizationPaginated(
     @Param('organizationId', ParseIntPipe) organizationId: number,
