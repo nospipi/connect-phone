@@ -188,7 +188,14 @@ export const getAllSalesChannelsOfOrganizationPaginated = async ({
   pageSize?: number
 }): Promise<SalesChannel[]> => {
   try {
-    console.log("Fetching sales channels for organization ID:", organizationId)
+    console.log(
+      "Fetching sales channels for organization ID:",
+      organizationId,
+      "cursor:",
+      cursor,
+      "pageSize:",
+      pageSize,
+    )
 
     const api = createApiClient()
     const response = await api.get("/sales-channels/paginated", {
@@ -209,6 +216,27 @@ export const getAllSalesChannelsOfOrganizationPaginated = async ({
     const errorMessage =
       (error as AxiosError<ErrorResponse>).response?.data.message ??
       messageFallback
+
+    throw new Error(errorMessage)
+  }
+}
+
+export const createARandomSalesChannel = async (): Promise<SalesChannel> => {
+  try {
+    const api = createApiClient()
+    const response = await api.get("/sales-channels/create-random")
+
+    if (response.status !== 200) {
+      throw new Error("Failed to create random sales channel")
+    }
+
+    return response.data
+  } catch (error: unknown) {
+    const messageFallback = (error as Error).message ?? "An error occurred"
+    const errorMessage =
+      (error as AxiosError<ErrorResponse>).response?.data.message ??
+      messageFallback
+
     throw new Error(errorMessage)
   }
 }

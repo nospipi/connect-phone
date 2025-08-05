@@ -1,10 +1,10 @@
-// src/database/entities/sales-channel.entity.ts
 import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
+  AfterLoad,
 } from 'typeorm';
 import { SalesChannel as ISalesChannel } from '@connect-phone/shared-types';
 import { Organization } from './organization.entity';
@@ -29,4 +29,9 @@ export class SalesChannel implements ISalesChannel {
   @ManyToOne(() => Organization, (organization) => organization.salesChannels)
   @JoinColumn({ name: 'organizationId' })
   organization: Organization;
+
+  // @AfterLoad()
+  // logSalesChannelLoad() {
+  //   console.log(`MIDDLEWARE TEST: ${this.name}`);
+  // }
 }
