@@ -17,10 +17,6 @@ export interface PaginationMeta {
   itemsPerPage: number
   totalPages: number
   currentPage: number
-  hasNextPage: boolean
-  hasPreviousPage: boolean
-  nextPage: number | null
-  previousPage: number | null
 }
 
 export interface PaginationLinks {
@@ -68,11 +64,9 @@ const createApiClient = (): AxiosInstance => {
 export const getAllSalesChannelsOfOrganizationPaginated = async ({
   organizationId,
   page = 1,
-  limit = 10,
 }: {
   organizationId: number
-  page?: number
-  limit?: number
+  page?: string | number
 }): Promise<PaginatedSalesChannelsResponse> => {
   try {
     console.log(
@@ -80,19 +74,11 @@ export const getAllSalesChannelsOfOrganizationPaginated = async ({
       organizationId,
       "page:",
       page,
-      "limit:",
-      limit,
     )
 
     const api = createApiClient()
     const response = await api.get(
-      `/sales-channels/organization/${organizationId}/paginated`,
-      {
-        params: {
-          page,
-          limit,
-        },
-      },
+      `/sales-channels/organization/${organizationId}/paginated?page=${page}`,
     )
 
     if (response.status !== 200) {

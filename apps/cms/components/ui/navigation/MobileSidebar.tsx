@@ -21,6 +21,8 @@ import {
   RiBuildingLine,
   RiGroupLine,
   RiFlagLine,
+  RiNodeTree,
+  RiArchive2Line,
 } from "@remixicon/react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -34,18 +36,13 @@ const navigation = [
   {
     name: "Inventory",
     href: siteConfig.baseLinks.inventory.products,
-    icon: RiCoupon2Line,
+    icon: RiArchive2Line,
   },
   {
     name: "E-Sims",
     href: siteConfig.baseLinks.e_sims.my_e_sims,
     icon: RiSimCardLine,
   },
-  // {
-  //   name: "Settings",
-  //   href: siteConfig.baseLinks.settings.general,
-  //   icon: RiSettings5Line,
-  // },
 ] as const
 
 const shortcuts = [
@@ -53,6 +50,11 @@ const shortcuts = [
     name: "Organization",
     href: "/settings/organization",
     icon: RiBuildingLine,
+  },
+  {
+    name: "Sales channels",
+    href: "/settings/sales-channels",
+    icon: RiNodeTree,
   },
   {
     name: "Users",
