@@ -1,14 +1,21 @@
-// src/resources/sales-channels/sales-channels.module.ts
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { SalesChannelsService } from './sales-channels.service';
-import { SalesChannelsController } from './sales-channels.controller';
-import { SalesChannel } from '../../database/entities/sales-channel.entity';
-import { Organization } from '../../database/entities/organization.entity';
+import { SalesChannel } from '@/database/entities/sales-channel.entity';
+import { Organization } from '@/database/entities/organization.entity';
+
+// controllers
+import { CreateRandomChannelController } from './services/create-random-channel/controller';
+import { FindAllByOrgPaginatedController } from './services/find-all-by-org-paginated/controller';
+
+// services
+import { CreateRandomChannelService } from './services/create-random-channel/service';
+import { FindAllByOrgPaginatedService } from './services/find-all-by-org-paginated/service';
+
+//-----------------------------------------
 
 @Module({
   imports: [TypeOrmModule.forFeature([SalesChannel, Organization])],
-  controllers: [SalesChannelsController],
-  providers: [SalesChannelsService],
+  controllers: [CreateRandomChannelController, FindAllByOrgPaginatedController],
+  providers: [CreateRandomChannelService, FindAllByOrgPaginatedService],
 })
 export class SalesChannelsModule {}

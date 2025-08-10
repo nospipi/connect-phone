@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { SalesChannel } from '@/database/entities/sales-channel.entity';
-import { Organization } from '@/database/entities/organization.entity';
+import { SalesChannel } from '../../../../database/entities/sales-channel.entity';
+import { Organization } from '../../../../database/entities/organization.entity';
 import { faker } from '@faker-js/faker';
 import * as crypto from 'crypto';
 
