@@ -11,8 +11,9 @@ import {
   ParseIntPipe,
   DefaultValuePipe,
 } from '@nestjs/common';
-import { SalesChannelsService } from './sales-channels.service';
-import { SalesChannel } from '../../database/entities/sales-channel.entity';
+import { CreateRandomChannelService } from '@/resources/sales-channels/services/create-random-channel/service';
+import { FindAllByOrgPaginatedService } from '@/resources/sales-channels/services/find-all-by-org-paginated/service';
+import { SalesChannel } from '@/database/entities/sales-channel.entity';
 import { CreateSalesChannelDto } from './dto/create-sales-channel.dto';
 import { UpdateSalesChannelDto } from './dto/update-sales-channel.dto';
 import { Pagination } from 'nestjs-typeorm-paginate';
@@ -20,15 +21,18 @@ import { Public } from 'src/common/guards/decorators/public.decorator';
 
 @Controller('sales-channels')
 export class SalesChannelsController {
-  constructor(private readonly salesChannelsService: SalesChannelsService) {}
+  constructor(
+    private readonly salesChannelsService: CreateRandomChannelService,
+    private readonly findAllByOrgPaginatedService: FindAllByOrgPaginatedService
+  ) {}
 
   //---------------------------------------
-  @Post()
-  async create(
-    @Body() createSalesChannelDto: CreateSalesChannelDto
-  ): Promise<SalesChannel> {
-    return this.salesChannelsService.create(createSalesChannelDto);
-  }
+  // @Post()
+  // async create(
+  //   @Body() createSalesChannelDto: CreateSalesChannelDto
+  // ): Promise<SalesChannel> {
+  //   return this.salesChannelsService.create(createSalesChannelDto);
+  // }
 
   //---------------------------------------
 
@@ -47,7 +51,7 @@ export class SalesChannelsController {
       'limit:',
       limit
     );
-    return this.salesChannelsService.findAllByOrganizationPaginated(
+    return this.findAllByOrgPaginatedService.findAllByOrganizationPaginated(
       organizationId,
       page,
       limit
@@ -65,14 +69,14 @@ export class SalesChannelsController {
   }
 
   //---------------------------------------
-  @Get(':id')
-  async findOne(@Param('id', ParseIntPipe) id: number): Promise<SalesChannel> {
-    return this.salesChannelsService.findOne(id);
-  }
+  // @Get(':id')
+  // async findOne(@Param('id', ParseIntPipe) id: number): Promise<SalesChannel> {
+  //   return this.salesChannelsService.findOne(id);
+  // }
 
   //---------------------------------------
-  @Delete(':id')
-  async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
-    return this.salesChannelsService.remove(id);
-  }
+  // @Delete(':id')
+  // async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
+  //   return this.salesChannelsService.remove(id);
+  // }
 }
