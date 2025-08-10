@@ -1,7 +1,10 @@
 // apps/api/src/resources/sales-channels/services/create-random-channel/controller.ts
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Post, Body } from '@nestjs/common';
 import { CreateRandomChannelService } from './service';
+import { CreateSalesChannelDto } from '../../dto/create-sales-channel.dto';
 import { SalesChannel } from '../../../../database/entities/sales-channel.entity';
+
+//-------------------------------------------
 
 @Controller('sales-channels')
 export class CreateRandomChannelController {
@@ -15,6 +18,19 @@ export class CreateRandomChannelController {
     const newSalesChannel =
       await this.createRandomChannelService.createRandomSalesChannel();
     console.log('Random sales channel created:', newSalesChannel);
+    return newSalesChannel;
+  }
+
+  @Post()
+  async create(
+    @Body() createSalesChannelDto: CreateSalesChannelDto
+  ): Promise<SalesChannel> {
+    console.log('Creating sales channel with DTO:', createSalesChannelDto);
+    const newSalesChannel =
+      await this.createRandomChannelService.createSalesChannel(
+        createSalesChannelDto
+      );
+    console.log('Sales channel created:', newSalesChannel);
     return newSalesChannel;
   }
 }
