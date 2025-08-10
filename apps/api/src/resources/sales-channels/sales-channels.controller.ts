@@ -31,22 +31,7 @@ export class SalesChannelsController {
   }
 
   //---------------------------------------
-  @Get()
-  async findAll(): Promise<SalesChannel[]> {
-    return this.salesChannelsService.findAll();
-  }
 
-  //---------------------------------------
-  //@Public()
-  @Get('organization/:organizationId')
-  async findAllByOrganization(
-    @Param('organizationId', ParseIntPipe) organizationId: number
-  ): Promise<SalesChannel[]> {
-    console.log('Fetching sales channels for organization:', organizationId);
-    return this.salesChannelsService.findAllByOrganization(organizationId);
-  }
-
-  //---------------------------------------
   //@Public()
   @Get('organization/:organizationId/paginated')
   async findAllByOrganizationPaginated(
@@ -83,15 +68,6 @@ export class SalesChannelsController {
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: number): Promise<SalesChannel> {
     return this.salesChannelsService.findOne(id);
-  }
-
-  //---------------------------------------
-  @Patch(':id')
-  async update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() updateSalesChannelDto: UpdateSalesChannelDto
-  ): Promise<SalesChannel> {
-    return this.salesChannelsService.update(id, updateSalesChannelDto);
   }
 
   //---------------------------------------

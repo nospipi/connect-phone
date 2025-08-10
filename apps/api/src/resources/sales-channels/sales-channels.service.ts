@@ -46,21 +46,6 @@ export class SalesChannelsService {
   }
 
   //----------------------------------------
-  async findAll(): Promise<SalesChannel[]> {
-    return this.salesChannelsRepository.find({
-      relations: ['organization'],
-    });
-  }
-
-  //----------------------------------------
-  async findAllByOrganization(organizationId: number): Promise<SalesChannel[]> {
-    return this.salesChannelsRepository.find({
-      where: { organizationId },
-      relations: ['organization'],
-    });
-  }
-
-  //----------------------------------------
   async findAllByOrganizationPaginated(
     organizationId: number,
     page: number = 1,
@@ -124,18 +109,6 @@ export class SalesChannelsService {
     }
 
     return salesChannel;
-  }
-
-  //----------------------------------------
-  async update(
-    id: number,
-    updateSalesChannelDto: UpdateSalesChannelDto
-  ): Promise<SalesChannel> {
-    const salesChannel = await this.findOne(id);
-
-    Object.assign(salesChannel, updateSalesChannelDto);
-
-    return this.salesChannelsRepository.save(salesChannel);
   }
 
   //----------------------------------------
