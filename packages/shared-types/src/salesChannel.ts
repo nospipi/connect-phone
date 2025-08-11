@@ -1,7 +1,7 @@
 export interface SalesChannel {
-  id: number;
-  uuid: string;
+  id?: number;
+  organizationId: number;
   name: string;
-  logoUrl: string | null;
-  description: string | null;
+  logoUrl?: string;
+  description?: string;
 }

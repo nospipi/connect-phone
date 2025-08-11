@@ -4,13 +4,12 @@ import { Repository } from 'typeorm';
 import { SalesChannel } from '../../../../database/entities/sales-channel.entity';
 import { Organization } from '../../../../database/entities/organization.entity';
 import { CreateSalesChannelDto } from '../../dto/create-sales-channel.dto';
-import { faker } from '@faker-js/faker';
 import * as crypto from 'crypto';
 
 //-------------------------------------------
 
 @Injectable()
-export class CreateRandomChannelService {
+export class CreateNewChannelService {
   constructor(
     @InjectRepository(SalesChannel)
     private salesChannelsRepository: Repository<SalesChannel>,
@@ -19,32 +18,10 @@ export class CreateRandomChannelService {
   ) {}
 
   //----------------------------------------
-  async createRandomSalesChannel(): Promise<SalesChannel> {
-    // First, get a random organization to use
-    const organizations = await this.organizationsRepository.find();
-    if (organizations.length === 0) {
-      throw new NotFoundException('No organizations found');
-    }
-
-    // Pick a random organization
-    const randomOrg =
-      organizations[Math.floor(Math.random() * organizations.length)];
-
-    // Create random DTO data
-    const createSalesChannelDto: CreateSalesChannelDto = {
-      name: faker.company.name(),
-      description: faker.company.catchPhrase(),
-      organizationId: randomOrg.id,
-    };
-
-    return this.createSalesChannel(createSalesChannelDto);
-  }
-
-  //----------------------------------------
-  async createSalesChannel(
+  async createNewSalesChannel(
     createSalesChannelDto: CreateSalesChannelDto
   ): Promise<SalesChannel> {
-    // Find organization by UUID (as specified in DTO)
+    // Find organization by ID (as specified in DTO)
     const organization = await this.organizationsRepository.findOne({
       where: { id: createSalesChannelDto.organizationId },
     });

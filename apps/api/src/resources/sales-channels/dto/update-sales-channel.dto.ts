@@ -1,16 +1,28 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateSalesChannelDto } from './create-sales-channel.dto';
-import { IsString, IsOptional } from 'class-validator';
+import {
+  IsString,
+  IsOptional,
+  IsNotEmpty,
+  IsUUID,
+  IsUrl,
+} from 'class-validator';
+import { SalesChannel as ISalesChannel } from '@connect-phone/shared-types';
 
-export class UpdateSalesChannelDto extends PartialType(CreateSalesChannelDto) {
+type UpdateSalesChannel = Omit<ISalesChannel, 'organizationId'>;
+
+export class UpdateSalesChannelDto implements UpdateSalesChannel {
+  @IsNotEmpty()
+  id: number;
+
   @IsString()
   @IsOptional()
-  name?: string;
+  name: string;
 
   @IsString()
   @IsOptional()
   description?: string;
 
-  // Note: organizationUuid typically shouldn't be updatable
-  // Remove it from updates by omitting it here
+  @IsString()
+  @IsOptional()
+  @IsUrl()
+  logoUrl?: string;
 }

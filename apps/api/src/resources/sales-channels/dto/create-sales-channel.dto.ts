@@ -1,15 +1,28 @@
-import { IsString, IsOptional, IsNotEmpty, IsUUID } from 'class-validator';
+import {
+  IsString,
+  IsOptional,
+  IsNotEmpty,
+  IsUUID,
+  IsUrl,
+} from 'class-validator';
+import { SalesChannel as ISalesChannel } from '@connect-phone/shared-types';
+//----------------------------------------------------------------------------
 
-export class CreateSalesChannelDto {
+type CreateSalesChannel = Omit<ISalesChannel, 'id'>;
+export class CreateSalesChannelDto implements CreateSalesChannel {
   @IsString()
   @IsNotEmpty()
   name: string;
+
+  @IsNotEmpty()
+  organizationId: number;
 
   @IsString()
   @IsOptional()
   description?: string;
 
-  @IsUUID()
-  @IsNotEmpty()
-  organizationUuid: string; // Using UUID instead of ID for API
+  @IsString()
+  @IsOptional()
+  @IsUrl()
+  logoUrl?: string;
 }
