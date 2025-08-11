@@ -1,6 +1,3 @@
-import { columns } from "@/components/ui/data-table/columns"
-import { DataTable } from "@/components/ui/data-table/DataTable"
-import { usage } from "@/data/data"
 import { getAllSalesChannelsOfOrganizationPaginated } from "@/app/(backend)/server_actions/getAllSalesChannelsOfOrganizationPaginated"
 import AddChannelButton from "./CreateRandomButton.client"
 import { SalesChannel } from "@connect-phone/shared-types"
@@ -51,7 +48,12 @@ const Page = async ({
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <AddChannelButton />
+          <Link
+            href={`/settings/sales-channels/create-new-sales-channel`}
+            className="flex items-center gap-2"
+          >
+            <AddChannelButton />
+          </Link>
         </div>
       </div>
 
