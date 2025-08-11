@@ -29,7 +29,7 @@ const Page = async ({
 
   const salesChannelsResponse =
     await getAllSalesChannelsOfOrganizationPaginated({
-      organizationId: 31, // TEMPORARY
+      organizationId: 89, // TEMPORARY
       page: page,
     })
   const salesChannels: SalesChannel[] = salesChannelsResponse?.items || []
@@ -51,7 +51,9 @@ const Page = async ({
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <AddChannelButton />
+          <Link href="/settings/sales-channels/create-new">
+            <AddChannelButton />
+          </Link>
         </div>
       </div>
 

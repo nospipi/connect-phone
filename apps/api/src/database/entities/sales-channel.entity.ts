@@ -26,6 +26,9 @@ export class SalesChannel implements ISalesChannel {
   @Column()
   organizationId: number;
 
+  @Column({ type: 'varchar', length: 500, nullable: true })
+  logoUrl: string | null;
+
   @ManyToOne(() => Organization, (organization) => organization.salesChannels)
   @JoinColumn({ name: 'organizationId' })
   organization: Organization;

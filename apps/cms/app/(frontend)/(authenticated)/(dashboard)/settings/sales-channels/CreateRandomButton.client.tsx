@@ -16,17 +16,17 @@ const AddChannelButton = () => {
       className={`relative select-none overflow-hidden ${
         isLoading ? "cursor-not-allowed bg-gray-200" : ""
       }`}
-      onClick={async () => {
-        setIsLoading(true)
-        try {
-          await createARandomSalesChannel()
-          toast.success("Sales channel created successfully!")
-        } catch (error) {
-          toast.error("Failed to create sales channel.")
-        } finally {
-          setIsLoading(false)
-        }
-      }}
+      //   onClick={async () => {
+      //     setIsLoading(true)
+      //     try {
+      //       await createARandomSalesChannel()
+      //       toast.success("Sales channel created successfully!")
+      //     } catch (error) {
+      //       toast.error("Failed to create sales channel.")
+      //     } finally {
+      //       setIsLoading(false)
+      //     }
+      //   }}
     >
       {isLoading && (
         <div className="absolute inset-0 -skew-x-12 animate-[shimmer_1.8s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>

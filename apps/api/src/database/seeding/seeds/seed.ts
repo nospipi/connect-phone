@@ -18,9 +18,7 @@ async function seed() {
       uuid: faker.random.uuid(),
       name: faker.company.companyName(),
       slug: faker.helpers.slugify(faker.company.companyName()).toLowerCase(),
-      logoUrl: faker.random.boolean()
-        ? faker.image.business(400, 400, true)
-        : null,
+      logoUrl: faker.random.boolean() ? 'https://picsum.photos/400/400' : null,
       createdAt: faker.date.past().toISOString(),
     }));
 
@@ -40,6 +38,9 @@ async function seed() {
           name: `${faker.commerce.department()} ${faker.random.arrayElement(['Store', 'Online', 'Mobile', 'Retail', 'Platform'])}`,
           description: faker.random.boolean()
             ? faker.company.catchPhrase()
+            : null,
+          logoUrl: faker.random.boolean()
+            ? 'https://picsum.photos/400/400'
             : null,
           organizationId: org.id,
         });
