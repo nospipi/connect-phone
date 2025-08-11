@@ -2,13 +2,8 @@
 import { DataSource } from 'typeorm';
 import { Organization } from './entities/organization.entity';
 import { SalesChannel } from './entities/sales-channel.entity';
-import { SeederOptions } from 'typeorm-extension';
 import * as dotenv from 'dotenv';
 dotenv.config();
-
-const options: SeederOptions = {
-  seeds: ['src/database/seeding/seeders/*.ts'],
-};
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
@@ -20,7 +15,6 @@ export const AppDataSource = new DataSource({
   },
   synchronize: false, // Always false for migrations
   logging: true,
-  ...options,
 });
 
 // Initialize the data source
