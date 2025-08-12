@@ -14,7 +14,7 @@ interface ErrorResponse {
 interface CreateSalesChannelParams {
   name: string
   description?: string
-  organizationUuid: string
+  organizationId: number
 }
 
 //--------------------------------------------------------------
@@ -49,20 +49,20 @@ const createApiClient = (): AxiosInstance => {
 export const createNewSalesChannel = async ({
   name,
   description,
-  organizationUuid,
+  organizationId,
 }: CreateSalesChannelParams): Promise<SalesChannel> => {
   try {
     console.log("Creating new sales channel:", {
       name,
       description,
-      organizationUuid,
+      organizationId,
     })
 
     const api = createApiClient()
     const response = await api.post("/sales-channels/new", {
       name,
       description,
-      organizationUuid,
+      organizationId,
     })
 
     if (response.status !== 200 && response.status !== 201) {
