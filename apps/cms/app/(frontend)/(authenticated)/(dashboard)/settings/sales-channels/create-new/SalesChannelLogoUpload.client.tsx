@@ -5,7 +5,6 @@ import { upload } from "@vercel/blob/client"
 import { type PutBlobResult } from "@vercel/blob"
 import { useRouter } from "next/navigation"
 import {
-  RiUploadLine,
   RiImageLine,
   RiDragDropLine,
   RiDeleteBinLine,
@@ -171,7 +170,7 @@ export default function SalesChannelLogoUpload({
       const filename = `sales-channel-logos/${organizationId}/${timestamp}-${uploadFile.name.replace(/[^a-zA-Z0-9.-]/g, "-")}`
 
       // Upload to Vercel Blob with progress tracking
-      const newBlob = await upload(filename, uploadFile, {
+      const newBlob: PutBlobResult = await upload(filename, uploadFile, {
         access: "public",
         handleUploadUrl: "/api/upload",
         onUploadProgress: (progressEvent) => {
