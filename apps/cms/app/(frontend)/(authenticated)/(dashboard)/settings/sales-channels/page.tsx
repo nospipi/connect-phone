@@ -74,37 +74,28 @@ const Page = async ({
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {salesChannels.map((channel: SalesChannel) => (
             <Card
-              key={channel.uuid}
-              className="p-6 transition-shadow hover:shadow-md"
+              key={channel.name}
+              className="flex flex-col p-6 transition-shadow hover:shadow-md"
             >
-              <div className="flex items-start justify-between">
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2">
-                    <h3 className="truncate text-sm font-semibold text-gray-900 dark:text-gray-50">
-                      {channel.name}
-                    </h3>
-                    <Badge className="shrink-0 border-green-200 bg-green-100 text-green-800 dark:border-green-800 dark:bg-green-900 dark:text-green-100">
-                      Active
-                    </Badge>
-                  </div>
-
-                  {channel.description ? (
-                    <p className="mt-2 line-clamp-2 text-sm text-gray-500">
-                      {channel.description}
-                    </p>
-                  ) : (
-                    <p className="mt-2 text-sm italic text-gray-400">
-                      No description provided
-                    </p>
-                  )}
-
-                  <div className="mt-4 flex items-center gap-4 text-xs text-gray-500">
-                    <span>ID: {channel.id}</span>
-                    <span className="truncate">
-                      UUID: {channel.uuid.slice(0, 8)}...
-                    </span>
-                  </div>
+              <div className="flex-1">
+                <div className="flex items-center gap-2">
+                  <h3 className="truncate text-sm font-semibold text-gray-900 dark:text-gray-50">
+                    {channel.name}
+                  </h3>
+                  <Badge className="shrink-0 border-green-200 bg-green-100 text-green-800 dark:border-green-800 dark:bg-green-900 dark:text-green-100">
+                    Active
+                  </Badge>
                 </div>
+
+                {channel.description ? (
+                  <p className="mt-2 line-clamp-2 text-sm text-gray-500">
+                    {channel.description}
+                  </p>
+                ) : (
+                  <p className="mt-2 text-sm italic text-gray-400">
+                    No description provided
+                  </p>
+                )}
               </div>
 
               {/* Action Buttons */}

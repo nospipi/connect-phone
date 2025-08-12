@@ -5,17 +5,16 @@ import {
   ManyToOne,
   JoinColumn,
   AfterLoad,
+  Unique,
 } from 'typeorm';
 import { SalesChannel as ISalesChannel } from '@connect-phone/shared-types';
 import { Organization } from './organization.entity';
 
 @Entity('sales_channels')
+@Unique(['name', 'organizationId'])
 export class SalesChannel implements ISalesChannel {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column({ unique: true })
-  uuid: string;
 
   @Column()
   name: string;
@@ -27,7 +26,7 @@ export class SalesChannel implements ISalesChannel {
   organizationId: number;
 
   @Column({ type: 'varchar', length: 500, nullable: true })
-  logoUrl: string | null;
+  logoUrl: string | null | undefined;
 
   @ManyToOne(() => Organization, (organization) => organization.salesChannels)
   @JoinColumn({ name: 'organizationId' })

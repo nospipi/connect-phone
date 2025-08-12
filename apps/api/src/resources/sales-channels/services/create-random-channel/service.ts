@@ -3,9 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SalesChannel } from '../../../../database/entities/sales-channel.entity';
 import { Organization } from '../../../../database/entities/organization.entity';
-import { CreateSalesChannelDto } from '../../dto/create-sales-channel.dto';
+import { CreateSalesChannelDto } from '../create-new-channel/create-sales-channel.dto';
 import { faker } from '@faker-js/faker';
-import * as crypto from 'crypto';
 
 //-------------------------------------------
 
@@ -54,7 +53,6 @@ export class CreateRandomChannelService {
     }
 
     const salesChannel = this.salesChannelsRepository.create({
-      uuid: crypto.randomUUID(),
       name: createSalesChannelDto.name,
       description: createSalesChannelDto.description,
       organizationId: organization.id,

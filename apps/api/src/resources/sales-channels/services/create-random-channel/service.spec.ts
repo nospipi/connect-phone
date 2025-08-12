@@ -6,7 +6,7 @@ import { NotFoundException } from '@nestjs/common';
 import { CreateRandomChannelService } from './service';
 import { SalesChannel } from '../../../../database/entities/sales-channel.entity';
 import { Organization } from '../../../../database/entities/organization.entity';
-import { CreateSalesChannelDto } from '../../dto/create-sales-channel.dto';
+import { CreateSalesChannelDto } from '../create-new-channel/create-sales-channel.dto';
 import { faker } from '@faker-js/faker';
 import * as crypto from 'crypto';
 
@@ -40,7 +40,6 @@ describe('CreateRandomChannelService', () => {
 
   const mockOrganization: Organization = {
     id: 31,
-    uuid: 'org-uuid-31',
     name: 'Test Organization',
     slug: 'test-org',
     logoUrl: null,
@@ -50,7 +49,6 @@ describe('CreateRandomChannelService', () => {
 
   const mockSalesChannel: SalesChannel = {
     id: 1,
-    uuid: 'sc-uuid-123',
     name: 'Test Company',
     description: 'Test Catchphrase',
     logoUrl: null,
@@ -107,8 +105,6 @@ describe('CreateRandomChannelService', () => {
   describe('createSalesChannel', () => {
     it('should create a sales channel with DTO successfully', async () => {
       // Arrange
-      const mockUuid = 'random-uuid-123';
-      (crypto.randomUUID as jest.Mock).mockReturnValue(mockUuid);
 
       organizationsRepository.findOne.mockResolvedValue(mockOrganization);
       salesChannelsRepository.create.mockReturnValue(mockSalesChannel);
@@ -124,7 +120,6 @@ describe('CreateRandomChannelService', () => {
         where: { id: mockCreateSalesChannelDto.organizationId },
       });
       expect(salesChannelsRepository.create).toHaveBeenCalledWith({
-        uuid: mockUuid,
         name: mockCreateSalesChannelDto.name,
         description: mockCreateSalesChannelDto.description,
         organizationId: 31,
@@ -153,12 +148,9 @@ describe('CreateRandomChannelService', () => {
 
   describe('createRandomSalesChannel', () => {
     it('should create a random sales channel successfully', async () => {
-      // Arrange
-      const mockUuid = 'random-uuid-123';
       const mockName = 'Random Company';
       const mockDescription = 'Random Catchphrase';
 
-      (crypto.randomUUID as jest.Mock).mockReturnValue(mockUuid);
       (faker.company.name as jest.Mock).mockReturnValue(mockName);
       (faker.company.catchPhrase as jest.Mock).mockReturnValue(mockDescription);
 
@@ -176,7 +168,6 @@ describe('CreateRandomChannelService', () => {
         where: { id: mockOrganization.id },
       });
       expect(salesChannelsRepository.create).toHaveBeenCalledWith({
-        uuid: mockUuid,
         name: mockName,
         description: mockDescription,
         organizationId: 31,

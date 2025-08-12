@@ -15,7 +15,6 @@ async function seed() {
 
     // Create organizations with faker
     const organizations = Array.from({ length: 5 }, () => ({
-      uuid: faker.random.uuid(),
       name: faker.company.companyName(),
       slug: faker.helpers.slugify(faker.company.companyName()).toLowerCase(),
       logoUrl: faker.random.boolean() ? 'https://picsum.photos/400/400' : null,
@@ -34,7 +33,6 @@ async function seed() {
       const channelCount = faker.random.number({ min: 2, max: 4 });
       for (let i = 0; i < channelCount; i++) {
         salesChannels.push({
-          uuid: faker.random.uuid(),
           name: `${faker.commerce.department()} ${faker.random.arrayElement(['Store', 'Online', 'Mobile', 'Retail', 'Platform'])}`,
           description: faker.random.boolean()
             ? faker.company.catchPhrase()

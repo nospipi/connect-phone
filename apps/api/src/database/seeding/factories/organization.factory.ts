@@ -4,7 +4,6 @@ import { Organization } from '../../entities/organization.entity';
 
 define(Organization, (faker: typeof Faker) => {
   const organization = new Organization();
-  organization.uuid = faker.datatype.uuid();
   organization.name = faker.company.companyName();
   organization.slug = faker.helpers.slugify(organization.name).toLowerCase();
   organization.logoUrl = faker.random.boolean()

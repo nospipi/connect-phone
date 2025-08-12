@@ -4,7 +4,6 @@ import { SalesChannel } from '../../entities/sales-channel.entity';
 
 define(SalesChannel, (faker: typeof Faker) => {
   const salesChannel = new SalesChannel();
-  salesChannel.uuid = faker.datatype.uuid();
   salesChannel.name = `${faker.commerce.department()} ${faker.random.arrayElement(['Store', 'Online', 'Mobile', 'Retail'])}`;
   salesChannel.description = faker.random.boolean()
     ? faker.commerce.productDescription()

@@ -14,9 +14,6 @@ export class Organization implements IOrganization {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true, type: 'varchar', length: 255 })
-  uuid: string;
-
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: string;
 

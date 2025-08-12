@@ -1,7 +1,7 @@
 // apps/api/src/resources/sales-channels/services/create-random-channel/controller.ts
 import { Controller, Get, Post, Body } from '@nestjs/common';
 import { CreateRandomChannelService } from './service';
-import { CreateSalesChannelDto } from '../../dto/create-sales-channel.dto';
+import { CreateSalesChannelDto } from '../create-new-channel/create-sales-channel.dto';
 import { SalesChannel } from '../../../../database/entities/sales-channel.entity';
 
 //-------------------------------------------

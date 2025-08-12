@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SalesChannel } from '../../../../database/entities/sales-channel.entity';
 import { Organization } from '../../../../database/entities/organization.entity';
-import { CreateSalesChannelDto } from '../../dto/create-sales-channel.dto';
+import { CreateSalesChannelDto } from './create-sales-channel.dto';
 import * as crypto from 'crypto';
 
 //-------------------------------------------
@@ -21,6 +21,8 @@ export class CreateNewChannelService {
   async createNewSalesChannel(
     createSalesChannelDto: CreateSalesChannelDto
   ): Promise<SalesChannel> {
+    console.log('Creating new sales channel with DTO:', createSalesChannelDto);
+
     // Find organization by ID (as specified in DTO)
     const organization = await this.organizationsRepository.findOne({
       where: { id: createSalesChannelDto.organizationId },
@@ -31,7 +33,6 @@ export class CreateNewChannelService {
     }
 
     const salesChannel = this.salesChannelsRepository.create({
-      uuid: crypto.randomUUID(),
       name: createSalesChannelDto.name,
       description: createSalesChannelDto.description,
       organizationId: organization.id,
