@@ -3,18 +3,13 @@
 import axios, { AxiosInstance, AxiosError } from "axios"
 import { auth } from "@clerk/nextjs/server"
 import { revalidatePath } from "next/cache"
+import { redirect } from "next/navigation"
 import { SalesChannel } from "@connect-phone/shared-types"
 
 //----------------------------------------------------------------------
 
 interface ErrorResponse {
   message: string
-}
-
-interface CreateSalesChannelParams {
-  name: string
-  description?: string
-  organizationId: number
 }
 
 //--------------------------------------------------------------
@@ -46,34 +41,41 @@ const createApiClient = (): AxiosInstance => {
 
 //----------------------------------------------------------------------
 
-export const createNewSalesChannel = async ({
-  name,
-  description,
-  organizationId,
-}: CreateSalesChannelParams): Promise<SalesChannel> => {
+export const createNewSalesChannel = async (
+  formData: FormData,
+): Promise<void> => {
   try {
+    // Extract form data
+    const name = formData.get("name") as string
+    const description = formData.get("description") as string
+    const logoUrl = formData.get("logoUrl") as string
+
+    // Validate required fields
+    if (!name) {
+      throw new Error("Name is required")
+    }
+
     console.log("Creating new sales channel:", {
       name,
-      description,
-      organizationId,
+      description: description || undefined,
+      logoUrl: logoUrl || undefined,
     })
 
     const api = createApiClient()
     const response = await api.post("/sales-channels/new", {
       name,
-      description,
-      organizationId,
+      description: description || undefined,
+      logoUrl: logoUrl || undefined,
     })
 
     if (response.status !== 200 && response.status !== 201) {
       throw new Error("Failed to create sales channel")
     }
 
+    console.log("Sales channel created successfully:", response.data)
+
     // Revalidate the sales channels page after creating a new one
     revalidatePath("/settings/sales-channels")
-
-    console.log("Sales channel created successfully:", response.data)
-    return response.data
   } catch (error: unknown) {
     const messageFallback = (error as Error).message ?? "An error occurred"
     const errorMessage =
@@ -82,5 +84,8 @@ export const createNewSalesChannel = async ({
 
     console.error("Failed to create sales channel:", errorMessage)
     throw new Error(errorMessage)
+  } finally {
+    // Redirect to sales channels page after successful creation
+    redirect("/settings/sales-channels")
   }
 }

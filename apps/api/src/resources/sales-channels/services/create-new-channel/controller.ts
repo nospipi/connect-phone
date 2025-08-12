@@ -30,7 +30,7 @@ export class CreateNewChannelController {
     private readonly createNewChannelService: CreateNewChannelService
   ) {}
 
-  @Public()
+  //@Public()
   @Post('new')
   @UseInterceptors(LogRequestInterceptor)
   async createNew(
