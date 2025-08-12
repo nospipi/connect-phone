@@ -4,7 +4,6 @@ import { Repository } from 'typeorm';
 import { SalesChannel } from '../../../../database/entities/sales-channel.entity';
 import { Organization } from '../../../../database/entities/organization.entity';
 import { CreateSalesChannelDto } from './create-sales-channel.dto';
-import * as crypto from 'crypto';
 
 //-------------------------------------------
 

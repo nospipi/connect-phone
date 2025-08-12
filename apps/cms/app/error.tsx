@@ -1,10 +1,12 @@
 "use client"
 
-import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
+import { RiRefreshLine, RiArrowLeftLine } from "@remixicon/react"
 
 const ErrorPage = ({ error }: { error?: Error | string | unknown }) => {
   const [countdown, setCountdown] = useState(15)
+  const router = useRouter()
 
   // Extract error message properly based on type
   const errorMessage = error
@@ -18,8 +20,7 @@ const ErrorPage = ({ error }: { error?: Error | string | unknown }) => {
   useEffect(() => {
     // Auto-redirect countdown
     if (countdown <= 0) {
-      window.location.reload()
-      //return
+      router.back()
     }
 
     const timer = setTimeout(() => {
@@ -27,7 +28,7 @@ const ErrorPage = ({ error }: { error?: Error | string | unknown }) => {
     }, 1000)
 
     return () => clearTimeout(timer)
-  }, [countdown])
+  }, [countdown, router])
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 dark:bg-gray-900">
@@ -50,49 +51,24 @@ const ErrorPage = ({ error }: { error?: Error | string | unknown }) => {
                 }}
                 className="inline-flex items-center justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="mr-2 h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                  />
-                </svg>
+                <RiRefreshLine className="mr-2 h-4 w-4" />
                 Try Again
               </button>
 
-              <Link
-                href="/"
+              <button
+                onClick={() => {
+                  router.back()
+                }}
                 className="inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="mr-2 h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 12l2-2m0 0l7-7 7 7m-7-7v18"
-                  />
-                </svg>
-                Back to Home
-              </Link>
+                <RiArrowLeftLine className="mr-2 h-4 w-4" />
+                Go Back
+              </button>
             </div>
 
             <div className="mt-8 border-t border-gray-200 pt-6 dark:border-gray-700">
               <p className="text-sm text-gray-500 dark:text-gray-400">
-                Redirecting to homepage in{" "}
-                <span className="font-medium">{countdown}</span> seconds
+                Back in <span className="font-medium">{countdown}</span> seconds
               </p>
               <div className="mt-2 h-1.5 w-full rounded-full bg-gray-200 dark:bg-gray-700">
                 <div

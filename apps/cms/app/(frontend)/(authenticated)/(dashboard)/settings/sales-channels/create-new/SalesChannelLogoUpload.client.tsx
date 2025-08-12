@@ -259,7 +259,7 @@ export default function SalesChannelLogoUpload({
                   Click anywhere to change or drag a new image here
                 </p>
                 <a
-                  href={logoPreview}
+                  href={currentLogoUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={(e) => e.stopPropagation()}

@@ -68,6 +68,8 @@ export const createNewSalesChannel = async (
       logoUrl: logoUrl || undefined,
     })
 
+    console.log("Response from API:", response.data)
+
     if (response.status !== 200 && response.status !== 201) {
       throw new Error("Failed to create sales channel")
     }
@@ -84,8 +86,7 @@ export const createNewSalesChannel = async (
 
     console.error("Failed to create sales channel:", errorMessage)
     throw new Error(errorMessage)
-  } finally {
-    // Redirect to sales channels page after successful creation
-    redirect("/settings/sales-channels")
   }
+
+  redirect("/settings/sales-channels")
 }
