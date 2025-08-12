@@ -1,14 +1,25 @@
 import { createNewSalesChannel } from "@/app/(backend)/server_actions/createNewSalesChannel"
 import { getCurrentUserOrganization } from "@/app/server_actions"
 import CreateSalesChannelButton from "./CreateSalesChannelButton.client"
+import SalesChannelLogoUpload from "./SalesChannelLogoUpload.client"
 import { RiArrowLeftLine, RiAddLine } from "@remixicon/react"
 import Link from "next/link"
 
 //----------------------------------------------------------------------
 
-const Page = async () => {
-  // Get current user's organization
+const Page = async ({
+  //params,
+  searchParams,
+}: {
+  //params: Promise<{ partner_id: string; page: string }>
+  searchParams: Promise<{ [key: string]: string | undefined }>
+}) => {
   const organization = { id: 89, name: "Example Organization" }
+
+  const resolvedSearchParams = await searchParams
+  const prefilledName = resolvedSearchParams.name || ""
+  const prefilledDescription = resolvedSearchParams.description || ""
+  const prefilledLogoUrl = resolvedSearchParams.logoUrl || ""
 
   if (!organization || !organization.id) {
     return (
@@ -56,14 +67,7 @@ const Page = async () => {
       {/* Form */}
       <div className="flex-1 items-center justify-items-center overflow-auto p-4">
         <div className="h-full max-w-2xl">
-          <form action={createNewSalesChannel} className="flex flex-col gap-4">
-            {/* Hidden organization ID field */}
-            <input
-              type="hidden"
-              name="organizationId"
-              value={organization.id}
-            />
-
+          <form action={createNewSalesChannel} className="flex flex-col gap-6">
             {/* Channel Name */}
             <div>
               <label
@@ -78,6 +82,7 @@ const Page = async () => {
                 name="name"
                 type="text"
                 placeholder="e.g., Online Store, Retail Outlet, Mobile App"
+                defaultValue={prefilledName}
                 className="mt-2 block w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
                 required
               />
@@ -99,6 +104,7 @@ const Page = async () => {
                 name="description"
                 rows={3}
                 placeholder="Describe this sales channel and its purpose..."
+                defaultValue={prefilledDescription}
                 className="mt-2 block w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
               />
               <p className="mt-2 text-xs text-gray-500">
@@ -106,25 +112,26 @@ const Page = async () => {
               </p>
             </div>
 
-            {/* Logo URL */}
+            {/* Logo Upload */}
             <div>
-              <label
-                htmlFor="logoUrl"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-              >
-                Logo URL
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                Channel Logo
               </label>
-              <input
-                id="logoUrl"
-                name="logoUrl"
-                type="url"
-                placeholder="https://example.com/logo.png"
-                className="mt-2 block w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
-              />
+              <div className="mt-2">
+                <SalesChannelLogoUpload
+                  currentName={prefilledName}
+                  currentDescription={prefilledDescription}
+                  currentLogoUrl={prefilledLogoUrl}
+                  organizationId={organization.id.toString()}
+                />
+              </div>
               <p className="mt-2 text-xs text-gray-500">
-                Optional: Direct link to the channel&apos;s logo image
+                Optional: Upload a logo to represent this sales channel
               </p>
             </div>
+
+            {/* Hidden input for logo URL to be submitted with the form */}
+            <input type="hidden" name="logoUrl" value={prefilledLogoUrl} />
 
             {/* Organization Info */}
             <div className="rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
