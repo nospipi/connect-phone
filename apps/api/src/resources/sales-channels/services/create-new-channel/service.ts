@@ -33,8 +33,7 @@ export class CreateNewChannelService {
     }
 
     const salesChannel = this.salesChannelsRepository.create({
-      name: createSalesChannelDto.name,
-      description: createSalesChannelDto.description,
+      ...createSalesChannelDto,
       organizationId: organization.id,
     });
 

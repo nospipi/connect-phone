@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 import { CreateNewChannelService } from './service';
 import { CreateSalesChannelDto } from './create-sales-channel.dto';
 import { SalesChannel } from '../../../../database/entities/sales-channel.entity';
-import { Public } from '@/common/guards/decorators/public.decorator';
+import { Public } from '@/common/decorators/public.decorator';
 
 //-------------------------------------------
 

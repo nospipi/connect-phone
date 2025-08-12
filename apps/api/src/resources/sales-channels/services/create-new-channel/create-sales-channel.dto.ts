@@ -6,14 +6,14 @@ import {
   IsUrl,
 } from 'class-validator';
 import { SalesChannel as ISalesChannel } from '@connect-phone/shared-types';
-import { Sanitize } from '@/common/guards/decorators/sanitize.decorator';
+import { Sanitize } from '@/common/decorators/sanitize.decorator';
 //----------------------------------------------------------------------------
 
 type CreateSalesChannel = Omit<ISalesChannel, 'id'>;
 export class CreateSalesChannelDto implements CreateSalesChannel {
   @IsString()
   @IsNotEmpty()
-  //@Sanitize()
+  @Sanitize()
   name: string;
 
   @IsNotEmpty()
@@ -27,6 +27,6 @@ export class CreateSalesChannelDto implements CreateSalesChannel {
   @IsString()
   @IsOptional()
   @IsUrl()
-  @Sanitize()
+  //@Sanitize()
   logoUrl?: string;
 }

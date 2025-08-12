@@ -37,6 +37,8 @@ export default tseslint.config(
       '@typescript-eslint/no-unsafe-member-access': 'off',
       '@typescript-eslint/no-unsafe-assignment': 'off',
       '@typescript-eslint/unbound-method': 'off',
+      'no-useless-escape': 'off',
+      'no-control-regex': 'off',
       'prettier/prettier': [
         'error',
         {
