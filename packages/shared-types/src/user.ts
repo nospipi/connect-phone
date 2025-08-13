@@ -6,6 +6,6 @@ export interface User {
   email: string;
   firstName: string;
   lastName: string;
-  loggedOrganization: Organization | null | undefined;
+  loggedOrganizationId: number | null | undefined;
   organizations: Organization[];
 }

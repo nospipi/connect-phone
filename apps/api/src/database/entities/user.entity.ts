@@ -29,8 +29,10 @@ export class User implements IUser {
   @Column({ type: 'varchar', length: 255 })
   lastName: string;
 
+  // Fix: Use @JoinColumn to specify the exact column name
   @ManyToOne(() => Organization, { nullable: true })
-  loggedOrganization: Organization | null | undefined;
+  @JoinColumn({ name: 'loggedOrganizationId' })
+  loggedOrganizationId: number | null | undefined;
 
   @ManyToMany(() => Organization, (organization) => organization.users)
   organizations: Organization[];

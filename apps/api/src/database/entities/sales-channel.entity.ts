@@ -11,7 +11,7 @@ import { SalesChannel as ISalesChannel } from '@connect-phone/shared-types';
 import { Organization } from './organization.entity';
 
 @Entity('sales_channels')
-@Unique(['name', 'organization'])
+@Unique(['name', 'organizationId'])
 export class SalesChannel implements ISalesChannel {
   @PrimaryGeneratedColumn()
   id: number;
@@ -20,12 +20,16 @@ export class SalesChannel implements ISalesChannel {
   name: string;
 
   @Column({ type: 'varchar', length: 500, nullable: true })
-  description: string | null;
+  description: string | null | undefined;
 
   @Column({ type: 'varchar', length: 500, nullable: true })
   logoUrl: string | null | undefined;
 
-  // TypeORM automatically creates the `<propertyName>Id` foreign key column in many-to-one relationships.
-  @ManyToOne(() => Organization, (organization) => organization.salesChannels)
-  organization: Organization;
+  @Column()
+  organizationId: number;
+
+  // @AfterLoad()
+  // logSalesChannelLoad() {
+  //   console.log(`MIDDLEWARE TEST: ${this.name}`);
+  // }
 }

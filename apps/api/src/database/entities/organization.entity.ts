@@ -28,7 +28,7 @@ export class Organization implements IOrganization {
   @Column({ type: 'varchar', length: 500, nullable: true })
   logoUrl: string | null;
 
-  @OneToMany(() => SalesChannel, (salesChannel) => salesChannel.organization)
+  @OneToMany(() => SalesChannel, (salesChannel) => salesChannel.organizationId)
   salesChannels: SalesChannel[];
 
   @ManyToMany(() => User, (user) => user.organizations)

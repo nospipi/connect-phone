@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Organization } from './entities/organization.entity';
 import { SalesChannel } from './entities/sales-channel.entity';
-
+import { User } from './entities/user.entity';
 //--------------------------------------------------------------
 
 @Module({
@@ -13,7 +13,7 @@ import { SalesChannel } from './entities/sales-channel.entity';
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
         url: configService.get('DATABASE_URL'),
-        entities: [Organization, SalesChannel],
+        entities: [Organization, SalesChannel, User],
         synchronize: process.env.NODE_ENV !== 'production', // Only for development
         ssl: {
           rejectUnauthorized: false,
