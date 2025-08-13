@@ -1,10 +1,11 @@
+import { Organization } from "./organization";
+
 export interface User {
   id: number;
-  uuid: string;
-  createdAt: string; // ISO timestamp
+  createdAt: string;
   email: string;
   firstName: string;
   lastName: string;
-  fullName: string;
-  loggedToOrganizationId: number | null;
+  loggedOrganization: Organization | null | undefined;
+  organizations: Organization[];
 }

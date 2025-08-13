@@ -2,13 +2,14 @@
 import { DataSource } from 'typeorm';
 import { Organization } from './entities/organization.entity';
 import { SalesChannel } from './entities/sales-channel.entity';
+import { User } from './entities/user.entity';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
   url: process.env.DATABASE_URL,
-  entities: [Organization, SalesChannel],
+  entities: [Organization, SalesChannel, User],
   migrations: ['src/database/migrations/*.ts'],
   ssl: {
     rejectUnauthorized: false,
@@ -17,11 +18,10 @@ export const AppDataSource = new DataSource({
   logging: true,
 });
 
-// Initialize the data source
-AppDataSource.initialize()
-  .then(() => {
+// Optional helper for your app runtime (not needed for CLI)
+export async function initializeDataSource() {
+  if (!AppDataSource.isInitialized) {
+    await AppDataSource.initialize();
     console.log('Data Source has been initialized!');
-  })
-  .catch((err) => {
-    console.error('Error during Data Source initialization:', err);
-  });
+  }
+}

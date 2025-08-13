@@ -1,7 +1,9 @@
+import { Organization } from "./organization";
+
 export interface SalesChannel {
   id?: number;
-  organizationId: number;
+  organization: Organization;
   name: string;
   logoUrl?: string | null | undefined;
-  description?: string;
+  description?: string | null | undefined;
 }

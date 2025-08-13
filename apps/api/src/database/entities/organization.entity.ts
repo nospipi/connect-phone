@@ -4,10 +4,12 @@ import {
   Column,
   PrimaryGeneratedColumn,
   OneToMany,
+  ManyToMany,
   CreateDateColumn,
 } from 'typeorm';
 import { Organization as IOrganization } from '@connect-phone/shared-types';
 import { SalesChannel } from './sales-channel.entity';
+import { User } from './user.entity';
 
 @Entity({ name: 'organizations' })
 export class Organization implements IOrganization {
@@ -28,4 +30,7 @@ export class Organization implements IOrganization {
 
   @OneToMany(() => SalesChannel, (salesChannel) => salesChannel.organization)
   salesChannels: SalesChannel[];
+
+  @ManyToMany(() => User, (user) => user.organizations)
+  users: User[];
 }
