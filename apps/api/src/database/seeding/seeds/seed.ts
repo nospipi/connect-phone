@@ -10,8 +10,15 @@ async function seed() {
     console.log('Database connected for seeding');
 
     // Clear existing data
-    await AppDataSource.getRepository(SalesChannel).clear();
-    await AppDataSource.getRepository(Organization).clear();
+    await AppDataSource.createQueryBuilder()
+      .delete()
+      .from(SalesChannel)
+      .execute();
+
+    await AppDataSource.createQueryBuilder()
+      .delete()
+      .from(Organization)
+      .execute();
 
     // Create organizations
     const organizations: Partial<Organization>[] = Array.from(

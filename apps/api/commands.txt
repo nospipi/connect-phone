@@ -2,7 +2,7 @@
 nest g resource resources/<name>
 
 # Generate migration file
-npx typeorm-ts-node-commonjs migration:generate src/migrations/Migration -d src/database/data-source.ts
+npx typeorm-ts-node-commonjs migration:generate src/database/migrations/Migration -d src/database/data-source.ts
 
 # Run all pending migrations
 npx typeorm-ts-node-commonjs migration:run -d src/database/data-source.ts

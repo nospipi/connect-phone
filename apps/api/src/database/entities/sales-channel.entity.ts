@@ -25,6 +25,7 @@ export class SalesChannel implements ISalesChannel {
   @Column({ type: 'varchar', length: 500, nullable: true })
   logoUrl: string | null | undefined;
 
+  // TypeORM automatically creates the `<propertyName>Id` foreign key column in many-to-one relationships.
   @ManyToOne(() => Organization, (organization) => organization.salesChannels)
   organization: Organization;
 }
