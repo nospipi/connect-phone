@@ -8,7 +8,3 @@ export interface User {
   fullName: string;
   loggedToOrganizationId: number | null;
 }
-
-export interface Chifsa {
-  id: number;
-}
