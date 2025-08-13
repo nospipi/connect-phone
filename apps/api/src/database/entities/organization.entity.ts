@@ -28,7 +28,8 @@ export class Organization implements IOrganization {
   @Column({ type: 'varchar', length: 500, nullable: true })
   logoUrl: string | null;
 
-  @OneToMany(() => SalesChannel, (salesChannel) => salesChannel.organizationId)
+  // Fix: Reference the relationship property, not the foreign key column
+  @OneToMany(() => SalesChannel, (salesChannel) => salesChannel.organization)
   salesChannels: SalesChannel[];
 
   @ManyToMany(() => User, (user) => user.organizations)

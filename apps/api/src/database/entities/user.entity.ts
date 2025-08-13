@@ -35,5 +35,6 @@ export class User implements IUser {
   loggedOrganizationId: number | null | undefined;
 
   @ManyToMany(() => Organization, (organization) => organization.users)
+  @JoinTable()
   organizations: Organization[];
 }

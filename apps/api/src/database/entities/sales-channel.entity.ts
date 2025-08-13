@@ -28,6 +28,11 @@ export class SalesChannel implements ISalesChannel {
   @Column()
   organizationId: number;
 
+  // Add the relationship to Organization
+  @ManyToOne(() => Organization, (organization) => organization.salesChannels)
+  @JoinColumn({ name: 'organizationId' })
+  organization: Organization;
+
   // @AfterLoad()
   // logSalesChannelLoad() {
   //   console.log(`MIDDLEWARE TEST: ${this.name}`);
