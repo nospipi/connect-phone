@@ -5,7 +5,7 @@ import {
   IsUUID,
   IsUrl,
 } from 'class-validator';
-import { SalesChannel as ISalesChannel } from '@connect-phone/shared-types';
+import { ISalesChannel as ISalesChannel } from '@connect-phone/shared-types';
 import { Sanitize } from '@/common/decorators/sanitize.decorator';
 //----------------------------------------------------------------------------
 

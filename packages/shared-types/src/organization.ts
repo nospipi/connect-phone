@@ -1,12 +1,12 @@
-import { SalesChannel } from "./salesChannel";
-import { User } from "./user";
+import { ISalesChannel } from "./salesChannel";
+import { IUser } from "./user";
 
-export interface Organization {
+export interface IOrganization {
   id: number;
   createdAt: string;
   name: string;
   slug: string;
   logoUrl: string | null;
-  salesChannels: SalesChannel[];
-  users: User[];
+  salesChannels: ISalesChannel[];
+  users: IUser[];
 }

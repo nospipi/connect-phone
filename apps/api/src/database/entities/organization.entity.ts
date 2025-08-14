@@ -7,7 +7,7 @@ import {
   ManyToMany,
   CreateDateColumn,
 } from 'typeorm';
-import { Organization as IOrganization } from '@connect-phone/shared-types';
+import { IOrganization } from '@connect-phone/shared-types';
 import { SalesChannel } from './sales-channel.entity';
 import { User } from './user.entity';
 

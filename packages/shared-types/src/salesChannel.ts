@@ -1,6 +1,4 @@
-import { Organization } from "./organization";
-
-export interface SalesChannel {
+export interface ISalesChannel {
   id?: number;
   name: string;
   logoUrl?: string | null | undefined;

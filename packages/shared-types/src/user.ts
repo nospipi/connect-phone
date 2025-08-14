@@ -1,11 +1,12 @@
-import { Organization } from "./organization";
+import { IOrganization } from "./organization";
 
-export interface User {
+export interface IUser {
   id: number;
   createdAt: string;
   email: string;
   firstName: string;
   lastName: string;
+  fullName?: string;
   loggedOrganizationId: number | null | undefined;
-  organizations: Organization[];
+  organizations: IOrganization[];
 }

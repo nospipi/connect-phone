@@ -7,7 +7,7 @@ import {
   AfterLoad,
   Unique,
 } from 'typeorm';
-import { SalesChannel as ISalesChannel } from '@connect-phone/shared-types';
+import { ISalesChannel } from '@connect-phone/shared-types';
 import { Organization } from './organization.entity';
 
 @Entity('sales_channels')

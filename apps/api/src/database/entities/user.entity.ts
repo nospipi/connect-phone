@@ -9,7 +9,7 @@ import {
   JoinTable,
   JoinColumn,
 } from 'typeorm';
-import { User as IUser } from '@connect-phone/shared-types';
+import { IUser } from '@connect-phone/shared-types';
 import { Organization } from './organization.entity';
 
 @Entity({ name: 'users' })
@@ -29,25 +29,27 @@ export class User implements IUser {
   @Column({ type: 'varchar', length: 255 })
   lastName: string;
 
-  // 1) Raw FK column for direct read/write
+  /**
+   * Computed property — not stored in DB.
+   * Always returns the latest combination of `firstName` and `lastName`.
+   * Updates automatically if either name changes in memory.
+   */
+  //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/get
+  //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/set
+  get fullName(): string {
+    return `${this.firstName ?? ''} ${this.lastName ?? ''}`.trim();
+  }
+
   @Column({ name: 'loggedOrganizationId', type: 'int', nullable: true })
   loggedOrganizationId: number | null;
 
-  // Note: `loggedOrganization` is not stored directly in the `users` table —
-  // it's a relation mapped via `loggedOrganizationId` to the `organizations` table.
-  // To get the actual `Organization` entity in results, you must either:
-  // 1) Load it explicitly in queries: `userRepo.find({ relations: ['loggedOrganization'] })`
-  // 2) Mark the relation as eager: `{ eager: true }` in the @ManyToOne decorator.
-  //so it can be returned at all find operations
-
-  // 2) Relation to the Organization entity
   @ManyToOne(() => Organization, { nullable: true })
   @JoinColumn({ name: 'loggedOrganizationId' })
   loggedOrganization: Organization | null;
 
   @ManyToMany(() => Organization, (organization) => organization.users)
   @JoinTable({
-    name: 'user_organizations', // Custom junction table name
+    name: 'user_organizations',
     joinColumn: {
       name: 'userId',
       referencedColumnName: 'id',
