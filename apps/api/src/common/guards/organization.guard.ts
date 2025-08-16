@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { CurrentOrganizationService } from '../core/current-organization.service';
+import { CurrentDbUserService } from '../core/current-db-user.service';
 import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
 
 //----------------------------------------------------------------------
@@ -20,11 +21,13 @@ import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
  * The guard handles all validation and error throwing
  * The service just provides current data (no errors)
  */
+
 @Injectable()
 export class OrganizationGuard implements CanActivate {
   constructor(
     private readonly reflector: Reflector,
-    private readonly currentOrganizationService: CurrentOrganizationService
+    private readonly currentOrganizationService: CurrentOrganizationService,
+    private readonly currentDbUserService: CurrentDbUserService
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -45,7 +48,7 @@ export class OrganizationGuard implements CanActivate {
 
     // Get current user and organization (no errors thrown by service)
     const [user, organization] = await Promise.all([
-      this.currentOrganizationService.getCurrentUser(),
+      this.currentDbUserService.getCurrentDbUser(),
       this.currentOrganizationService.getCurrentOrganization(),
     ]);
 

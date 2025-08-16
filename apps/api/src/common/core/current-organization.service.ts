@@ -5,71 +5,22 @@ import { Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Request } from 'express';
-import { User } from '../../database/entities/user.entity';
 import { Organization } from '../../database/entities/organization.entity';
+import { CurrentDbUserService } from './current-db-user.service';
+
+//------------------------------------------------------------------------
 
 @Injectable({ scope: Scope.REQUEST })
 export class CurrentOrganizationService {
   private _currentOrganization: Organization | null = null;
-  private _currentUser: User | null = null;
   private _organizationLoaded = false;
-  private _userLoaded = false;
 
   constructor(
     @Inject(REQUEST) private readonly request: Request,
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
     @InjectRepository(Organization)
-    private readonly organizationRepository: Repository<Organization>
+    private readonly organizationRepository: Repository<Organization>,
+    private readonly currentDbUserService: CurrentDbUserService
   ) {}
-
-  /**
-   * Gets the current user's email from Clerk
-   */
-  private getClerkUserEmail(): string | null {
-    const user = this.request.user as
-      | {
-          primaryEmailAddress?: {
-            emailAddress?: string;
-          };
-        }
-      | undefined;
-
-    return user?.primaryEmailAddress?.emailAddress || null;
-  }
-
-  /**
-   * Gets the current user from the database
-   * Returns null if not found - no errors thrown
-   */
-  async getCurrentUser(): Promise<User | null> {
-    if (this._userLoaded) {
-      return this._currentUser;
-    }
-
-    const email = this.getClerkUserEmail();
-    if (!email) {
-      this._userLoaded = true;
-      this._currentUser = null;
-      return null;
-    }
-
-    try {
-      const user = await this.userRepository.findOne({
-        where: { email },
-        relations: ['loggedOrganization'],
-      });
-
-      this._currentUser = user;
-      this._userLoaded = true;
-      return user;
-    } catch (error) {
-      console.error('Error fetching user from database:', error);
-      this._userLoaded = true;
-      this._currentUser = null;
-      return null;
-    }
-  }
 
   /**
    * Gets the current organization for the logged-in user
@@ -80,7 +31,7 @@ export class CurrentOrganizationService {
       return this._currentOrganization;
     }
 
-    const user = await this.getCurrentUser();
+    const user = await this.currentDbUserService.getCurrentDbUser();
     if (!user) {
       this._organizationLoaded = true;
       this._currentOrganization = null;
@@ -108,27 +59,5 @@ export class CurrentOrganizationService {
       this._currentOrganization = null;
       return null;
     }
-  }
-
-  /**
-   * Gets current user and organization info for debugging/context
-   */
-  async getCurrentContext() {
-    const [user, organization] = await Promise.all([
-      this.getCurrentUser(),
-      this.getCurrentOrganization(),
-    ]);
-
-    return {
-      user: user
-        ? { id: user.id, email: user.email, fullName: user.fullName }
-        : null,
-      organization: organization
-        ? { id: organization.id, name: organization.name }
-        : null,
-      hasUser: !!user,
-      hasOrganization: !!organization,
-      userHasOrgId: !!user?.loggedOrganizationId,
-    };
   }
 }
