@@ -6,6 +6,7 @@ import { NotFoundException } from '@nestjs/common';
 import { CreateNewChannelService } from './service';
 import { SalesChannel } from '../../../../database/entities/sales-channel.entity';
 import { Organization } from '../../../../database/entities/organization.entity';
+import { User } from '../../../../database/entities/user.entity';
 import { CreateSalesChannelDto } from './create-sales-channel.dto';
 import * as crypto from 'crypto';
 
@@ -28,6 +29,7 @@ describe('CreateNewChannelService', () => {
     logoUrl: null,
     createdAt: '2024-01-01T00:00:00Z',
     salesChannels: [],
+    users: [],
   };
 
   const mockSalesChannel: SalesChannel = {
@@ -42,7 +44,6 @@ describe('CreateNewChannelService', () => {
   const mockCreateSalesChannelDto: CreateSalesChannelDto = {
     name: 'Test Sales Channel',
     description: 'Test Description',
-    organizationId: 89,
   };
 
   beforeEach(async () => {
