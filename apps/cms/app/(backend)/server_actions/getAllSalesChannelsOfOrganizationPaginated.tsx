@@ -2,7 +2,7 @@
 
 import axios, { AxiosInstance, AxiosError } from "axios"
 import { auth } from "@clerk/nextjs/server"
-import { SalesChannel } from "@connect-phone/shared-types"
+import { ISalesChannel } from "@connect-phone/shared-types"
 
 interface ErrorResponse {
   message: string
@@ -27,7 +27,7 @@ export interface PaginationLinks {
 }
 
 export interface PaginatedSalesChannelsResponse {
-  items: SalesChannel[]
+  items: ISalesChannel[]
   meta: PaginationMeta
   links: PaginationLinks
 }

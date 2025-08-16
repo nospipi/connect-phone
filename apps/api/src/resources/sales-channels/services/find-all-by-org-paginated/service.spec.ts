@@ -40,7 +40,9 @@ describe('FindAllByOrgPaginatedService', () => {
     email: 'test@example.com',
     firstName: 'Test',
     lastName: 'User',
-    fullName: 'Test User',
+    get fullName() {
+      return `${this.firstName} ${this.lastName}`;
+    },
     createdAt: '2024-01-01T00:00:00Z',
     loggedOrganizationId: 31,
     loggedOrganization: mockOrganization,
@@ -174,7 +176,19 @@ describe('FindAllByOrgPaginatedService', () => {
 
     it('should throw UnauthorizedException when user not logged into any organization', async () => {
       // Arrange
-      const userWithoutOrg = { ...mockUser, loggedOrganizationId: null };
+      const userWithoutOrg: User = {
+        loggedOrganizationId: null,
+        id: 1,
+        createdAt: '2024-01-01T00:00:00Z',
+        email: 'test@example.com',
+        firstName: 'Test',
+        lastName: 'User',
+        get fullName() {
+          return `${this.firstName} ${this.lastName}`;
+        },
+        loggedOrganization: null,
+        organizations: [],
+      };
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(null);
       currentDbUserService.getCurrentDbUser.mockResolvedValue(userWithoutOrg);
 

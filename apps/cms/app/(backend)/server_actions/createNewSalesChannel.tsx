@@ -4,7 +4,7 @@ import axios, { AxiosInstance, AxiosError } from "axios"
 import { auth } from "@clerk/nextjs/server"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
-import { SalesChannel } from "@connect-phone/shared-types"
+
 
 //----------------------------------------------------------------------
 

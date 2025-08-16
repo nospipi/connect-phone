@@ -3,7 +3,7 @@
 import axios, { AxiosInstance, AxiosError } from "axios"
 import { auth } from "@clerk/nextjs/server"
 import { revalidatePath } from "next/cache"
-import { SalesChannel } from "@connect-phone/shared-types"
+import { ISalesChannel } from "@connect-phone/shared-types"
 
 //----------------------------------------------------------------------
 
@@ -40,7 +40,7 @@ const createApiClient = (): AxiosInstance => {
 
 //----------------------------------------------------------------------
 
-export const createARandomSalesChannel = async (): Promise<SalesChannel> => {
+export const createARandomSalesChannel = async (): Promise<ISalesChannel> => {
   try {
     const api = createApiClient()
     const response = await api.get("/sales-channels/create-random")
