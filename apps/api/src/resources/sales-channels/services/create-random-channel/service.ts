@@ -1,9 +1,11 @@
+// apps/api/src/resources/sales-channels/services/create-random-channel/service.ts
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SalesChannel } from '../../../../database/entities/sales-channel.entity';
 import { Organization } from '../../../../database/entities/organization.entity';
 import { CreateSalesChannelDto } from '../create-new-channel/create-sales-channel.dto';
+import { OrganizationContextService } from '../../../../common/core/organization-context.service';
 import { faker } from '@faker-js/faker';
 
 //-------------------------------------------
@@ -14,11 +16,80 @@ export class CreateRandomChannelService {
     @InjectRepository(SalesChannel)
     private salesChannelsRepository: Repository<SalesChannel>,
     @InjectRepository(Organization)
-    private organizationsRepository: Repository<Organization>
+    private organizationsRepository: Repository<Organization>,
+    private organizationContextService: OrganizationContextService
   ) {}
 
   //----------------------------------------
+  /**
+   * Creates a random sales channel for the current user's organization
+   */
   async createRandomSalesChannel(): Promise<SalesChannel> {
+    // Get the current organization from context
+    const organization =
+      await this.organizationContextService.getRequiredOrganization();
+
+    // Create random DTO data (no organizationId needed)
+    const createSalesChannelDto: CreateSalesChannelDto = {
+      name: faker.company.name(),
+      description: faker.company.catchPhrase(),
+    };
+
+    console.log(
+      `Creating random sales channel for organization: ${organization.name}`
+    );
+
+    return this.createSalesChannelForOrganization(
+      createSalesChannelDto,
+      organization
+    );
+  }
+
+  //----------------------------------------
+  /**
+   * Creates a sales channel using the current user's organization context
+   */
+  async createSalesChannel(
+    createSalesChannelDto: CreateSalesChannelDto
+  ): Promise<SalesChannel> {
+    // Get the current organization from context
+    const organization =
+      await this.organizationContextService.getRequiredOrganization();
+
+    console.log(
+      `Creating sales channel for organization: ${organization.name}`
+    );
+
+    return this.createSalesChannelForOrganization(
+      createSalesChannelDto,
+      organization
+    );
+  }
+
+  //----------------------------------------
+  /**
+   * Helper method to create a sales channel for a specific organization
+   */
+  private async createSalesChannelForOrganization(
+    createSalesChannelDto: CreateSalesChannelDto,
+    organization: Organization
+  ): Promise<SalesChannel> {
+    const salesChannel = this.salesChannelsRepository.create({
+      name: createSalesChannelDto.name,
+      description: createSalesChannelDto.description,
+      logoUrl: createSalesChannelDto.logoUrl,
+      organizationId: organization.id,
+    });
+
+    return this.salesChannelsRepository.save(salesChannel);
+  }
+
+  //----------------------------------------
+  /**
+   * Legacy method: Creates a random sales channel for any random organization
+   * This method is for testing/seeding purposes only
+   */
+  async createRandomSalesChannelForAnyOrganization(): Promise<SalesChannel> {
     // First, get a random organization to use
     const organizations = await this.organizationsRepository.find();
     if (organizations.length === 0) {
@@ -33,31 +104,11 @@ export class CreateRandomChannelService {
     const createSalesChannelDto: CreateSalesChannelDto = {
       name: faker.company.name(),
       description: faker.company.catchPhrase(),
-      organizationId: randomOrg.id,
     };
 
-    return this.createSalesChannel(createSalesChannelDto);
-  }
-
-  //----------------------------------------
-  async createSalesChannel(
-    createSalesChannelDto: CreateSalesChannelDto
-  ): Promise<SalesChannel> {
-    // Find organization by UUID (as specified in DTO)
-    const organization = await this.organizationsRepository.findOne({
-      where: { id: createSalesChannelDto.organizationId },
-    });
-
-    if (!organization) {
-      throw new NotFoundException('Organization not found');
-    }
-
-    const salesChannel = this.salesChannelsRepository.create({
-      name: createSalesChannelDto.name,
-      description: createSalesChannelDto.description,
-      organizationId: organization.id,
-    });
-
-    return this.salesChannelsRepository.save(salesChannel);
+    return this.createSalesChannelForOrganization(
+      createSalesChannelDto,
+      randomOrg
+    );
   }
 }

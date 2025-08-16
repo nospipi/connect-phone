@@ -7,8 +7,8 @@ import { CreateRandomChannelService } from './service';
 import { SalesChannel } from '../../../../database/entities/sales-channel.entity';
 import { Organization } from '../../../../database/entities/organization.entity';
 import { CreateSalesChannelDto } from '../create-new-channel/create-sales-channel.dto';
+import { OrganizationContextService } from '../../../../common/core/organization-context.service';
 import { faker } from '@faker-js/faker';
-import * as crypto from 'crypto';
 
 //--------------------------------------------
 
@@ -28,15 +28,11 @@ jest.mock('@faker-js/faker', () => {
   };
 });
 
-// ✅ Keep crypto mock
-jest.mock('crypto', () => ({
-  randomUUID: jest.fn(),
-}));
-
 describe('CreateRandomChannelService', () => {
   let service: CreateRandomChannelService;
   let salesChannelsRepository: jest.Mocked<Repository<SalesChannel>>;
   let organizationsRepository: jest.Mocked<Repository<Organization>>;
+  let organizationContextService: jest.Mocked<OrganizationContextService>;
 
   const mockOrganization: Organization = {
     id: 31,
@@ -45,6 +41,7 @@ describe('CreateRandomChannelService', () => {
     logoUrl: null,
     createdAt: '2024-01-01T00:00:00Z',
     salesChannels: [],
+    users: [],
   };
 
   const mockSalesChannel: SalesChannel = {
@@ -58,7 +55,6 @@ describe('CreateRandomChannelService', () => {
 
   const mockCreateSalesChannelDto: CreateSalesChannelDto = {
     name: 'Test Sales Channel',
-    organizationId: 89,
     description: 'Test Description',
   };
 
@@ -73,6 +69,13 @@ describe('CreateRandomChannelService', () => {
       find: jest.fn(),
     };
 
+    const mockOrganizationContextService = {
+      getRequiredOrganization: jest.fn(),
+      getCurrentOrganization: jest.fn(),
+      getCurrentUser: jest.fn(),
+      getRequiredUser: jest.fn(),
+    };
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         CreateRandomChannelService,
@@ -84,6 +87,10 @@ describe('CreateRandomChannelService', () => {
           provide: getRepositoryToken(Organization),
           useValue: mockOrganizationsRepository,
         },
+        {
+          provide: OrganizationContextService,
+          useValue: mockOrganizationContextService,
+        },
       ],
     }).compile();
 
@@ -92,6 +99,7 @@ describe('CreateRandomChannelService', () => {
     );
     salesChannelsRepository = module.get(getRepositoryToken(SalesChannel));
     organizationsRepository = module.get(getRepositoryToken(Organization));
+    organizationContextService = module.get(OrganizationContextService);
   });
 
   afterEach(() => {
@@ -103,10 +111,11 @@ describe('CreateRandomChannelService', () => {
   });
 
   describe('createSalesChannel', () => {
-    it('should create a sales channel with DTO successfully', async () => {
+    it('should create a sales channel for current organization successfully', async () => {
       // Arrange
-
-      organizationsRepository.findOne.mockResolvedValue(mockOrganization);
+      organizationContextService.getRequiredOrganization.mockResolvedValue(
+        mockOrganization
+      );
       salesChannelsRepository.create.mockReturnValue(mockSalesChannel);
       salesChannelsRepository.save.mockResolvedValue(mockSalesChannel);
 
@@ -116,12 +125,13 @@ describe('CreateRandomChannelService', () => {
       );
 
       // Assert
-      expect(organizationsRepository.findOne).toHaveBeenCalledWith({
-        where: { id: mockCreateSalesChannelDto.organizationId },
-      });
+      expect(
+        organizationContextService.getRequiredOrganization
+      ).toHaveBeenCalledTimes(1);
       expect(salesChannelsRepository.create).toHaveBeenCalledWith({
         name: mockCreateSalesChannelDto.name,
         description: mockCreateSalesChannelDto.description,
+        logoUrl: undefined,
         organizationId: 31,
       });
       expect(salesChannelsRepository.save).toHaveBeenCalledWith(
@@ -130,32 +140,35 @@ describe('CreateRandomChannelService', () => {
       expect(result).toEqual(mockSalesChannel);
     });
 
-    it('should throw NotFoundException when organization is not found', async () => {
+    it('should throw error when user has no organization', async () => {
       // Arrange
-      organizationsRepository.findOne.mockResolvedValue(null);
+      organizationContextService.getRequiredOrganization.mockRejectedValue(
+        new NotFoundException('Organization not found')
+      );
 
       // Act & Assert
       await expect(
         service.createSalesChannel(mockCreateSalesChannelDto)
       ).rejects.toThrow(new NotFoundException('Organization not found'));
-      expect(organizationsRepository.findOne).toHaveBeenCalledWith({
-        where: { id: mockCreateSalesChannelDto.organizationId },
-      });
+      expect(
+        organizationContextService.getRequiredOrganization
+      ).toHaveBeenCalledTimes(1);
       expect(salesChannelsRepository.create).not.toHaveBeenCalled();
       expect(salesChannelsRepository.save).not.toHaveBeenCalled();
     });
   });
 
   describe('createRandomSalesChannel', () => {
-    it('should create a random sales channel successfully', async () => {
+    it('should create a random sales channel for current organization successfully', async () => {
       const mockName = 'Random Company';
       const mockDescription = 'Random Catchphrase';
 
       (faker.company.name as jest.Mock).mockReturnValue(mockName);
       (faker.company.catchPhrase as jest.Mock).mockReturnValue(mockDescription);
 
-      organizationsRepository.find.mockResolvedValue([mockOrganization]);
-      organizationsRepository.findOne.mockResolvedValue(mockOrganization);
+      organizationContextService.getRequiredOrganization.mockResolvedValue(
+        mockOrganization
+      );
       salesChannelsRepository.create.mockReturnValue(mockSalesChannel);
       salesChannelsRepository.save.mockResolvedValue(mockSalesChannel);
 
@@ -163,13 +176,60 @@ describe('CreateRandomChannelService', () => {
       const result = await service.createRandomSalesChannel();
 
       // Assert
-      expect(organizationsRepository.find).toHaveBeenCalledTimes(1);
-      expect(organizationsRepository.findOne).toHaveBeenCalledWith({
-        where: { id: mockOrganization.id },
-      });
+      expect(
+        organizationContextService.getRequiredOrganization
+      ).toHaveBeenCalledTimes(1);
       expect(salesChannelsRepository.create).toHaveBeenCalledWith({
         name: mockName,
         description: mockDescription,
+        logoUrl: undefined,
+        organizationId: 31,
+      });
+      expect(salesChannelsRepository.save).toHaveBeenCalledWith(
+        mockSalesChannel
+      );
+      expect(result).toEqual(mockSalesChannel);
+    });
+
+    it('should throw error when user has no organization', async () => {
+      // Arrange
+      organizationContextService.getRequiredOrganization.mockRejectedValue(
+        new NotFoundException('Organization not found')
+      );
+
+      // Act & Assert
+      await expect(service.createRandomSalesChannel()).rejects.toThrow(
+        new NotFoundException('Organization not found')
+      );
+      expect(
+        organizationContextService.getRequiredOrganization
+      ).toHaveBeenCalledTimes(1);
+      expect(salesChannelsRepository.create).not.toHaveBeenCalled();
+      expect(salesChannelsRepository.save).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('createRandomSalesChannelForAnyOrganization', () => {
+    it('should create a random sales channel for any random organization successfully', async () => {
+      const mockName = 'Random Company';
+      const mockDescription = 'Random Catchphrase';
+
+      (faker.company.name as jest.Mock).mockReturnValue(mockName);
+      (faker.company.catchPhrase as jest.Mock).mockReturnValue(mockDescription);
+
+      organizationsRepository.find.mockResolvedValue([mockOrganization]);
+      salesChannelsRepository.create.mockReturnValue(mockSalesChannel);
+      salesChannelsRepository.save.mockResolvedValue(mockSalesChannel);
+
+      // Act
+      const result = await service.createRandomSalesChannelForAnyOrganization();
+
+      // Assert
+      expect(organizationsRepository.find).toHaveBeenCalledTimes(1);
+      expect(salesChannelsRepository.create).toHaveBeenCalledWith({
+        name: mockName,
+        description: mockDescription,
+        logoUrl: undefined,
         organizationId: 31,
       });
       expect(salesChannelsRepository.save).toHaveBeenCalledWith(
@@ -183,11 +243,10 @@ describe('CreateRandomChannelService', () => {
       organizationsRepository.find.mockResolvedValue([]);
 
       // Act & Assert
-      await expect(service.createRandomSalesChannel()).rejects.toThrow(
-        new NotFoundException('No organizations found')
-      );
+      await expect(
+        service.createRandomSalesChannelForAnyOrganization()
+      ).rejects.toThrow(new NotFoundException('No organizations found'));
       expect(organizationsRepository.find).toHaveBeenCalledTimes(1);
-      expect(organizationsRepository.findOne).not.toHaveBeenCalled();
       expect(salesChannelsRepository.create).not.toHaveBeenCalled();
       expect(salesChannelsRepository.save).not.toHaveBeenCalled();
     });
