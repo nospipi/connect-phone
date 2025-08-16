@@ -1,10 +1,5 @@
-// src/common/core/organization-context.service.ts
-import {
-  Injectable,
-  Scope,
-  NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common';
+// src/common/core/current-organization.service.ts
+import { Injectable, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -14,7 +9,7 @@ import { User } from '../../database/entities/user.entity';
 import { Organization } from '../../database/entities/organization.entity';
 
 @Injectable({ scope: Scope.REQUEST })
-export class OrganizationContextService {
+export class CurrentOrganizationService {
   private _currentOrganization: Organization | null = null;
   private _currentUser: User | null = null;
   private _organizationLoaded = false;
@@ -45,6 +40,7 @@ export class OrganizationContextService {
 
   /**
    * Gets the current user from the database
+   * Returns null if not found - no errors thrown
    */
   async getCurrentUser(): Promise<User | null> {
     if (this._userLoaded) {
@@ -77,6 +73,7 @@ export class OrganizationContextService {
 
   /**
    * Gets the current organization for the logged-in user
+   * Returns null if not found - no errors thrown
    */
   async getCurrentOrganization(): Promise<Organization | null> {
     if (this._organizationLoaded) {
@@ -114,39 +111,24 @@ export class OrganizationContextService {
   }
 
   /**
-   * Gets the current organization and throws an error if not found
+   * Gets current user and organization info for debugging/context
    */
-  async getRequiredOrganization(): Promise<Organization> {
-    const organization = await this.getCurrentOrganization();
+  async getCurrentContext() {
+    const [user, organization] = await Promise.all([
+      this.getCurrentUser(),
+      this.getCurrentOrganization(),
+    ]);
 
-    if (!organization) {
-      const user = await this.getCurrentUser();
-      if (!user) {
-        throw new UnauthorizedException('User not found in database');
-      }
-      if (!user.loggedOrganizationId) {
-        throw new UnauthorizedException(
-          'User is not logged into any organization'
-        );
-      }
-      throw new NotFoundException(
-        'Organization not found getRequiredOrganization'
-      );
-    }
-
-    return organization;
-  }
-
-  /**
-   * Gets the current user and throws an error if not found
-   */
-  async getRequiredUser(): Promise<User> {
-    const user = await this.getCurrentUser();
-
-    if (!user) {
-      throw new UnauthorizedException('User not found in database');
-    }
-
-    return user;
+    return {
+      user: user
+        ? { id: user.id, email: user.email, fullName: user.fullName }
+        : null,
+      organization: organization
+        ? { id: organization.id, name: organization.name }
+        : null,
+      hasUser: !!user,
+      hasOrganization: !!organization,
+      userHasOrgId: !!user?.loggedOrganizationId,
+    };
   }
 }

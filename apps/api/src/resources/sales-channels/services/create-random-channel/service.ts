@@ -17,19 +17,19 @@ export class CreateRandomChannelService {
     private salesChannelsRepository: Repository<SalesChannel>,
     @InjectRepository(Organization)
     private organizationsRepository: Repository<Organization>,
-    private organizationContextService: OrganizationContextService
+    private organizationContextService: OrganizationContextService // 🎯 Inject organization context
   ) {}
 
-  //----------------------------------------
   /**
    * Creates a random sales channel for the current user's organization
+   * Organization is automatically retrieved from the current context
    */
   async createRandomSalesChannel(): Promise<SalesChannel> {
-    // Get the current organization from context
+    // Automatically get the current organization from context
     const organization =
       await this.organizationContextService.getRequiredOrganization();
 
-    // Create random DTO data (no organizationId needed)
+    // Create random DTO data
     const createSalesChannelDto: CreateSalesChannelDto = {
       name: faker.company.name(),
       description: faker.company.catchPhrase(),
@@ -45,14 +45,14 @@ export class CreateRandomChannelService {
     );
   }
 
-  //----------------------------------------
   /**
-   * Creates a sales channel using the current user's organization context
+   * Creates a sales channel for the current user's organization
+   * Organization is automatically retrieved from the current context
    */
   async createSalesChannel(
     createSalesChannelDto: CreateSalesChannelDto
   ): Promise<SalesChannel> {
-    // Get the current organization from context
+    // Automatically get the current organization from context
     const organization =
       await this.organizationContextService.getRequiredOrganization();
 
@@ -66,7 +66,21 @@ export class CreateRandomChannelService {
     );
   }
 
-  //----------------------------------------
+  /**
+   * Get all sales channels for the current user's organization
+   */
+  async getAllForCurrentOrganization(): Promise<SalesChannel[]> {
+    // Automatically get the current organization from context
+    const organization =
+      await this.organizationContextService.getRequiredOrganization();
+
+    return this.salesChannelsRepository.find({
+      where: { organizationId: organization.id },
+      relations: ['organization'],
+      order: { id: 'DESC' },
+    });
+  }
+
   /**
    * Helper method to create a sales channel for a specific organization
    */
@@ -84,13 +98,12 @@ export class CreateRandomChannelService {
     return this.salesChannelsRepository.save(salesChannel);
   }
 
-  //----------------------------------------
   /**
    * Legacy method: Creates a random sales channel for any random organization
-   * This method is for testing/seeding purposes only
+   * This method is for testing/seeding purposes only (doesn't use organization context)
    */
   async createRandomSalesChannelForAnyOrganization(): Promise<SalesChannel> {
-    // First, get a random organization to use
+    // Get all organizations
     const organizations = await this.organizationsRepository.find();
     if (organizations.length === 0) {
       throw new NotFoundException('No organizations found');
@@ -106,9 +119,52 @@ export class CreateRandomChannelService {
       description: faker.company.catchPhrase(),
     };
 
+    console.log(
+      `Creating random sales channel for random organization: ${randomOrg.name}`
+    );
+
     return this.createSalesChannelForOrganization(
       createSalesChannelDto,
       randomOrg
     );
+  }
+
+  /**
+   * Get sales channel stats for the current user's organization
+   */
+  async getStatsForCurrentOrganization() {
+    // Automatically get the current organization from context
+    const organization =
+      await this.organizationContextService.getRequiredOrganization();
+
+    const count = await this.salesChannelsRepository.count({
+      where: { organizationId: organization.id },
+    });
+
+    return {
+      organizationName: organization.name,
+      totalChannels: count,
+      organizationId: organization.id,
+    };
+  }
+
+  /**
+   * Find a specific sales channel for the current user's organization
+   */
+  async findOneForCurrentOrganization(id: number): Promise<SalesChannel> {
+    // Automatically get the current organization from context
+    const organization =
+      await this.organizationContextService.getRequiredOrganization();
+
+    const salesChannel = await this.salesChannelsRepository.findOne({
+      where: { id, organizationId: organization.id },
+      relations: ['organization'],
+    });
+
+    if (!salesChannel) {
+      throw new NotFoundException('Sales channel not found');
+    }
+
+    return salesChannel;
   }
 }

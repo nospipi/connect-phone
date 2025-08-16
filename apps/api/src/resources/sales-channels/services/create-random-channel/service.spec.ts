@@ -62,6 +62,9 @@ describe('CreateRandomChannelService', () => {
     const mockSalesChannelsRepository = {
       create: jest.fn(),
       save: jest.fn(),
+      find: jest.fn(),
+      findOne: jest.fn(),
+      count: jest.fn(),
     };
 
     const mockOrganizationsRepository = {
@@ -206,6 +209,102 @@ describe('CreateRandomChannelService', () => {
       ).toHaveBeenCalledTimes(1);
       expect(salesChannelsRepository.create).not.toHaveBeenCalled();
       expect(salesChannelsRepository.save).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('getAllForCurrentOrganization', () => {
+    it('should get all sales channels for current organization', async () => {
+      // Arrange
+      const mockChannels = [mockSalesChannel];
+      organizationContextService.getRequiredOrganization.mockResolvedValue(
+        mockOrganization
+      );
+      salesChannelsRepository.find.mockResolvedValue(mockChannels);
+
+      // Act
+      const result = await service.getAllForCurrentOrganization();
+
+      // Assert
+      expect(
+        organizationContextService.getRequiredOrganization
+      ).toHaveBeenCalledTimes(1);
+      expect(salesChannelsRepository.find).toHaveBeenCalledWith({
+        where: { organizationId: 31 },
+        relations: ['organization'],
+        order: { id: 'DESC' },
+      });
+      expect(result).toEqual(mockChannels);
+    });
+  });
+
+  describe('getStatsForCurrentOrganization', () => {
+    it('should get stats for current organization', async () => {
+      // Arrange
+      organizationContextService.getRequiredOrganization.mockResolvedValue(
+        mockOrganization
+      );
+      salesChannelsRepository.count.mockResolvedValue(5);
+
+      // Act
+      const result = await service.getStatsForCurrentOrganization();
+
+      // Assert
+      expect(
+        organizationContextService.getRequiredOrganization
+      ).toHaveBeenCalledTimes(1);
+      expect(salesChannelsRepository.count).toHaveBeenCalledWith({
+        where: { organizationId: 31 },
+      });
+      expect(result).toEqual({
+        organizationName: 'Test Organization',
+        totalChannels: 5,
+        organizationId: 31,
+      });
+    });
+  });
+
+  describe('findOneForCurrentOrganization', () => {
+    it('should find a specific sales channel for current organization', async () => {
+      // Arrange
+      const channelId = 1;
+      organizationContextService.getRequiredOrganization.mockResolvedValue(
+        mockOrganization
+      );
+      salesChannelsRepository.findOne.mockResolvedValue(mockSalesChannel);
+
+      // Act
+      const result = await service.findOneForCurrentOrganization(channelId);
+
+      // Assert
+      expect(
+        organizationContextService.getRequiredOrganization
+      ).toHaveBeenCalledTimes(1);
+      expect(salesChannelsRepository.findOne).toHaveBeenCalledWith({
+        where: { id: channelId, organizationId: 31 },
+        relations: ['organization'],
+      });
+      expect(result).toEqual(mockSalesChannel);
+    });
+
+    it('should throw NotFoundException when sales channel not found', async () => {
+      // Arrange
+      const channelId = 999;
+      organizationContextService.getRequiredOrganization.mockResolvedValue(
+        mockOrganization
+      );
+      salesChannelsRepository.findOne.mockResolvedValue(null);
+
+      // Act & Assert
+      await expect(
+        service.findOneForCurrentOrganization(channelId)
+      ).rejects.toThrow(new NotFoundException('Sales channel not found'));
+      expect(
+        organizationContextService.getRequiredOrganization
+      ).toHaveBeenCalledTimes(1);
+      expect(salesChannelsRepository.findOne).toHaveBeenCalledWith({
+        where: { id: channelId, organizationId: 31 },
+        relations: ['organization'],
+      });
     });
   });
 

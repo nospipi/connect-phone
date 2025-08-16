@@ -77,9 +77,7 @@ export const getAllSalesChannelsOfOrganizationPaginated = async ({
     )
 
     const api = createApiClient()
-    const response = await api.get(
-      `/sales-channels/organization/${organizationId}/paginated?page=${page}`,
-    )
+    const response = await api.get(`/sales-channels/paginated?page=${page}`)
 
     if (response.status !== 200) {
       throw new Error("Failed to fetch sales channels")

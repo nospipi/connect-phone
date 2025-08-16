@@ -15,9 +15,6 @@ import { CreateRandomChannelService } from './services/create-random-channel/ser
 import { FindAllByOrgPaginatedService } from './services/find-all-by-org-paginated/service';
 import { CreateNewChannelService } from './services/create-new-channel/service';
 
-// guards
-import { OrganizationRequiredGuard } from '@/common/guards/organization-required.guard';
-
 //-----------------------------------------
 
 @Module({
@@ -28,10 +25,12 @@ import { OrganizationRequiredGuard } from '@/common/guards/organization-required
     CreateNewChannelController,
   ],
   providers: [
+    // ✅ Clean services - organization context handled globally
     CreateRandomChannelService,
     FindAllByOrgPaginatedService,
     CreateNewChannelService,
-    OrganizationRequiredGuard, // Provide the guard at module level
+
+    // ✅ No guards needed - OrganizationGuard is provided globally in app.module.ts
   ],
 })
 export class SalesChannelsModule {}

@@ -16,19 +16,19 @@ export class CreateNewChannelService {
     private salesChannelsRepository: Repository<SalesChannel>,
     @InjectRepository(Organization)
     private organizationsRepository: Repository<Organization>,
-    private organizationContextService: OrganizationContextService
+    private organizationContextService: OrganizationContextService // 🎯 Inject organization context
   ) {}
 
   /**
    * Creates a new sales channel for the current user's organization
-   * No need to pass organizationId - it's automatically retrieved from context
+   * Organization is automatically retrieved from the current context
    */
   async createNewSalesChannel(
     createSalesChannelDto: CreateSalesChannelDto
   ): Promise<SalesChannel> {
     console.log('Creating new sales channel with DTO:', createSalesChannelDto);
 
-    // Get the current organization from context
+    // Automatically get the current organization from context
     const organization =
       await this.organizationContextService.getRequiredOrganization();
 
@@ -43,36 +43,10 @@ export class CreateNewChannelService {
   }
 
   /**
-   * Alternative method: Creates a sales channel for a specific organization ID
-   * (keeping the old method for cases where you explicitly want to specify an org)
-   */
-  async createNewSalesChannelForOrganization(
-    createSalesChannelDto: CreateSalesChannelDto,
-    organizationId: number
-  ): Promise<SalesChannel> {
-    console.log('Creating new sales channel with DTO:', createSalesChannelDto);
-
-    // Find organization by ID (as specified in parameter)
-    const organization = await this.organizationsRepository.findOne({
-      where: { id: organizationId },
-    });
-
-    if (!organization) {
-      throw new NotFoundException('Organization not found');
-    }
-
-    const salesChannel = this.salesChannelsRepository.create({
-      ...createSalesChannelDto,
-      organizationId: organization.id,
-    });
-
-    return this.salesChannelsRepository.save(salesChannel);
-  }
-
-  /**
    * Get all sales channels for the current user's organization
    */
   async getAllForCurrentOrganization(): Promise<SalesChannel[]> {
+    // Automatically get the current organization from context
     const organization =
       await this.organizationContextService.getRequiredOrganization();
 
@@ -81,5 +55,85 @@ export class CreateNewChannelService {
       relations: ['organization'],
       order: { id: 'DESC' },
     });
+  }
+
+  /**
+   * Get sales channel stats for the current user's organization
+   */
+  async getStatsForCurrentOrganization() {
+    // Automatically get the current organization from context
+    const organization =
+      await this.organizationContextService.getRequiredOrganization();
+
+    const count = await this.salesChannelsRepository.count({
+      where: { organizationId: organization.id },
+    });
+
+    return {
+      organizationName: organization.name,
+      totalChannels: count,
+      organizationId: organization.id,
+    };
+  }
+
+  /**
+   * Find a specific sales channel for the current user's organization
+   */
+  async findOneForCurrentOrganization(id: number): Promise<SalesChannel> {
+    // Automatically get the current organization from context
+    const organization =
+      await this.organizationContextService.getRequiredOrganization();
+
+    const salesChannel = await this.salesChannelsRepository.findOne({
+      where: { id, organizationId: organization.id },
+      relations: ['organization'],
+    });
+
+    if (!salesChannel) {
+      throw new NotFoundException('Sales channel not found');
+    }
+
+    return salesChannel;
+  }
+
+  /**
+   * Update a sales channel for the current user's organization
+   */
+  async updateForCurrentOrganization(
+    id: number,
+    updateDto: Partial<CreateSalesChannelDto>
+  ): Promise<SalesChannel> {
+    const salesChannel = await this.findOneForCurrentOrganization(id);
+
+    Object.assign(salesChannel, updateDto);
+
+    return this.salesChannelsRepository.save(salesChannel);
+  }
+
+  /**
+   * Delete a sales channel for the current user's organization
+   */
+  async removeForCurrentOrganization(id: number): Promise<void> {
+    const salesChannel = await this.findOneForCurrentOrganization(id);
+    await this.salesChannelsRepository.remove(salesChannel);
+  }
+
+  /**
+   * Optional: Get current user info
+   */
+  async getCurrentUserInfo() {
+    const [user, organization] = await Promise.all([
+      this.organizationContextService.getCurrentUser(),
+      this.organizationContextService.getCurrentOrganization(),
+    ]);
+
+    return {
+      user: user
+        ? { id: user.id, email: user.email, fullName: user.fullName }
+        : null,
+      organization: organization
+        ? { id: organization.id, name: organization.name }
+        : null,
+    };
   }
 }

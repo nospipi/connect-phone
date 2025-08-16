@@ -2,37 +2,30 @@
 import {
   Controller,
   Get,
-  Param,
   Query,
   ParseIntPipe,
   DefaultValuePipe,
+  UseGuards,
 } from '@nestjs/common';
 import { FindAllByOrgPaginatedService } from './service';
 import { SalesChannel } from '../../../../database/entities/sales-channel.entity';
+import { Organization } from '../../../../database/entities/organization.entity';
 import { Pagination } from 'nestjs-typeorm-paginate';
+import { OrganizationGuard } from '@/common/guards/organization.guard';
 
 @Controller('sales-channels')
+@UseGuards(OrganizationGuard)
 export class FindAllByOrgPaginatedController {
   constructor(
     private readonly findAllByOrgPaginatedService: FindAllByOrgPaginatedService
   ) {}
 
-  @Get('organization/:organizationId/paginated')
+  @Get('paginated')
   async findAllByOrganizationPaginated(
-    @Param('organizationId', ParseIntPipe) organizationId: number,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number
   ): Promise<Pagination<SalesChannel>> {
-    console.log(
-      'Fetching paginated sales channels for organization:',
-      organizationId,
-      'page:',
-      page,
-      'limit:',
-      limit
-    );
     return this.findAllByOrgPaginatedService.findAllByOrganizationPaginated(
-      organizationId,
       page,
       limit
     );

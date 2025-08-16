@@ -5,9 +5,8 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { CoreModule } from './common/core/core.module';
 import { ClerkClientProvider } from 'src/common/providers/clerk-client.provider';
-import { AuthModule } from 'src/resources/auth/auth.module';
-import { ClerkAuthGuard } from './resources/auth/clerk-auth.guard';
-import { OrganizationRequiredGuard } from './common/guards/organization-required.guard';
+import { AuthModule } from './auth/auth.module';
+import { ClerkAuthGuard } from './common/guards/clerk-auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { DatabaseModule } from './database/database.module';
 import { SalesChannelsModule } from './resources/sales-channels/sales-channels.module';
@@ -19,7 +18,7 @@ import { SalesChannelsModule } from './resources/sales-channels/sales-channels.m
     }),
     DatabaseModule,
     AuthModule,
-    CoreModule, // This now includes OrganizationContextService
+    CoreModule, // This includes OrganizationContextService
     SalesChannelsModule,
   ],
   controllers: [AppController],
@@ -28,13 +27,9 @@ import { SalesChannelsModule } from './resources/sales-channels/sales-channels.m
     ClerkClientProvider,
     {
       provide: APP_GUARD,
-      useClass: ClerkAuthGuard,
+      useClass: ClerkAuthGuard, // Only authentication is global
     },
-    // Optional: Apply OrganizationRequiredGuard globally
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: OrganizationRequiredGuard,
-    // },
+    // ✅ NO global organization guard - you pick which controllers need it
   ],
 })
 export class AppModule {}
