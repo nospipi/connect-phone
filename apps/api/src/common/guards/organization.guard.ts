@@ -44,7 +44,9 @@ export class OrganizationGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest();
 
-    console.log('🔒 Organization guard: Enforcing organization requirement...');
+    console.log(
+      '🔒🏢 Organization guard: Enforcing organization requirement...'
+    );
 
     // Get current user and organization (no errors thrown by service)
     const [user, organization] = await Promise.all([
@@ -77,7 +79,7 @@ export class OrganizationGuard implements CanActivate {
     }
 
     console.log(
-      `✅ Organization guard: Access granted for user ${user.email} in organization ${organization.name}`
+      `🔒🏢 Organization guard: Access granted for user ${user.email} in organization ${organization.name} (ID: ${organization.id})`
     );
 
     // Attach to request for controllers and services to use

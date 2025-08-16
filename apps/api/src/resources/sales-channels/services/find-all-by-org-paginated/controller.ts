@@ -9,12 +9,12 @@ import {
 } from '@nestjs/common';
 import { FindAllByOrgPaginatedService } from './service';
 import { SalesChannel } from '../../../../database/entities/sales-channel.entity';
-import { Organization } from '../../../../database/entities/organization.entity';
+import { DbUserGuard } from '@/common/guards/db-user.guard';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { OrganizationGuard } from '@/common/guards/organization.guard';
 
 @Controller('sales-channels')
-@UseGuards(OrganizationGuard)
+@UseGuards(DbUserGuard, OrganizationGuard)
 export class FindAllByOrgPaginatedController {
   constructor(
     private readonly findAllByOrgPaginatedService: FindAllByOrgPaginatedService

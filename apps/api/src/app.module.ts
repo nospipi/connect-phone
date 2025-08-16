@@ -11,6 +11,8 @@ import { APP_GUARD } from '@nestjs/core';
 import { DatabaseModule } from './database/database.module';
 import { SalesChannelsModule } from './resources/sales-channels/sales-channels.module';
 
+//---------------------------------------------------------------------------
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -27,9 +29,8 @@ import { SalesChannelsModule } from './resources/sales-channels/sales-channels.m
     ClerkClientProvider,
     {
       provide: APP_GUARD,
-      useClass: ClerkAuthGuard, // Only authentication is global
+      useClass: ClerkAuthGuard, // GLOBAL AUTH GUARD
     },
-    // ✅ NO global organization guard - you pick which controllers need it
   ],
 })
 export class AppModule {}
