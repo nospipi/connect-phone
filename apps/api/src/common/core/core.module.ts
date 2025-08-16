@@ -5,7 +5,7 @@ import { RequestContextService } from './request-context.service';
 import { CurrentOrganizationService } from './current-organization.service';
 import { CurrentDbUserService } from './current-db-user.service';
 import { CurrentClerkUserService } from './current-clerk-user.service';
-import { OrganizationContextService } from './organization-context.service';
+
 import { User } from '../../database/entities/user.entity';
 import { Organization } from '../../database/entities/organization.entity';
 
@@ -17,14 +17,12 @@ import { Organization } from '../../database/entities/organization.entity';
     CurrentClerkUserService,
     CurrentDbUserService,
     CurrentOrganizationService,
-    OrganizationContextService,
   ],
   exports: [
     RequestContextService,
     CurrentClerkUserService,
     CurrentDbUserService,
     CurrentOrganizationService,
-    OrganizationContextService,
   ],
 })
 export class CoreModule {}

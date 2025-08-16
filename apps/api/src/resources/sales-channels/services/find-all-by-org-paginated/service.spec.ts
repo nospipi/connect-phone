@@ -2,11 +2,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { NotFoundException } from '@nestjs/common';
+import { NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { FindAllByOrgPaginatedService } from './service';
 import { SalesChannel } from '../../../../database/entities/sales-channel.entity';
 import { Organization } from '../../../../database/entities/organization.entity';
-import { OrganizationContextService } from '../../../../common/core/organization-context.service';
+import { User } from '../../../../database/entities/user.entity';
+import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
+import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
 import { paginate } from 'nestjs-typeorm-paginate';
 
 //------------------------------------------
@@ -20,7 +22,8 @@ describe('FindAllByOrgPaginatedService', () => {
   let service: FindAllByOrgPaginatedService;
   let salesChannelsRepository: jest.Mocked<Repository<SalesChannel>>;
   let organizationsRepository: jest.Mocked<Repository<Organization>>;
-  let organizationContextService: jest.Mocked<OrganizationContextService>;
+  let currentOrganizationService: jest.Mocked<CurrentOrganizationService>;
+  let currentDbUserService: jest.Mocked<CurrentDbUserService>;
 
   const mockOrganization: Organization = {
     id: 31,
@@ -30,6 +33,18 @@ describe('FindAllByOrgPaginatedService', () => {
     createdAt: '2024-01-01T00:00:00Z',
     salesChannels: [],
     users: [],
+  };
+
+  const mockUser: User = {
+    id: 1,
+    email: 'test@example.com',
+    firstName: 'Test',
+    lastName: 'User',
+    fullName: 'Test User',
+    createdAt: '2024-01-01T00:00:00Z',
+    loggedOrganizationId: 31,
+    loggedOrganization: mockOrganization,
+    organizations: [mockOrganization],
   };
 
   const mockSalesChannel: SalesChannel = {
@@ -56,11 +71,12 @@ describe('FindAllByOrgPaginatedService', () => {
       findOne: jest.fn(),
     };
 
-    const mockOrganizationContextService = {
-      getRequiredOrganization: jest.fn(),
+    const mockCurrentOrganizationService = {
       getCurrentOrganization: jest.fn(),
-      getCurrentUser: jest.fn(),
-      getRequiredUser: jest.fn(),
+    };
+
+    const mockCurrentDbUserService = {
+      getCurrentDbUser: jest.fn(),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -75,8 +91,12 @@ describe('FindAllByOrgPaginatedService', () => {
           useValue: mockOrganizationsRepository,
         },
         {
-          provide: OrganizationContextService,
-          useValue: mockOrganizationContextService,
+          provide: CurrentOrganizationService,
+          useValue: mockCurrentOrganizationService,
+        },
+        {
+          provide: CurrentDbUserService,
+          useValue: mockCurrentDbUserService,
         },
       ],
     }).compile();
@@ -86,7 +106,8 @@ describe('FindAllByOrgPaginatedService', () => {
     );
     salesChannelsRepository = module.get(getRepositoryToken(SalesChannel));
     organizationsRepository = module.get(getRepositoryToken(Organization));
-    organizationContextService = module.get(OrganizationContextService);
+    currentOrganizationService = module.get(CurrentOrganizationService);
+    currentDbUserService = module.get(CurrentDbUserService);
   });
 
   afterEach(() => {
@@ -113,7 +134,7 @@ describe('FindAllByOrgPaginatedService', () => {
         },
       };
 
-      organizationContextService.getRequiredOrganization.mockResolvedValue(
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
       (paginate as jest.Mock).mockResolvedValue(mockPaginatedResult);
@@ -123,7 +144,7 @@ describe('FindAllByOrgPaginatedService', () => {
 
       // Assert
       expect(
-        organizationContextService.getRequiredOrganization
+        currentOrganizationService.getCurrentOrganization
       ).toHaveBeenCalledTimes(1);
       expect(salesChannelsRepository.createQueryBuilder).toHaveBeenCalledWith(
         'salesChannel'
@@ -132,26 +153,65 @@ describe('FindAllByOrgPaginatedService', () => {
       expect(result).toEqual(mockPaginatedResult);
     });
 
-    it('should throw error when organization not found', async () => {
+    it('should throw UnauthorizedException when user not found in database', async () => {
       // Arrange
-      organizationContextService.getRequiredOrganization.mockRejectedValue(
-        new NotFoundException('Organization not found')
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(null);
+      currentDbUserService.getCurrentDbUser.mockResolvedValue(null);
+
+      // Act & Assert
+      await expect(
+        service.findAllByOrganizationPaginated(1, 10)
+      ).rejects.toThrow(
+        new UnauthorizedException('User not found in database')
       );
+      expect(
+        currentOrganizationService.getCurrentOrganization
+      ).toHaveBeenCalledTimes(1);
+      expect(currentDbUserService.getCurrentDbUser).toHaveBeenCalledTimes(1);
+      expect(salesChannelsRepository.createQueryBuilder).not.toHaveBeenCalled();
+      expect(paginate).not.toHaveBeenCalled();
+    });
+
+    it('should throw UnauthorizedException when user not logged into any organization', async () => {
+      // Arrange
+      const userWithoutOrg = { ...mockUser, loggedOrganizationId: null };
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(null);
+      currentDbUserService.getCurrentDbUser.mockResolvedValue(userWithoutOrg);
+
+      // Act & Assert
+      await expect(
+        service.findAllByOrganizationPaginated(1, 10)
+      ).rejects.toThrow(
+        new UnauthorizedException('User is not logged into any organization')
+      );
+      expect(
+        currentOrganizationService.getCurrentOrganization
+      ).toHaveBeenCalledTimes(1);
+      expect(currentDbUserService.getCurrentDbUser).toHaveBeenCalledTimes(1);
+      expect(salesChannelsRepository.createQueryBuilder).not.toHaveBeenCalled();
+      expect(paginate).not.toHaveBeenCalled();
+    });
+
+    it('should throw NotFoundException when organization not found', async () => {
+      // Arrange
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(null);
+      currentDbUserService.getCurrentDbUser.mockResolvedValue(mockUser);
 
       // Act & Assert
       await expect(
         service.findAllByOrganizationPaginated(1, 10)
       ).rejects.toThrow(new NotFoundException('Organization not found'));
       expect(
-        organizationContextService.getRequiredOrganization
+        currentOrganizationService.getCurrentOrganization
       ).toHaveBeenCalledTimes(1);
+      expect(currentDbUserService.getCurrentDbUser).toHaveBeenCalledTimes(1);
       expect(salesChannelsRepository.createQueryBuilder).not.toHaveBeenCalled();
       expect(paginate).not.toHaveBeenCalled();
     });
 
     it('should validate limit bounds', async () => {
       // Arrange
-      organizationContextService.getRequiredOrganization.mockResolvedValue(
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
       (paginate as jest.Mock).mockResolvedValue({ items: [], meta: {} });
@@ -170,7 +230,7 @@ describe('FindAllByOrgPaginatedService', () => {
 
     it('should use default values when not provided', async () => {
       // Arrange
-      organizationContextService.getRequiredOrganization.mockResolvedValue(
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
       (paginate as jest.Mock).mockResolvedValue({ items: [], meta: {} });
@@ -180,7 +240,7 @@ describe('FindAllByOrgPaginatedService', () => {
 
       // Assert
       expect(
-        organizationContextService.getRequiredOrganization
+        currentOrganizationService.getCurrentOrganization
       ).toHaveBeenCalledTimes(1);
       expect(paginate).toHaveBeenCalledWith(
         expect.anything(),
@@ -201,7 +261,7 @@ describe('FindAllByOrgPaginatedService', () => {
         meta: { totalItems: 1 },
       };
 
-      organizationContextService.getRequiredOrganization.mockResolvedValue(
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
       (paginate as jest.Mock).mockResolvedValue(mockPaginatedResult);
@@ -211,7 +271,7 @@ describe('FindAllByOrgPaginatedService', () => {
 
       // Assert
       expect(
-        organizationContextService.getRequiredOrganization
+        currentOrganizationService.getCurrentOrganization
       ).toHaveBeenCalledTimes(1);
       expect(salesChannelsRepository.createQueryBuilder).toHaveBeenCalledWith(
         'salesChannel'
@@ -224,7 +284,7 @@ describe('FindAllByOrgPaginatedService', () => {
     it('should return pagination stats for current organization', async () => {
       // Arrange
       const totalCount = 25;
-      organizationContextService.getRequiredOrganization.mockResolvedValue(
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
       salesChannelsRepository.count.mockResolvedValue(totalCount);
@@ -234,7 +294,7 @@ describe('FindAllByOrgPaginatedService', () => {
 
       // Assert
       expect(
-        organizationContextService.getRequiredOrganization
+        currentOrganizationService.getCurrentOrganization
       ).toHaveBeenCalledTimes(1);
       expect(salesChannelsRepository.count).toHaveBeenCalledWith({
         where: { organizationId: 31 },
@@ -251,7 +311,7 @@ describe('FindAllByOrgPaginatedService', () => {
     it('should recommend larger page size for many items', async () => {
       // Arrange
       const totalCount = 100;
-      organizationContextService.getRequiredOrganization.mockResolvedValue(
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
       salesChannelsRepository.count.mockResolvedValue(totalCount);
@@ -268,7 +328,7 @@ describe('FindAllByOrgPaginatedService', () => {
   describe('findAllByOrganizationPaginatedWithCustomOrder', () => {
     it('should return paginated results with custom ordering', async () => {
       // Arrange
-      organizationContextService.getRequiredOrganization.mockResolvedValue(
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
       (paginate as jest.Mock).mockResolvedValue({ items: [], meta: {} });
@@ -283,7 +343,7 @@ describe('FindAllByOrgPaginatedService', () => {
 
       // Assert
       expect(
-        organizationContextService.getRequiredOrganization
+        currentOrganizationService.getCurrentOrganization
       ).toHaveBeenCalledTimes(1);
       expect(salesChannelsRepository.createQueryBuilder).toHaveBeenCalledWith(
         'salesChannel'

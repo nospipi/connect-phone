@@ -1,10 +1,15 @@
 // apps/api/src/resources/sales-channels/services/find-all-by-org-paginated/service.ts
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SalesChannel } from '../../../../database/entities/sales-channel.entity';
 import { Organization } from '../../../../database/entities/organization.entity';
-import { OrganizationContextService } from '../../../../common/core/organization-context.service';
+import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
+import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
 import {
   paginate,
   Pagination,
@@ -20,8 +25,32 @@ export class FindAllByOrgPaginatedService {
     private salesChannelsRepository: Repository<SalesChannel>,
     @InjectRepository(Organization)
     private organizationsRepository: Repository<Organization>,
-    private organizationContextService: OrganizationContextService // 🎯 Inject organization context
+    private currentOrganizationService: CurrentOrganizationService,
+    private currentDbUserService: CurrentDbUserService
   ) {}
+
+  /**
+   * Gets the current organization and throws an error if not found
+   */
+  private async getRequiredOrganization(): Promise<Organization> {
+    const organization =
+      await this.currentOrganizationService.getCurrentOrganization();
+
+    if (!organization) {
+      const user = await this.currentDbUserService.getCurrentDbUser();
+      if (!user) {
+        throw new UnauthorizedException('User not found in database');
+      }
+      if (!user.loggedOrganizationId) {
+        throw new UnauthorizedException(
+          'User is not logged into any organization'
+        );
+      }
+      throw new NotFoundException('Organization not found');
+    }
+
+    return organization;
+  }
 
   /**
    * Get paginated sales channels for the current user's organization
@@ -32,8 +61,7 @@ export class FindAllByOrgPaginatedService {
     limit: number = 10
   ): Promise<Pagination<SalesChannel>> {
     // Automatically get the current organization from context
-    const organization =
-      await this.organizationContextService.getRequiredOrganization();
+    const organization = await this.getRequiredOrganization();
 
     console.log(
       `Getting paginated sales channels for organization: ${organization.name}`
@@ -69,8 +97,7 @@ export class FindAllByOrgPaginatedService {
     orderDirection: 'ASC' | 'DESC' = 'DESC'
   ): Promise<Pagination<SalesChannel>> {
     // Automatically get the current organization from context
-    const organization =
-      await this.organizationContextService.getRequiredOrganization();
+    const organization = await this.getRequiredOrganization();
 
     console.log(
       `Getting paginated sales channels for organization: ${organization.name} with custom order`
@@ -104,8 +131,7 @@ export class FindAllByOrgPaginatedService {
     limit: number = 10
   ): Promise<Pagination<SalesChannel>> {
     // Automatically get the current organization from context
-    const organization =
-      await this.organizationContextService.getRequiredOrganization();
+    const organization = await this.getRequiredOrganization();
 
     console.log(
       `Searching sales channels for organization: ${organization.name} with term: "${searchTerm}"`
@@ -138,8 +164,7 @@ export class FindAllByOrgPaginatedService {
    */
   async getPaginationStats() {
     // Automatically get the current organization from context
-    const organization =
-      await this.organizationContextService.getRequiredOrganization();
+    const organization = await this.getRequiredOrganization();
 
     const totalCount = await this.salesChannelsRepository.count({
       where: { organizationId: organization.id },

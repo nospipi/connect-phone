@@ -2,12 +2,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { NotFoundException } from '@nestjs/common';
+import { NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { CreateRandomChannelService } from './service';
 import { SalesChannel } from '../../../../database/entities/sales-channel.entity';
 import { Organization } from '../../../../database/entities/organization.entity';
+import { User } from '../../../../database/entities/user.entity';
 import { CreateSalesChannelDto } from '../create-new-channel/create-sales-channel.dto';
-import { OrganizationContextService } from '../../../../common/core/organization-context.service';
+import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
+import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
 import { faker } from '@faker-js/faker';
 
 //--------------------------------------------
@@ -32,7 +34,8 @@ describe('CreateRandomChannelService', () => {
   let service: CreateRandomChannelService;
   let salesChannelsRepository: jest.Mocked<Repository<SalesChannel>>;
   let organizationsRepository: jest.Mocked<Repository<Organization>>;
-  let organizationContextService: jest.Mocked<OrganizationContextService>;
+  let currentOrganizationService: jest.Mocked<CurrentOrganizationService>;
+  let currentDbUserService: jest.Mocked<CurrentDbUserService>;
 
   const mockOrganization: Organization = {
     id: 31,
@@ -42,6 +45,18 @@ describe('CreateRandomChannelService', () => {
     createdAt: '2024-01-01T00:00:00Z',
     salesChannels: [],
     users: [],
+  };
+
+  const mockUser: User = {
+    id: 1,
+    email: 'test@example.com',
+    firstName: 'Test',
+    lastName: 'User',
+    fullName: 'Test User',
+    createdAt: '2024-01-01T00:00:00Z',
+    loggedOrganizationId: 31,
+    loggedOrganization: mockOrganization,
+    organizations: [mockOrganization],
   };
 
   const mockSalesChannel: SalesChannel = {
@@ -72,11 +87,12 @@ describe('CreateRandomChannelService', () => {
       find: jest.fn(),
     };
 
-    const mockOrganizationContextService = {
-      getRequiredOrganization: jest.fn(),
+    const mockCurrentOrganizationService = {
       getCurrentOrganization: jest.fn(),
-      getCurrentUser: jest.fn(),
-      getRequiredUser: jest.fn(),
+    };
+
+    const mockCurrentDbUserService = {
+      getCurrentDbUser: jest.fn(),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -91,8 +107,12 @@ describe('CreateRandomChannelService', () => {
           useValue: mockOrganizationsRepository,
         },
         {
-          provide: OrganizationContextService,
-          useValue: mockOrganizationContextService,
+          provide: CurrentOrganizationService,
+          useValue: mockCurrentOrganizationService,
+        },
+        {
+          provide: CurrentDbUserService,
+          useValue: mockCurrentDbUserService,
         },
       ],
     }).compile();
@@ -102,7 +122,8 @@ describe('CreateRandomChannelService', () => {
     );
     salesChannelsRepository = module.get(getRepositoryToken(SalesChannel));
     organizationsRepository = module.get(getRepositoryToken(Organization));
-    organizationContextService = module.get(OrganizationContextService);
+    currentOrganizationService = module.get(CurrentOrganizationService);
+    currentDbUserService = module.get(CurrentDbUserService);
   });
 
   afterEach(() => {
@@ -116,7 +137,7 @@ describe('CreateRandomChannelService', () => {
   describe('createSalesChannel', () => {
     it('should create a sales channel for current organization successfully', async () => {
       // Arrange
-      organizationContextService.getRequiredOrganization.mockResolvedValue(
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
       salesChannelsRepository.create.mockReturnValue(mockSalesChannel);
@@ -129,7 +150,7 @@ describe('CreateRandomChannelService', () => {
 
       // Assert
       expect(
-        organizationContextService.getRequiredOrganization
+        currentOrganizationService.getCurrentOrganization
       ).toHaveBeenCalledTimes(1);
       expect(salesChannelsRepository.create).toHaveBeenCalledWith({
         name: mockCreateSalesChannelDto.name,
@@ -143,19 +164,58 @@ describe('CreateRandomChannelService', () => {
       expect(result).toEqual(mockSalesChannel);
     });
 
-    it('should throw error when user has no organization', async () => {
+    it('should throw UnauthorizedException when user not found in database', async () => {
       // Arrange
-      organizationContextService.getRequiredOrganization.mockRejectedValue(
-        new NotFoundException('Organization not found')
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(null);
+      currentDbUserService.getCurrentDbUser.mockResolvedValue(null);
+
+      // Act & Assert
+      await expect(
+        service.createSalesChannel(mockCreateSalesChannelDto)
+      ).rejects.toThrow(
+        new UnauthorizedException('User not found in database')
       );
+      expect(
+        currentOrganizationService.getCurrentOrganization
+      ).toHaveBeenCalledTimes(1);
+      expect(currentDbUserService.getCurrentDbUser).toHaveBeenCalledTimes(1);
+      expect(salesChannelsRepository.create).not.toHaveBeenCalled();
+      expect(salesChannelsRepository.save).not.toHaveBeenCalled();
+    });
+
+    it('should throw UnauthorizedException when user not logged into any organization', async () => {
+      // Arrange
+      const userWithoutOrg = { ...mockUser, loggedOrganizationId: null };
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(null);
+      currentDbUserService.getCurrentDbUser.mockResolvedValue(userWithoutOrg);
+
+      // Act & Assert
+      await expect(
+        service.createSalesChannel(mockCreateSalesChannelDto)
+      ).rejects.toThrow(
+        new UnauthorizedException('User is not logged into any organization')
+      );
+      expect(
+        currentOrganizationService.getCurrentOrganization
+      ).toHaveBeenCalledTimes(1);
+      expect(currentDbUserService.getCurrentDbUser).toHaveBeenCalledTimes(1);
+      expect(salesChannelsRepository.create).not.toHaveBeenCalled();
+      expect(salesChannelsRepository.save).not.toHaveBeenCalled();
+    });
+
+    it('should throw NotFoundException when organization not found', async () => {
+      // Arrange
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(null);
+      currentDbUserService.getCurrentDbUser.mockResolvedValue(mockUser);
 
       // Act & Assert
       await expect(
         service.createSalesChannel(mockCreateSalesChannelDto)
       ).rejects.toThrow(new NotFoundException('Organization not found'));
       expect(
-        organizationContextService.getRequiredOrganization
+        currentOrganizationService.getCurrentOrganization
       ).toHaveBeenCalledTimes(1);
+      expect(currentDbUserService.getCurrentDbUser).toHaveBeenCalledTimes(1);
       expect(salesChannelsRepository.create).not.toHaveBeenCalled();
       expect(salesChannelsRepository.save).not.toHaveBeenCalled();
     });
@@ -169,7 +229,7 @@ describe('CreateRandomChannelService', () => {
       (faker.company.name as jest.Mock).mockReturnValue(mockName);
       (faker.company.catchPhrase as jest.Mock).mockReturnValue(mockDescription);
 
-      organizationContextService.getRequiredOrganization.mockResolvedValue(
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
       salesChannelsRepository.create.mockReturnValue(mockSalesChannel);
@@ -180,7 +240,7 @@ describe('CreateRandomChannelService', () => {
 
       // Assert
       expect(
-        organizationContextService.getRequiredOrganization
+        currentOrganizationService.getCurrentOrganization
       ).toHaveBeenCalledTimes(1);
       expect(salesChannelsRepository.create).toHaveBeenCalledWith({
         name: mockName,
@@ -196,17 +256,17 @@ describe('CreateRandomChannelService', () => {
 
     it('should throw error when user has no organization', async () => {
       // Arrange
-      organizationContextService.getRequiredOrganization.mockRejectedValue(
-        new NotFoundException('Organization not found')
-      );
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(null);
+      currentDbUserService.getCurrentDbUser.mockResolvedValue(null);
 
       // Act & Assert
       await expect(service.createRandomSalesChannel()).rejects.toThrow(
-        new NotFoundException('Organization not found')
+        new UnauthorizedException('User not found in database')
       );
       expect(
-        organizationContextService.getRequiredOrganization
+        currentOrganizationService.getCurrentOrganization
       ).toHaveBeenCalledTimes(1);
+      expect(currentDbUserService.getCurrentDbUser).toHaveBeenCalledTimes(1);
       expect(salesChannelsRepository.create).not.toHaveBeenCalled();
       expect(salesChannelsRepository.save).not.toHaveBeenCalled();
     });
@@ -216,7 +276,7 @@ describe('CreateRandomChannelService', () => {
     it('should get all sales channels for current organization', async () => {
       // Arrange
       const mockChannels = [mockSalesChannel];
-      organizationContextService.getRequiredOrganization.mockResolvedValue(
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
       salesChannelsRepository.find.mockResolvedValue(mockChannels);
@@ -226,7 +286,7 @@ describe('CreateRandomChannelService', () => {
 
       // Assert
       expect(
-        organizationContextService.getRequiredOrganization
+        currentOrganizationService.getCurrentOrganization
       ).toHaveBeenCalledTimes(1);
       expect(salesChannelsRepository.find).toHaveBeenCalledWith({
         where: { organizationId: 31 },
@@ -240,7 +300,7 @@ describe('CreateRandomChannelService', () => {
   describe('getStatsForCurrentOrganization', () => {
     it('should get stats for current organization', async () => {
       // Arrange
-      organizationContextService.getRequiredOrganization.mockResolvedValue(
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
       salesChannelsRepository.count.mockResolvedValue(5);
@@ -250,7 +310,7 @@ describe('CreateRandomChannelService', () => {
 
       // Assert
       expect(
-        organizationContextService.getRequiredOrganization
+        currentOrganizationService.getCurrentOrganization
       ).toHaveBeenCalledTimes(1);
       expect(salesChannelsRepository.count).toHaveBeenCalledWith({
         where: { organizationId: 31 },
@@ -267,7 +327,7 @@ describe('CreateRandomChannelService', () => {
     it('should find a specific sales channel for current organization', async () => {
       // Arrange
       const channelId = 1;
-      organizationContextService.getRequiredOrganization.mockResolvedValue(
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
       salesChannelsRepository.findOne.mockResolvedValue(mockSalesChannel);
@@ -277,7 +337,7 @@ describe('CreateRandomChannelService', () => {
 
       // Assert
       expect(
-        organizationContextService.getRequiredOrganization
+        currentOrganizationService.getCurrentOrganization
       ).toHaveBeenCalledTimes(1);
       expect(salesChannelsRepository.findOne).toHaveBeenCalledWith({
         where: { id: channelId, organizationId: 31 },
@@ -289,7 +349,7 @@ describe('CreateRandomChannelService', () => {
     it('should throw NotFoundException when sales channel not found', async () => {
       // Arrange
       const channelId = 999;
-      organizationContextService.getRequiredOrganization.mockResolvedValue(
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
       salesChannelsRepository.findOne.mockResolvedValue(null);
@@ -299,7 +359,7 @@ describe('CreateRandomChannelService', () => {
         service.findOneForCurrentOrganization(channelId)
       ).rejects.toThrow(new NotFoundException('Sales channel not found'));
       expect(
-        organizationContextService.getRequiredOrganization
+        currentOrganizationService.getCurrentOrganization
       ).toHaveBeenCalledTimes(1);
       expect(salesChannelsRepository.findOne).toHaveBeenCalledWith({
         where: { id: channelId, organizationId: 31 },
