@@ -20,7 +20,7 @@ import { SalesChannelsModule } from './resources/sales-channels/sales-channels.m
     }),
     DatabaseModule,
     AuthModule,
-    CoreModule, // This includes OrganizationContextService
+    CoreModule,
     SalesChannelsModule,
   ],
   controllers: [AppController],
