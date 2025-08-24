@@ -3,8 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { GetAllOrganizationsOfUserController } from './controller';
 import { GetAllOrganizationsOfUserService } from './service';
 import { Organization } from '../../../../database/entities/organization.entity';
-
-//--------------------------------------------
+import { UserOrganization } from '../../../../database/entities/user-organization.entity';
 
 describe('GetAllOrganizationsOfUserController', () => {
   let controller: GetAllOrganizationsOfUserController;
@@ -18,8 +17,8 @@ describe('GetAllOrganizationsOfUserController', () => {
       logoUrl: null,
       createdAt: '2024-01-01T00:00:00Z',
       salesChannels: [],
-      users: [],
-    },
+      userOrganizations: [] as UserOrganization[],
+    } as unknown as Organization,
     {
       id: 2,
       name: 'Organization 2',
@@ -27,8 +26,8 @@ describe('GetAllOrganizationsOfUserController', () => {
       logoUrl: 'https://example.com/logo.png',
       createdAt: '2024-01-02T00:00:00Z',
       salesChannels: [],
-      users: [],
-    },
+      userOrganizations: [] as UserOrganization[],
+    } as unknown as Organization,
   ];
 
   beforeEach(async () => {

@@ -9,14 +9,15 @@ import { Repository } from 'typeorm';
 import { User } from '../../../../database/entities/user.entity';
 import { Organization } from '../../../../database/entities/organization.entity';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
-
-//-------------------------------------------
+import { UserOrganization } from '../../../../database/entities/user-organization.entity';
 
 @Injectable()
 export class GetAllOrganizationsOfUserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    @InjectRepository(UserOrganization)
+    private userOrgRepository: Repository<UserOrganization>,
     private currentDbUserService: CurrentDbUserService
   ) {}
 
@@ -36,20 +37,22 @@ export class GetAllOrganizationsOfUserService {
       `Getting organizations for user: ${user.email} (ID: ${user.id})`
     );
 
-    // Fetch user with organizations relationship
-    const userWithOrganizations = await this.userRepository.findOne({
-      where: { id: user.id },
-      relations: ['organizations'],
+    // Fetch UserOrganization entries for the user with organization relation
+    const userOrganizations = await this.userOrgRepository.find({
+      where: { userId: user.id },
+      relations: ['organization'],
     });
 
-    if (!userWithOrganizations) {
-      throw new NotFoundException('User not found');
+    if (!userOrganizations || userOrganizations.length === 0) {
+      console.log(`No organizations found for user ${user.email}`);
+      return [];
     }
 
     console.log(
-      `Found ${userWithOrganizations.organizations.length} organizations for user ${user.email}`
+      `Found ${userOrganizations.length} organizations for user ${user.email}`
     );
 
-    return userWithOrganizations.organizations;
+    // Map to Organization entities
+    return userOrganizations.map((uo) => uo.organization);
   }
 }

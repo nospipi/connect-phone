@@ -5,12 +5,12 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   ManyToOne,
-  ManyToMany,
-  JoinTable,
+  OneToMany,
   JoinColumn,
 } from 'typeorm';
 import { IUser } from '@connect-phone/shared-types';
 import { Organization } from './organization.entity';
+import { UserOrganization } from './user-organization.entity';
 
 @Entity({ name: 'users' })
 export class User implements IUser {
@@ -29,13 +29,6 @@ export class User implements IUser {
   @Column({ type: 'varchar', length: 255 })
   lastName: string;
 
-  /**
-   * Computed property — not stored in DB.
-   * Always returns the latest combination of `firstName` and `lastName`.
-   * Updates automatically if either name changes in memory.
-   */
-  //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/get
-  //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/set
   get fullName(): string {
     return `${this.firstName ?? ''} ${this.lastName ?? ''}`.trim();
   }
@@ -47,17 +40,7 @@ export class User implements IUser {
   @JoinColumn({ name: 'loggedOrganizationId' })
   loggedOrganization: Organization | null;
 
-  @ManyToMany(() => Organization, (organization) => organization.users)
-  @JoinTable({
-    name: 'user_organizations',
-    joinColumn: {
-      name: 'userId',
-      referencedColumnName: 'id',
-    },
-    inverseJoinColumn: {
-      name: 'organizationId',
-      referencedColumnName: 'id',
-    },
-  })
-  organizations: Organization[];
+  // --- updated relation to UserOrganization ---
+  @OneToMany(() => UserOrganization, (userOrg) => userOrg.user)
+  userOrganizations: UserOrganization[];
 }

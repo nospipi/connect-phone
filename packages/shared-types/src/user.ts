@@ -1,5 +1,10 @@
 import { IOrganization } from "./organization";
 
+export enum UserOrganizationRole {
+  ADMIN = "ADMIN",
+  OPERATOR = "OPERATOR",
+}
+
 export interface IUser {
   id: number;
   createdAt: string;
@@ -7,6 +12,9 @@ export interface IUser {
   firstName: string;
   lastName: string;
   fullName?: string;
-  loggedOrganizationId: number | null | undefined;
-  organizations: IOrganization[];
+  loggedOrganizationId: number | null;
+  userOrganizations: {
+    organization: IOrganization;
+    role: UserOrganizationRole;
+  }[];
 }

@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation"
 import { Card } from "@/components/common/Card"
 import { Button } from "@/components/common/Button"
 import { Divider } from "@/components/common/Divider"
@@ -5,7 +6,7 @@ import { RiAddLine } from "@remixicon/react"
 import Link from "next/link"
 import OrganizationsSelector from "./OrganizationsSelector.client"
 import { getAllOrganizationsOfUser } from "./(backend)/server_actions/getAllOrganizationsOfUser"
-import { IOrganization } from "@connect-phone/shared-types"
+import { isUserLoggedInOrganization } from "./(backend)/server_actions/isUserLoggedInOrganization"
 import UserButton from "./UserButton"
 import Image from "next/image"
 import logo from "@/public/logo.png"
@@ -14,6 +15,21 @@ import logo from "@/public/logo.png"
 
 const OrganizationSelectPage = async () => {
   const organizations = await getAllOrganizationsOfUser()
+  const loggedInStatus = await isUserLoggedInOrganization()
+  console.log("isLoggedIn:", loggedInStatus)
+  //i will use this to redirect to overview directly before showing ui
+  if (loggedInStatus?.loggedIn) {
+    // Redirect to overview page
+    console.log(
+      "User is logged in to an organization, we should redirect to the overview page..",
+    )
+    //redirect("/overview")
+  } else {
+    console.log(
+      "User is not logged in to any organization, we should show the organization selection UI.",
+    )
+  }
+
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center bg-gray-50 p-4 dark:bg-gray-900">
       <div className="absolute right-4 top-4">

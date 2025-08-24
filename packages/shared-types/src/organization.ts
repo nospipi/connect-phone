@@ -1,5 +1,5 @@
 import { ISalesChannel } from "./salesChannel";
-import { IUser } from "./user";
+import { IUser, UserOrganizationRole } from "./user";
 
 export interface IOrganization {
   id: number;
@@ -8,5 +8,8 @@ export interface IOrganization {
   slug: string;
   logoUrl: string | null;
   salesChannels: ISalesChannel[];
-  users: IUser[];
+  userOrganizations: {
+    user: IUser;
+    role: UserOrganizationRole;
+  }[];
 }

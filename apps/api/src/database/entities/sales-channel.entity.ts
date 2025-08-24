@@ -1,3 +1,5 @@
+//src/database/entities/sales-channel.entity.ts
+
 import {
   Entity,
   Column,

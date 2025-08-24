@@ -4,12 +4,11 @@ import {
   Column,
   PrimaryGeneratedColumn,
   OneToMany,
-  ManyToMany,
   CreateDateColumn,
 } from 'typeorm';
 import { IOrganization } from '@connect-phone/shared-types';
 import { SalesChannel } from './sales-channel.entity';
-import { User } from './user.entity';
+import { UserOrganization } from './user-organization.entity';
 
 @Entity({ name: 'organizations' })
 export class Organization implements IOrganization {
@@ -28,10 +27,9 @@ export class Organization implements IOrganization {
   @Column({ type: 'varchar', length: 500, nullable: true })
   logoUrl: string | null;
 
-  // Fix: Reference the relationship property, not the foreign key column
   @OneToMany(() => SalesChannel, (salesChannel) => salesChannel.organization)
   salesChannels: SalesChannel[];
 
-  @ManyToMany(() => User, (user) => user.organizations)
-  users: User[];
+  @OneToMany(() => UserOrganization, (userOrg) => userOrg.organization)
+  userOrganizations: UserOrganization[];
 }

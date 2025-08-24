@@ -10,7 +10,7 @@ import { ClerkAuthGuard } from './common/guards/clerk-auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { DatabaseModule } from './database/database.module';
 import { SalesChannelsModule } from './resources/sales-channels/sales-channels.module';
-import { UsersModule } from './resources/users/services/get-all-organizations-of-user/users.module';
+import { UsersModule } from './resources/users/users.module';
 
 //---------------------------------------------------------------------------
 

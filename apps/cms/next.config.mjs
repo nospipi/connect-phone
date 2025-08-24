@@ -5,6 +5,7 @@ const nextConfig = {
     domains: [
       "picsum.photos",
       "3xvsyh204yw6i1lp.public.blob.vercel-storage.com",
+      "getaways-bookings.herokuapp.com",
     ],
   },
 }
