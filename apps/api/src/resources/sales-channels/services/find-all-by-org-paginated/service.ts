@@ -32,7 +32,7 @@ export class FindAllByOrgPaginatedService {
   /**
    * Gets the current organization and throws an error if not found
    */
-  private async getRequiredOrganization(): Promise<Organization> {
+  private async userOrganizations(): Promise<Organization> {
     const organization =
       await this.currentOrganizationService.getCurrentOrganization();
 
@@ -61,7 +61,7 @@ export class FindAllByOrgPaginatedService {
     limit: number = 10
   ): Promise<Pagination<SalesChannel>> {
     // Automatically get the current organization from context
-    const organization = await this.getRequiredOrganization();
+    const organization = await this.userOrganizations();
 
     console.log(
       `Getting paginated sales channels for organization: ${organization.name}`
@@ -85,97 +85,5 @@ export class FindAllByOrgPaginatedService {
 
     // Use nestjs-typeorm-paginate to handle pagination
     return paginate<SalesChannel>(queryBuilder, options);
-  }
-
-  /**
-   * Get paginated sales channels with custom ordering
-   */
-  async findAllByOrganizationPaginatedWithCustomOrder(
-    page: number = 1,
-    limit: number = 10,
-    orderBy: 'id' | 'name' | 'createdAt' = 'id',
-    orderDirection: 'ASC' | 'DESC' = 'DESC'
-  ): Promise<Pagination<SalesChannel>> {
-    // Automatically get the current organization from context
-    const organization = await this.getRequiredOrganization();
-
-    console.log(
-      `Getting paginated sales channels for organization: ${organization.name} with custom order`
-    );
-
-    // Configure pagination options
-    const options: IPaginationOptions = {
-      page,
-      limit: Math.min(Math.max(limit, 1), 100),
-      route: `/sales-channels/paginated`,
-    };
-
-    // Build query with custom ordering
-    const queryBuilder = this.salesChannelsRepository
-      .createQueryBuilder('salesChannel')
-      .leftJoinAndSelect('salesChannel.organization', 'organization')
-      .where('salesChannel.organizationId = :organizationId', {
-        organizationId: organization.id,
-      })
-      .orderBy(`salesChannel.${orderBy}`, orderDirection);
-
-    return paginate<SalesChannel>(queryBuilder, options);
-  }
-
-  /**
-   * Search paginated sales channels for current organization
-   */
-  async searchPaginated(
-    searchTerm: string,
-    page: number = 1,
-    limit: number = 10
-  ): Promise<Pagination<SalesChannel>> {
-    // Automatically get the current organization from context
-    const organization = await this.getRequiredOrganization();
-
-    console.log(
-      `Searching sales channels for organization: ${organization.name} with term: "${searchTerm}"`
-    );
-
-    const options: IPaginationOptions = {
-      page,
-      limit: Math.min(Math.max(limit, 1), 100),
-      route: `/sales-channels/paginated`,
-    };
-
-    // Build search query
-    const queryBuilder = this.salesChannelsRepository
-      .createQueryBuilder('salesChannel')
-      .leftJoinAndSelect('salesChannel.organization', 'organization')
-      .where('salesChannel.organizationId = :organizationId', {
-        organizationId: organization.id,
-      })
-      .andWhere(
-        '(salesChannel.name ILIKE :searchTerm OR salesChannel.description ILIKE :searchTerm)',
-        { searchTerm: `%${searchTerm}%` }
-      )
-      .orderBy('salesChannel.id', 'DESC');
-
-    return paginate<SalesChannel>(queryBuilder, options);
-  }
-
-  /**
-   * Get pagination stats for current organization
-   */
-  async getPaginationStats() {
-    // Automatically get the current organization from context
-    const organization = await this.getRequiredOrganization();
-
-    const totalCount = await this.salesChannelsRepository.count({
-      where: { organizationId: organization.id },
-    });
-
-    return {
-      organizationName: organization.name,
-      organizationId: organization.id,
-      totalSalesChannels: totalCount,
-      recommendedPageSize: totalCount > 50 ? 20 : 10,
-      estimatedPages: Math.ceil(totalCount / 10),
-    };
   }
 }

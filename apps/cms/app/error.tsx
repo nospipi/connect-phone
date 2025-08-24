@@ -3,6 +3,9 @@
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { RiRefreshLine, RiArrowLeftLine } from "@remixicon/react"
+import { UserButton } from "@clerk/nextjs"
+//import UserButton from "./UserButton"
+//--------------------------------------------------------------------
 
 const ErrorPage = ({ error }: { error?: Error | string | unknown }) => {
   const [countdown, setCountdown] = useState(15)
@@ -32,6 +35,9 @@ const ErrorPage = ({ error }: { error?: Error | string | unknown }) => {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 dark:bg-gray-900">
+      <div className="absolute right-4 top-4">
+        <UserButton />
+      </div>
       <div className="h-2 bg-red-600"></div>
 
       <div className="px-6 py-8 md:p-10">

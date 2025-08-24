@@ -35,6 +35,7 @@ export class CurrentDbUserService {
     }
 
     const email = this.currentClerkUserService.getClerkUserEmail();
+
     if (!email) {
       this._userLoaded = true;
       this._currentUser = null;

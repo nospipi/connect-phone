@@ -3,7 +3,7 @@ import { DataTable } from "@/components/ui/data-table/DataTable"
 import { usage } from "@/data/data"
 import { getAllSalesChannelsOfOrganizationPaginated } from "@/app/(backend)/server_actions/getAllSalesChannelsOfOrganizationPaginated"
 import AddChannelButton from "./CreateRandomButton.client"
-import { SalesChannel } from "@connect-phone/shared-types"
+import { ISalesChannel } from "@connect-phone/shared-types"
 import { Badge } from "@/components/common/Badge"
 import { Card } from "@/components/common/Card"
 import { Button } from "@/components/common/Button"
@@ -32,7 +32,7 @@ const Page = async ({
       organizationId: 89, // TEMPORARY
       page: page,
     })
-  const salesChannels: SalesChannel[] = salesChannelsResponse?.items || []
+  const salesChannels: ISalesChannel[] = salesChannelsResponse?.items || []
   const meta = salesChannelsResponse?.meta
   const hasPreviousPage = meta?.currentPage > 1
   const hasNextPage = meta?.currentPage < meta?.totalPages
@@ -72,7 +72,7 @@ const Page = async ({
       {/* Sales Channels List */}
       <div className="flex-1 overflow-auto">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {salesChannels.map((channel: SalesChannel) => (
+          {salesChannels.map((channel: ISalesChannel) => (
             <Card
               key={channel.name}
               className="flex flex-col p-6 transition-shadow hover:shadow-md"

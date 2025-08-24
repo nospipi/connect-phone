@@ -29,8 +29,6 @@ import { CreateNewChannelService } from './services/create-new-channel/service';
     CreateRandomChannelService,
     FindAllByOrgPaginatedService,
     CreateNewChannelService,
-
-    // ✅ No guards needed - OrganizationGuard is provided globally in app.module.ts
   ],
 })
 export class SalesChannelsModule {}

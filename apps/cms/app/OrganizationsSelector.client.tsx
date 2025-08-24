@@ -10,14 +10,35 @@ import {
 } from "@/components/common/Select"
 import { Button } from "@/components/common/Button"
 import { RiArrowRightSLine } from "@remixicon/react"
-import { cx } from "@/lib/utils"
 import { useRouter } from "next/navigation"
+import { IOrganization } from "@connect-phone/shared-types"
+import Image from "next/image"
 
 //-----------------------------------------------------------------------------
+const getInitials = (name: string): string => {
+  const words = name.trim().split(/\s+/)
+  // Filter out words that are just symbols (like "-", "&", etc.)
+  const realWords = words.filter((word) => /[a-zA-Z]/.test(word))
 
-const OrganizationsSelector = ({ organizations }: { organizations: any }) => {
+  if (realWords.length >= 2) {
+    // Take first letter of first two real words
+    return (realWords[0][0] + realWords[1][0]).toUpperCase()
+  } else if (realWords.length === 1) {
+    // Take first two letters of single word
+    return realWords[0].substring(0, 2).toUpperCase()
+  } else {
+    // Fallback if no real words found
+    return "??"
+  }
+}
+const OrganizationsSelector = ({
+  organizations,
+}: {
+  organizations: IOrganization[]
+}) => {
   const [selectedOrg, setSelectedOrg] = useState("")
   const router = useRouter()
+
   return (
     <>
       <Select value={selectedOrg} onValueChange={setSelectedOrg}>
@@ -25,20 +46,31 @@ const OrganizationsSelector = ({ organizations }: { organizations: any }) => {
           <SelectValue placeholder="Select an organization" />
         </SelectTrigger>
         <SelectContent>
-          {organizations.map((org: any) => (
-            <SelectItem key={org.id} value={org.id} className="py-2">
+          {organizations.map((org: IOrganization) => (
+            <SelectItem
+              key={org.createdAt}
+              value={String(org.id)}
+              className="py-2"
+            >
               <div className="flex items-center gap-2">
-                <span
-                  className={cx(
-                    org.color,
-                    "flex h-8 w-8 items-center justify-center rounded-md text-xs font-medium text-white",
-                  )}
-                >
-                  {org.initials}
-                </span>
+                {org.logoUrl ? (
+                  <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-md">
+                    <Image
+                      src={org.logoUrl}
+                      alt={`${org.name} logo`}
+                      width={32}
+                      height={32}
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                ) : (
+                  <span className="flex h-8 w-8 items-center justify-center rounded-md bg-gray-500 text-xs font-medium text-white">
+                    {getInitials(org.name)}
+                  </span>
+                )}
                 <div className="flex flex-col items-start">
                   <span className="text-sm font-medium">{org.name}</span>
-                  <span className="text-xs text-gray-500">{org.role}</span>
+                  <span className="text-xs text-gray-500">ADMIN</span>
                 </div>
               </div>
             </SelectItem>

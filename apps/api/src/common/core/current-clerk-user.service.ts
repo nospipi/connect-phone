@@ -20,6 +20,8 @@ export class CurrentClerkUserService {
         }
       | undefined;
 
+    console.log('Current Clerk User:', user);
+
     return user?.primaryEmailAddress?.emailAddress || null;
   }
 
