@@ -1,5 +1,5 @@
 import FormAnimationProvider from "./FormAnimationProvider.client"
-import { createOrganization } from "../server_actions"
+import { createOrganization } from "@/app/server_actions"
 
 //--------------------------------------------
 

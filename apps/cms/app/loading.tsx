@@ -1,6 +1,6 @@
 import Image from "next/image"
 import logo from "@/public/logo.png"
-import PulsingRingProvider from "@/components/app/providers/PulsingRingProvider.client"
+import PulsingRingProvider from "@/app/providers/PulsingRingProvider.client"
 
 //---------------------------------------------------------
 

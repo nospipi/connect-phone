@@ -10,12 +10,14 @@ import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 import { first } from "lodash"
 import { id } from "date-fns/locale"
-import { SalesChannel } from "@nospipi/database"
+import { ISalesChannel } from "@connect-phone/shared-types"
 const BACKEND_URL = process.env.BACKEND_URL
 
 interface ErrorResponse {
   message: string
 }
+
+//-------------------------------------------------------------------------------------
 
 const createApiClient = (): AxiosInstance => {
   const api = axios.create({
@@ -186,7 +188,7 @@ export const getAllSalesChannelsOfOrganizationPaginated = async ({
   organizationId: number
   cursor?: number
   pageSize?: number
-}): Promise<SalesChannel[]> => {
+}): Promise<ISalesChannel[]> => {
   try {
     console.log(
       "Fetching sales channels for organization ID:",
@@ -221,7 +223,7 @@ export const getAllSalesChannelsOfOrganizationPaginated = async ({
   }
 }
 
-export const createARandomSalesChannel = async (): Promise<SalesChannel> => {
+export const createARandomSalesChannel = async (): Promise<ISalesChannel> => {
   try {
     const api = createApiClient()
     const response = await api.get("/sales-channels/create-random")
