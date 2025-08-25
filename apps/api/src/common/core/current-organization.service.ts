@@ -47,7 +47,7 @@ export class CurrentOrganizationService {
     try {
       const organization = await this.organizationRepository.findOne({
         where: { id: user.loggedOrganizationId },
-        relations: ['salesChannels', 'users'],
+        relations: ['salesChannels', 'userOrganizations'],
       });
 
       this._currentOrganization = organization;
