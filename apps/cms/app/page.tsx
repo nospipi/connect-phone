@@ -13,21 +13,28 @@ import logo from "@/public/logo.png"
 
 //----------------------------------------------------------------------
 
-const OrganizationSelectPage = async () => {
+const OrganizationSelectPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}) => {
+  const params = await searchParams
+
+  // If there's an error param, just throw it
+  if (params.error) {
+    const errorMessage = Array.isArray(params.error)
+      ? params.error[0]
+      : params.error
+    throw new Error(errorMessage)
+  }
+
   const organizations = await getAllOrganizationsOfUser()
   const loggedInStatus = await isUserLoggedInOrganization()
-  console.log("isLoggedIn:", loggedInStatus)
+
   //i will use this to redirect to overview directly before showing ui
   if (loggedInStatus?.loggedIn) {
     // Redirect to overview page
-    console.log(
-      "User is logged in to an organization, we should redirect to the overview page..",
-    )
     redirect("/overview")
-  } else {
-    console.log(
-      "User is not logged in to any organization, we should keep showing the organization selection UI.",
-    )
   }
 
   return (

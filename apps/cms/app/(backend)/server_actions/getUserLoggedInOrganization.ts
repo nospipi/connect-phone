@@ -2,16 +2,12 @@
 
 import axios, { AxiosInstance, AxiosError } from "axios"
 import { auth } from "@clerk/nextjs/server"
-import { revalidatePath } from "next/cache"
-import { redirect } from "next/navigation"
-
-//----------------------------------------------------------------------
 
 interface ErrorResponse {
   message: string
 }
 
-//--------------------------------------------------------------
+//----------------------------------------------------------------------
 
 const createApiClient = (): AxiosInstance => {
   const api = axios.create({
@@ -38,33 +34,25 @@ const createApiClient = (): AxiosInstance => {
   return api
 }
 
-//----------------------------------------------------------------------
+//--------------------------------------------------------------------------------
 
-export const logUserInOrganization = async (
-  organizationId: string,
-): Promise<void> => {
+export const getUserLoggedInOrganization = async (): Promise<number | null> => {
   try {
-    console.log("Logging user in organization:", organizationId)
     const api = createApiClient()
-    const response = await api.patch(
-      `/users/log-in-organization/${organizationId}`,
-    )
+    const response = await api.get("/users/get-logged-organization")
 
-    if (response.status !== 200 && response.status !== 201) {
-      throw new Error("Failed to log user in organization")
+    if (response.status !== 200) {
+      throw new Error("Failed to check user organization status")
     }
 
-    // Revalidate the sales channels page after creating a new one
-    revalidatePath("/")
+    return response.data || []
   } catch (error: unknown) {
     const messageFallback = (error as Error).message ?? "An error occurred"
     const errorMessage =
       (error as AxiosError<ErrorResponse>).response?.data.message ??
       messageFallback
 
-    console.error("Failed to log user in organization:", errorMessage)
-    redirect(`/?error=${encodeURIComponent(errorMessage)}`)
+    console.error("Error getting user organization status:", errorMessage)
+    throw new Error(errorMessage)
   }
-
-  redirect("/")
 }

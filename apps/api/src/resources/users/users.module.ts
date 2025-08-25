@@ -10,6 +10,8 @@ import { LogUserInOrganizationController } from './services/log-user-in-organiza
 import { LogUserInOrganizationService } from './services/log-user-in-organization/service';
 import { IsUserLoggedInOrganizationController } from './services/is-user-logged-in-organization/controller';
 import { IsUserLoggedInOrganizationService } from './services/is-user-logged-in-organization/service';
+import { GetUserLoggedInOrganizationController } from './services/get-user-logged-in-organization/controller';
+import { GetUserLoggedInOrganizationService } from './services/get-user-logged-in-organization/service';
 import { CurrentDbUserService } from '@/common/core/current-db-user.service';
 
 @Module({
@@ -18,11 +20,13 @@ import { CurrentDbUserService } from '@/common/core/current-db-user.service';
     GetAllOrganizationsOfUserController,
     LogUserInOrganizationController,
     IsUserLoggedInOrganizationController,
+    GetUserLoggedInOrganizationController,
   ],
   providers: [
     GetAllOrganizationsOfUserService,
     LogUserInOrganizationService,
     IsUserLoggedInOrganizationService,
+    GetUserLoggedInOrganizationService,
     CurrentDbUserService,
   ],
 })

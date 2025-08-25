@@ -2,9 +2,10 @@
 
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
-import { RiRefreshLine, RiArrowLeftLine } from "@remixicon/react"
+import { RiRefreshLine, RiArrowLeftLine, RiHomeLine } from "@remixicon/react"
 import { UserButton } from "@clerk/nextjs"
-//import UserButton from "./UserButton"
+import Link from "next/link"
+
 //--------------------------------------------------------------------
 
 const ErrorPage = ({ error }: { error?: Error | string | unknown }) => {
@@ -21,9 +22,10 @@ const ErrorPage = ({ error }: { error?: Error | string | unknown }) => {
     : "Something went wrong"
 
   useEffect(() => {
-    // Auto-redirect countdown
-    if (countdown <= 0) {
-      router.back()
+    if (countdown === 0) {
+      router.refresh()
+      setCountdown(15) // Reset the timer
+      return
     }
 
     const timer = setTimeout(() => {
@@ -63,12 +65,22 @@ const ErrorPage = ({ error }: { error?: Error | string | unknown }) => {
 
               <button
                 onClick={() => {
-                  router.back()
+                  router.refresh()
                 }}
                 className="inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
               >
                 <RiArrowLeftLine className="mr-2 h-4 w-4" />
                 Go Back
+              </button>
+
+              <button
+                onClick={() => {
+                  window.location.href = "/"
+                }}
+                className="inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+              >
+                <RiHomeLine className="mr-2 h-4 w-4" />
+                Back to Home
               </button>
             </div>
 

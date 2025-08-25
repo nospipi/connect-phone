@@ -36,7 +36,9 @@ const createApiClient = (): AxiosInstance => {
 
 //--------------------------------------------------------------------------------
 
-export const isUserLoggedInOrganization = async (): Promise<any> => {
+export const isUserLoggedInOrganization = async (): Promise<{
+  loggedIn: boolean
+}> => {
   try {
     const api = createApiClient()
     const response = await api.get("/users/logged-organization")
@@ -45,7 +47,7 @@ export const isUserLoggedInOrganization = async (): Promise<any> => {
       throw new Error("Failed to check user organization status")
     }
 
-    return response.data || []
+    return response.data || { loggedIn: false }
   } catch (error: unknown) {
     const messageFallback = (error as Error).message ?? "An error occurred"
     const errorMessage =
