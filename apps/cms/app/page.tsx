@@ -23,10 +23,10 @@ const OrganizationSelectPage = async () => {
     console.log(
       "User is logged in to an organization, we should redirect to the overview page..",
     )
-    //redirect("/overview")
+    redirect("/overview")
   } else {
     console.log(
-      "User is not logged in to any organization, we should show the organization selection UI.",
+      "User is not logged in to any organization, we should keep showing the organization selection UI.",
     )
   }
 

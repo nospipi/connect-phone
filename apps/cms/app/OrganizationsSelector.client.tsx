@@ -12,6 +12,7 @@ import { Button } from "@/components/common/Button"
 import { RiArrowRightSLine } from "@remixicon/react"
 import { useRouter } from "next/navigation"
 import { IOrganization } from "@connect-phone/shared-types"
+import { logUserInOrganization } from "./(backend)/server_actions/logUserInOrganization"
 import Image from "next/image"
 
 //-----------------------------------------------------------------------------
@@ -38,6 +39,10 @@ const OrganizationsSelector = ({
 }) => {
   const [selectedOrg, setSelectedOrg] = useState("")
   const router = useRouter()
+
+  const setSelectedOrgInDb = async (orgId: string) => {
+    await logUserInOrganization(orgId)
+  }
 
   return (
     <>
@@ -79,7 +84,7 @@ const OrganizationsSelector = ({
       </Select>
 
       <Button
-        onClick={() => router.push(`/${selectedOrg}/overview`)}
+        onClick={() => setSelectedOrgInDb(selectedOrg)}
         className="mt-2 flex w-full items-center justify-center"
         disabled={!selectedOrg}
       >

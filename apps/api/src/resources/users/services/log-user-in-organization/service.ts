@@ -19,24 +19,30 @@ export class LogUserInOrganizationService {
     private readonly currentDbUserService: CurrentDbUserService
   ) {}
 
+  //   async logUserInOrganization(organizationId: number): Promise<User> {
+  //     const user = await this.currentDbUserService.getCurrentDbUser();
+  //     if (!user) throw new NotFoundException('No current user');
+
+  //     const organization = await this.organizationRepository.findOne({
+  //       where: { id: organizationId },
+  //     });
+  //     if (!organization) throw new NotFoundException('Organization not found');
+
+  //     const userOrganizationsIds = user.userOrganizations.map(
+  //       (uo) => uo.organizationId
+  //     );
+  //     if (!userOrganizationsIds.includes(organizationId)) {
+  //       throw new ForbiddenException('User does not belong to this organization');
+  //     }
+
+  //     user.loggedOrganizationId = organizationId;
+  //     user.loggedOrganization = organization;
+  //     return this.userRepository.save(user);
+  //   }
+  // }
+
   async logUserInOrganization(organizationId: number): Promise<User> {
-    const user = await this.currentDbUserService.getCurrentDbUser();
-    if (!user) throw new NotFoundException('No current user');
-
-    const organization = await this.organizationRepository.findOne({
-      where: { id: organizationId },
-    });
-    if (!organization) throw new NotFoundException('Organization not found');
-
-    const userOrganizationsIds = user.userOrganizations.map(
-      (uo) => uo.organizationId
-    );
-    if (!userOrganizationsIds.includes(organizationId)) {
-      throw new ForbiddenException('User does not belong to this organization');
-    }
-
-    user.loggedOrganizationId = organizationId;
-    user.loggedOrganization = organization;
-    return this.userRepository.save(user);
+    //test error
+    throw new Error('Test error');
   }
 }

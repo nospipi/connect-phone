@@ -45,7 +45,11 @@ export class CurrentDbUserService {
     try {
       const user = await this.userRepository.findOne({
         where: { email },
-        relations: ['loggedOrganization'],
+        relations: [
+          'loggedOrganization',
+          'userOrganizations',
+          'userOrganizations.organization',
+        ],
       });
 
       this._currentUser = user;
