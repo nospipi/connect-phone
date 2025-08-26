@@ -1,4 +1,5 @@
 export * from "./user";
+export * from "./userOrganization";
 export * from "./product";
 export * from "./organization";
 export * from "./organizationWithUserRole";
