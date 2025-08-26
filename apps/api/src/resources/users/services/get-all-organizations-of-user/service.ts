@@ -9,7 +9,10 @@ import { Repository } from 'typeorm';
 import { User } from '../../../../database/entities/user.entity';
 import { Organization } from '../../../../database/entities/organization.entity';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
-import { UserOrganization } from '../../../../database/entities/user-organization.entity';
+import {
+  UserOrganization,
+  UserOrganizationRole,
+} from '../../../../database/entities/user-organization.entity';
 
 @Injectable()
 export class GetAllOrganizationsOfUserService {
@@ -22,10 +25,12 @@ export class GetAllOrganizationsOfUserService {
   ) {}
 
   /**
-   * Get all organizations that the current user belongs to
-   * Uses CurrentDbUserService to get the user - no input required from caller
+   * Get all organizations that the current user belongs to WITH their role
+   * Returns flattened objects with organization properties + role
    */
-  async getAllOrganizationsOfCurrentUser(): Promise<Organization[]> {
+  async getAllOrganizationsOfCurrentUser(): Promise<
+    (Organization & { role: UserOrganizationRole })[]
+  > {
     // Get current user from context
     const user = await this.currentDbUserService.getCurrentDbUser();
 
@@ -52,7 +57,10 @@ export class GetAllOrganizationsOfUserService {
       `Found ${userOrganizations.length} organizations for user ${user.email}`
     );
 
-    // Map to Organization entities
-    return userOrganizations.map((uo) => uo.organization);
+    // Return flattened objects with organization properties + role
+    return userOrganizations.map((uo) => ({
+      ...uo.organization,
+      role: uo.role,
+    }));
   }
 }

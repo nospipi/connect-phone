@@ -2,6 +2,7 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import { GetAllOrganizationsOfUserService } from './service';
 import { Organization } from '../../../../database/entities/organization.entity';
+import { UserOrganizationRole } from '../../../../database/entities/user-organization.entity';
 import { DbUserGuard } from '@/common/guards/db-user.guard';
 import { Public } from '../../../../common/decorators/public.decorator';
 
@@ -16,7 +17,9 @@ export class GetAllOrganizationsOfUserController {
   ) {}
 
   @Get('organizations')
-  async getAllOrganizations(): Promise<Organization[]> {
+  async getAllOrganizations(): Promise<
+    (Organization & { role: UserOrganizationRole })[]
+  > {
     return this.getAllOrganizationsOfUserService.getAllOrganizationsOfCurrentUser();
   }
 }

@@ -2,6 +2,7 @@
 
 import axios, { AxiosInstance, AxiosError } from "axios"
 import { auth } from "@clerk/nextjs/server"
+import { IOrganization } from "@connect-phone/shared-types"
 
 interface ErrorResponse {
   message: string
@@ -36,23 +37,24 @@ const createApiClient = (): AxiosInstance => {
 
 //--------------------------------------------------------------------------------
 
-export const getUserLoggedInOrganization = async (): Promise<number | null> => {
-  try {
-    const api = createApiClient()
-    const response = await api.get("/users/get-logged-organization")
+export const getUserLoggedInOrganization =
+  async (): Promise<IOrganization | null> => {
+    try {
+      const api = createApiClient()
+      const response = await api.get("/users/get-logged-organization")
 
-    if (response.status !== 200) {
-      throw new Error("Failed to check user organization status")
+      if (response.status !== 200) {
+        throw new Error("Failed to check user organization status")
+      }
+
+      return response.data || null
+    } catch (error: unknown) {
+      const messageFallback = (error as Error).message ?? "An error occurred"
+      const errorMessage =
+        (error as AxiosError<ErrorResponse>).response?.data.message ??
+        messageFallback
+
+      console.error("Error getting user organization status:", errorMessage)
+      throw new Error(errorMessage)
     }
-
-    return response.data || []
-  } catch (error: unknown) {
-    const messageFallback = (error as Error).message ?? "An error occurred"
-    const errorMessage =
-      (error as AxiosError<ErrorResponse>).response?.data.message ??
-      messageFallback
-
-    console.error("Error getting user organization status:", errorMessage)
-    throw new Error(errorMessage)
   }
-}

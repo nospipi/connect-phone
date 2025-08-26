@@ -135,23 +135,25 @@ export default function MobileSidebar() {
                 <ul aria-label="shortcuts" role="list" className="space-y-0.5">
                   {shortcuts.map((item) => (
                     <li key={item.name}>
-                      <Link
-                        href={item.href}
-                        className={cx(
-                          pathname === item.href ||
-                            pathname?.includes(item.href)
-                            ? "text-indigo-600 dark:text-indigo-400"
-                            : "text-gray-700 hover:text-gray-900 dark:text-gray-400 hover:dark:text-gray-50",
-                          "flex items-center gap-x-2.5 rounded-md px-2 py-1.5 font-medium transition hover:bg-gray-100 sm:text-sm hover:dark:bg-gray-900",
-                          focusRing,
-                        )}
-                      >
-                        <item.icon
-                          className="size-4 shrink-0"
-                          aria-hidden="true"
-                        />
-                        {item.name}
-                      </Link>
+                      <DrawerClose asChild>
+                        <Link
+                          href={item.href}
+                          className={cx(
+                            pathname === item.href ||
+                              pathname?.includes(item.href)
+                              ? "text-indigo-600 dark:text-indigo-400"
+                              : "text-gray-700 hover:text-gray-900 dark:text-gray-400 hover:dark:text-gray-50",
+                            "flex items-center gap-x-2.5 rounded-md px-2 py-1.5 font-medium transition hover:bg-gray-100 sm:text-sm hover:dark:bg-gray-900",
+                            focusRing,
+                          )}
+                        >
+                          <item.icon
+                            className="size-4 shrink-0"
+                            aria-hidden="true"
+                          />
+                          {item.name}
+                        </Link>
+                      </DrawerClose>
                     </li>
                   ))}
                 </ul>

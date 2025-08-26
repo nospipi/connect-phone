@@ -1,6 +1,5 @@
 import { createNewSalesChannel } from "@/app/(backend)/server_actions/createNewSalesChannel"
-import { getCurrentUserOrganization } from "@/app/server_actions"
-import CreateSalesChannelButton from "./CreateSalesChannelButton.client"
+import { getUserLoggedInOrganization } from "@/app/(backend)/server_actions/getUserLoggedInOrganization"
 import SalesChannelLogoUpload from "./SalesChannelLogoUpload.client"
 import { RiArrowLeftLine, RiAddLine } from "@remixicon/react"
 import Link from "next/link"
@@ -14,14 +13,15 @@ const Page = async ({
   //params: Promise<{ partner_id: string; page: string }>
   searchParams: Promise<{ [key: string]: string | undefined }>
 }) => {
-  const organization = { id: 89, name: "Example Organization" }
+  const loggedInOrganization = await getUserLoggedInOrganization()
+  console.log("Logged in organization:", loggedInOrganization)
 
   const resolvedSearchParams = await searchParams
   const prefilledName = resolvedSearchParams.name || ""
   const prefilledDescription = resolvedSearchParams.description || ""
   const prefilledLogoUrl = resolvedSearchParams.logoUrl || ""
 
-  if (!organization || !organization.id) {
+  if (!loggedInOrganization) {
     return (
       <div className="flex h-full flex-col items-center justify-center p-4">
         <div className="rounded-lg border border-gray-200 bg-white p-8 text-center shadow-sm dark:border-gray-700 dark:bg-gray-800">
@@ -58,7 +58,7 @@ const Page = async ({
               Create New Sales Channel
             </h1>
             <p className="text-sm text-gray-500">
-              Add a new sales channel to {organization.name}
+              Add a new sales channel to {loggedInOrganization.name}
             </p>
           </div>
         </div>
@@ -126,7 +126,7 @@ const Page = async ({
                     currentName={prefilledName}
                     currentDescription={prefilledDescription}
                     currentLogoUrl={prefilledLogoUrl}
-                    organizationId={organization.id.toString()}
+                    organizationId={loggedInOrganization.id.toString()}
                   />
                 </div>
                 <p className="mt-2 text-xs text-gray-500">
@@ -144,7 +144,9 @@ const Page = async ({
                 </h3>
                 <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
                   This channel will be created for{" "}
-                  <span className="font-medium">{organization.name}</span>
+                  <span className="font-medium">
+                    {loggedInOrganization.name}
+                  </span>
                 </p>
               </div>
 

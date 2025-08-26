@@ -40,18 +40,14 @@ const createApiClient = (): AxiosInstance => {
 
 //----------------------------------------------------------------------
 
-export const logUserInOrganization = async (
-  organizationId: string,
-): Promise<void> => {
+export const logoutUserFromOrganization = async (): Promise<void> => {
   try {
-    console.log("Logging user in organization:", organizationId)
+    console.log("Logging user out of organization")
     const api = createApiClient()
-    const response = await api.patch(
-      `/users/log-in-organization/${organizationId}`,
-    )
+    const response = await api.patch(`/users/log-out-organization`)
 
     if (response.status !== 200 && response.status !== 201) {
-      throw new Error("Failed to log user in organization")
+      throw new Error("Failed to log user out of organization")
     }
   } catch (error: unknown) {
     const messageFallback = (error as Error).message ?? "An error occurred"
@@ -59,7 +55,7 @@ export const logUserInOrganization = async (
       (error as AxiosError<ErrorResponse>).response?.data.message ??
       messageFallback
 
-    console.error("Failed to log user in organization:", errorMessage)
+    console.error("Failed to log user out of organization:", errorMessage)
     redirect(`/?error=${encodeURIComponent(errorMessage)}`)
   }
 

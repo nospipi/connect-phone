@@ -1,6 +1,5 @@
 "use client"
 
-import { useState } from "react"
 import {
   Select,
   SelectContent,
@@ -8,11 +7,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/common/Select"
-import { Button } from "@/components/common/Button"
-import { RiArrowRightSLine } from "@remixicon/react"
 import { useRouter } from "next/navigation"
-import { IOrganization } from "@connect-phone/shared-types"
+import { IOrganizationWithUserRole } from "@connect-phone/shared-types"
 import { logUserInOrganization } from "./(backend)/server_actions/logUserInOrganization"
+import { IOrganization } from "@connect-phone/shared-types"
 import Image from "next/image"
 
 //-----------------------------------------------------------------------------
@@ -34,10 +32,11 @@ const getInitials = (name: string): string => {
 }
 const OrganizationsSelector = ({
   organizations,
+  loggedInOrganization,
 }: {
-  organizations: IOrganization[]
+  organizations: IOrganizationWithUserRole[]
+  loggedInOrganization: IOrganization | null
 }) => {
-  const [selectedOrg, setSelectedOrg] = useState("")
   const router = useRouter()
 
   const setSelectedOrgInDb = async (orgId: string) => {
@@ -46,53 +45,50 @@ const OrganizationsSelector = ({
   }
 
   return (
-    <>
-      <Select value={selectedOrg} onValueChange={setSelectedOrg}>
-        <SelectTrigger className="mb-4 w-full">
-          <SelectValue placeholder="Select an organization" />
-        </SelectTrigger>
-        <SelectContent>
-          {organizations.map((org: IOrganization) => (
-            <SelectItem
-              key={org.createdAt}
-              value={String(org.id)}
-              className="py-2"
-            >
-              <div className="flex items-center gap-2">
-                {org.logoUrl ? (
-                  <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-md">
-                    <Image
-                      src={org.logoUrl}
-                      alt={`${org.name} logo`}
-                      width={32}
-                      height={32}
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                ) : (
-                  <span className="flex h-8 w-8 items-center justify-center rounded-md bg-gray-500 text-xs font-medium text-white">
-                    {getInitials(org.name)}
-                  </span>
-                )}
-                <div className="flex flex-col items-start">
-                  <span className="text-sm font-medium">{org.name}</span>
-                  <span className="text-xs text-gray-500">ADMIN</span>
+    <Select
+      value={loggedInOrganization?.id?.toString() || ""}
+      onValueChange={setSelectedOrgInDb}
+    >
+      <SelectTrigger className="mb-4 w-full">
+        <SelectValue placeholder="Select an organization" />
+      </SelectTrigger>
+      <SelectContent>
+        {organizations.map((org: IOrganizationWithUserRole) => (
+          <SelectItem
+            key={org.createdAt}
+            value={String(org.id)}
+            className="py-2"
+          >
+            <div className="flex items-center gap-2">
+              {org.logoUrl ? (
+                <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-md">
+                  <Image
+                    src={org.logoUrl}
+                    alt={`${org.name} logo`}
+                    width={32}
+                    height={32}
+                    className="h-full w-full object-cover"
+                  />
                 </div>
+              ) : (
+                <span
+                  className="flex aspect-square size-8 items-center justify-center rounded bg-indigo-600 p-2 text-xs font-medium text-white dark:bg-indigo-500"
+                  aria-hidden="true"
+                >
+                  {getInitials(org.name)}
+                </span>
+              )}
+              <div className="flex flex-col items-start">
+                <span className="text-sm font-medium">{org.name}</span>
+                <span className="text-xs lowercase text-gray-500 first-letter:uppercase">
+                  {org.role}
+                </span>
               </div>
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-
-      <Button
-        onClick={() => setSelectedOrgInDb(selectedOrg)}
-        className="mt-2 flex w-full items-center justify-center"
-        disabled={!selectedOrg}
-      >
-        Continue
-        <RiArrowRightSLine className="ml-2 h-4 w-4" />
-      </Button>
-    </>
+            </div>
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   )
 }
 

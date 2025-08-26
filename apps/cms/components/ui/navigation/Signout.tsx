@@ -11,6 +11,7 @@ import {
 } from "@/components/common/Dialog"
 import { cx } from "@/lib/utils"
 import { useClerk } from "@clerk/nextjs"
+import { logoutUserFromOrganization } from "@/app/(backend)/server_actions/logoutUserFromOrganization"
 
 export const Signout = () => {
   const { signOut } = useClerk()
@@ -50,11 +51,12 @@ export const Signout = () => {
             <DialogClose asChild>
               <Button
                 className="w-full !bg-red-400 !text-white sm:w-fit"
-                onClick={() =>
+                onClick={async () => {
+                  await logoutUserFromOrganization()
                   signOut({
                     redirectUrl: "/sign-in",
                   })
-                }
+                }}
                 // onClickCapture={async () => {
                 //   await signOut()
                 // }}

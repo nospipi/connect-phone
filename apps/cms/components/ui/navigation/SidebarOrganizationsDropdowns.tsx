@@ -17,7 +17,7 @@ import {
 } from "@remixicon/react"
 import React from "react"
 import { useRouter } from "next/navigation"
-import { IOrganization } from "@connect-phone/shared-types"
+import { IOrganizationWithUserRole } from "@connect-phone/shared-types"
 import Image from "next/image"
 import { logUserInOrganization } from "@/app/(backend)/server_actions/logUserInOrganization"
 
@@ -43,7 +43,7 @@ export const OrganizationsDropdownDesktop = ({
   organizations,
   loggedInOrganization,
 }: {
-  organizations: IOrganization[]
+  organizations: IOrganizationWithUserRole[]
   loggedInOrganization: number | null
 }) => {
   const router = useRouter()
@@ -152,8 +152,8 @@ export const OrganizationsDropdownDesktop = ({
                       <p className="text-sm font-medium text-gray-900 dark:text-gray-50">
                         {org.name}
                       </p>
-                      <p className="text-xs text-gray-700 dark:text-gray-400">
-                        ADMIN
+                      <p className="text-xs lowercase text-gray-500 first-letter:uppercase">
+                        {org.role}
                       </p>
                     </div>
                     {isSelected && (
@@ -183,7 +183,7 @@ export const OrganizationsDropdownMobile = ({
   organizations = [],
   loggedInOrganization,
 }: {
-  organizations: IOrganization[]
+  organizations: IOrganizationWithUserRole[]
   loggedInOrganization: number | null
 }) => {
   const router = useRouter()
@@ -294,8 +294,8 @@ export const OrganizationsDropdownMobile = ({
                       <p className="text-sm font-medium text-gray-900 dark:text-gray-50">
                         {org.name}
                       </p>
-                      <p className="text-xs text-gray-700 dark:text-gray-400">
-                        ADMIN
+                      <p className="text-xs lowercase text-gray-500 first-letter:uppercase">
+                        {org.role}
                       </p>
                     </div>
                     {isSelected && (

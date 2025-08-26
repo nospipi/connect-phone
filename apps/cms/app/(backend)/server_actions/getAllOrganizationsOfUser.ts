@@ -2,7 +2,7 @@
 
 import axios, { AxiosInstance, AxiosError } from "axios"
 import { auth } from "@clerk/nextjs/server"
-import { IOrganization } from "@connect-phone/shared-types"
+import { IOrganizationWithUserRole } from "@connect-phone/shared-types"
 
 interface ErrorResponse {
   message: string
@@ -37,7 +37,9 @@ const createApiClient = (): AxiosInstance => {
 
 //--------------------------------------------------------------------------------
 
-export const getAllOrganizationsOfUser = async (): Promise<IOrganization[]> => {
+export const getAllOrganizationsOfUser = async (): Promise<
+  IOrganizationWithUserRole[]
+> => {
   try {
     const api = createApiClient()
     const response = await api.get("/users/organizations")

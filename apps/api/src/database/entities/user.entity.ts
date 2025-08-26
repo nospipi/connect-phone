@@ -40,7 +40,6 @@ export class User implements IUser {
   @JoinColumn({ name: 'loggedOrganizationId' })
   loggedOrganization: Organization | null;
 
-  // --- updated relation to UserOrganization ---
   @OneToMany(() => UserOrganization, (userOrg) => userOrg.user)
   userOrganizations: UserOrganization[];
 }

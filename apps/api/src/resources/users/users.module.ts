@@ -8,23 +8,29 @@ import { GetAllOrganizationsOfUserController } from './services/get-all-organiza
 import { GetAllOrganizationsOfUserService } from './services/get-all-organizations-of-user/service';
 import { LogUserInOrganizationController } from './services/log-user-in-organization/controller';
 import { LogUserInOrganizationService } from './services/log-user-in-organization/service';
+import { LogOutUserFromOrganizationController } from './services/log-out-user-from-organization/controller';
+import { LogOutUserFromOrganizationService } from './services/log-out-user-from-organization/service';
 import { IsUserLoggedInOrganizationController } from './services/is-user-logged-in-organization/controller';
 import { IsUserLoggedInOrganizationService } from './services/is-user-logged-in-organization/service';
 import { GetUserLoggedInOrganizationController } from './services/get-user-logged-in-organization/controller';
 import { GetUserLoggedInOrganizationService } from './services/get-user-logged-in-organization/service';
 import { CurrentDbUserService } from '@/common/core/current-db-user.service';
 
+//-------------------------------------------------------------------------------------------
+
 @Module({
   imports: [TypeOrmModule.forFeature([User, Organization, UserOrganization])],
   controllers: [
     GetAllOrganizationsOfUserController,
     LogUserInOrganizationController,
+    LogOutUserFromOrganizationController,
     IsUserLoggedInOrganizationController,
     GetUserLoggedInOrganizationController,
   ],
   providers: [
     GetAllOrganizationsOfUserService,
     LogUserInOrganizationService,
+    LogOutUserFromOrganizationService,
     IsUserLoggedInOrganizationService,
     GetUserLoggedInOrganizationService,
     CurrentDbUserService,

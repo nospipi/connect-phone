@@ -7,6 +7,7 @@ import Link from "next/link"
 import OrganizationsSelector from "./OrganizationsSelector.client"
 import { getAllOrganizationsOfUser } from "./(backend)/server_actions/getAllOrganizationsOfUser"
 import { isUserLoggedInOrganization } from "./(backend)/server_actions/isUserLoggedInOrganization"
+import { getUserLoggedInOrganization } from "./(backend)/server_actions/getUserLoggedInOrganization"
 import UserButton from "./UserButton"
 import Image from "next/image"
 import logo from "@/public/logo.png"
@@ -30,6 +31,7 @@ const OrganizationSelectPage = async ({
 
   const organizations = await getAllOrganizationsOfUser()
   const loggedInStatus = await isUserLoggedInOrganization()
+  const loggedInOrganization = await getUserLoggedInOrganization()
 
   //i will use this to redirect to overview directly before showing ui
   if (loggedInStatus?.loggedIn) {
@@ -59,7 +61,10 @@ const OrganizationSelectPage = async ({
               Select Organization
             </h2>
 
-            <OrganizationsSelector organizations={organizations} />
+            <OrganizationsSelector
+              organizations={organizations}
+              loggedInOrganization={loggedInOrganization}
+            />
 
             <Divider className="my-4">or</Divider>
 
