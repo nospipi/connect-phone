@@ -54,6 +54,7 @@ export const OrganizationsDropdownDesktop = ({
 
   const setSelectedOrgInDb = async (orgId: string) => {
     await logUserInOrganization(orgId)
+    router.refresh()
   }
 
   const currentOrg = organizations?.find?.(
@@ -193,6 +194,7 @@ export const OrganizationsDropdownMobile = ({
 
   const setSelectedOrgInDb = async (orgId: string) => {
     await logUserInOrganization(orgId)
+    router.refresh()
   }
 
   const currentOrg = organizations?.find(

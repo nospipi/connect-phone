@@ -55,7 +55,7 @@ export const logUserInOrganization = async (
     }
 
     // Revalidate the sales channels page after creating a new one
-    revalidatePath("/")
+    //revalidatePath("/")
   } catch (error: unknown) {
     const messageFallback = (error as Error).message ?? "An error occurred"
     const errorMessage =
@@ -66,5 +66,5 @@ export const logUserInOrganization = async (
     redirect(`/?error=${encodeURIComponent(errorMessage)}`)
   }
 
-  redirect("/")
+  //redirect("/")
 }

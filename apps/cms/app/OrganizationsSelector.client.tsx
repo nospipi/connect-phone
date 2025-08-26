@@ -42,6 +42,7 @@ const OrganizationsSelector = ({
 
   const setSelectedOrgInDb = async (orgId: string) => {
     await logUserInOrganization(orgId)
+    router.refresh()
   }
 
   return (
