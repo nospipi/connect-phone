@@ -50,7 +50,7 @@ export const createARandomSalesChannel = async (): Promise<ISalesChannel> => {
     }
 
     // Revalidate the sales channels page after creating a new one
-    revalidatePath("/settings/sales-channels")
+    revalidatePath("/sales-channels")
 
     return response.data
   } catch (error: unknown) {

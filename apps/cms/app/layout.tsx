@@ -3,12 +3,9 @@
 import type { Metadata } from "next"
 import { ThemeProvider } from "next-themes"
 import { Inter } from "next/font/google"
-import { siteConfig } from "@/components/siteConfig"
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs"
 import { dark } from "@clerk/themes"
 import { ToastContainer } from "react-toastify"
-import DesktopSidebar from "@/components/ui/navigation/DesktopSidebar"
-import MobileNavbar from "@/components/ui/navigation/MobileNavbar"
 import "./globals.css"
 
 const inter = Inter({
@@ -19,8 +16,8 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://yoururl.com"),
-  title: siteConfig.name,
-  description: siteConfig.description,
+  title: "Dashboard",
+  description: "The only dashboard you will ever need.",
   keywords: [],
   authors: [
     {
@@ -32,10 +29,10 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: siteConfig.url,
-    title: siteConfig.name,
-    description: siteConfig.description,
-    siteName: siteConfig.name,
+    url: "https://dashboard.tremor.so",
+    title: "Dashboard",
+    description: "The only dashboard you will ever need.",
+    siteName: "Dashboard",
   },
   icons: {
     icon: "/favicon.ico",

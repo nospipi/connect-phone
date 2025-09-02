@@ -1,12 +1,13 @@
 import { Button } from "@/components/common/Button"
 import { ArrowAnimated } from "@/components/ui/icons/ArrowAnimated"
 import Link from "next/link"
-import { siteConfig } from "@/components/siteConfig"
+
+//----------------------------------------------------
 
 export default function NotFound() {
   return (
     <div className="flex h-screen flex-col items-center justify-center">
-      <Link href={siteConfig.baseLinks.home}></Link>
+      <Link href={"/overview"}></Link>
       <p className="mt-6 text-4xl font-semibold text-indigo-600 sm:text-5xl dark:text-indigo-500">
         404
       </p>
@@ -17,7 +18,7 @@ export default function NotFound() {
         Sorry, we couldn’t find the page you’re looking for.
       </p>
       <Button asChild className="group mt-8" variant="light">
-        <Link href={siteConfig.baseLinks.home}>
+        <Link href={"/overview"}>
           Go to the home page
           <ArrowAnimated
             className="stroke-gray-900 dark:stroke-gray-50"

@@ -51,7 +51,7 @@ const Page = async ({
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <Link href="/settings/sales-channels/create-new">
+          <Link href="/sales-channels/create-new">
             <AddChannelButton />
           </Link>
         </div>

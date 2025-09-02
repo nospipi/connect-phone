@@ -47,7 +47,7 @@ const Page = async ({
       {/* Header */}
       <div className="flex items-center gap-4 border-b border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950">
         <Link
-          href="/settings/sales-channels"
+          href="/sales-channels"
           className="flex h-full items-center justify-center px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-900 dark:hover:text-gray-300"
         >
           <RiArrowLeftLine className="h-4 w-4" />
@@ -153,7 +153,7 @@ const Page = async ({
               {/* Form Actions */}
               <div className="flex flex-col gap-3 border-t border-gray-200 pt-6 sm:flex-row sm:justify-end dark:border-gray-800">
                 <Link
-                  href="/settings/sales-channels"
+                  href="/sales-channels"
                   className="inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
                 >
                   Cancel

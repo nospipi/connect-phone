@@ -1,6 +1,5 @@
 "use client"
 
-import { siteConfig } from "@/components/siteConfig"
 import { Button } from "@/components/common/Button"
 import {
   Drawer,
@@ -23,52 +22,86 @@ import {
   RiFlagLine,
   RiNodeTree,
   RiArchive2Line,
+  RiGovernmentLine,
 } from "@remixicon/react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import Image from "next/image"
+import { IOrganization } from "@connect-phone/shared-types"
 
 const navigation = [
   {
     name: "Overview",
-    href: siteConfig.baseLinks.overview,
+    href: "/overview",
     icon: RiLineChartLine,
   },
   {
     name: "Inventory",
-    href: siteConfig.baseLinks.inventory.products,
+    href: "/inventory/products",
     icon: RiArchive2Line,
   },
   {
     name: "E-Sims",
-    href: siteConfig.baseLinks.e_sims.my_e_sims,
+    href: "/e-sims/my-esims",
     icon: RiSimCardLine,
-  },
-] as const
-
-const shortcuts = [
-  {
-    name: "Organization",
-    href: "/settings/organization",
-    icon: RiBuildingLine,
   },
   {
     name: "Sales channels",
-    href: "/settings/sales-channels",
+    href: "/sales-channels",
     icon: RiNodeTree,
   },
   {
-    name: "Users",
-    href: "/settings/users",
-    icon: RiGroupLine,
-  },
-  {
-    name: "Countries",
-    href: "/settings/countries",
-    icon: RiFlagLine,
+    name: "Organization",
+    href: "/organization/users",
+    icon: RiGovernmentLine,
   },
 ] as const
 
-export default function MobileSidebar() {
+// const shortcuts = [
+//   {
+//     name: "Organization",
+//     href: "/organization",
+//     icon: RiBuildingLine,
+//   },
+//   {
+//     name: "Sales channels",
+//     href: "/sales-channels",
+//     icon: RiNodeTree,
+//   },
+//   {
+//     name: "Users",
+//     href: "/users",
+//     icon: RiGroupLine,
+//   },
+//   {
+//     name: "Countries",
+//     href: "/countries",
+//     icon: RiFlagLine,
+//   },
+// ] as const
+
+const getInitials = (name: string): string => {
+  const words = name.trim().split(/\s+/)
+  // Filter out words that are just symbols (like "-", "&", etc.)
+  const realWords = words.filter((word) => /[a-zA-Z]/.test(word))
+
+  if (realWords.length >= 2) {
+    // Take first letter of first two real words
+    return (realWords[0][0] + realWords[1][0]).toUpperCase()
+  } else if (realWords.length === 1) {
+    // Take first two letters of single word
+    return realWords[0].substring(0, 2).toUpperCase()
+  } else {
+    // Fallback if no real words found
+    return "??"
+  }
+}
+
+export default function MobileSidebar({
+  loggedInOrganization,
+}: {
+  loggedInOrganization: IOrganization | null
+}) {
   const pathname = usePathname()
 
   const isActive = (itemHref: string) => {
@@ -97,7 +130,31 @@ export default function MobileSidebar() {
         </DrawerTrigger>
         <DrawerContent className="sm:max-w-lg">
           <DrawerHeader>
-            <DrawerTitle>Organization Name</DrawerTitle>
+            <DrawerTitle className="flex items-center gap-x-2.5">
+              {loggedInOrganization?.logoUrl ? (
+                <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded">
+                  <Image
+                    src={loggedInOrganization.logoUrl}
+                    alt={`${loggedInOrganization.name} logo`}
+                    width={32}
+                    height={32}
+                    className="h-full w-full object-contain"
+                  />
+                </div>
+              ) : (
+                <span
+                  className="flex aspect-square size-8 items-center justify-center rounded bg-indigo-600 p-2 text-xs font-medium text-white dark:bg-indigo-500"
+                  aria-hidden="true"
+                >
+                  {loggedInOrganization
+                    ? getInitials(loggedInOrganization.name)
+                    : "??"}
+                </span>
+              )}
+              <span className="truncate">
+                {loggedInOrganization?.name || "Select Organization"}
+              </span>
+            </DrawerTitle>
           </DrawerHeader>
           <DrawerBody>
             <nav
@@ -128,7 +185,7 @@ export default function MobileSidebar() {
                   </li>
                 ))}
               </ul>
-              <div>
+              {/* <div>
                 <span className="text-sm font-medium leading-6 text-gray-500 sm:text-xs">
                   Settings
                 </span>
@@ -157,7 +214,7 @@ export default function MobileSidebar() {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </div> */}
             </nav>
           </DrawerBody>
         </DrawerContent>

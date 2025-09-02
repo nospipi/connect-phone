@@ -1,7 +1,6 @@
 "use client"
 
 import { RiCoupon2Line, RiBox3Fill } from "@remixicon/react"
-import { siteConfig } from "@/components/siteConfig"
 import {
   TabNavigation,
   TabNavigationLink,
@@ -12,12 +11,12 @@ import { usePathname } from "next/navigation"
 const navigationSettings = [
   {
     name: "Products",
-    href: siteConfig.baseLinks.inventory.products,
+    href: "/inventory/products",
     icon: RiCoupon2Line,
   },
   {
     name: "Packages",
-    href: siteConfig.baseLinks.inventory.packages,
+    href: "/inventory/packages",
     icon: RiBox3Fill,
   },
 ]

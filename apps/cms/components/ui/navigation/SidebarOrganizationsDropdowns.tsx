@@ -210,7 +210,7 @@ export const OrganizationsDropdownMobile = ({
         modal={false}
       >
         <DropdownMenuTrigger asChild>
-          <button className="flex items-center gap-x-1.5 rounded-md p-2 hover:bg-gray-100 focus:outline-none hover:dark:bg-gray-900">
+          <button className="flex items-center gap-x-2 rounded-md p-2 hover:bg-gray-100 focus:outline-none hover:dark:bg-gray-900">
             {currentOrg?.logoUrl ? (
               <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded">
                 <Image
@@ -231,10 +231,7 @@ export const OrganizationsDropdownMobile = ({
                 {currentOrg ? getInitials(currentOrg.name) : "??"}
               </span>
             )}
-            <RiArrowRightSLine
-              className="size-4 shrink-0 text-gray-500"
-              aria-hidden="true"
-            />
+
             <div className="flex w-full items-center justify-between gap-x-3 truncate">
               <p className="truncate whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-50">
                 {currentOrg?.name || "Select Organization"}

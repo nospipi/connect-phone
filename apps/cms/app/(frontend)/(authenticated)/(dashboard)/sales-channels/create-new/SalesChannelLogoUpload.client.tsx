@@ -186,7 +186,7 @@ export default function SalesChannelLogoUpload({
       searchParams.set("logoUrl", newBlob.url)
 
       router.push(
-        `/settings/sales-channels/create-new?${searchParams.toString()}`,
+        `/sales-channels/create-new?${searchParams.toString()}`,
       )
     } catch (error) {
       console.error("Upload error:", error)
@@ -209,7 +209,7 @@ export default function SalesChannelLogoUpload({
 
     const queryString = searchParams.toString()
     router.push(
-      `/settings/sales-channels/create-new${queryString ? `?${queryString}` : ""}`,
+      `/sales-channels/create-new${queryString ? `?${queryString}` : ""}`,
     )
   }
 

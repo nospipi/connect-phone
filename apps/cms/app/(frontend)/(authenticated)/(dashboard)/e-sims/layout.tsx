@@ -1,7 +1,6 @@
 "use client"
 
 import { RiSimCardLine, RiBuildingLine } from "@remixicon/react"
-import { siteConfig } from "@/components/siteConfig"
 import {
   TabNavigation,
   TabNavigationLink,
@@ -12,12 +11,12 @@ import { usePathname } from "next/navigation"
 const navigationSettings = [
   {
     name: "My E-Sims",
-    href: siteConfig.baseLinks.e_sims.my_e_sims,
+    href: "/e-sims/my-esims",
     icon: RiSimCardLine,
   },
   {
     name: "Marketplace",
-    href: siteConfig.baseLinks.e_sims.marketplace,
+    href: "/e-sims/marketplace",
     icon: RiBuildingLine,
   },
 ]

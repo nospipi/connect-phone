@@ -1,17 +1,27 @@
 "use client"
 
-import { siteConfig } from "@/components/siteConfig"
 import {
   TabNavigation,
   TabNavigationLink,
 } from "@/components/common/TabNavigation"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import {
+  RiSimCardLine,
+  RiBuildingLine,
+  RiGroupLine,
+  RiShieldUserLine,
+  RiContactsBook2Line,
+} from "@remixicon/react"
 
 const navigationSettings = [
-  { name: "Admins", href: siteConfig.baseLinks.settings.general },
-  { name: "Moderators", href: siteConfig.baseLinks.settings.billing },
-  { name: "Clients", href: siteConfig.baseLinks.settings.users },
+  { name: "Users", href: "/organization/users", icon: RiGroupLine },
+  { name: "Roles", href: "/organization/roles", icon: RiShieldUserLine },
+  {
+    name: "Customers",
+    href: "/organization/customers",
+    icon: RiContactsBook2Line,
+  },
 ]
 
 export default function Layout({
@@ -23,7 +33,7 @@ export default function Layout({
   return (
     <div className="p-4 sm:px-6 sm:pb-10 sm:pt-10 lg:px-10 lg:pt-7">
       <h1 className="text-lg font-semibold text-gray-900 sm:text-xl dark:text-gray-50">
-        Users
+        Organization
       </h1>
       <TabNavigation className="mt-4 sm:mt-6 lg:mt-10">
         {navigationSettings.map((item) => (
@@ -32,7 +42,10 @@ export default function Layout({
             asChild
             active={pathname === item.href}
           >
-            <Link href={item.href}>{item.name}</Link>
+            <Link href={item.href} className="flex items-center">
+              <item.icon className="mr-2 h-4 w-4" />
+              {item.name}
+            </Link>
           </TabNavigationLink>
         ))}
       </TabNavigation>

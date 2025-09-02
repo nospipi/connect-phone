@@ -77,7 +77,7 @@ export const createNewSalesChannel = async (
     console.log("Sales channel created successfully:", response.data)
 
     // Revalidate the sales channels page after creating a new one
-    revalidatePath("/settings/sales-channels")
+    revalidatePath("/sales-channels")
   } catch (error: unknown) {
     const messageFallback = (error as Error).message ?? "An error occurred"
     const errorMessage =
@@ -88,5 +88,5 @@ export const createNewSalesChannel = async (
     throw new Error(errorMessage)
   }
 
-  redirect("/settings/sales-channels")
+  redirect("/sales-channels")
 }

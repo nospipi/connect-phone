@@ -31,9 +31,6 @@ export default function Users() {
             >
               Users
             </h3>
-            <p className="text-sm leading-6 text-gray-500">
-              Workspace administrators can add, manage, and remove users.
-            </p>
           </div>
           <ModalAddUser>
             <Button className="mt-4 w-full gap-2 sm:mt-0 sm:w-fit">
