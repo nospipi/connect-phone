@@ -62,19 +62,12 @@ const createApiClient = (): AxiosInstance => {
 //----------------------------------------------------------------------
 
 export const getAllSalesChannelsOfOrganizationPaginated = async ({
-  organizationId,
   page = 1,
 }: {
-  organizationId: number
   page?: string | number
 }): Promise<PaginatedSalesChannelsResponse> => {
   try {
-    console.log(
-      "Fetching sales channels for organization ID:",
-      organizationId,
-      "page:",
-      page,
-    )
+    console.log("Fetching sales channels for organization ID:", "page:", page)
 
     const api = createApiClient()
     const response = await api.get(`/sales-channels/paginated?page=${page}`)

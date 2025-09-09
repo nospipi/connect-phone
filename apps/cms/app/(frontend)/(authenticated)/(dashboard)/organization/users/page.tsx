@@ -83,7 +83,7 @@ export default function Users() {
                             <SelectItem
                               key={role.value}
                               value={role.value}
-                              disabled={role.value === "admin"}
+                              disabled={role.value === "ADMIN"}
                             >
                               {role.label}
                             </SelectItem>
@@ -95,7 +95,7 @@ export default function Users() {
                 ) : (
                   <Select
                     defaultValue={user.role}
-                    disabled={user.role === "admin"}
+                    disabled={user.role === "ADMIN"}
                   >
                     <SelectTrigger className="h-8 w-32">
                       <SelectValue placeholder="Select" />
@@ -105,7 +105,7 @@ export default function Users() {
                         <SelectItem
                           key={role.value}
                           value={role.value}
-                          disabled={role.value === "admin"}
+                          disabled={role.value === "ADMIN"}
                         >
                           {role.label}
                         </SelectItem>
