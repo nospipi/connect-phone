@@ -7,11 +7,10 @@ import {
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import {
-  RiSimCardLine,
-  RiBuildingLine,
   RiGroupLine,
   RiShieldUserLine,
   RiContactsBook2Line,
+  RiHistoryLine,
 } from "@remixicon/react"
 
 const navigationSettings = [
@@ -22,6 +21,7 @@ const navigationSettings = [
     href: "/organization/customers",
     icon: RiContactsBook2Line,
   },
+  { name: "Audit Log", href: "/organization/audit-log", icon: RiHistoryLine },
 ]
 
 export default function Layout({
@@ -35,9 +35,10 @@ export default function Layout({
       <h1 className="text-lg font-semibold text-gray-900 sm:text-xl dark:text-gray-50">
         Organization
       </h1>
-      <TabNavigation className="mt-4 sm:mt-6 lg:mt-10">
+      <TabNavigation className="relative mt-4 sm:mt-6 lg:mt-10">
         {navigationSettings.map((item) => (
           <TabNavigationLink
+            href={item.href}
             key={item.name}
             asChild
             active={pathname === item.href}

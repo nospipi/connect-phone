@@ -2,20 +2,12 @@ import { Usage } from "./schema"
 
 export const roles: { value: string; label: string }[] = [
   {
-    value: "admin",
+    value: "ADMIN",
     label: "Admin",
   },
   {
-    value: "member",
-    label: "Member",
-  },
-  {
-    value: "viewer",
-    label: "Viewer",
-  },
-  {
-    value: "contributor",
-    label: "Contributor",
+    value: "OPERATOR",
+    label: "Operator",
   },
 ]
 
@@ -94,46 +86,28 @@ export const users: {
   role: string
 }[] = [
   {
+    name: "Sarah Johnson",
+    initials: "SJ",
+    email: "s.johnson@gmail.com",
+    role: "ADMIN",
+  },
+  {
     name: "Emma Stone",
     initials: "ES",
     email: "a.stone@gmail.com",
-    role: "viewer",
+    role: "OPERATOR",
   },
   {
     name: "Alissia McCalister",
     initials: "AM",
     email: "a.stone@gmail.com",
-    role: "viewer",
-  },
-  {
-    name: "Emily Luisa Bernacle",
-    initials: "EB",
-    email: "e.luis.bernacle@gmail.com",
-    role: "member",
-  },
-  {
-    name: "Aaron Wave",
-    initials: "AW",
-    email: "a.flow@acme.com",
-    role: "contributor",
-  },
-  {
-    name: "Thomas Palstein",
-    initials: "TP",
-    email: "t.palstein@acme.com",
-    role: "viewer",
-  },
-  {
-    name: "Sarah Johnson",
-    initials: "SJ",
-    email: "s.johnson@gmail.com",
-    role: "admin",
+    role: "OPERATOR",
   },
   {
     name: "Megan Katherina Brown",
     initials: "MB",
     email: "m.lovelybrown@gmail.com",
-    role: "contributor",
+    role: "OPERATOR",
   },
 ]
 
@@ -146,13 +120,13 @@ export const invitedUsers: {
   {
     initials: "LP",
     email: "lydia.posh@gmail.com",
-    role: "viewer",
+    role: "OPERATOR",
     expires: 12,
   },
   {
     initials: "AW",
     email: "awidburg@bluewin.ch",
-    role: "viewer",
+    role: "OPERATOR",
     expires: 8,
   },
 ]

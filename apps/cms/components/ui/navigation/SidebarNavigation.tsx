@@ -102,7 +102,9 @@ export function SidebarNavigation() {
             <li key={item.name}>
               <Link
                 href={item.href}
-                onClick={() => handleNavClick(item.href)}
+                onClick={() =>
+                  !isActive(item.href) && handleNavClick(item.href)
+                }
                 className={cx(
                   isActive(item.href)
                     ? "text-indigo-600 dark:text-indigo-400"
@@ -112,7 +114,7 @@ export function SidebarNavigation() {
                 )}
               >
                 {loadingHref === item.href && (
-                  <div className="absolute inset-0 -skew-x-12 animate-[shimmer_1.8s_infinite] bg-gradient-to-r from-transparent via-gray-900/20 to-transparent dark:via-white/20"></div>
+                  <div className="absolute inset-0 animate-[shimmer_1.8s_infinite] bg-gradient-to-r from-transparent via-gray-900/20 to-transparent dark:via-white/20"></div>
                 )}
                 <item.icon className="size-4 shrink-0" aria-hidden="true" />
                 {item.name}
