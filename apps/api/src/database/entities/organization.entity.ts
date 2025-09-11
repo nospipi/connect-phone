@@ -9,6 +9,7 @@ import {
 import { IOrganization } from '@connect-phone/shared-types';
 import { SalesChannel } from './sales-channel.entity';
 import { UserOrganization } from './user-organization.entity';
+import { AuditLogEntry } from './audit-log.entity';
 
 @Entity({ name: 'organizations' })
 export class Organization implements IOrganization {
@@ -32,4 +33,7 @@ export class Organization implements IOrganization {
 
   @OneToMany(() => UserOrganization, (userOrg) => userOrg.organization)
   userOrganizations: UserOrganization[];
+
+  @OneToMany(() => AuditLogEntry, (auditLog) => auditLog.organization)
+  auditLogs: AuditLogEntry[];
 }

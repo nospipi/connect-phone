@@ -17,6 +17,7 @@ async function seed() {
     // Clear existing data (order matters)
     await AppDataSource.query('TRUNCATE TABLE user_organizations CASCADE;');
     await AppDataSource.query('TRUNCATE TABLE sales_channels CASCADE;');
+    await AppDataSource.query('TRUNCATE TABLE audit_logs CASCADE;');
     await AppDataSource.query('TRUNCATE TABLE users CASCADE;');
     await AppDataSource.query('TRUNCATE TABLE organizations CASCADE;');
 

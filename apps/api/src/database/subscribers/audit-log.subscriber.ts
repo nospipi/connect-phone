@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import { AuditLogEntry } from '../entities/audit-log.entity';
 import { User } from '../entities/user.entity';
-import { UserContext } from '@/common/context/user-context';
+import { UserContext } from '../../common/context/user-context';
 
 @EventSubscriber()
 export class AuditLogSubscriber implements EntitySubscriberInterface {

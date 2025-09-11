@@ -8,11 +8,13 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { User } from './user.entity';
+import { Organization } from './organization.entity';
+import { IAuditLog } from '@connect-phone/shared-types';
 
 //---------------------------------------------------------------------------
 
 @Entity({ name: 'audit_logs' })
-export class AuditLogEntry {
+export class AuditLogEntry implements IAuditLog {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -34,6 +36,15 @@ export class AuditLogEntry {
   @ManyToOne(() => User, { nullable: true })
   @JoinColumn({ name: 'actor_id' })
   actor: User | null;
+
+  @Column({ nullable: true })
+  organizationId: number | null;
+
+  @ManyToOne(() => Organization, (organization) => organization.auditLogs, {
+    nullable: true,
+  })
+  @JoinColumn({ name: 'organizationId' })
+  organization: Organization | null;
 
   @CreateDateColumn({ type: 'timestamp with time zone' })
   created_at: Date;

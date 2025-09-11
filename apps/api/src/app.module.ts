@@ -14,6 +14,7 @@ import { SalesChannelsModule } from './resources/sales-channels/sales-channels.m
 import { UsersModule } from './resources/users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './database/entities/user.entity';
+import { AuditLogsModule } from './resources/audit-logs/audit-logs.module';
 
 //---------------------------------------------------------------------------
 
@@ -28,6 +29,7 @@ import { User } from './database/entities/user.entity';
     SalesChannelsModule,
     UsersModule,
     TypeOrmModule.forFeature([User]),
+    AuditLogsModule,
   ],
   controllers: [AppController],
   providers: [

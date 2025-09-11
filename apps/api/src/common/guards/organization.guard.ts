@@ -48,13 +48,11 @@ export class OrganizationGuard implements CanActivate {
       '🔒🏢 Organization guard: Enforcing organization requirement...'
     );
 
-    // Get current user and organization (no errors thrown by service)
     const [user, organization] = await Promise.all([
       this.currentDbUserService.getCurrentDbUser(),
       this.currentOrganizationService.getCurrentOrganization(),
     ]);
 
-    // Guard handles all validation and error throwing
     if (!user) {
       console.log('❌ Organization guard: User not found in database');
       throw new UnauthorizedException(
@@ -78,11 +76,24 @@ export class OrganizationGuard implements CanActivate {
       );
     }
 
+    const belongsToOrganization = user.userOrganizations?.some(
+      (uo) => uo.organizationId === organization.id
+    );
+
+    if (!belongsToOrganization) {
+      console.log(
+        `❌ Organization guard: User ${user.email} is not part of organization ${organization.name}`
+      );
+      throw new UnauthorizedException(
+        'Organization access denied: You do not belong to this organization'
+      );
+    }
+
     console.log(
       `🔒🏢 Organization guard: Access granted for user ${user.email} in organization ${organization.name} (ID: ${organization.id})`
     );
 
-    // Attach to request for controllers and services to use
+    // Attach to request
     request.currentUser = user;
     request.currentOrganization = organization;
 
