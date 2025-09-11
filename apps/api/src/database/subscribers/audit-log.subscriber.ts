@@ -6,27 +6,22 @@ import {
   UpdateEvent,
   RemoveEvent,
 } from 'typeorm';
-import { Injectable, Scope } from '@nestjs/common';
 import { AuditLogEntry } from '../entities/audit-log.entity';
-import { CurrentDbUserService } from '@/common/core/current-db-user.service';
 import { User } from '../entities/user.entity';
+import { UserContext } from '@/common/context/user-context';
 
-@Injectable({ scope: Scope.REQUEST })
 @EventSubscriber()
 export class AuditLogSubscriber implements EntitySubscriberInterface {
-  constructor(private readonly currentDbUserService: CurrentDbUserService) {}
-
   listenTo() {
     return Object; // catch all entities
   }
 
   async afterInsert(event: InsertEvent<any>) {
-    // Skip audit log entries to prevent infinite loops
     if (event.metadata.targetName === 'AuditLogEntry') {
       return;
     }
 
-    const actor = await this.getActor();
+    const actor = await this.getActor(event);
     await event.manager.getRepository(AuditLogEntry).insert({
       table_name: event.metadata.tableName,
       row_id: String(event.entity.id),
@@ -38,12 +33,11 @@ export class AuditLogSubscriber implements EntitySubscriberInterface {
   }
 
   async afterUpdate(event: UpdateEvent<any>) {
-    // Skip audit log entries to prevent infinite loops
     if (event.metadata.targetName === 'AuditLogEntry') {
       return;
     }
 
-    const actor = await this.getActor();
+    const actor = await this.getActor(event);
     await event.manager.getRepository(AuditLogEntry).insert({
       table_name: event.metadata.tableName,
       row_id: String(event.entity?.id ?? event.databaseEntity?.id),
@@ -55,12 +49,11 @@ export class AuditLogSubscriber implements EntitySubscriberInterface {
   }
 
   async afterRemove(event: RemoveEvent<any>) {
-    // Skip audit log entries to prevent infinite loops
     if (event.metadata.targetName === 'AuditLogEntry') {
       return;
     }
 
-    const actor = await this.getActor();
+    const actor = await this.getActor(event);
     await event.manager.getRepository(AuditLogEntry).insert({
       table_name: event.metadata.tableName,
       row_id: String(event.entityId),
@@ -71,13 +64,15 @@ export class AuditLogSubscriber implements EntitySubscriberInterface {
     });
   }
 
-  private async getActor(): Promise<User | null> {
-    try {
-      return await this.currentDbUserService.getCurrentDbUser();
-    } catch (error) {
-      // Handle cases where there's no request context (migrations, background tasks, etc.)
-      console.log('No user context available for audit log:', error.message);
+  private async getActor(event: any): Promise<User | null> {
+    const userId = UserContext.getCurrentUserId();
+
+    if (!userId) {
       return null;
     }
+
+    return event.manager.getRepository(User).findOne({
+      where: { id: userId },
+    });
   }
 }

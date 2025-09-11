@@ -34,7 +34,5 @@ import { AuditLogSubscriber } from './subscribers/audit-log.subscriber';
       inject: [ConfigService],
     }),
   ],
-  providers: [AuditLogSubscriber],
-  exports: [AuditLogSubscriber],
 })
 export class DatabaseModule {}

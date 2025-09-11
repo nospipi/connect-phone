@@ -7,10 +7,13 @@ import { CoreModule } from './common/core/core.module';
 import { ClerkClientProvider } from 'src/common/providers/clerk-client.provider';
 import { AuthModule } from './auth/auth.module';
 import { ClerkAuthGuard } from './common/guards/clerk-auth.guard';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+import { AuditContextInterceptor } from './common/interceptors/audit-context-interceptor';
 import { DatabaseModule } from './database/database.module';
 import { SalesChannelsModule } from './resources/sales-channels/sales-channels.module';
 import { UsersModule } from './resources/users/users.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from './database/entities/user.entity';
 
 //---------------------------------------------------------------------------
 
@@ -24,6 +27,7 @@ import { UsersModule } from './resources/users/users.module';
     CoreModule,
     SalesChannelsModule,
     UsersModule,
+    TypeOrmModule.forFeature([User]),
   ],
   controllers: [AppController],
   providers: [
@@ -31,7 +35,11 @@ import { UsersModule } from './resources/users/users.module';
     ClerkClientProvider,
     {
       provide: APP_GUARD,
-      useClass: ClerkAuthGuard, // GLOBAL AUTH GUARD
+      useClass: ClerkAuthGuard,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: AuditContextInterceptor,
     },
   ],
 })
