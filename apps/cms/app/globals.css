@@ -6,3 +6,9 @@
 .cl-internal-1dauvpw {
   display: none;
 }
+
+html,
+body,
+#__next {
+  height: 100%;
+}

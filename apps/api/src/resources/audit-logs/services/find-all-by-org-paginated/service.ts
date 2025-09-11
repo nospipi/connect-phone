@@ -1,9 +1,8 @@
-// apps/api/src/resources/sales-channels/services/find-all-by-org-paginated/service.ts
+// apps/api/src/resources/audit-logs/services/find-all-by-org-paginated/service.ts
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AuditLogEntry } from '../../../../database/entities/audit-log.entity';
-import { Organization } from '../../../../database/entities/organization.entity';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 import {
   paginate,
@@ -18,7 +17,6 @@ export class FindAllByOrgPaginatedService {
   constructor(
     @InjectRepository(AuditLogEntry)
     private auditLogsRepository: Repository<AuditLogEntry>,
-    @InjectRepository(Organization)
     private currentOrganizationService: CurrentOrganizationService
   ) {}
 

@@ -93,6 +93,7 @@ const Page = async ({
   const { page = "1" } = await searchParams
   console.log("Current page:", page)
 
+  //await new Promise((resolve) => setTimeout(resolve, 50000)) // Simulated delay
   const auditLogsResponse = await getAllAuditLogsOfOrganizationPaginated({
     page: page,
   })
@@ -116,7 +117,7 @@ const Page = async ({
       )}
 
       {/* Audit Logs List */}
-      <div className="flex-1 overflow-auto">
+      <div className="min-h-0 flex-1 overflow-auto">
         <div className="space-y-3">
           {auditLogs.map((log: IAuditLog) => (
             <Card

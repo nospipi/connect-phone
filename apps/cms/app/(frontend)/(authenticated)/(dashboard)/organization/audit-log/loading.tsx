@@ -6,7 +6,7 @@ import PulsingRingProvider from "@/app/providers/PulsingRingProvider.client"
 
 const Loading = () => {
   return (
-    <div className="flex h-screen flex-col items-center justify-center gap-10">
+    <div className="flex h-full justify-center">
       <PulsingRingProvider color="blue" ringCount={3} size={2} speed={3}>
         <Image
           src={logo}
