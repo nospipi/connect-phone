@@ -4,7 +4,12 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
+import { User } from './user.entity';
+
+//---------------------------------------------------------------------------
 
 @Entity({ name: 'audit_logs' })
 export class AuditLogEntry {
@@ -26,8 +31,9 @@ export class AuditLogEntry {
   @Column({ type: 'jsonb', nullable: true })
   after: Record<string, any> | null;
 
-  @Column({ nullable: true })
-  actor_id: string;
+  @ManyToOne(() => User, { nullable: true })
+  @JoinColumn({ name: 'actor_id' })
+  actor: User | null;
 
   @CreateDateColumn({ type: 'timestamp with time zone' })
   created_at: Date;

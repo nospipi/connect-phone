@@ -23,7 +23,7 @@ import { UsersModule } from './resources/users/users.module';
     AuthModule,
     CoreModule,
     SalesChannelsModule,
-    UsersModule, // ✅ Added the new Users module
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [
