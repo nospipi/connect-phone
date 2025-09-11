@@ -9,6 +9,7 @@ import {
 import { AuditLogEntry } from '../entities/audit-log.entity';
 import { User } from '../entities/user.entity';
 import { UserContext } from '../../common/context/user-context';
+import { OrganizationContext } from '../../common/context/organization-context';
 
 @EventSubscriber()
 export class AuditLogSubscriber implements EntitySubscriberInterface {
@@ -22,6 +23,8 @@ export class AuditLogSubscriber implements EntitySubscriberInterface {
     }
 
     const actor = await this.getActor(event);
+    const organizationId = this.getCurrentOrganizationId();
+
     await event.manager.getRepository(AuditLogEntry).insert({
       table_name: event.metadata.tableName,
       row_id: String(event.entity.id),
@@ -29,6 +32,7 @@ export class AuditLogSubscriber implements EntitySubscriberInterface {
       before: null,
       after: event.entity,
       actor,
+      organizationId,
     });
   }
 
@@ -38,6 +42,8 @@ export class AuditLogSubscriber implements EntitySubscriberInterface {
     }
 
     const actor = await this.getActor(event);
+    const organizationId = this.getCurrentOrganizationId();
+
     await event.manager.getRepository(AuditLogEntry).insert({
       table_name: event.metadata.tableName,
       row_id: String(event.entity?.id ?? event.databaseEntity?.id),
@@ -45,6 +51,7 @@ export class AuditLogSubscriber implements EntitySubscriberInterface {
       before: event.databaseEntity,
       after: event.entity,
       actor,
+      organizationId,
     });
   }
 
@@ -54,6 +61,8 @@ export class AuditLogSubscriber implements EntitySubscriberInterface {
     }
 
     const actor = await this.getActor(event);
+    const organizationId = this.getCurrentOrganizationId();
+
     await event.manager.getRepository(AuditLogEntry).insert({
       table_name: event.metadata.tableName,
       row_id: String(event.entityId),
@@ -61,6 +70,7 @@ export class AuditLogSubscriber implements EntitySubscriberInterface {
       before: event.entity,
       after: null,
       actor,
+      organizationId,
     });
   }
 
@@ -74,5 +84,9 @@ export class AuditLogSubscriber implements EntitySubscriberInterface {
     return event.manager.getRepository(User).findOne({
       where: { id: userId },
     });
+  }
+
+  private getCurrentOrganizationId(): number | null {
+    return OrganizationContext.getCurrentOrganizationId();
   }
 }

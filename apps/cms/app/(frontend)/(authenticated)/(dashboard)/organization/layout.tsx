@@ -50,7 +50,7 @@ export default function Layout({
           </TabNavigationLink>
         ))}
       </TabNavigation>
-      <div className="pt-6">{children}</div>
+      <div className="h-full flex-1 pt-6">{children}</div>
     </div>
   )
 }

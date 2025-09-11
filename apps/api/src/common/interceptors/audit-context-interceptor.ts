@@ -1,15 +1,16 @@
-// src/common/interceptors/audit-context-simple.interceptor.ts
+// src/common/interceptors/audit-context-interceptor.ts
 import {
   Injectable,
   NestInterceptor,
   ExecutionContext,
   CallHandler,
 } from '@nestjs/common';
-import { Observable } from 'rxjs';
+import { Observable, firstValueFrom } from 'rxjs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '@/database/entities/user.entity';
 import { UserContext } from '../context/user-context';
+import { OrganizationContext } from '../context/organization-context';
 
 //-------------------------------------------------------
 
@@ -41,6 +42,7 @@ export class AuditContextInterceptor implements NestInterceptor {
     const clerkUser = request.user; // Set by ClerkAuthGuard
 
     let userId: number | null = null;
+    let organizationId: number | null = null;
 
     if (clerkUser?.primaryEmailAddress?.emailAddress) {
       const email = clerkUser.primaryEmailAddress.emailAddress;
@@ -53,8 +55,10 @@ export class AuditContextInterceptor implements NestInterceptor {
 
         if (dbUser) {
           userId = dbUser.id;
+          organizationId = dbUser.loggedOrganizationId;
+
           console.log(
-            `🔍 Audit context set for user: ${dbUser.email} (ID: ${dbUser.id})`
+            `🔍 Audit context set for user: ${dbUser.email} (ID: ${dbUser.id}) in organization: ${organizationId || 'none'}`
           );
         } else {
           console.log(`🔍 Clerk user ${email} not found in database`);
@@ -66,9 +70,11 @@ export class AuditContextInterceptor implements NestInterceptor {
       console.log('🔍 No Clerk user found on request');
     }
 
-    // Run the request within UserContext
+    // Run the request within both UserContext and OrganizationContext
     return UserContext.run(userId, async () => {
-      return next.handle().toPromise();
+      return OrganizationContext.run(organizationId, async () => {
+        return firstValueFrom(next.handle());
+      });
     });
   }
 }

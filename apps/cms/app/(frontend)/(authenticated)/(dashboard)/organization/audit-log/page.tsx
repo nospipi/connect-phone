@@ -33,7 +33,7 @@ const Page = async ({
   const hasNextPage = meta?.currentPage < meta?.totalPages
 
   return (
-    <div className="flex h-full flex-col gap-4 overflow-hidden p-4">
+    <div className="flex h-full flex-col gap-4 overflow-hidden p-7">
       {auditLogs.length === 0 && (
         <Card className="p-8 text-center">
           <RiNodeTree className="mx-auto h-12 w-12 text-gray-400" />

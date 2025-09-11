@@ -34,7 +34,7 @@ const Page = async ({
   const hasNextPage = meta?.currentPage < meta?.totalPages
 
   return (
-    <div className="flex h-full flex-col gap-4 overflow-hidden p-4">
+    <div className="flex h-full flex-col gap-4 overflow-hidden p-7">
       {/* Header Section */}
       <div className="flex flex-shrink-0 items-center justify-between">
         <div>
