@@ -8,6 +8,7 @@ import { SalesChannel } from './entities/sales-channel.entity';
 import { User } from './entities/user.entity';
 import { UserOrganization } from './entities/user-organization.entity';
 import { AuditLogEntry } from './entities/audit-log.entity';
+import { AuditLogSubscriber } from './subscribers/audit-log.subscriber';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { AuditLogEntry } from './entities/audit-log.entity';
           UserOrganization,
           AuditLogEntry,
         ],
+        subscribers: [AuditLogSubscriber],
         synchronize: process.env.NODE_ENV !== 'production',
         ssl: {
           rejectUnauthorized: false,
@@ -32,5 +34,7 @@ import { AuditLogEntry } from './entities/audit-log.entity';
       inject: [ConfigService],
     }),
   ],
+  providers: [AuditLogSubscriber],
+  exports: [AuditLogSubscriber],
 })
 export class DatabaseModule {}
