@@ -1,16 +1,9 @@
-import { getAllSalesChannelsOfOrganizationPaginated } from "@/app/(backend)/server_actions/getAllSalesChannelsOfOrganizationPaginated"
 import { getAllAuditLogsOfOrganizationPaginated } from "@/app/(backend)/server_actions/getAllAuditLogsOfOrganizationPaginated"
-import { ISalesChannel, IAuditLog } from "@connect-phone/shared-types"
-import { Badge } from "@/components/common/Badge"
+import { IAuditLog } from "@connect-phone/shared-types"
 import { Card } from "@/components/common/Card"
 import { Button } from "@/components/common/Button"
 import Link from "next/link"
-import {
-  RiNodeTree,
-  RiExternalLinkLine,
-  RiDeleteBin6Line,
-  RiEditLine,
-} from "@remixicon/react"
+import { RiNodeTree } from "@remixicon/react"
 
 //---------------------------------------------------------------------------
 
@@ -33,7 +26,7 @@ const Page = async ({
   const hasNextPage = meta?.currentPage < meta?.totalPages
 
   return (
-    <div className="flex h-full flex-col gap-4 overflow-hidden p-7">
+    <div className="flex h-full flex-col gap-4 overflow-hidden">
       {auditLogs.length === 0 && (
         <Card className="p-8 text-center">
           <RiNodeTree className="mx-auto h-12 w-12 text-gray-400" />
@@ -47,7 +40,7 @@ const Page = async ({
       )}
 
       {/* Sales Channels List */}
-      <div className="flex-1 overflow-auto">
+      <div className="p-4= flex-1 overflow-auto">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {auditLogs.map((log: IAuditLog) => (
             <div key={log.id}>LOG</div>

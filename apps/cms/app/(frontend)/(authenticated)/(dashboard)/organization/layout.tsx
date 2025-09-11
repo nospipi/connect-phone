@@ -31,7 +31,7 @@ export default function Layout({
 }>) {
   const pathname = usePathname()
   return (
-    <div className="p-4 sm:px-6 sm:pb-10 sm:pt-10 lg:px-10 lg:pt-7">
+    <div className="flex h-full flex-col p-4 sm:px-6 sm:pb-10 sm:pt-10 lg:px-10 lg:pt-7">
       <h1 className="text-lg font-semibold text-gray-900 sm:text-xl dark:text-gray-50">
         Organization
       </h1>
@@ -50,7 +50,7 @@ export default function Layout({
           </TabNavigationLink>
         ))}
       </TabNavigation>
-      <div className="h-full flex-1 pt-6">{children}</div>
+      <div className="flex-1">{children}</div>
     </div>
   )
 }
