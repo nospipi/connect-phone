@@ -49,7 +49,7 @@ export class FindAllByOrgPaginatedService {
     const queryBuilder = this.auditLogsRepository
       .createQueryBuilder('auditLog')
       .leftJoinAndSelect('auditLog.organization', 'organization')
-      .leftJoinAndSelect('auditLog.actor', 'actor')
+      .leftJoinAndSelect('auditLog.user', 'user')
       .where('auditLog.organizationId = :organizationId', {
         organizationId: organization?.id,
       })

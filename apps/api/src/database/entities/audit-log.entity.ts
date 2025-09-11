@@ -42,8 +42,8 @@ export class AuditLogEntry implements IAuditLog {
   @JoinColumn({ name: 'organizationId' })
   organization: Organization | null;
 
-  @Column()
-  userId: number;
+  @Column({ nullable: true })
+  userId: number | null;
 
   @ManyToOne(() => User, (user) => user.auditLogs, { nullable: true })
   @JoinColumn({ name: 'userId' })

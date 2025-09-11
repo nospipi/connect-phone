@@ -22,8 +22,9 @@ export class AuditLogSubscriber implements EntitySubscriberInterface {
       return;
     }
 
-    const user = await this.getActor(event);
+    const user = await this.getActorId(event);
     const organizationId = this.getCurrentOrganizationId();
+    const userId = UserContext.getCurrentUserId();
 
     await event.manager.getRepository(AuditLogEntry).insert({
       table_name: event.metadata.tableName,
@@ -31,7 +32,7 @@ export class AuditLogSubscriber implements EntitySubscriberInterface {
       operation: 'INSERT',
       before: null,
       after: event.entity,
-      user,
+      userId,
       organizationId,
     });
   }
@@ -41,8 +42,9 @@ export class AuditLogSubscriber implements EntitySubscriberInterface {
       return;
     }
 
-    const user = await this.getActor(event);
+    const user = await this.getActorId(event);
     const organizationId = this.getCurrentOrganizationId();
+    const userId = UserContext.getCurrentUserId();
 
     await event.manager.getRepository(AuditLogEntry).insert({
       table_name: event.metadata.tableName,
@@ -50,7 +52,7 @@ export class AuditLogSubscriber implements EntitySubscriberInterface {
       operation: 'UPDATE',
       before: event.databaseEntity,
       after: event.entity,
-      user,
+      userId,
       organizationId,
     });
   }
@@ -60,7 +62,9 @@ export class AuditLogSubscriber implements EntitySubscriberInterface {
       return;
     }
 
-    const user = await this.getActor(event);
+    const userId = UserContext.getCurrentUserId();
+
+    const user = await this.getActorId(event);
     const organizationId = this.getCurrentOrganizationId();
 
     await event.manager.getRepository(AuditLogEntry).insert({
@@ -69,21 +73,24 @@ export class AuditLogSubscriber implements EntitySubscriberInterface {
       operation: 'DELETE',
       before: event.entity,
       after: null,
-      user,
+      userId,
       organizationId,
     });
   }
 
-  private async getActor(event: any): Promise<User | null> {
+  private async getActorId(event: any): Promise<number | null> {
     const userId = UserContext.getCurrentUserId();
 
     if (!userId) {
       return null;
     }
 
-    return event.manager.getRepository(User).findOne({
-      where: { id: userId },
-    });
+    // return event.manager.getRepository(User).findOne({
+    //   where: { id: userId },
+    // });
+
+    //return id
+    return userId;
   }
 
   private getCurrentOrganizationId(): number | null {
