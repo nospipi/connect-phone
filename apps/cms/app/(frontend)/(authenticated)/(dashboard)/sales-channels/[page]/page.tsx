@@ -1,5 +1,5 @@
 import { getAllSalesChannelsOfOrganizationPaginated } from "@/app/(backend)/server_actions/getAllSalesChannelsOfOrganizationPaginated"
-import AddChannelButton from "./CreateRandomButton.client"
+import AddChannelButton from "../CreateRandomButton.client"
 import { ISalesChannel } from "@connect-phone/shared-types"
 import { Badge } from "@/components/common/Badge"
 import { Card } from "@/components/common/Card"
@@ -15,14 +15,13 @@ import {
 //---------------------------------------------------------------------------
 
 const Page = async ({
-  //params,
-  searchParams,
+  params,
+  //searchParams,
 }: {
-  //params: Promise<{ partner_id: string; page: string }>
-  searchParams: Promise<{ [key: string]: string | undefined }>
+  params: Promise<{ partner_id: string; page: string }>
+  //searchParams: Promise<{ [key: string]: string | undefined }>
 }) => {
-  const { page = "1" } = await searchParams
-  console.log("Current page:", page)
+  const { page } = await params
 
   const salesChannelsResponse =
     await getAllSalesChannelsOfOrganizationPaginated({
@@ -134,7 +133,7 @@ const Page = async ({
             {/* Desktop pagination - shows all buttons */}
             <div className="hidden items-center gap-2 sm:flex">
               {hasPreviousPage ? (
-                <Link href={`?page=1`}>
+                <Link href={`/sales-channels/1`}>
                   <Button variant="secondary" className="text-sm">
                     First
                   </Button>
@@ -145,7 +144,7 @@ const Page = async ({
                 </Button>
               )}
               {hasPreviousPage ? (
-                <Link href={`?page=${meta.currentPage - 1}`}>
+                <Link href={`/sales-channels/${meta.currentPage - 1}`}>
                   <Button variant="secondary" className="text-sm">
                     Previous
                   </Button>
@@ -159,7 +158,7 @@ const Page = async ({
                 Page {meta.currentPage} of {meta.totalPages}
               </span>
               {hasNextPage ? (
-                <Link href={`?page=${meta.currentPage + 1}`}>
+                <Link href={`/sales-channels/${meta.currentPage + 1}`}>
                   <Button variant="secondary" className="text-sm">
                     Next
                   </Button>
@@ -170,7 +169,7 @@ const Page = async ({
                 </Button>
               )}
               {hasNextPage ? (
-                <Link href={`?page=${meta.totalPages}`}>
+                <Link href={`/sales-channels/${meta.totalPages}`}>
                   <Button variant="secondary" className="text-sm">
                     Last
                   </Button>
@@ -185,7 +184,7 @@ const Page = async ({
             {/* Mobile pagination - shows only Previous and Next */}
             <div className="flex items-center gap-2 sm:hidden">
               {hasPreviousPage ? (
-                <Link href={`?page=${meta.currentPage - 1}`}>
+                <Link href={`/sales-channels/${meta.currentPage - 1}`}>
                   <Button variant="secondary" className="text-sm">
                     Previous
                   </Button>
@@ -199,7 +198,7 @@ const Page = async ({
                 {meta.currentPage}/{meta.totalPages}
               </span>
               {hasNextPage ? (
-                <Link href={`?page=${meta.currentPage + 1}`}>
+                <Link href={`/sales-channels/${meta.currentPage + 1}`}>
                   <Button variant="secondary" className="text-sm">
                     Next
                   </Button>
