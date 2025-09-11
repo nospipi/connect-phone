@@ -33,10 +33,6 @@ export class AuditLogEntry implements IAuditLog {
   @Column({ type: 'jsonb', nullable: true })
   after: Record<string, any> | null;
 
-  @ManyToOne(() => User, { nullable: true })
-  @JoinColumn({ name: 'actor_id' })
-  actor: User | null;
-
   @Column({ nullable: true })
   organizationId: number | null;
 
@@ -45,6 +41,13 @@ export class AuditLogEntry implements IAuditLog {
   })
   @JoinColumn({ name: 'organizationId' })
   organization: Organization | null;
+
+  @Column()
+  userId: number;
+
+  @ManyToOne(() => User, (user) => user.auditLogs, { nullable: true })
+  @JoinColumn({ name: 'userId' })
+  user: User | null;
 
   @CreateDateColumn({ type: 'timestamp with time zone' })
   created_at: Date;

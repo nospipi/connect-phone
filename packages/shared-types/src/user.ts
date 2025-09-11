@@ -1,4 +1,5 @@
 import { IOrganization } from "./organization";
+import { IAuditLog } from "./auditLog";
 
 export enum UserOrganizationRole {
   ADMIN = "ADMIN",
@@ -17,4 +18,5 @@ export interface IUser {
     organization: IOrganization;
     role: UserOrganizationRole;
   }[];
+  auditLogs?: IAuditLog[];
 }

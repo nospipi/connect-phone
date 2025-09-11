@@ -1,4 +1,5 @@
 import { IUser } from "./user";
+import { IOrganization } from "./organization";
 
 export interface IAuditLog {
   id: number;
@@ -7,6 +8,9 @@ export interface IAuditLog {
   operation: string;
   before: Record<string, any> | null;
   after: Record<string, any> | null;
-  actor: IUser | null;
+  user: IUser | null;
+  userId: number | null;
+  organization: IOrganization | null;
+  organizationId: number | null;
   created_at: Date;
 }

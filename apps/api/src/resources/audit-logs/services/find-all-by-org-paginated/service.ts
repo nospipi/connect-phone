@@ -1,15 +1,10 @@
 // apps/api/src/resources/sales-channels/services/find-all-by-org-paginated/service.ts
-import {
-  Injectable,
-  NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AuditLogEntry } from '../../../../database/entities/audit-log.entity';
 import { Organization } from '../../../../database/entities/organization.entity';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
-import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
 import {
   paginate,
   Pagination,
@@ -24,33 +19,8 @@ export class FindAllByOrgPaginatedService {
     @InjectRepository(AuditLogEntry)
     private auditLogsRepository: Repository<AuditLogEntry>,
     @InjectRepository(Organization)
-    private organizationsRepository: Repository<Organization>,
-    private currentOrganizationService: CurrentOrganizationService,
-    private currentDbUserService: CurrentDbUserService
+    private currentOrganizationService: CurrentOrganizationService
   ) {}
-
-  /**
-   * Gets the current organization and throws an error if not found
-   */
-  private async userOrganizations(): Promise<Organization> {
-    const organization =
-      await this.currentOrganizationService.getCurrentOrganization();
-
-    if (!organization) {
-      const user = await this.currentDbUserService.getCurrentDbUser();
-      if (!user) {
-        throw new UnauthorizedException('User not found in database');
-      }
-      if (!user.loggedOrganizationId) {
-        throw new UnauthorizedException(
-          'User is not logged into any organization'
-        );
-      }
-      throw new NotFoundException('Organization not found');
-    }
-
-    return organization;
-  }
 
   /**
    * Get paginated sales channels for the current user's organization
@@ -79,6 +49,7 @@ export class FindAllByOrgPaginatedService {
     const queryBuilder = this.auditLogsRepository
       .createQueryBuilder('auditLog')
       .leftJoinAndSelect('auditLog.organization', 'organization')
+      .leftJoinAndSelect('auditLog.actor', 'actor')
       .where('auditLog.organizationId = :organizationId', {
         organizationId: organization?.id,
       })

@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import { IUser } from '@connect-phone/shared-types';
 import { Organization } from './organization.entity';
+import { AuditLogEntry } from './audit-log.entity';
 import { UserOrganization } from './user-organization.entity';
 
 @Entity({ name: 'users' })
@@ -42,4 +43,7 @@ export class User implements IUser {
 
   @OneToMany(() => UserOrganization, (userOrg) => userOrg.user)
   userOrganizations: UserOrganization[];
+
+  @OneToMany(() => AuditLogEntry, (auditLog) => auditLog.user)
+  auditLogs: AuditLogEntry[];
 }

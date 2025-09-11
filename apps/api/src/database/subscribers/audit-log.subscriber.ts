@@ -22,7 +22,7 @@ export class AuditLogSubscriber implements EntitySubscriberInterface {
       return;
     }
 
-    const actor = await this.getActor(event);
+    const user = await this.getActor(event);
     const organizationId = this.getCurrentOrganizationId();
 
     await event.manager.getRepository(AuditLogEntry).insert({
@@ -31,7 +31,7 @@ export class AuditLogSubscriber implements EntitySubscriberInterface {
       operation: 'INSERT',
       before: null,
       after: event.entity,
-      actor,
+      user,
       organizationId,
     });
   }
@@ -41,7 +41,7 @@ export class AuditLogSubscriber implements EntitySubscriberInterface {
       return;
     }
 
-    const actor = await this.getActor(event);
+    const user = await this.getActor(event);
     const organizationId = this.getCurrentOrganizationId();
 
     await event.manager.getRepository(AuditLogEntry).insert({
@@ -50,7 +50,7 @@ export class AuditLogSubscriber implements EntitySubscriberInterface {
       operation: 'UPDATE',
       before: event.databaseEntity,
       after: event.entity,
-      actor,
+      user,
       organizationId,
     });
   }
@@ -60,7 +60,7 @@ export class AuditLogSubscriber implements EntitySubscriberInterface {
       return;
     }
 
-    const actor = await this.getActor(event);
+    const user = await this.getActor(event);
     const organizationId = this.getCurrentOrganizationId();
 
     await event.manager.getRepository(AuditLogEntry).insert({
@@ -69,7 +69,7 @@ export class AuditLogSubscriber implements EntitySubscriberInterface {
       operation: 'DELETE',
       before: event.entity,
       after: null,
-      actor,
+      user,
       organizationId,
     });
   }
