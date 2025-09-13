@@ -87,9 +87,20 @@ export const AuditLogItem = ({ log }: { log: IAuditLog }) => {
         </div>
       </div>
 
-      <div className="mt-4 hidden pt-4 peer-checked:block">
+      <div className="mt-4 hidden pt-4 peer-checked:flex">
         <DataComparison before={log.before} after={log.after} />
       </div>
     </div>
   )
 }
+
+// How the expand/close works:
+//
+// - There is a hidden checkbox (<input type="checkbox" />) with class "peer".
+//   -> In Tailwind, "peer" marks this element as a reference for its siblings.
+//
+// - The label ("Show changes") is linked to that checkbox using htmlFor + id.
+//   -> Clicking the label checks/unchecks the hidden checkbox.
+//
+// - On a sibling element, we use "hidden peer-checked:flex":
+//   -> "peer-checked:flex" means: if the peer (the checkbox) is checked, show it as flex.
