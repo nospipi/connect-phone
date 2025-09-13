@@ -55,12 +55,8 @@ export class CreateNewChannelService {
   async createNewSalesChannel(
     createSalesChannelDto: CreateSalesChannelDto
   ): Promise<SalesChannel> {
-    console.log('Creating new sales channel with DTO:', createSalesChannelDto);
-
     // Automatically get the current organization from context
     const organization = await this.getCurrentOrganization();
-
-    console.log('Creating sales channel for organization:', organization.name);
 
     const salesChannel = this.salesChannelsRepository.create({
       ...createSalesChannelDto,

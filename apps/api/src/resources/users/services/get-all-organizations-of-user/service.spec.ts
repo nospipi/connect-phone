@@ -1,15 +1,18 @@
-// apps/api/src/resources/users/services/get-all-organizations-of-user/controller.spec.ts
+// apps/api/src/resources/users/services/get-all-organizations-of-user/service.spec.ts
 import { Test, TestingModule } from '@nestjs/testing';
 import { GetAllOrganizationsOfUserController } from './controller';
 import { GetAllOrganizationsOfUserService } from './service';
 import { Organization } from '../../../../database/entities/organization.entity';
-import { UserOrganization } from '../../../../database/entities/user-organization.entity';
+import {
+  UserOrganization,
+  UserOrganizationRole,
+} from '../../../../database/entities/user-organization.entity';
 
 describe('GetAllOrganizationsOfUserController', () => {
   let controller: GetAllOrganizationsOfUserController;
   let service: jest.Mocked<GetAllOrganizationsOfUserService>;
 
-  const mockOrganizations: Organization[] = [
+  const mockOrganizations: (Organization & { role: UserOrganizationRole })[] = [
     {
       id: 1,
       name: 'Organization 1',
@@ -18,7 +21,9 @@ describe('GetAllOrganizationsOfUserController', () => {
       createdAt: '2024-01-01T00:00:00Z',
       salesChannels: [],
       userOrganizations: [] as UserOrganization[],
-    } as unknown as Organization,
+      auditLogs: [],
+      role: UserOrganizationRole.ADMIN,
+    } as unknown as Organization & { role: UserOrganizationRole },
     {
       id: 2,
       name: 'Organization 2',
@@ -27,7 +32,9 @@ describe('GetAllOrganizationsOfUserController', () => {
       createdAt: '2024-01-02T00:00:00Z',
       salesChannels: [],
       userOrganizations: [] as UserOrganization[],
-    } as unknown as Organization,
+      auditLogs: [],
+      role: UserOrganizationRole.OPERATOR,
+    } as unknown as Organization & { role: UserOrganizationRole },
   ];
 
   beforeEach(async () => {

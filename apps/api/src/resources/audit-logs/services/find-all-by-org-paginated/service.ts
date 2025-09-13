@@ -32,10 +32,6 @@ export class FindAllByOrgPaginatedService {
     const organization =
       await this.currentOrganizationService.getCurrentOrganization();
 
-    console.log(
-      `Getting paginated audit logs for organization: ${organization?.name}`
-    );
-
     // Configure pagination options
     const options: IPaginationOptions = {
       page,
