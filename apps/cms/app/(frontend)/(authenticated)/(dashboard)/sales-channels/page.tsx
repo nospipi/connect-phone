@@ -22,7 +22,7 @@ const Page = async ({
   searchParams: Promise<{ [key: string]: string | undefined }>
 }) => {
   const { page = "1" } = await searchParams
-  console.log("Current page:", page)
+
 
   const salesChannelsResponse =
     await getAllSalesChannelsOfOrganizationPaginated({

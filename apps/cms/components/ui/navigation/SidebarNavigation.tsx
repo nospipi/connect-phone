@@ -12,6 +12,10 @@ import {
   RiArchive2Line,
   RiContactsBook2Line,
   RiGovernmentLine,
+  RiShoppingBagLine,
+  RiClipboardLine,
+  RiFileListLine,
+  RiBillLine,
 } from "@remixicon/react"
 import Link from "next/link"
 
@@ -30,6 +34,11 @@ const navigation = [
     name: "E-Sims",
     href: "/e-sims/my-esims",
     icon: RiSimCardLine,
+  },
+  {
+    name: "Orders",
+    href: "/orders",
+    icon: RiShoppingBagLine,
   },
   {
     name: "Sales channels",
