@@ -5,6 +5,7 @@ import { SalesChannel } from './entities/sales-channel.entity';
 import { User } from './entities/user.entity';
 import { UserOrganization } from './entities/user-organization.entity';
 import { AuditLogEntry } from './entities/audit-log.entity';
+import { UserInvitation } from './entities/user-invitation.entity';
 import { AuditLogSubscriber } from './subscribers/audit-log.subscriber';
 import * as dotenv from 'dotenv';
 dotenv.config();
@@ -12,7 +13,14 @@ dotenv.config();
 export const AppDataSource = new DataSource({
   type: 'postgres',
   url: process.env.DATABASE_URL,
-  entities: [Organization, SalesChannel, User, UserOrganization, AuditLogEntry],
+  entities: [
+    Organization,
+    SalesChannel,
+    User,
+    UserOrganization,
+    AuditLogEntry,
+    UserInvitation,
+  ],
   subscribers: [AuditLogSubscriber],
   migrations: ['src/database/migrations/*.ts'],
   ssl: {

@@ -15,6 +15,7 @@ import { UsersModule } from './resources/users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './database/entities/user.entity';
 import { AuditLogsModule } from './resources/audit-logs/audit-logs.module';
+import { UserInvitationsModule } from './resources/user-invitations/user-invitations.module';
 
 //---------------------------------------------------------------------------
 
@@ -30,6 +31,7 @@ import { AuditLogsModule } from './resources/audit-logs/audit-logs.module';
     UsersModule,
     TypeOrmModule.forFeature([User]),
     AuditLogsModule,
+    UserInvitationsModule,
   ],
   controllers: [AppController],
   providers: [

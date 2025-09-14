@@ -59,10 +59,10 @@ const TabNavigationLink = React.forwardRef<
   Omit<
     React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitives.Link>,
     "onSelect"
-  > & { disabled?: boolean; href: string }
+  > & { disabled?: boolean; href: string; count?: number }
 >(
   (
-    { asChild, disabled, href, className, children, ...props },
+    { asChild, disabled, href, className, children, count, ...props },
     forwardedRef,
   ) => {
     const pathname = usePathname()
@@ -114,6 +114,21 @@ const TabNavigationLink = React.forwardRef<
               )}
               <span className="relative z-10 flex items-center">
                 {children}
+                {/* Count indicator */}
+                {count != null && count > 0 && (
+                  <span
+                    className={cx(
+                      "ml-2 inline-flex min-w-[1rem] items-center justify-center rounded-full p-1 px-2 text-[10px] font-medium leading-none",
+                      "bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300",
+                      "group-data-[active]:bg-indigo-100 group-data-[active]:text-indigo-700",
+                      "group-data-[active]:dark:bg-indigo-900/50 group-data-[active]:dark:text-indigo-300",
+                      "group-hover:bg-gray-200 group-hover:dark:bg-gray-700",
+                      "transition-colors",
+                    )}
+                  >
+                    {count > 9 ? "9+" : count}
+                  </span>
+                )}
               </span>
             </span>
           ))}

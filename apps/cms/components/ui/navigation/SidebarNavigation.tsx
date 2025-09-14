@@ -46,6 +46,11 @@ const navigation = [
     icon: RiNodeTree,
   },
   {
+    name: "Users",
+    href: "/users/users",
+    icon: RiGroupLine,
+  },
+  {
     name: "Organization",
     href: "/organization/users",
     icon: RiGovernmentLine,

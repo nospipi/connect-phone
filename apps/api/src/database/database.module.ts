@@ -8,6 +8,7 @@ import { SalesChannel } from './entities/sales-channel.entity';
 import { User } from './entities/user.entity';
 import { UserOrganization } from './entities/user-organization.entity';
 import { AuditLogEntry } from './entities/audit-log.entity';
+import { UserInvitation } from './entities/user-invitation.entity';
 import { AuditLogSubscriber } from './subscribers/audit-log.subscriber';
 
 @Module({
@@ -23,6 +24,7 @@ import { AuditLogSubscriber } from './subscribers/audit-log.subscriber';
           User,
           UserOrganization,
           AuditLogEntry,
+          UserInvitation,
         ],
         subscribers: [AuditLogSubscriber],
         synchronize: process.env.NODE_ENV !== 'production',
