@@ -3,10 +3,5 @@ import NotFoundPageContent from "@/components/common/NotFoundPageContent"
 //----------------------------------------------------
 
 export default function NotFound() {
-  return (
-    <div>
-      OUTER
-      <NotFoundPageContent />
-    </div>
-  )
+  return <NotFoundPageContent />
 }

@@ -14,8 +14,6 @@ import {
 } from "@remixicon/react"
 
 const navigationSettings = [
-  { name: "Users", href: "/organization/users", icon: RiGroupLine },
-  { name: "Roles", href: "/organization/roles", icon: RiShieldUserLine },
   {
     name: "Customers",
     href: "/organization/customers",

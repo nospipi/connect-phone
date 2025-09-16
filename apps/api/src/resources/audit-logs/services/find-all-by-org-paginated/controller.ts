@@ -10,13 +10,14 @@ import {
 import { FindAllByOrgPaginatedService } from './service';
 import { AuditLogEntry } from '../../../../database/entities/audit-log.entity';
 import { DbUserGuard } from '@/common/guards/db-user.guard';
+import { DbUserRoleGuard } from '@/common/guards/db-user-role.guard';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { OrganizationGuard } from '@/common/guards/organization.guard';
 
 //--------------------------------------------------------------------------------
 
 @Controller('audit-logs')
-@UseGuards(DbUserGuard, OrganizationGuard)
+@UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('OPERATOR'))
 export class FindAllByOrgPaginatedController {
   constructor(
     private readonly findAllByOrgPaginatedService: FindAllByOrgPaginatedService
