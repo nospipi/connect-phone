@@ -22,7 +22,6 @@ import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
  * - @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN'))
  * - @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN', 'OPERATOR'))
  * - Only accepts valid role strings: 'ADMIN' | 'OPERATOR'
- * - TypeScript will complain about invalid roles at compile time
  * - Automatically skipped for @Public() routes
  */
 

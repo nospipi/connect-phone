@@ -3,24 +3,24 @@
 import { AxiosError } from "axios"
 import {
   ErrorResponse,
-  PaginatedAuditLogsResponse,
+  PaginatedUsersResponse,
   PaginationParams,
 } from "./types"
 import { createApiClient } from "./api-client"
 
 //----------------------------------------------------------------------
 
-export const getAllAuditLogsOfOrganizationPaginated = async ({
+export const getAllUsersOfOrganizationPaginated = async ({
   page = 1,
-}: PaginationParams): Promise<PaginatedAuditLogsResponse> => {
+}: PaginationParams): Promise<PaginatedUsersResponse> => {
   try {
-    console.log("Fetching audit logs for organization ID:", "page:", page)
+    console.log("Fetching users for organization:", "page:", page)
 
     const api = createApiClient()
-    const response = await api.get(`/audit-logs/paginated?page=${page}`)
+    const response = await api.get(`/users/paginated?page=${page}`)
 
     if (response.status !== 200) {
-      throw new Error("Failed to fetch audit logs")
+      throw new Error("Failed to fetch users")
     }
 
     return response.data

@@ -47,7 +47,7 @@ async function seed() {
     );
 
     // Create users
-    const users: Partial<User>[] = Array.from({ length: 15 }, () => {
+    const users: Partial<User>[] = Array.from({ length: 500 }, () => {
       const firstName = faker.person.firstName();
       const lastName = faker.person.lastName();
       return {
