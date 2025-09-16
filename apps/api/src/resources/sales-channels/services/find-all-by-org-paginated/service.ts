@@ -10,6 +10,7 @@ import { SalesChannel } from '../../../../database/entities/sales-channel.entity
 import { Organization } from '../../../../database/entities/organization.entity';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
+import { CurrentDbUserRoleService } from '@/common/core/current-db-user-role.service';
 import {
   paginate,
   Pagination,
@@ -26,7 +27,8 @@ export class FindAllByOrgPaginatedService {
     @InjectRepository(Organization)
     private organizationsRepository: Repository<Organization>,
     private currentOrganizationService: CurrentOrganizationService,
-    private currentDbUserService: CurrentDbUserService
+    private currentDbUserService: CurrentDbUserService,
+    private currentDbUserRoleService: CurrentDbUserRoleService
   ) {}
 
   /**
@@ -62,6 +64,8 @@ export class FindAllByOrgPaginatedService {
   ): Promise<Pagination<SalesChannel>> {
     // Automatically get the current organization from context
     const organization = await this.userOrganizations();
+    const userRole = await this.currentDbUserRoleService.getCurrentDbUserRole();
+    console.log(`User role in organization: ${userRole}`);
 
     console.log(
       `Getting paginated sales channels for organization: ${organization.name}`

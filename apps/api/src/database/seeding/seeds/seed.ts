@@ -7,6 +7,10 @@ import {
   UserOrganization,
   UserOrganizationRole,
 } from '../../entities/user-organization.entity';
+import {
+  UserInvitation,
+  InvitationStatus,
+} from '../../entities/user-invitation.entity';
 import { faker } from '@faker-js/faker';
 
 async function seed() {
@@ -15,6 +19,7 @@ async function seed() {
     console.log('Database connected for seeding');
 
     // Clear existing data (order matters)
+    await AppDataSource.query('TRUNCATE TABLE user_invitations CASCADE;');
     await AppDataSource.query('TRUNCATE TABLE user_organizations CASCADE;');
     await AppDataSource.query('TRUNCATE TABLE sales_channels CASCADE;');
     await AppDataSource.query('TRUNCATE TABLE audit_logs CASCADE;');
@@ -108,9 +113,40 @@ async function seed() {
 
     await AppDataSource.manager.save(SalesChannel, salesChannels);
 
+    // Create user invitations
+    const userInvitations: Partial<UserInvitation>[] = [];
+    for (const org of savedOrgs) {
+      // Get users that belong to this organization to use as "invited by"
+      const orgUsers = userOrgEntries
+        .filter((uo) => uo.organizationId === org.id)
+        .map((uo) => savedUsers.find((user) => user.id === uo.userId))
+        .filter(Boolean);
+
+      if (orgUsers.length > 0) {
+        const invitationCount = faker.number.int({ min: 2, max: 6 });
+        for (let i = 0; i < invitationCount; i++) {
+          const invitedBy = faker.helpers.arrayElement(orgUsers);
+          userInvitations.push({
+            email: faker.internet.email({
+              provider: 'invitation.com',
+            }),
+            status: faker.helpers.arrayElement([
+              InvitationStatus.PENDING,
+              InvitationStatus.ACCEPTED,
+              InvitationStatus.REJECTED,
+            ]),
+            organizationId: org.id,
+            invitedById: invitedBy!.id,
+          });
+        }
+      }
+    }
+
+    await AppDataSource.manager.save(UserInvitation, userInvitations);
+
     console.log(`Seeding completed successfully!`);
     console.log(
-      `Created ${savedOrgs.length} organizations, ${savedUsers.length} users, ${userOrgEntries.length} user-organization links, and ${salesChannels.length} sales channels`
+      `Created ${savedOrgs.length} organizations, ${savedUsers.length} users, ${userOrgEntries.length} user-organization links, ${salesChannels.length} sales channels, and ${userInvitations.length} user invitations`
     );
   } catch (error) {
     console.error('Seeding failed:', error);
