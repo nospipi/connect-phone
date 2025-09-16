@@ -1,16 +1,29 @@
 import { Button } from "@/components/common/Button"
 import { getAllUsersOfOrganizationPaginated } from "@/app/(backend)/server_actions/getAllUsersOfOrganizationPaginated"
-//import { ModalAddUser } from "@/components/ui/settings/ModalAddUser"
 import Link from "next/link"
+import { Badge } from "@/components/common/Badge"
 import { RiUser2Fill } from "@remixicon/react"
 
 //------------------------------------------------------------
 
+// Helper function to generate user initials
+const getInitials = (firstName: string, lastName: string): string => {
+  const first = firstName?.trim() || ""
+  const last = lastName?.trim() || ""
+
+  if (first && last) {
+    return (first[0] + last[0]).toUpperCase()
+  } else if (first) {
+    return first.substring(0, 2).toUpperCase()
+  } else if (last) {
+    return last.substring(0, 2).toUpperCase()
+  }
+  return "??"
+}
+
 const Page = async ({
-  //params,
   searchParams,
 }: {
-  //params: Promise<{ partner_id: string; page: string }>
   searchParams: Promise<{ [key: string]: string | undefined }>
 }) => {
   const { page = "1" } = await searchParams
@@ -33,29 +46,100 @@ const Page = async ({
               <RiUser2Fill className="h-8 w-8 text-slate-600" />
             </div>
             <h3 className="mb-2 text-lg font-medium text-slate-200">
-              No audit logs found
+              No users found
             </h3>
             <p className="text-sm text-slate-500">
-              Activity logs will appear here as changes are made to your
-              organization
+              Users will appear here when they join your organization
             </p>
           </div>
         </div>
       )}
 
-      {/* TEMPORARY IMPLEMENTATION */}
+      {/* Users List */}
       {temp_users.length > 0 && (
         <div className="min-h-0 flex-1 overflow-auto">
-          <div className="relative">
-            {/* Main content */}
-            <div className="relative space-y-0">
-              {temp_users.map((user: any, index) => (
-                <div key={index}>{user.user.firstName}</div>
-              ))}
-            </div>
+          <div className="divide-y divide-slate-800/30 overflow-x-hidden">
+            {temp_users.map((userOrganization: any, index) => {
+              const user = userOrganization.user
+              const role = userOrganization.role
+              const initials = getInitials(user.firstName, user.lastName)
+              const fullName =
+                `${user.firstName || ""} ${user.lastName || ""}`.trim() ||
+                user.email
+
+              return (
+                <Link
+                  key={user.id}
+                  href={`/users/users/${user.id}`}
+                  className="block"
+                >
+                  <div className="duration-2000 group py-4 transition-all">
+                    <div className="flex items-center space-x-4">
+                      {/* Avatar with Initials */}
+                      <div className="flex-shrink-0">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-slate-700/60 to-slate-800/60 text-sm font-semibold text-slate-200 shadow-sm group-hover:from-slate-600/60 group-hover:to-slate-700/60 group-hover:text-slate-100">
+                          {initials}
+                        </div>
+                      </div>
+
+                      {/* User Information */}
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-start justify-between">
+                          <div className="min-w-0 flex-1">
+                            <p className="truncate text-sm font-medium text-slate-200 group-hover:text-slate-100">
+                              {fullName}
+                            </p>
+                            <p className="truncate text-sm text-slate-400 group-hover:text-slate-300">
+                              {user.email}
+                            </p>
+                          </div>
+
+                          {/* Role Badge */}
+                          <div className="ml-4 flex-shrink-0">
+                            <Badge
+                              variant={role === "admin" ? "warning" : "neutral"}
+                            >
+                              {role.charAt(0).toUpperCase() + role.slice(1)}
+                            </Badge>
+                          </div>
+                        </div>
+
+                        {/* Additional user info */}
+                        <div className="mt-1 flex items-center text-xs text-slate-500">
+                          <span>ID: {user.id}</span>
+                          <span className="mx-2">•</span>
+                          <span>
+                            Joined{" "}
+                            {new Date(user.createdAt).toLocaleDateString()}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Arrow Indicator */}
+                      <div className="flex-shrink-0">
+                        <svg
+                          className="h-5 w-5 text-slate-600 transition-all duration-200 group-hover:text-slate-400"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={1.5}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M8.25 4.5l7.5 7.5-7.5 7.5"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              )
+            })}
           </div>
         </div>
       )}
+
       {/* Pagination */}
       {meta && meta.totalPages > 1 && (
         <div className="border-t border-slate-800/50 pt-4">
@@ -67,7 +151,7 @@ const Page = async ({
                   meta.currentPage * meta.itemsPerPage,
                   meta.totalItems,
                 )}{" "}
-                of {meta.totalItems} logs
+                of {meta.totalItems} users
               </span>
             </div>
 
