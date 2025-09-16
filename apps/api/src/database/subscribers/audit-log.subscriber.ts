@@ -7,7 +7,6 @@ import {
   RemoveEvent,
 } from 'typeorm';
 import { AuditLogEntry } from '../entities/audit-log.entity';
-import { User } from '../entities/user.entity';
 import { UserContext } from '../../common/context/user-context';
 import { OrganizationContext } from '../../common/context/organization-context';
 
@@ -18,11 +17,11 @@ export class AuditLogSubscriber implements EntitySubscriberInterface {
   }
 
   async afterInsert(event: InsertEvent<any>) {
+    // Prevent logging AuditLogEntry changes to avoid infinite loop
     if (event.metadata.targetName === 'AuditLogEntry') {
       return;
     }
 
-    const user = await this.getActorId(event);
     const organizationId = this.getCurrentOrganizationId();
     const userId = UserContext.getCurrentUserId();
 
@@ -42,7 +41,6 @@ export class AuditLogSubscriber implements EntitySubscriberInterface {
       return;
     }
 
-    const user = await this.getActorId(event);
     const organizationId = this.getCurrentOrganizationId();
     const userId = UserContext.getCurrentUserId();
 
@@ -64,7 +62,6 @@ export class AuditLogSubscriber implements EntitySubscriberInterface {
 
     const userId = UserContext.getCurrentUserId();
 
-    const user = await this.getActorId(event);
     const organizationId = this.getCurrentOrganizationId();
 
     await event.manager.getRepository(AuditLogEntry).insert({
@@ -76,21 +73,6 @@ export class AuditLogSubscriber implements EntitySubscriberInterface {
       userId,
       organizationId,
     });
-  }
-
-  private async getActorId(event: any): Promise<number | null> {
-    const userId = UserContext.getCurrentUserId();
-
-    if (!userId) {
-      return null;
-    }
-
-    // return event.manager.getRepository(User).findOne({
-    //   where: { id: userId },
-    // });
-
-    //return id
-    return userId;
   }
 
   private getCurrentOrganizationId(): number | null {

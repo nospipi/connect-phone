@@ -97,21 +97,11 @@ const Page = async ({
                           {/* Role Badge */}
                           <div className="ml-4 flex-shrink-0">
                             <Badge
-                              variant={role === "admin" ? "warning" : "neutral"}
+                              variant={role === "ADMIN" ? "warning" : "default"}
                             >
                               {role.charAt(0).toUpperCase() + role.slice(1)}
                             </Badge>
                           </div>
-                        </div>
-
-                        {/* Additional user info */}
-                        <div className="mt-1 flex items-center text-xs text-slate-500">
-                          <span>ID: {user.id}</span>
-                          <span className="mx-2">•</span>
-                          <span>
-                            Joined{" "}
-                            {new Date(user.createdAt).toLocaleDateString()}
-                          </span>
                         </div>
                       </div>
 

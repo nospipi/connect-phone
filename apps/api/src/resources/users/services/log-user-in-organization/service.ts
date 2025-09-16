@@ -9,6 +9,7 @@ import { Repository } from 'typeorm';
 import { User } from '../../../../database/entities/user.entity';
 import { Organization } from '../../../../database/entities/organization.entity';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
+import { OrganizationContext } from '../../../../common/context/organization-context';
 
 @Injectable()
 export class LogUserInOrganizationService {
@@ -37,12 +38,10 @@ export class LogUserInOrganizationService {
 
     user.loggedOrganizationId = organizationId;
     user.loggedOrganization = organization;
-    return this.userRepository.save(user);
+
+    // Save within the correct organization context
+    return OrganizationContext.run(organizationId, async () => {
+      return this.userRepository.save(user);
+    });
   }
 }
-
-//   async logUserInOrganization(organizationId: number): Promise<User> {
-//     //test error
-//     throw new Error('Test error');
-//   }
-// }

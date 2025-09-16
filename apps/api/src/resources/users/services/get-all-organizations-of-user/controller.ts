@@ -10,7 +10,7 @@ import { Public } from '../../../../common/decorators/public.decorator';
 //-------------------------------------------
 
 @Controller('users')
-@UseGuards(DbUserGuard, OrganizationGuard)
+@UseGuards(DbUserGuard)
 //@Public()
 //@UseGuards(DbUserGuard)
 export class GetAllOrganizationsOfUserController {

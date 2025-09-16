@@ -13,6 +13,8 @@ import { AuditLogEntry } from '@/database/entities/audit-log.entity';
 import { UserInvitation } from '@/database/entities/user-invitation.entity';
 import { UserOrganization } from '@/database/entities/user-organization.entity';
 
+//-----------------------------------------------------------------
+
 @Global()
 @Module({
   imports: [
