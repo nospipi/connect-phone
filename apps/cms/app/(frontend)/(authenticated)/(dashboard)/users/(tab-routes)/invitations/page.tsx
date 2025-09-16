@@ -1,5 +1,3 @@
-"use client"
-
 import { Button } from "@/components/common/Button"
 import {
   DropdownMenu,
@@ -14,16 +12,27 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/common/Select"
-import { Tooltip } from "@/components/common/Tooltip"
-import { ModalAddUser } from "@/components/ui/settings/ModalAddUser"
+
 import { invitedUsers, roles, users } from "@/data/data"
 import { RiAddLine, RiMore2Fill } from "@remixicon/react"
+import Link from "next/link"
 
 //-------------------------------------------------------------------
 
 const Page = () => {
   return (
-    <section className="" aria-labelledby="pending-invitations">
+    <section
+      className="flex flex-col gap-2"
+      aria-labelledby="pending-invitations"
+    >
+      <div className="sm:flex sm:items-center sm:justify-end">
+        <Link href={"/users/invite-user"}>
+          <Button className="mt-4 w-full gap-2 sm:mt-0 sm:w-fit">
+            <RiAddLine className="-ml-1 size-4 shrink-0" aria-hidden="true" />
+            Invite user
+          </Button>
+        </Link>
+      </div>
       <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-800">
         {invitedUsers.map((user) => (
           <li

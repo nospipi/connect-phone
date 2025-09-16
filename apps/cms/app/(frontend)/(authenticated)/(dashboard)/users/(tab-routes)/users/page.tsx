@@ -1,5 +1,3 @@
-"use client"
-
 import { Button } from "@/components/common/Button"
 import {
   DropdownMenu,
@@ -17,6 +15,7 @@ import {
 import { Tooltip } from "@/components/common/Tooltip"
 import { ModalAddUser } from "@/components/ui/settings/ModalAddUser"
 import { invitedUsers, roles, users } from "@/data/data"
+import Link from "next/link"
 import { RiAddLine, RiMore2Fill } from "@remixicon/react"
 
 //-------------------------------------------------------------------
@@ -24,18 +23,7 @@ import { RiAddLine, RiMore2Fill } from "@remixicon/react"
 const Page = () => {
   return (
     <section aria-labelledby="existing-users">
-      <div className="sm:flex sm:items-center sm:justify-end">
-        <ModalAddUser>
-          <Button className="mt-4 w-full gap-2 sm:mt-0 sm:w-fit">
-            <RiAddLine className="-ml-1 size-4 shrink-0" aria-hidden="true" />
-            Add user
-          </Button>
-        </ModalAddUser>
-      </div>
-      <ul
-        role="list"
-        className="mt-6 divide-y divide-gray-200 dark:divide-gray-800"
-      >
+      <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-800">
         {users.map((user) => (
           <li
             key={user.name}

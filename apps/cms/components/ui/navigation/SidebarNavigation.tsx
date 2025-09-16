@@ -52,7 +52,7 @@ const navigation = [
   },
   {
     name: "Organization",
-    href: "/organization/users",
+    href: "/organization/details",
     icon: RiGovernmentLine,
   },
 ] as const

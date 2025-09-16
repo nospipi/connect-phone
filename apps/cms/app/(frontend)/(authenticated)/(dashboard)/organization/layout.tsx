@@ -6,18 +6,15 @@ import {
 } from "@/components/common/TabNavigation"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import {
-  RiGroupLine,
-  RiShieldUserLine,
-  RiContactsBook2Line,
-  RiHistoryLine,
-} from "@remixicon/react"
+import { RiHistoryLine, RiSettingsLine } from "@remixicon/react"
+
+//----------------------------------------------------
 
 const navigationSettings = [
   {
-    name: "Customers",
-    href: "/organization/customers",
-    icon: RiContactsBook2Line,
+    name: "Details",
+    href: "/organization/details",
+    icon: RiSettingsLine,
   },
   { name: "Audit Log", href: "/organization/audit-log", icon: RiHistoryLine },
 ]

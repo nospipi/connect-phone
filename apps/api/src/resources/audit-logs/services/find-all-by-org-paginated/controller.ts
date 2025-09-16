@@ -17,7 +17,7 @@ import { OrganizationGuard } from '@/common/guards/organization.guard';
 //--------------------------------------------------------------------------------
 
 @Controller('audit-logs')
-@UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('OPERATOR'))
+@UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN', 'OPERATOR'))
 export class FindAllByOrgPaginatedController {
   constructor(
     private readonly findAllByOrgPaginatedService: FindAllByOrgPaginatedService
