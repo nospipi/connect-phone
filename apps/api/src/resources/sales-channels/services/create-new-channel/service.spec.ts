@@ -57,6 +57,14 @@ describe('CreateNewChannelService', () => {
   };
 
   beforeEach(async () => {
+    const mockCurrentOrganizationService = {
+      getCurrentOrganization: jest.fn(),
+    };
+
+    const mockCurrentDbUserService = {
+      getCurrentDbUser: jest.fn(),
+    };
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         CreateNewChannelService,
@@ -79,15 +87,11 @@ describe('CreateNewChannelService', () => {
         },
         {
           provide: CurrentOrganizationService,
-          useValue: {
-            getCurrentOrganization: jest.fn(),
-          },
+          useValue: mockCurrentOrganizationService,
         },
         {
           provide: CurrentDbUserService,
-          useValue: {
-            getCurrentDbUser: jest.fn(),
-          },
+          useValue: mockCurrentDbUserService,
         },
       ],
     }).compile();

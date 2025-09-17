@@ -26,29 +26,6 @@ export class CreateNewInvitationService {
   ) {}
 
   /**
-   * Gets the current organization and throws an error if not found
-   */
-  private async getCurrentOrganization(): Promise<Organization> {
-    const organization =
-      await this.currentOrganizationService.getCurrentOrganization();
-
-    if (!organization) {
-      const user = await this.currentDbUserService.getCurrentDbUser();
-      if (!user) {
-        throw new UnauthorizedException('User not found in database');
-      }
-      if (!user.loggedOrganizationId) {
-        throw new UnauthorizedException(
-          'User is not logged into any organization'
-        );
-      }
-      throw new NotFoundException('Organization not found');
-    }
-
-    return organization;
-  }
-
-  /**
    * Creates a new user invitation for the current user's organization
    * Organization is automatically retrieved from the current context
    */
@@ -56,12 +33,13 @@ export class CreateNewInvitationService {
     createUserInvitationDto: CreateUserInvitationDto
   ): Promise<UserInvitation> {
     // Automatically get the current organization from context
-    const organization = await this.getCurrentOrganization();
+    const organization =
+      await this.currentOrganizationService.getCurrentOrganization();
     const currentUser = await this.currentDbUserService.getCurrentDbUser();
 
     const userInvitation = this.userInvitationsRepository.create({
       ...createUserInvitationDto,
-      organizationId: organization.id,
+      organizationId: organization?.id,
       invitedById: currentUser!.id,
     });
 
@@ -73,10 +51,11 @@ export class CreateNewInvitationService {
    */
   async getAllForCurrentOrganization(): Promise<UserInvitation[]> {
     // Automatically get the current organization from context
-    const organization = await this.getCurrentOrganization();
+    const organization =
+      await this.currentOrganizationService.getCurrentOrganization();
 
     return this.userInvitationsRepository.find({
-      where: { organizationId: organization.id },
+      where: { organizationId: organization?.id },
       relations: ['organization', 'invitedBy'],
       order: { id: 'DESC' },
     });
@@ -87,10 +66,11 @@ export class CreateNewInvitationService {
    */
   async findOneForCurrentOrganization(id: number): Promise<UserInvitation> {
     // Automatically get the current organization from context
-    const organization = await this.getCurrentOrganization();
+    const organization =
+      await this.currentOrganizationService.getCurrentOrganization();
 
     const userInvitation = await this.userInvitationsRepository.findOne({
-      where: { id, organizationId: organization.id },
+      where: { id, organizationId: organization?.id },
       relations: ['organization', 'invitedBy'],
     });
 

@@ -1,12 +1,18 @@
 // apps/api/src/resources/users/services/get-all-organizations-of-user/service.spec.ts
 import { Test, TestingModule } from '@nestjs/testing';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Reflector } from '@nestjs/core';
 import { GetAllOrganizationsOfUserController } from './controller';
 import { GetAllOrganizationsOfUserService } from './service';
 import { Organization } from '../../../../database/entities/organization.entity';
+import { User } from '@/database/entities/user.entity';
 import {
   UserOrganization,
   UserOrganizationRole,
 } from '../../../../database/entities/user-organization.entity';
+import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
+import { CurrentClerkUserService } from '../../../../common/core/current-clerk-user.service';
 
 describe('GetAllOrganizationsOfUserController', () => {
   let controller: GetAllOrganizationsOfUserController;
@@ -48,6 +54,37 @@ describe('GetAllOrganizationsOfUserController', () => {
         {
           provide: GetAllOrganizationsOfUserService,
           useValue: mockService,
+        },
+        {
+          provide: Reflector,
+          useValue: {
+            getAllAndOverride: jest.fn().mockReturnValue(false),
+          },
+        },
+        {
+          provide: CurrentDbUserService,
+          useValue: {
+            getCurrentDbUser: jest.fn(),
+          },
+        },
+        {
+          provide: CurrentClerkUserService,
+          useValue: {
+            getClerkUserEmail: jest.fn(),
+            getClerkUser: jest.fn(),
+          },
+        },
+        {
+          provide: getRepositoryToken(User),
+          useValue: {
+            findOne: jest.fn(),
+          },
+        },
+        {
+          provide: getRepositoryToken(Organization),
+          useValue: {
+            findOne: jest.fn(),
+          },
         },
       ],
     }).compile();

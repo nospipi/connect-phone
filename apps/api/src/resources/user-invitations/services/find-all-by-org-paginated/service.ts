@@ -30,29 +30,6 @@ export class FindAllByOrgPaginatedService {
   ) {}
 
   /**
-   * Gets the current organization and throws an error if not found
-   */
-  private async getCurrentOrganization(): Promise<Organization> {
-    const organization =
-      await this.currentOrganizationService.getCurrentOrganization();
-
-    if (!organization) {
-      const user = await this.currentDbUserService.getCurrentDbUser();
-      if (!user) {
-        throw new UnauthorizedException('User not found in database');
-      }
-      if (!user.loggedOrganizationId) {
-        throw new UnauthorizedException(
-          'User is not logged into any organization'
-        );
-      }
-      throw new NotFoundException('Organization not found');
-    }
-
-    return organization;
-  }
-
-  /**
    * Get paginated user invitations for the current user's organization
    * Organization is automatically retrieved from the current context
    */
@@ -61,10 +38,11 @@ export class FindAllByOrgPaginatedService {
     limit: number = 10
   ): Promise<Pagination<UserInvitation>> {
     // Automatically get the current organization from context
-    const organization = await this.getCurrentOrganization();
+    const organization =
+      await this.currentOrganizationService.getCurrentOrganization();
 
     console.log(
-      `Getting paginated user invitations for organization: ${organization.name}`
+      `Getting paginated user invitations for organization: ${organization?.name}`
     );
 
     // Configure pagination options
@@ -80,7 +58,7 @@ export class FindAllByOrgPaginatedService {
       .leftJoinAndSelect('userInvitation.organization', 'organization')
       .leftJoinAndSelect('userInvitation.invitedBy', 'invitedBy')
       .where('userInvitation.organizationId = :organizationId', {
-        organizationId: organization.id,
+        organizationId: organization?.id,
       })
       .orderBy('userInvitation.id', 'DESC'); // Order by ID descending
 
