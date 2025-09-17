@@ -39,6 +39,8 @@ const Page = async ({
 
   return (
     <div className="flex h-full flex-col gap-2 overflow-hidden">
+      <div className="bg-slate-900">FILTERS HERE</div>
+
       {temp_users.length === 0 && (
         <div className="flex flex-1 items-center justify-center">
           <div className="py-12 text-center">
