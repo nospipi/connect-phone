@@ -38,7 +38,7 @@ const Page = async ({
   const hasNextPage = meta?.currentPage < meta?.totalPages
 
   return (
-    <div className="flex h-full flex-col gap-6 overflow-hidden">
+    <div className="flex h-full flex-col gap-2 overflow-hidden">
       {temp_users.length === 0 && (
         <div className="flex flex-1 items-center justify-center">
           <div className="py-12 text-center">
@@ -57,8 +57,8 @@ const Page = async ({
 
       {/* Users List */}
       {temp_users.length > 0 && (
-        <div className="min-h-0 flex-1 overflow-auto">
-          <div className="divide-y divide-slate-800/30 overflow-x-hidden">
+        <div className="flex-1 overflow-hidden">
+          <div className="h-full divide-y divide-slate-800/30 overflow-auto pr-5">
             {temp_users.map((userOrganization: any, index) => {
               const user = userOrganization.user
               const role = userOrganization.role
@@ -132,7 +132,7 @@ const Page = async ({
 
       {/* Pagination */}
       {meta && meta.totalPages > 1 && (
-        <div className="border-t border-slate-800/50 pt-4">
+        <div className="border-t border-slate-800/50 pr-5 pt-4">
           <div className="flex items-center justify-center sm:justify-between">
             <div className="hidden items-center gap-4 text-sm text-slate-500 sm:flex">
               <span>

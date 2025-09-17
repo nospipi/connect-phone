@@ -32,8 +32,8 @@ export default function Layout({
 }>) {
   const pathname = usePathname()
   return (
-    <div className="flex h-full flex-col gap-4 p-4 sm:px-6 sm:pt-10 lg:px-10 lg:pt-7">
-      <h1 className="text-lg font-semibold text-gray-900 sm:text-xl dark:text-gray-50">
+    <div className="flex h-full flex-col gap-2 py-4 pl-5">
+      <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-50">
         Users
       </h1>
       <TabNavigation className="relative">
