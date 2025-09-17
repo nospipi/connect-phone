@@ -26,7 +26,9 @@ export class GetAllUsersOfOrgPaginatedService {
    */
   async findAllByOrganizationPaginated(
     page: number = 1,
-    limit: number = 10
+    limit: number = 10,
+    search: string = '',
+    role: string = 'all'
   ): Promise<Pagination<UserOrganization>> {
     // Automatically get the current organization from context
     const organization =
@@ -44,8 +46,25 @@ export class GetAllUsersOfOrgPaginatedService {
       .leftJoinAndSelect('userOrganization.user', 'user')
       .where('userOrganization.organizationId = :organizationId', {
         organizationId: organization?.id,
-      })
-      .orderBy('userOrganization.id', 'DESC');
+      });
+
+    // Add search functionality if search term is provided
+    if (search && search.trim().length > 0) {
+      const searchTerm = `%${search.trim()}%`;
+      queryBuilder.andWhere(
+        '(user.firstName ILIKE :search OR user.lastName ILIKE :search OR user.email ILIKE :search)',
+        { search: searchTerm }
+      );
+    }
+
+    // Add role filtering if role is not 'all'
+    if (role && role.toLowerCase() !== 'all') {
+      queryBuilder.andWhere('userOrganization.role = :role', {
+        role: role.toUpperCase(),
+      });
+    }
+
+    queryBuilder.orderBy('userOrganization.id', 'DESC');
 
     // Use nestjs-typeorm-paginate to handle pagination
     return paginate<UserOrganization>(queryBuilder, options);

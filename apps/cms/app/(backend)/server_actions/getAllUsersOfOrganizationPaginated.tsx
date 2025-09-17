@@ -1,23 +1,29 @@
 "use server"
 
 import { AxiosError } from "axios"
-import {
-  ErrorResponse,
-  PaginatedUsersResponse,
-  PaginationParams,
-} from "./types"
+import { ErrorResponse, PaginatedUsersResponse } from "./types"
 import { createApiClient } from "./api-client"
 
 //----------------------------------------------------------------------
 
+interface PaginationParams {
+  page?: string | number
+  search?: string
+  role?: string
+}
+
 export const getAllUsersOfOrganizationPaginated = async ({
   page = 1,
+  search,
+  role,
 }: PaginationParams): Promise<PaginatedUsersResponse> => {
   try {
     console.log("Fetching users for organization:", "page:", page)
 
     const api = createApiClient()
-    const response = await api.get(`/users/paginated?page=${page}`)
+    const response = await api.get(
+      `/users/paginated?page=${page}&search=${search}&role=${role}`,
+    )
 
     if (response.status !== 200) {
       throw new Error("Failed to fetch users")

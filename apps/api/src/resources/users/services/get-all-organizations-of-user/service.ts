@@ -9,10 +9,10 @@ import { Repository } from 'typeorm';
 import { User } from '../../../../database/entities/user.entity';
 import { Organization } from '../../../../database/entities/organization.entity';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
-import {
-  UserOrganization,
-  UserOrganizationRole,
-} from '../../../../database/entities/user-organization.entity';
+import { UserOrganization } from '../../../../database/entities/user-organization.entity';
+import { UserOrganizationRole } from '@connect-phone/shared-types';
+
+//----------------------------------------------------------------------------
 
 @Injectable()
 export class GetAllOrganizationsOfUserService {

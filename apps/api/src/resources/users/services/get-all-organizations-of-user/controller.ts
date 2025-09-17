@@ -2,7 +2,7 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import { GetAllOrganizationsOfUserService } from './service';
 import { Organization } from '../../../../database/entities/organization.entity';
-import { UserOrganizationRole } from '../../../../database/entities/user-organization.entity';
+import { UserOrganizationRole } from '@connect-phone/shared-types';
 import { DbUserGuard } from '@/common/guards/db-user.guard';
 import { OrganizationGuard } from '@/common/guards/organization.guard';
 import { Public } from '../../../../common/decorators/public.decorator';

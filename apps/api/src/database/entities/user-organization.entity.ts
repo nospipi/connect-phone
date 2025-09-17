@@ -9,11 +9,9 @@ import {
 } from 'typeorm';
 import { User } from './user.entity';
 import { Organization } from './organization.entity';
+import { UserOrganizationRole } from '@connect-phone/shared-types';
 
-export enum UserOrganizationRole {
-  ADMIN = 'ADMIN',
-  OPERATOR = 'OPERATOR',
-}
+//----------------------------------------------------------------------------
 
 @Entity({ name: 'user_organizations' })
 @Unique(['user', 'organization'])

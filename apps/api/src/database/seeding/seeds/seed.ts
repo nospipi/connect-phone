@@ -3,15 +3,15 @@ import { AppDataSource } from '../../data-source';
 import { Organization } from '../../entities/organization.entity';
 import { SalesChannel } from '../../entities/sales-channel.entity';
 import { User } from '../../entities/user.entity';
-import {
-  UserOrganization,
-  UserOrganizationRole,
-} from '../../entities/user-organization.entity';
+import { UserOrganization } from '../../entities/user-organization.entity';
 import {
   UserInvitation,
   InvitationStatus,
 } from '../../entities/user-invitation.entity';
 import { faker } from '@faker-js/faker';
+import { UserOrganizationRole } from '@connect-phone/shared-types';
+
+//----------------------------------------------------------------------------
 
 async function seed() {
   try {

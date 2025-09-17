@@ -5,10 +5,8 @@ import { Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Request } from 'express';
-import {
-  UserOrganization,
-  UserOrganizationRole,
-} from '../../database/entities/user-organization.entity';
+import { UserOrganization } from '../../database/entities/user-organization.entity';
+import { UserOrganizationRole } from '@connect-phone/shared-types';
 import { CurrentDbUserService } from './current-db-user.service';
 import { CurrentOrganizationService } from './current-organization.service';
 
