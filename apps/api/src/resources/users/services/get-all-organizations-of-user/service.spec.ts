@@ -12,6 +12,8 @@ import {
 } from '../../../../database/entities/user-organization.entity';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
 
+//-------------------------------------------------------------------------------------------------
+
 describe('GetAllOrganizationsOfUserService', () => {
   let service: GetAllOrganizationsOfUserService;
   let userRepository: jest.Mocked<Repository<User>>;

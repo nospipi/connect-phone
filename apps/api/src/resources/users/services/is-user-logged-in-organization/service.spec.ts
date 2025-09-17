@@ -5,6 +5,8 @@ import { IsUserLoggedInOrganizationService } from './service';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
 import { User } from '../../../../database/entities/user.entity';
 
+//-------------------------------------------------------------------------------------------------
+
 describe('IsUserLoggedInOrganizationService', () => {
   let service: IsUserLoggedInOrganizationService;
   let currentDbUserService: jest.Mocked<CurrentDbUserService>;

@@ -9,6 +9,8 @@ import { Organization } from '../../../../database/entities/organization.entity'
 import { UserOrganization } from '../../../../database/entities/user-organization.entity';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
 
+//-------------------------------------------------------------------------------------------------
+
 describe('LogOutUserFromOrganizationService', () => {
   let service: LogOutUserFromOrganizationService;
   let userRepository: jest.Mocked<Repository<User>>;

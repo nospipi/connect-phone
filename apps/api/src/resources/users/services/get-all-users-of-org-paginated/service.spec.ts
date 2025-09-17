@@ -5,12 +5,15 @@ import { Repository } from 'typeorm';
 import { GetAllUsersOfOrgPaginatedService } from './service';
 import {
   UserOrganization,
-  UserOrganizationRole,
+  //UserOrganizationRole,
 } from '../../../../database/entities/user-organization.entity';
+import { UserOrganizationRole } from '@connect-phone/shared-types';
 import { Organization } from '../../../../database/entities/organization.entity';
 import { User } from '../../../../database/entities/user.entity';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 import { paginate } from 'nestjs-typeorm-paginate';
+
+//--------------------------------------------------------------------------------------------------
 
 // Mock paginate function
 jest.mock('nestjs-typeorm-paginate', () => ({

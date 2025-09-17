@@ -9,6 +9,9 @@ import {
 } from 'typeorm';
 import { User } from './user.entity';
 import { Organization } from './organization.entity';
+import { IUserOrganization } from '@connect-phone/shared-types';
+
+//----------------------------------------------------------------------------
 
 export enum UserOrganizationRole {
   ADMIN = 'ADMIN',
@@ -17,7 +20,7 @@ export enum UserOrganizationRole {
 
 @Entity({ name: 'user_organizations' })
 @Unique(['user', 'organization'])
-export class UserOrganization {
+export class UserOrganization implements IUserOrganization {
   @PrimaryGeneratedColumn()
   id: number;
 

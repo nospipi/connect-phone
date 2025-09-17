@@ -6,6 +6,8 @@ import { CurrentDbUserService } from '../../../../common/core/current-db-user.se
 import { User } from '../../../../database/entities/user.entity';
 import { Organization } from '../../../../database/entities/organization.entity';
 
+//-------------------------------------------------------------------------------------------------
+
 describe('GetUserLoggedInOrganizationService', () => {
   let service: GetUserLoggedInOrganizationService;
   let currentDbUserService: jest.Mocked<CurrentDbUserService>;
