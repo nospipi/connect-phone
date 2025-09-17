@@ -24,7 +24,7 @@ export class FindAllByOrgPaginatedService {
   constructor(
     @InjectRepository(SalesChannel)
     private salesChannelsRepository: Repository<SalesChannel>,
-    @InjectRepository(Organization)
+    //@InjectRepository(Organization)
     private currentOrganizationService: CurrentOrganizationService
   ) {}
 

@@ -6,10 +6,7 @@ import { FindAllByOrgPaginatedService } from './service';
 import { SalesChannel } from '../../../../database/entities/sales-channel.entity';
 import { Organization } from '../../../../database/entities/organization.entity';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
-import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
-import { CurrentDbUserRoleService } from '../../../../common/core/current-db-user-role.service';
 import { paginate } from 'nestjs-typeorm-paginate';
-import { UserOrganizationRole } from '../../../../database/entities/user-organization.entity';
 
 // Mock paginate function
 jest.mock('nestjs-typeorm-paginate', () => ({
@@ -20,8 +17,6 @@ describe('FindAllByOrgPaginatedService', () => {
   let service: FindAllByOrgPaginatedService;
   let salesChannelsRepository: jest.Mocked<Repository<SalesChannel>>;
   let currentOrganizationService: jest.Mocked<CurrentOrganizationService>;
-  let currentDbUserService: jest.Mocked<CurrentDbUserService>;
-  let currentDbUserRoleService: jest.Mocked<CurrentDbUserRoleService>;
   let mockPaginate: jest.MockedFunction<typeof paginate>;
 
   const mockOrganization: Organization = {
@@ -69,18 +64,6 @@ describe('FindAllByOrgPaginatedService', () => {
   };
 
   beforeEach(async () => {
-    const mockCurrentOrganizationService = {
-      getCurrentOrganization: jest.fn(),
-    };
-
-    const mockCurrentDbUserService = {
-      getCurrentDbUser: jest.fn(),
-    };
-
-    const mockCurrentDbUserRoleService = {
-      getCurrentDbUserRole: jest.fn(),
-    };
-
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         FindAllByOrgPaginatedService,
@@ -91,22 +74,10 @@ describe('FindAllByOrgPaginatedService', () => {
           },
         },
         {
-          provide: getRepositoryToken(Organization),
-          useValue: {
-            findOne: jest.fn(),
-          },
-        },
-        {
           provide: CurrentOrganizationService,
-          useValue: mockCurrentOrganizationService,
-        },
-        {
-          provide: CurrentDbUserService,
-          useValue: mockCurrentDbUserService,
-        },
-        {
-          provide: CurrentDbUserRoleService,
-          useValue: mockCurrentDbUserRoleService,
+          useValue: {
+            getCurrentOrganization: jest.fn(),
+          },
         },
       ],
     }).compile();
@@ -116,8 +87,6 @@ describe('FindAllByOrgPaginatedService', () => {
     );
     salesChannelsRepository = module.get(getRepositoryToken(SalesChannel));
     currentOrganizationService = module.get(CurrentOrganizationService);
-    currentDbUserService = module.get(CurrentDbUserService);
-    currentDbUserRoleService = module.get(CurrentDbUserRoleService);
     mockPaginate = paginate as jest.MockedFunction<typeof paginate>;
   });
 
@@ -135,9 +104,6 @@ describe('FindAllByOrgPaginatedService', () => {
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
-      currentDbUserRoleService.getCurrentDbUserRole.mockResolvedValue(
-        UserOrganizationRole.ADMIN
-      );
       mockPaginate.mockResolvedValue(mockPaginationResult);
 
       // Act
@@ -146,9 +112,6 @@ describe('FindAllByOrgPaginatedService', () => {
       // Assert
       expect(
         currentOrganizationService.getCurrentOrganization
-      ).toHaveBeenCalledTimes(1);
-      expect(
-        currentDbUserRoleService.getCurrentDbUserRole
       ).toHaveBeenCalledTimes(1);
       expect(salesChannelsRepository.createQueryBuilder).toHaveBeenCalledWith(
         'salesChannel'
@@ -180,9 +143,6 @@ describe('FindAllByOrgPaginatedService', () => {
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
-      currentDbUserRoleService.getCurrentDbUserRole.mockResolvedValue(
-        UserOrganizationRole.OPERATOR
-      );
       mockPaginate.mockResolvedValue(mockPaginationResult);
 
       // Act
@@ -201,9 +161,6 @@ describe('FindAllByOrgPaginatedService', () => {
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
-      currentDbUserRoleService.getCurrentDbUserRole.mockResolvedValue(
-        UserOrganizationRole.ADMIN
-      );
       mockPaginate.mockResolvedValue(mockPaginationResult);
 
       // Act
@@ -221,9 +178,6 @@ describe('FindAllByOrgPaginatedService', () => {
       // Arrange
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
-      );
-      currentDbUserRoleService.getCurrentDbUserRole.mockResolvedValue(
-        UserOrganizationRole.ADMIN
       );
       mockPaginate.mockResolvedValue(mockPaginationResult);
 

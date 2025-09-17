@@ -19,3 +19,9 @@ npx typeorm-ts-node-commonjs migration:revert -d src/database/data-source.ts
 
 # Then run it again
 npx typeorm-ts-node-commonjs migration:run -d src/database/data-source.ts
+
+_______________________
+# Tests
+
+npx jest -t "test_name"
+npx jest -t "test_name1 | test_name2"

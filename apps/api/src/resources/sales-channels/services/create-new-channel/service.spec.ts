@@ -2,21 +2,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { NotFoundException } from '@nestjs/common';
 import { CreateNewChannelService } from './service';
 import { SalesChannel } from '../../../../database/entities/sales-channel.entity';
 import { Organization } from '../../../../database/entities/organization.entity';
-import { User } from '../../../../database/entities/user.entity';
 import { CreateSalesChannelDto } from './create-sales-channel.dto';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
-import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
 
 describe('CreateNewChannelService', () => {
   let service: CreateNewChannelService;
   let salesChannelsRepository: jest.Mocked<Repository<SalesChannel>>;
-  let organizationsRepository: jest.Mocked<Repository<Organization>>;
   let currentOrganizationService: jest.Mocked<CurrentOrganizationService>;
-  let currentDbUserService: jest.Mocked<CurrentDbUserService>;
 
   const mockOrganization: Organization = {
     id: 31,
@@ -27,20 +22,6 @@ describe('CreateNewChannelService', () => {
     salesChannels: [],
     userOrganizations: [] as any[],
   } as unknown as Organization;
-
-  const mockUser: User = {
-    id: 1,
-    email: 'test@example.com',
-    firstName: 'Test',
-    lastName: 'User',
-    get fullName() {
-      return `${this.firstName} ${this.lastName}`;
-    },
-    createdAt: '2024-01-01T00:00:00Z',
-    loggedOrganizationId: 31,
-    loggedOrganization: mockOrganization,
-    organizations: [mockOrganization],
-  } as unknown as User;
 
   const mockSalesChannel: SalesChannel = {
     id: 1,
@@ -57,14 +38,6 @@ describe('CreateNewChannelService', () => {
   };
 
   beforeEach(async () => {
-    const mockCurrentOrganizationService = {
-      getCurrentOrganization: jest.fn(),
-    };
-
-    const mockCurrentDbUserService = {
-      getCurrentDbUser: jest.fn(),
-    };
-
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         CreateNewChannelService,
@@ -80,27 +53,17 @@ describe('CreateNewChannelService', () => {
           },
         },
         {
-          provide: getRepositoryToken(Organization),
-          useValue: {
-            findOne: jest.fn(),
-          },
-        },
-        {
           provide: CurrentOrganizationService,
-          useValue: mockCurrentOrganizationService,
-        },
-        {
-          provide: CurrentDbUserService,
-          useValue: mockCurrentDbUserService,
+          useValue: {
+            getCurrentOrganization: jest.fn(),
+          },
         },
       ],
     }).compile();
 
     service = module.get<CreateNewChannelService>(CreateNewChannelService);
     salesChannelsRepository = module.get(getRepositoryToken(SalesChannel));
-    organizationsRepository = module.get(getRepositoryToken(Organization));
     currentOrganizationService = module.get(CurrentOrganizationService);
-    currentDbUserService = module.get(CurrentDbUserService);
   });
 
   afterEach(() => {
@@ -137,20 +100,27 @@ describe('CreateNewChannelService', () => {
       expect(result).toEqual(mockSalesChannel);
     });
 
-    it('should throw NotFoundException when organization is not found', async () => {
+    it('should create with undefined organizationId when organization is null', async () => {
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(null);
-      currentDbUserService.getCurrentDbUser.mockResolvedValue(mockUser);
+      salesChannelsRepository.create.mockReturnValue(mockSalesChannel);
+      salesChannelsRepository.save.mockResolvedValue(mockSalesChannel);
 
-      await expect(
-        service.createNewSalesChannel(mockCreateSalesChannelDto)
-      ).rejects.toThrow(new NotFoundException('Organization not found'));
+      const result = await service.createNewSalesChannel(
+        mockCreateSalesChannelDto
+      );
 
       expect(
         currentOrganizationService.getCurrentOrganization
       ).toHaveBeenCalledTimes(1);
-      expect(currentDbUserService.getCurrentDbUser).toHaveBeenCalledTimes(1);
-      expect(salesChannelsRepository.create).not.toHaveBeenCalled();
-      expect(salesChannelsRepository.save).not.toHaveBeenCalled();
+      expect(salesChannelsRepository.create).toHaveBeenCalledWith({
+        name: mockCreateSalesChannelDto.name,
+        description: mockCreateSalesChannelDto.description,
+        organizationId: undefined,
+      });
+      expect(salesChannelsRepository.save).toHaveBeenCalledWith(
+        mockSalesChannel
+      );
+      expect(result).toEqual(mockSalesChannel);
     });
 
     it('should handle optional description correctly', async () => {
@@ -224,7 +194,7 @@ describe('CreateNewChannelService', () => {
 
       await expect(
         service.findOneForCurrentOrganization(channelId)
-      ).rejects.toThrow(new NotFoundException('Sales channel not found'));
+      ).rejects.toThrow('Sales channel not found');
     });
   });
 

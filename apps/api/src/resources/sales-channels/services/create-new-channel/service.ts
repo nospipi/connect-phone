@@ -19,7 +19,7 @@ export class CreateNewChannelService {
   constructor(
     @InjectRepository(SalesChannel)
     private salesChannelsRepository: Repository<SalesChannel>,
-    @InjectRepository(Organization)
+    //@InjectRepository(Organization)
     private currentOrganizationService: CurrentOrganizationService
   ) {}
 
