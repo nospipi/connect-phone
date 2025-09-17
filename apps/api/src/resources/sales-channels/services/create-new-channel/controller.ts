@@ -21,7 +21,7 @@ import { Observable } from 'rxjs';
 import { CreateNewChannelService } from './service';
 import { CreateSalesChannelDto } from './create-sales-channel.dto';
 import { SalesChannel } from '../../../../database/entities/sales-channel.entity';
-import { OrganizationGuard } from '@/common/guards/organization.guard';
+import { OrganizationGuard } from '../../../../common/guards/organization.guard';
 
 //-------------------------------------------
 

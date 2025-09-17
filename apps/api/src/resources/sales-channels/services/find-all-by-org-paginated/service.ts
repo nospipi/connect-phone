@@ -10,7 +10,7 @@ import { SalesChannel } from '../../../../database/entities/sales-channel.entity
 import { Organization } from '../../../../database/entities/organization.entity';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
-import { CurrentDbUserRoleService } from '@/common/core/current-db-user-role.service';
+import { CurrentDbUserRoleService } from '../../../../common/core/current-db-user-role.service';
 import {
   paginate,
   Pagination,

@@ -21,7 +21,7 @@ import { Observable } from 'rxjs';
 import { CreateNewInvitationService } from './service';
 import { CreateUserInvitationDto } from './create-user-invitation.dto';
 import { UserInvitation } from '../../../../database/entities/user-invitation.entity';
-import { OrganizationGuard } from '@/common/guards/organization.guard';
+import { OrganizationGuard } from '../../../../common/guards/organization.guard';
 
 //-------------------------------------------
 

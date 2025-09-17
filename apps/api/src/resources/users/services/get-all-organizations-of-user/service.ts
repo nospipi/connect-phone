@@ -10,7 +10,7 @@ import { User } from '../../../../database/entities/user.entity';
 import { Organization } from '../../../../database/entities/organization.entity';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
 import { UserOrganization } from '../../../../database/entities/user-organization.entity';
-import { UserOrganizationRole } from '@connect-phone/shared-types';
+import { UserOrganizationRole } from '../../../../database/entities/user-organization.entity';
 
 //----------------------------------------------------------------------------
 

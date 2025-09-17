@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { CurrentDbUserRoleService } from '../core/current-db-user-role.service';
-import { UserOrganizationRole } from '@connect-phone/shared-types';
+import { UserOrganizationRole } from '@/database/entities/user-organization.entity';
 import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
 
 //----------------------------------------------------------------------

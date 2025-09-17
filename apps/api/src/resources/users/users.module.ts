@@ -16,7 +16,7 @@ import { GetUserLoggedInOrganizationController } from './services/get-user-logge
 import { GetUserLoggedInOrganizationService } from './services/get-user-logged-in-organization/service';
 import { GetAllUsersOfOrgPaginatedController } from './services/get-all-users-of-org-paginated/controller';
 import { GetAllUsersOfOrgPaginatedService } from './services/get-all-users-of-org-paginated/service';
-import { CurrentDbUserService } from '@/common/core/current-db-user.service';
+import { CurrentDbUserService } from '../../common/core/current-db-user.service';
 
 //-------------------------------------------------------------------------------------------
 
