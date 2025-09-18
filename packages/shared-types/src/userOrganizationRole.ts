@@ -5,6 +5,5 @@ export enum UserOrganizationRole {
   OPERATOR = "OPERATOR",
 }
 
-
 // Interfaces: compile away → Node ignores them → no runtime error
 // Enums: exist at runtime → Node must load them → fails if you point to .ts
