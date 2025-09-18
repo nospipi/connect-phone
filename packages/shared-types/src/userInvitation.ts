@@ -1,4 +1,5 @@
 // packages/shared-types/src/userInvitation.ts
+
 import { IOrganization } from "./organization";
 import { IUser } from "./user";
 

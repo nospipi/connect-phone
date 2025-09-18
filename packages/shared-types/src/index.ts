@@ -1,5 +1,8 @@
+//packages/shared-types/src/index.ts
+
 export * from "./user";
 export * from "./userOrganization";
+export * from "./userOrganizationRole";
 export * from "./product";
 export * from "./organization";
 export * from "./organizationWithUserRole";

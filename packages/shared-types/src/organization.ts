@@ -1,5 +1,8 @@
+//packages/shared-types/src/organization.ts
+
 import { ISalesChannel } from "./salesChannel";
-import { IUser, UserOrganizationRole } from "./user";
+import { IUser } from "./user";
+import { UserOrganizationRole } from "./userOrganizationRole";
 
 export interface IOrganization {
   id: number;

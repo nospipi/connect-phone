@@ -1,3 +1,5 @@
+//packages/shared-types/src/product.ts
+
 export interface Product {
   id: number;
   uuid: string;

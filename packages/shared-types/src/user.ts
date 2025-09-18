@@ -1,10 +1,8 @@
+//packages/shared-types/src/user.ts
+
 import { IOrganization } from "./organization";
 import { IAuditLog } from "./auditLog";
-
-export enum UserOrganizationRole {
-  ADMIN = "ADMIN",
-  OPERATOR = "OPERATOR",
-}
+import { UserOrganizationRole } from "./userOrganizationRole";
 
 export interface IUser {
   id: number;

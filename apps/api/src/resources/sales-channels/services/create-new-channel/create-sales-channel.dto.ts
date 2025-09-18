@@ -21,6 +21,6 @@ export class CreateSalesChannelDto implements CreateSalesChannel {
   @IsString()
   @IsOptional()
   @IsUrl()
-  //@Sanitize() // Don't sanitize URLs as it might break them
+  @Sanitize()
   logoUrl?: string;
 }

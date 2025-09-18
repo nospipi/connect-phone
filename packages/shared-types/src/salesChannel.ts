@@ -1,3 +1,5 @@
+//packages/shared-types/src/salesChannel.ts
+
 export interface ISalesChannel {
   id?: number;
   name: string;

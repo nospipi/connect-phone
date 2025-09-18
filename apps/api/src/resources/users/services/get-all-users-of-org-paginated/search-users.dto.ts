@@ -2,7 +2,9 @@
 import { IsString, IsOptional, IsInt, Min, Max, IsIn } from 'class-validator';
 import { Type, Transform } from 'class-transformer';
 import { Sanitize } from '@/common/decorators/sanitize.decorator';
-import { UserOrganizationRole } from '../../../../database/entities/user-organization.entity';
+//import { UserOrganizationRole } from '../../../../database/entities/user-organization.entity';
+import { ISalesChannel as ISalesChannel } from '@connect-phone/shared-types';
+import { UserOrganizationRole } from '@connect-phone/shared-types';
 //import { UserOrganizationRole } from '@connect-phone/shared-types';
 
 //----------------------------------------------------------------------------
