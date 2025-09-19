@@ -6,8 +6,8 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { SalesChannel } from '../../../../database/entities/sales-channel.entity';
-import { Organization } from '../../../../database/entities/organization.entity';
+import { SalesChannelEntity } from '../../../../database/entities/sales-channel.entity';
+import { OrganizationEntity } from '../../../../database/entities/organization.entity';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
 import { CurrentDbUserRoleService } from '../../../../common/core/current-db-user-role.service';
@@ -22,8 +22,8 @@ import {
 @Injectable()
 export class FindAllByOrgPaginatedService {
   constructor(
-    @InjectRepository(SalesChannel)
-    private salesChannelsRepository: Repository<SalesChannel>,
+    @InjectRepository(SalesChannelEntity)
+    private salesChannelsRepository: Repository<SalesChannelEntity>,
     //@InjectRepository(Organization)
     private currentOrganizationService: CurrentOrganizationService
   ) {}
@@ -35,7 +35,7 @@ export class FindAllByOrgPaginatedService {
   async findAllByOrganizationPaginated(
     page: number = 1,
     limit: number = 10
-  ): Promise<Pagination<SalesChannel>> {
+  ): Promise<Pagination<SalesChannelEntity>> {
     // Automatically get the current organization from context
     const organization =
       await this.currentOrganizationService.getCurrentOrganization();
@@ -61,6 +61,6 @@ export class FindAllByOrgPaginatedService {
       .orderBy('salesChannel.id', 'DESC'); // Order by ID descending
 
     // Use nestjs-typeorm-paginate to handle pagination
-    return paginate<SalesChannel>(queryBuilder, options);
+    return paginate<SalesChannelEntity>(queryBuilder, options);
   }
 }

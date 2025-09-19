@@ -8,7 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { FindAllByOrgPaginatedService } from './service';
-import { SalesChannel } from '../../../../database/entities/sales-channel.entity';
+import { SalesChannelEntity } from '../../../../database/entities/sales-channel.entity';
 import { DbUserGuard } from '../../../../common/guards/db-user.guard';
 import { DbUserRoleGuard } from '../../../../common/guards/db-user-role.guard';
 import { Pagination } from 'nestjs-typeorm-paginate';
@@ -25,7 +25,7 @@ export class FindAllByOrgPaginatedController {
   async findAllByOrganizationPaginated(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number
-  ): Promise<Pagination<SalesChannel>> {
+  ): Promise<Pagination<SalesChannelEntity>> {
     return this.findAllByOrgPaginatedService.findAllByOrganizationPaginated(
       page,
       limit

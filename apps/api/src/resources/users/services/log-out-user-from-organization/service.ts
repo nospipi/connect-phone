@@ -2,17 +2,18 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from '../../../../database/entities/user.entity';
+import { UserEntity } from '../../../../database/entities/user.entity';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
 
 @Injectable()
 export class LogOutUserFromOrganizationService {
   constructor(
-    @InjectRepository(User) private userRepository: Repository<User>,
+    @InjectRepository(UserEntity)
+    private userRepository: Repository<UserEntity>,
     private readonly currentDbUserService: CurrentDbUserService
   ) {}
 
-  async logOutUserFromOrganization(): Promise<User> {
+  async logOutUserFromOrganization(): Promise<UserEntity> {
     const user = await this.currentDbUserService.getCurrentDbUser();
     if (!user) throw new NotFoundException('No current user');
 

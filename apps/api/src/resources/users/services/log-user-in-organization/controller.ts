@@ -1,7 +1,7 @@
 // apps/api/src/resources/users/services/log-user-in-organization/controller.ts
 import { Controller, Patch, Param, ParseIntPipe } from '@nestjs/common';
 import { LogUserInOrganizationService } from './service';
-import { User } from '../../../../database/entities/user.entity';
+import { UserEntity } from '../../../../database/entities/user.entity';
 
 @Controller('users/log-in-organization')
 export class LogUserInOrganizationController {
@@ -10,7 +10,7 @@ export class LogUserInOrganizationController {
   @Patch(':organizationId')
   async logUserInOrganization(
     @Param('organizationId', ParseIntPipe) organizationId: number
-  ): Promise<User> {
+  ): Promise<UserEntity> {
     return this.logService.logUserInOrganization(organizationId);
   }
 }

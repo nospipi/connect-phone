@@ -2,10 +2,10 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from '../../../../database/entities/user.entity';
-import { Organization } from '../../../../database/entities/organization.entity';
+import { UserEntity } from '../../../../database/entities/user.entity';
+import { OrganizationEntity } from '../../../../database/entities/organization.entity';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
-import { UserOrganization } from '../../../../database/entities/user-organization.entity';
+import { UserOrganizationEntity } from '../../../../database/entities/user-organization.entity';
 import { UserOrganizationRole } from '../../../../database/entities/user-organization.entity';
 
 //----------------------------------------------------------------------------
@@ -13,10 +13,10 @@ import { UserOrganizationRole } from '../../../../database/entities/user-organiz
 @Injectable()
 export class GetAllOrganizationsOfUserService {
   constructor(
-    @InjectRepository(User)
-    private userRepository: Repository<User>,
-    @InjectRepository(UserOrganization)
-    private userOrgRepository: Repository<UserOrganization>,
+    @InjectRepository(UserEntity)
+    private userRepository: Repository<UserEntity>,
+    @InjectRepository(UserOrganizationEntity)
+    private userOrgRepository: Repository<UserOrganizationEntity>,
     private currentDbUserService: CurrentDbUserService
   ) {}
 
@@ -25,7 +25,7 @@ export class GetAllOrganizationsOfUserService {
    * Returns flattened objects with organization properties + role
    */
   async getAllOrganizationsOfCurrentUser(): Promise<
-    (Organization & { role: UserOrganizationRole })[]
+    (OrganizationEntity & { role: UserOrganizationRole })[]
   > {
     // Get current user from context
     const user = await this.currentDbUserService.getCurrentDbUser();

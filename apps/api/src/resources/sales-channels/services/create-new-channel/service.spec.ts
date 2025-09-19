@@ -3,17 +3,17 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateNewChannelService } from './service';
-import { SalesChannel } from '../../../../database/entities/sales-channel.entity';
-import { Organization } from '../../../../database/entities/organization.entity';
+import { SalesChannelEntity } from '../../../../database/entities/sales-channel.entity';
+import { OrganizationEntity } from '../../../../database/entities/organization.entity';
 import { CreateSalesChannelDto } from './create-sales-channel.dto';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 
 describe('CreateNewChannelService', () => {
   let service: CreateNewChannelService;
-  let salesChannelsRepository: jest.Mocked<Repository<SalesChannel>>;
+  let salesChannelsRepository: jest.Mocked<Repository<SalesChannelEntity>>;
   let currentOrganizationService: jest.Mocked<CurrentOrganizationService>;
 
-  const mockOrganization: Organization = {
+  const mockOrganization: OrganizationEntity = {
     id: 31,
     name: 'Test Organization',
     slug: 'test-org',
@@ -21,16 +21,16 @@ describe('CreateNewChannelService', () => {
     createdAt: '2024-01-01T00:00:00Z',
     salesChannels: [],
     userOrganizations: [] as any[],
-  } as unknown as Organization;
+  } as unknown as OrganizationEntity;
 
-  const mockSalesChannel: SalesChannel = {
+  const mockSalesChannel: SalesChannelEntity = {
     id: 1,
     name: 'Test Sales Channel',
     description: 'Test Description',
     organizationId: 31,
     logoUrl: null,
     organization: mockOrganization,
-  } as unknown as SalesChannel;
+  } as unknown as SalesChannelEntity;
 
   const mockCreateSalesChannelDto: CreateSalesChannelDto = {
     name: 'Test Sales Channel',
@@ -42,7 +42,7 @@ describe('CreateNewChannelService', () => {
       providers: [
         CreateNewChannelService,
         {
-          provide: getRepositoryToken(SalesChannel),
+          provide: getRepositoryToken(SalesChannelEntity),
           useValue: {
             create: jest.fn(),
             save: jest.fn(),
@@ -62,7 +62,9 @@ describe('CreateNewChannelService', () => {
     }).compile();
 
     service = module.get<CreateNewChannelService>(CreateNewChannelService);
-    salesChannelsRepository = module.get(getRepositoryToken(SalesChannel));
+    salesChannelsRepository = module.get(
+      getRepositoryToken(SalesChannelEntity)
+    );
     currentOrganizationService = module.get(CurrentOrganizationService);
   });
 

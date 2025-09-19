@@ -20,7 +20,7 @@ import {
 import { Observable } from 'rxjs';
 import { CreateNewChannelService } from './service';
 import { CreateSalesChannelDto } from './create-sales-channel.dto';
-import { SalesChannel } from '../../../../database/entities/sales-channel.entity';
+import { SalesChannelEntity } from '../../../../database/entities/sales-channel.entity';
 import { OrganizationGuard } from '../../../../common/guards/organization.guard';
 
 //-------------------------------------------
@@ -56,7 +56,7 @@ export class CreateNewChannelController {
   @UseInterceptors(LogRequestInterceptor)
   async createNew(
     @Body() createSalesChannelDto: CreateSalesChannelDto
-  ): Promise<SalesChannel> {
+  ): Promise<SalesChannelEntity> {
     // Service automatically gets organization from context
     const newSalesChannel =
       await this.createNewChannelService.createNewSalesChannel(
@@ -71,7 +71,7 @@ export class CreateNewChannelController {
    * Get all sales channels for current organization
    */
   @Get()
-  async getAllForOrganization(): Promise<SalesChannel[]> {
+  async getAllForOrganization(): Promise<SalesChannelEntity[]> {
     return this.createNewChannelService.getAllForCurrentOrganization();
   }
 
@@ -79,7 +79,9 @@ export class CreateNewChannelController {
    * Get a specific sales channel
    */
   @Get(':id')
-  async findOne(@Param('id', ParseIntPipe) id: number): Promise<SalesChannel> {
+  async findOne(
+    @Param('id', ParseIntPipe) id: number
+  ): Promise<SalesChannelEntity> {
     return this.createNewChannelService.findOneForCurrentOrganization(id);
   }
 
@@ -90,7 +92,7 @@ export class CreateNewChannelController {
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateDto: Partial<CreateSalesChannelDto>
-  ): Promise<SalesChannel> {
+  ): Promise<SalesChannelEntity> {
     return this.createNewChannelService.updateForCurrentOrganization(
       id,
       updateDto

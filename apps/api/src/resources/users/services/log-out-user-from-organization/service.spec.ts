@@ -4,19 +4,19 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { NotFoundException } from '@nestjs/common';
 import { LogOutUserFromOrganizationService } from './service';
-import { User } from '../../../../database/entities/user.entity';
-import { Organization } from '../../../../database/entities/organization.entity';
-import { UserOrganization } from '../../../../database/entities/user-organization.entity';
+import { UserEntity } from '../../../../database/entities/user.entity';
+import { OrganizationEntity } from '../../../../database/entities/organization.entity';
+import { UserOrganizationEntity } from '../../../../database/entities/user-organization.entity';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
 
 //-------------------------------------------------------------------------------------------------
 
 describe('LogOutUserFromOrganizationService', () => {
   let service: LogOutUserFromOrganizationService;
-  let userRepository: jest.Mocked<Repository<User>>;
+  let userRepository: jest.Mocked<Repository<UserEntity>>;
   let currentDbUserService: jest.Mocked<CurrentDbUserService>;
 
-  const mockOrganization: Organization = {
+  const mockOrganization: OrganizationEntity = {
     id: 1,
     name: 'Org One',
     slug: 'org-one',
@@ -24,18 +24,18 @@ describe('LogOutUserFromOrganizationService', () => {
     createdAt: '2025-01-01T00:00:00Z',
     salesChannels: [],
     userOrganizations: [],
-  } as unknown as Organization;
+  } as unknown as OrganizationEntity;
 
-  const mockUserOrg: UserOrganization = {
+  const mockUserOrg: UserOrganizationEntity = {
     id: 1,
     user: null,
     userId: 1,
     organization: mockOrganization,
     organizationId: mockOrganization.id,
     role: 'ADMIN',
-  } as unknown as UserOrganization;
+  } as unknown as UserOrganizationEntity;
 
-  const mockUser: User = {
+  const mockUser: UserEntity = {
     id: 1,
     email: 'test@example.com',
     firstName: 'Test',
@@ -47,14 +47,14 @@ describe('LogOutUserFromOrganizationService', () => {
     loggedOrganizationId: 1,
     loggedOrganization: mockOrganization,
     userOrganizations: [mockUserOrg],
-  } as unknown as User;
+  } as unknown as UserEntity;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         LogOutUserFromOrganizationService,
         {
-          provide: getRepositoryToken(User),
+          provide: getRepositoryToken(UserEntity),
           useValue: {
             save: jest.fn(),
           },
@@ -71,7 +71,7 @@ describe('LogOutUserFromOrganizationService', () => {
     service = module.get<LogOutUserFromOrganizationService>(
       LogOutUserFromOrganizationService
     );
-    userRepository = module.get(getRepositoryToken(User));
+    userRepository = module.get(getRepositoryToken(UserEntity));
     currentDbUserService = module.get(CurrentDbUserService);
   });
 
@@ -86,13 +86,13 @@ describe('LogOutUserFromOrganizationService', () => {
   describe('logOutUserFromOrganization', () => {
     it('should log out user by setting loggedOrganizationId to null', async () => {
       currentDbUserService.getCurrentDbUser.mockResolvedValue(mockUser);
-      userRepository.save.mockImplementation(async (user: User) => {
+      userRepository.save.mockImplementation(async (user: UserEntity) => {
         return {
           ...user,
           get fullName() {
             return `${user.firstName} ${user.lastName}`;
           },
-        } as unknown as User;
+        } as unknown as UserEntity;
       });
 
       const result = await service.logOutUserFromOrganization();
@@ -121,16 +121,16 @@ describe('LogOutUserFromOrganizationService', () => {
         get fullName() {
           return `${this.firstName} ${this.lastName}`;
         },
-      } as unknown as User;
+      } as unknown as UserEntity;
 
       currentDbUserService.getCurrentDbUser.mockResolvedValue(loggedOutUser);
-      userRepository.save.mockImplementation(async (user: User) => {
+      userRepository.save.mockImplementation(async (user: UserEntity) => {
         return {
           ...user,
           get fullName() {
             return `${user.firstName} ${user.lastName}`;
           },
-        } as unknown as User;
+        } as unknown as UserEntity;
       });
 
       const result = await service.logOutUserFromOrganization();

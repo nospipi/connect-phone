@@ -1,7 +1,7 @@
 // src/resources/users/services/is-user-logged-in-organization/service.ts
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
-import { Organization } from '../../../../database/entities/organization.entity';
+import { OrganizationEntity } from '../../../../database/entities/organization.entity';
 
 @Injectable()
 export class GetUserLoggedInOrganizationService {
@@ -10,7 +10,7 @@ export class GetUserLoggedInOrganizationService {
   /**
    * Returns true if the current user has a logged organization
    */
-  async execute(): Promise<Organization | null> {
+  async execute(): Promise<OrganizationEntity | null> {
     const user = await this.currentDbUserService.getCurrentDbUser();
 
     if (!user) {

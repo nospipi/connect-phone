@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException } from '@nestjs/common';
 import { IsUserLoggedInOrganizationService } from './service';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
-import { User } from '../../../../database/entities/user.entity';
+import { UserEntity } from '../../../../database/entities/user.entity';
 
 //-------------------------------------------------------------------------------------------------
 
@@ -11,7 +11,7 @@ describe('IsUserLoggedInOrganizationService', () => {
   let service: IsUserLoggedInOrganizationService;
   let currentDbUserService: jest.Mocked<CurrentDbUserService>;
 
-  const mockUserWithOrganization: User = {
+  const mockUserWithOrganization: UserEntity = {
     id: 1,
     email: 'test@example.com',
     firstName: 'Test',
@@ -24,9 +24,9 @@ describe('IsUserLoggedInOrganizationService', () => {
     loggedOrganization: null,
     userOrganizations: [],
     auditLogs: [],
-  } as User;
+  } as UserEntity;
 
-  const mockUserWithoutOrganization: User = {
+  const mockUserWithoutOrganization: UserEntity = {
     id: 2,
     email: 'test2@example.com',
     firstName: 'Test2',
@@ -39,7 +39,7 @@ describe('IsUserLoggedInOrganizationService', () => {
     loggedOrganization: null,
     userOrganizations: [],
     auditLogs: [],
-  } as User;
+  } as UserEntity;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -99,7 +99,7 @@ describe('IsUserLoggedInOrganizationService', () => {
 
     it('should return false when user has undefined loggedOrganizationId', async () => {
       // Arrange
-      const userWithUndefinedOrgId: User = {
+      const userWithUndefinedOrgId: UserEntity = {
         id: 3,
         email: 'test3@example.com',
         firstName: 'Test3',
@@ -112,7 +112,7 @@ describe('IsUserLoggedInOrganizationService', () => {
         loggedOrganization: null,
         userOrganizations: [],
         auditLogs: [],
-      } as User;
+      } as UserEntity;
       currentDbUserService.getCurrentDbUser.mockResolvedValue(
         userWithUndefinedOrgId
       );
@@ -130,7 +130,7 @@ describe('IsUserLoggedInOrganizationService', () => {
       const userWithOrgId5 = {
         ...mockUserWithOrganization,
         loggedOrganizationId: 5,
-      } as User;
+      } as UserEntity;
       currentDbUserService.getCurrentDbUser.mockResolvedValue(userWithOrgId5);
 
       // Act
@@ -146,7 +146,7 @@ describe('IsUserLoggedInOrganizationService', () => {
       const userWithZeroOrgId = {
         ...mockUserWithOrganization,
         loggedOrganizationId: 0,
-      } as User;
+      } as UserEntity;
       currentDbUserService.getCurrentDbUser.mockResolvedValue(
         userWithZeroOrgId
       );

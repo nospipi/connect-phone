@@ -5,20 +5,20 @@ import { Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Request } from 'express';
-import { Organization } from '../../database/entities/organization.entity';
+import { OrganizationEntity } from '../../database/entities/organization.entity';
 import { CurrentDbUserService } from './current-db-user.service';
 
 //------------------------------------------------------------------------
 
 @Injectable({ scope: Scope.REQUEST })
 export class CurrentOrganizationService {
-  private _currentOrganization: Organization | null = null;
+  private _currentOrganization: OrganizationEntity | null = null;
   private _organizationLoaded = false;
 
   constructor(
     @Inject(REQUEST) private readonly request: Request,
-    @InjectRepository(Organization)
-    private readonly organizationRepository: Repository<Organization>,
+    @InjectRepository(OrganizationEntity)
+    private readonly organizationRepository: Repository<OrganizationEntity>,
     private readonly currentDbUserService: CurrentDbUserService
   ) {}
 
@@ -26,7 +26,7 @@ export class CurrentOrganizationService {
    * Gets the current organization for the logged-in user
    * Returns null if not found - no errors thrown
    */
-  async getCurrentOrganization(): Promise<Organization | null> {
+  async getCurrentOrganization(): Promise<OrganizationEntity | null> {
     if (this._organizationLoaded) {
       return this._currentOrganization;
     }

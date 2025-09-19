@@ -2,7 +2,7 @@ import type { Config } from "tailwindcss"
 
 const config: Config = {
   darkMode: "selector",
-  content: ["./**/*.{js,ts,jsx,tsx,mdx}"],
+  content: ["./**/*.{js,ts,jsx,tsx,mdx}", "!./node_modules/**"],
   theme: {
     extend: {
       keyframes: {

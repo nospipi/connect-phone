@@ -10,11 +10,11 @@ import {
   Unique,
 } from 'typeorm';
 import { ISalesChannel } from '@connect-phone/shared-types';
-import { Organization } from './organization.entity';
+import { OrganizationEntity } from './organization.entity';
 
 @Entity('sales_channels')
 @Unique(['name', 'organizationId'])
-export class SalesChannel implements ISalesChannel {
+export class SalesChannelEntity implements ISalesChannel {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -31,9 +31,12 @@ export class SalesChannel implements ISalesChannel {
   organizationId: number;
 
   // Add the relationship to Organization
-  @ManyToOne(() => Organization, (organization) => organization.salesChannels)
+  @ManyToOne(
+    () => OrganizationEntity,
+    (organization) => organization.salesChannels
+  )
   @JoinColumn({ name: 'organizationId' })
-  organization: Organization;
+  organization: OrganizationEntity;
 
   // @AfterLoad()
   // logSalesChannelLoad() {

@@ -1,9 +1,9 @@
 // apps/api/src/resources/users/users.module.ts
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from '@/database/entities/user.entity';
-import { Organization } from '@/database/entities/organization.entity';
-import { UserOrganization } from '@/database/entities/user-organization.entity';
+import { UserEntity } from '@/database/entities/user.entity';
+import { OrganizationEntity } from '@/database/entities/organization.entity';
+import { UserOrganizationEntity } from '@/database/entities/user-organization.entity';
 import { GetAllOrganizationsOfUserController } from './services/get-all-organizations-of-user/controller';
 import { GetAllOrganizationsOfUserService } from './services/get-all-organizations-of-user/service';
 import { LogUserInOrganizationController } from './services/log-user-in-organization/controller';
@@ -21,7 +21,13 @@ import { CurrentDbUserService } from '../../common/core/current-db-user.service'
 //-------------------------------------------------------------------------------------------
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Organization, UserOrganization])],
+  imports: [
+    TypeOrmModule.forFeature([
+      UserEntity,
+      OrganizationEntity,
+      UserOrganizationEntity,
+    ]),
+  ],
   controllers: [
     GetAllOrganizationsOfUserController,
     LogUserInOrganizationController,

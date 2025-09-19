@@ -3,8 +3,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { FindAllByOrgPaginatedService } from './service';
-import { SalesChannel } from '../../../../database/entities/sales-channel.entity';
-import { Organization } from '../../../../database/entities/organization.entity';
+import { SalesChannelEntity } from '../../../../database/entities/sales-channel.entity';
+import { OrganizationEntity } from '../../../../database/entities/organization.entity';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 import { paginate } from 'nestjs-typeorm-paginate';
 
@@ -15,11 +15,11 @@ jest.mock('nestjs-typeorm-paginate', () => ({
 
 describe('FindAllByOrgPaginatedService', () => {
   let service: FindAllByOrgPaginatedService;
-  let salesChannelsRepository: jest.Mocked<Repository<SalesChannel>>;
+  let salesChannelsRepository: jest.Mocked<Repository<SalesChannelEntity>>;
   let currentOrganizationService: jest.Mocked<CurrentOrganizationService>;
   let mockPaginate: jest.MockedFunction<typeof paginate>;
 
-  const mockOrganization: Organization = {
+  const mockOrganization: OrganizationEntity = {
     id: 1,
     name: 'Test Organization',
     slug: 'test-org',
@@ -28,16 +28,16 @@ describe('FindAllByOrgPaginatedService', () => {
     salesChannels: [],
     userOrganizations: [],
     auditLogs: [],
-  } as Organization;
+  } as OrganizationEntity;
 
-  const mockSalesChannel: SalesChannel = {
+  const mockSalesChannel: SalesChannelEntity = {
     id: 1,
     name: 'Test Sales Channel',
     description: 'Test Description',
     logoUrl: null,
     organizationId: 1,
     organization: mockOrganization,
-  } as SalesChannel;
+  } as SalesChannelEntity;
 
   const mockPaginationResult = {
     items: [mockSalesChannel],
@@ -68,7 +68,7 @@ describe('FindAllByOrgPaginatedService', () => {
       providers: [
         FindAllByOrgPaginatedService,
         {
-          provide: getRepositoryToken(SalesChannel),
+          provide: getRepositoryToken(SalesChannelEntity),
           useValue: {
             createQueryBuilder: jest.fn().mockReturnValue(mockQueryBuilder),
           },
@@ -85,7 +85,9 @@ describe('FindAllByOrgPaginatedService', () => {
     service = module.get<FindAllByOrgPaginatedService>(
       FindAllByOrgPaginatedService
     );
-    salesChannelsRepository = module.get(getRepositoryToken(SalesChannel));
+    salesChannelsRepository = module.get(
+      getRepositoryToken(SalesChannelEntity)
+    );
     currentOrganizationService = module.get(CurrentOrganizationService);
     mockPaginate = paginate as jest.MockedFunction<typeof paginate>;
   });

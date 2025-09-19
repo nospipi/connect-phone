@@ -5,6 +5,7 @@ import {
   ISalesChannel,
   IUser,
   IOrganization,
+  IUserOrganization,
 } from "@connect-phone/shared-types"
 
 //----------------------------------------------------------------------
@@ -41,25 +42,6 @@ export interface PaginatedResponse<T> {
 }
 
 //----------------------------------------------------------------------
-// User Organization Interface (matches your actual response)
-//----------------------------------------------------------------------
-
-export interface UserOrganization {
-  id: number
-  userId: number
-  organizationId: number
-  role: string
-  user: {
-    id: number
-    createdAt: string
-    email: string
-    firstName: string
-    lastName: string
-    loggedOrganizationId: number | null
-  }
-}
-
-//----------------------------------------------------------------------
 // Specific Paginated Response Types
 //----------------------------------------------------------------------
 
@@ -70,12 +52,4 @@ export interface PaginatedSalesChannelsResponse
   extends PaginatedResponse<ISalesChannel> {}
 
 export interface PaginatedUsersResponse
-  extends PaginatedResponse<UserOrganization> {}
-
-//----------------------------------------------------------------------
-// Common Server Action Parameters
-//----------------------------------------------------------------------
-
-export interface PaginationParams {
-  page?: string | number
-}
+  extends PaginatedResponse<IUserOrganization> {}

@@ -6,8 +6,8 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserInvitation } from '../../../../database/entities/user-invitation.entity';
-import { Organization } from '../../../../database/entities/organization.entity';
+import { UserInvitationEntity } from '../../../../database/entities/user-invitation.entity';
+import { OrganizationEntity } from '../../../../database/entities/organization.entity';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
 import {
@@ -21,10 +21,10 @@ import {
 @Injectable()
 export class FindAllByOrgPaginatedService {
   constructor(
-    @InjectRepository(UserInvitation)
-    private userInvitationsRepository: Repository<UserInvitation>,
-    @InjectRepository(Organization)
-    private organizationsRepository: Repository<Organization>,
+    @InjectRepository(UserInvitationEntity)
+    private userInvitationsRepository: Repository<UserInvitationEntity>,
+    @InjectRepository(OrganizationEntity)
+    private organizationsRepository: Repository<OrganizationEntity>,
     private currentOrganizationService: CurrentOrganizationService,
     private currentDbUserService: CurrentDbUserService
   ) {}
@@ -36,7 +36,7 @@ export class FindAllByOrgPaginatedService {
   async findAllByOrganizationPaginated(
     page: number = 1,
     limit: number = 10
-  ): Promise<Pagination<UserInvitation>> {
+  ): Promise<Pagination<UserInvitationEntity>> {
     // Automatically get the current organization from context
     const organization =
       await this.currentOrganizationService.getCurrentOrganization();
@@ -63,6 +63,6 @@ export class FindAllByOrgPaginatedService {
       .orderBy('userInvitation.id', 'DESC'); // Order by ID descending
 
     // Use nestjs-typeorm-paginate to handle pagination
-    return paginate<UserInvitation>(queryBuilder, options);
+    return paginate<UserInvitationEntity>(queryBuilder, options);
   }
 }

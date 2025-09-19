@@ -2,7 +2,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserOrganization } from '../../../../database/entities/user-organization.entity';
+import { UserOrganizationEntity } from '../../../../database/entities/user-organization.entity';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 import {
   paginate,
@@ -15,8 +15,8 @@ import {
 @Injectable()
 export class GetAllUsersOfOrgPaginatedService {
   constructor(
-    @InjectRepository(UserOrganization)
-    private userOrganizationRepository: Repository<UserOrganization>,
+    @InjectRepository(UserOrganizationEntity)
+    private userOrganizationRepository: Repository<UserOrganizationEntity>,
     private currentOrganizationService: CurrentOrganizationService
   ) {}
 
@@ -29,7 +29,7 @@ export class GetAllUsersOfOrgPaginatedService {
     limit: number = 10,
     search: string = '',
     role: string = 'all'
-  ): Promise<Pagination<UserOrganization>> {
+  ): Promise<Pagination<UserOrganizationEntity>> {
     // Automatically get the current organization from context
     const organization =
       await this.currentOrganizationService.getCurrentOrganization();
@@ -67,6 +67,6 @@ export class GetAllUsersOfOrgPaginatedService {
     queryBuilder.orderBy('userOrganization.id', 'DESC');
 
     // Use nestjs-typeorm-paginate to handle pagination
-    return paginate<UserOrganization>(queryBuilder, options);
+    return paginate<UserOrganizationEntity>(queryBuilder, options);
   }
 }

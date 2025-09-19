@@ -7,8 +7,8 @@ import {
   Unique,
   JoinColumn,
 } from 'typeorm';
-import { User } from './user.entity';
-import { Organization } from './organization.entity';
+import { UserEntity } from './user.entity';
+import { OrganizationEntity } from './organization.entity';
 import { IUserOrganization } from '@connect-phone/shared-types';
 
 //----------------------------------------------------------------------------
@@ -20,26 +20,26 @@ export enum UserOrganizationRole {
 
 @Entity({ name: 'user_organizations' })
 @Unique(['user', 'organization'])
-export class UserOrganization implements IUserOrganization {
+export class UserOrganizationEntity implements IUserOrganization {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, (user) => user.userOrganizations, {
+  @ManyToOne(() => UserEntity, (user) => user.userOrganizations, {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'userId' })
-  user: User;
+  user: UserEntity;
 
   @Column()
   userId: number;
 
   @ManyToOne(
-    () => Organization,
+    () => OrganizationEntity,
     (organization) => organization.userOrganizations,
     { onDelete: 'CASCADE' }
   )
   @JoinColumn({ name: 'organizationId' })
-  organization: Organization;
+  organization: OrganizationEntity;
 
   @Column()
   organizationId: number;

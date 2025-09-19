@@ -48,6 +48,12 @@ const Page = async ({
     search: search,
     role: role,
   })
+
+  console.log(
+    "Users Response:",
+    usersResponse.items.map((user) => user.user.fullName),
+  )
+
   const temp_users = usersResponse?.items || []
   const meta = usersResponse?.meta
   const hasPreviousPage = meta?.currentPage > 1

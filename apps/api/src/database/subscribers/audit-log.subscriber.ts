@@ -6,7 +6,7 @@ import {
   UpdateEvent,
   RemoveEvent,
 } from 'typeorm';
-import { AuditLogEntry } from '../entities/audit-log.entity';
+import { AuditLogEntryEntity } from '../entities/audit-log.entity';
 import { UserContext } from '../../common/context/user-context';
 import { OrganizationContext } from '../../common/context/organization-context';
 
@@ -25,7 +25,7 @@ export class AuditLogSubscriber implements EntitySubscriberInterface {
     const organizationId = this.getCurrentOrganizationId();
     const userId = UserContext.getCurrentUserId();
 
-    await event.manager.getRepository(AuditLogEntry).insert({
+    await event.manager.getRepository(AuditLogEntryEntity).insert({
       table_name: event.metadata.tableName,
       row_id: String(event.entity.id),
       operation: 'INSERT',
@@ -44,7 +44,7 @@ export class AuditLogSubscriber implements EntitySubscriberInterface {
     const organizationId = this.getCurrentOrganizationId();
     const userId = UserContext.getCurrentUserId();
 
-    await event.manager.getRepository(AuditLogEntry).insert({
+    await event.manager.getRepository(AuditLogEntryEntity).insert({
       table_name: event.metadata.tableName,
       row_id: String(event.entity?.id ?? event.databaseEntity?.id),
       operation: 'UPDATE',
@@ -64,7 +64,7 @@ export class AuditLogSubscriber implements EntitySubscriberInterface {
 
     const organizationId = this.getCurrentOrganizationId();
 
-    await event.manager.getRepository(AuditLogEntry).insert({
+    await event.manager.getRepository(AuditLogEntryEntity).insert({
       table_name: event.metadata.tableName,
       row_id: String(event.entityId),
       operation: 'DELETE',

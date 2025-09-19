@@ -4,10 +4,10 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UnauthorizedException } from '@nestjs/common';
 import { GetAllOrganizationsOfUserService } from './service';
-import { User } from '../../../../database/entities/user.entity';
-import { Organization } from '../../../../database/entities/organization.entity';
+import { UserEntity } from '../../../../database/entities/user.entity';
+import { OrganizationEntity } from '../../../../database/entities/organization.entity';
 import {
-  UserOrganization,
+  UserOrganizationEntity,
   UserOrganizationRole,
 } from '../../../../database/entities/user-organization.entity';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
@@ -16,11 +16,11 @@ import { CurrentDbUserService } from '../../../../common/core/current-db-user.se
 
 describe('GetAllOrganizationsOfUserService', () => {
   let service: GetAllOrganizationsOfUserService;
-  let userRepository: jest.Mocked<Repository<User>>;
-  let userOrgRepository: jest.Mocked<Repository<UserOrganization>>;
+  let userRepository: jest.Mocked<Repository<UserEntity>>;
+  let userOrgRepository: jest.Mocked<Repository<UserOrganizationEntity>>;
   let currentDbUserService: jest.Mocked<CurrentDbUserService>;
 
-  const mockUser: User = {
+  const mockUser: UserEntity = {
     id: 1,
     email: 'test@example.com',
     firstName: 'Test',
@@ -33,9 +33,9 @@ describe('GetAllOrganizationsOfUserService', () => {
     loggedOrganization: null,
     userOrganizations: [],
     auditLogs: [],
-  } as User;
+  } as UserEntity;
 
-  const mockOrganization1: Organization = {
+  const mockOrganization1: OrganizationEntity = {
     id: 1,
     name: 'Organization 1',
     slug: 'org-1',
@@ -44,9 +44,9 @@ describe('GetAllOrganizationsOfUserService', () => {
     salesChannels: [],
     userOrganizations: [],
     auditLogs: [],
-  } as Organization;
+  } as OrganizationEntity;
 
-  const mockOrganization2: Organization = {
+  const mockOrganization2: OrganizationEntity = {
     id: 2,
     name: 'Organization 2',
     slug: 'org-2',
@@ -55,9 +55,9 @@ describe('GetAllOrganizationsOfUserService', () => {
     salesChannels: [],
     userOrganizations: [],
     auditLogs: [],
-  } as Organization;
+  } as OrganizationEntity;
 
-  const mockUserOrganizations: UserOrganization[] = [
+  const mockUserOrganizations: UserOrganizationEntity[] = [
     {
       id: 1,
       userId: 1,
@@ -65,7 +65,7 @@ describe('GetAllOrganizationsOfUserService', () => {
       role: UserOrganizationRole.ADMIN,
       user: mockUser,
       organization: mockOrganization1,
-    } as UserOrganization,
+    } as UserOrganizationEntity,
     {
       id: 2,
       userId: 1,
@@ -73,7 +73,7 @@ describe('GetAllOrganizationsOfUserService', () => {
       role: UserOrganizationRole.OPERATOR,
       user: mockUser,
       organization: mockOrganization2,
-    } as UserOrganization,
+    } as UserOrganizationEntity,
   ];
 
   beforeEach(async () => {
@@ -81,14 +81,14 @@ describe('GetAllOrganizationsOfUserService', () => {
       providers: [
         GetAllOrganizationsOfUserService,
         {
-          provide: getRepositoryToken(User),
+          provide: getRepositoryToken(UserEntity),
           useValue: {
             find: jest.fn(),
             findOne: jest.fn(),
           },
         },
         {
-          provide: getRepositoryToken(UserOrganization),
+          provide: getRepositoryToken(UserOrganizationEntity),
           useValue: {
             find: jest.fn(),
             findOne: jest.fn(),
@@ -106,8 +106,8 @@ describe('GetAllOrganizationsOfUserService', () => {
     service = module.get<GetAllOrganizationsOfUserService>(
       GetAllOrganizationsOfUserService
     );
-    userRepository = module.get(getRepositoryToken(User));
-    userOrgRepository = module.get(getRepositoryToken(UserOrganization));
+    userRepository = module.get(getRepositoryToken(UserEntity));
+    userOrgRepository = module.get(getRepositoryToken(UserOrganizationEntity));
     currentDbUserService = module.get(CurrentDbUserService);
   });
 
@@ -215,7 +215,7 @@ describe('GetAllOrganizationsOfUserService', () => {
 
     it('should preserve organization properties and add role', async () => {
       // Arrange
-      const orgWithAllProps: Organization = {
+      const orgWithAllProps: OrganizationEntity = {
         id: 3,
         name: 'Full Props Org',
         slug: 'full-props',
@@ -224,16 +224,16 @@ describe('GetAllOrganizationsOfUserService', () => {
         salesChannels: [],
         userOrganizations: [],
         auditLogs: [],
-      } as Organization;
+      } as OrganizationEntity;
 
-      const userOrgWithFullProps: UserOrganization = {
+      const userOrgWithFullProps: UserOrganizationEntity = {
         id: 3,
         userId: 1,
         organizationId: 3,
         role: UserOrganizationRole.OPERATOR,
         user: mockUser,
         organization: orgWithAllProps,
-      } as UserOrganization;
+      } as UserOrganizationEntity;
 
       currentDbUserService.getCurrentDbUser.mockResolvedValue(mockUser);
       userOrgRepository.find.mockResolvedValue([userOrgWithFullProps]);

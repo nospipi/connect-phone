@@ -9,8 +9,8 @@ import {
   Unique,
 } from 'typeorm';
 import { IUserInvitation } from '@connect-phone/shared-types';
-import { Organization } from './organization.entity';
-import { User } from './user.entity';
+import { OrganizationEntity } from './organization.entity';
+import { UserEntity } from './user.entity';
 
 export enum InvitationStatus {
   PENDING = 'PENDING',
@@ -20,7 +20,7 @@ export enum InvitationStatus {
 
 @Entity('user_invitations')
 @Unique(['email', 'organizationId'])
-export class UserInvitation implements IUserInvitation {
+export class UserInvitationEntity implements IUserInvitation {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -40,14 +40,14 @@ export class UserInvitation implements IUserInvitation {
   @Column()
   organizationId: number;
 
-  @ManyToOne(() => Organization, { nullable: false })
+  @ManyToOne(() => OrganizationEntity, { nullable: false })
   @JoinColumn({ name: 'organizationId' })
-  organization: Organization;
+  organization: OrganizationEntity;
 
   @Column()
   invitedById: number;
 
-  @ManyToOne(() => User, { nullable: false })
+  @ManyToOne(() => UserEntity, { nullable: false })
   @JoinColumn({ name: 'invitedById' })
-  invitedBy: User;
+  invitedBy: UserEntity;
 }

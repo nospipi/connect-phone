@@ -8,7 +8,7 @@ import {
 import { Observable, firstValueFrom } from 'rxjs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from '@/database/entities/user.entity';
+import { UserEntity } from '@/database/entities/user.entity';
 import { UserContext } from '../context/user-context';
 import { OrganizationContext } from '../context/organization-context';
 
@@ -17,8 +17,8 @@ import { OrganizationContext } from '../context/organization-context';
 @Injectable()
 export class AuditContextInterceptor implements NestInterceptor {
   constructor(
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>
   ) {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {

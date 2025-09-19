@@ -1,7 +1,7 @@
 // apps/api/src/resources/users/services/get-all-users-of-org-paginated/controller.ts
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { GetAllUsersOfOrgPaginatedService } from './service';
-import { UserOrganization } from '../../../../database/entities/user-organization.entity';
+import { UserOrganizationEntity } from '../../../../database/entities/user-organization.entity';
 import { DbUserGuard } from '../../../../common/guards/db-user.guard';
 import { DbUserRoleGuard } from '../../../../common/guards/db-user-role.guard';
 import { Pagination } from 'nestjs-typeorm-paginate';
@@ -20,7 +20,7 @@ export class GetAllUsersOfOrgPaginatedController {
   @Get('paginated')
   async findAllByOrganizationPaginated(
     @Query() searchUsersDto: SearchUsersDto
-  ): Promise<Pagination<UserOrganization>> {
+  ): Promise<Pagination<UserOrganizationEntity>> {
     return this.getAllUsersOfOrgPaginatedService.findAllByOrganizationPaginated(
       searchUsersDto.page || 1,
       searchUsersDto.limit || 10,

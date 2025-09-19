@@ -13,7 +13,7 @@ import { DatabaseModule } from './database/database.module';
 import { SalesChannelsModule } from './resources/sales-channels/sales-channels.module';
 import { UsersModule } from './resources/users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './database/entities/user.entity';
+import { UserEntity } from './database/entities/user.entity';
 import { AuditLogsModule } from './resources/audit-logs/audit-logs.module';
 import { UserInvitationsModule } from './resources/user-invitations/user-invitations.module';
 
@@ -29,7 +29,7 @@ import { UserInvitationsModule } from './resources/user-invitations/user-invitat
     CoreModule,
     SalesChannelsModule,
     UsersModule,
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([UserEntity]),
     AuditLogsModule,
     UserInvitationsModule,
   ],

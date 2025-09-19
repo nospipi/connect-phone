@@ -1,14 +1,14 @@
 "use server"
 
 import { AxiosError } from "axios"
-import {
-  ErrorResponse,
-  PaginatedSalesChannelsResponse,
-  PaginationParams,
-} from "./types"
+import { ErrorResponse, PaginatedSalesChannelsResponse } from "./types"
 import { createApiClient } from "./api-client"
 
 //----------------------------------------------------------------------
+
+interface PaginationParams {
+  page?: string | number
+}
 
 export const getAllSalesChannelsOfOrganizationPaginated = async ({
   page = 1,

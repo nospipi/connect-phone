@@ -2,7 +2,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { AuditLogEntry } from '../../../../database/entities/audit-log.entity';
+import { AuditLogEntryEntity } from '../../../../database/entities/audit-log.entity';
+import { IAuditLog } from '@connect-phone/shared-types';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 import {
   paginate,
@@ -15,8 +16,8 @@ import {
 @Injectable()
 export class FindAllByOrgPaginatedService {
   constructor(
-    @InjectRepository(AuditLogEntry)
-    private auditLogsRepository: Repository<AuditLogEntry>,
+    @InjectRepository(AuditLogEntryEntity)
+    private auditLogsRepository: Repository<AuditLogEntryEntity>,
     private currentOrganizationService: CurrentOrganizationService
   ) {}
 
@@ -27,7 +28,7 @@ export class FindAllByOrgPaginatedService {
   async findAllByOrganizationPaginated(
     page: number = 1,
     limit: number = 10
-  ): Promise<Pagination<AuditLogEntry>> {
+  ): Promise<Pagination<IAuditLog>> {
     // Automatically get the current organization from context
     const organization =
       await this.currentOrganizationService.getCurrentOrganization();
@@ -50,6 +51,6 @@ export class FindAllByOrgPaginatedService {
       .orderBy('auditLog.id', 'DESC'); // Order by ID descending
 
     // Use nestjs-typeorm-paginate to handle pagination
-    return paginate<AuditLogEntry>(queryBuilder, options);
+    return paginate<AuditLogEntryEntity>(queryBuilder, options);
   }
 }

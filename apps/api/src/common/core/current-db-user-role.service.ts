@@ -6,9 +6,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Request } from 'express';
 import {
-  UserOrganization,
-  UserOrganizationRole,
+  UserOrganizationEntity,
+  //UserOrganizationRole,
 } from '../../database/entities/user-organization.entity';
+import {
+  IUserOrganization,
+  UserOrganizationRole,
+} from '@connect-phone/shared-types';
 import { CurrentDbUserService } from './current-db-user.service';
 import { CurrentOrganizationService } from './current-organization.service';
 
@@ -21,8 +25,8 @@ export class CurrentDbUserRoleService {
 
   constructor(
     @Inject(REQUEST) private readonly request: Request,
-    @InjectRepository(UserOrganization)
-    private readonly userOrganizationRepository: Repository<UserOrganization>,
+    @InjectRepository(UserOrganizationEntity)
+    private readonly userOrganizationRepository: Repository<UserOrganizationEntity>,
     private readonly currentDbUserService: CurrentDbUserService,
     private readonly currentOrganizationService: CurrentOrganizationService
   ) {}

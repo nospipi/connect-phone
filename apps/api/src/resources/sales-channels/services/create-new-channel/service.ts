@@ -6,8 +6,8 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { SalesChannel } from '../../../../database/entities/sales-channel.entity';
-import { Organization } from '../../../../database/entities/organization.entity';
+import { SalesChannelEntity } from '../../../../database/entities/sales-channel.entity';
+import { OrganizationEntity } from '../../../../database/entities/organization.entity';
 import { CreateSalesChannelDto } from './create-sales-channel.dto';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
@@ -17,8 +17,8 @@ import { CurrentDbUserService } from '../../../../common/core/current-db-user.se
 @Injectable()
 export class CreateNewChannelService {
   constructor(
-    @InjectRepository(SalesChannel)
-    private salesChannelsRepository: Repository<SalesChannel>,
+    @InjectRepository(SalesChannelEntity)
+    private salesChannelsRepository: Repository<SalesChannelEntity>,
     //@InjectRepository(Organization)
     private currentOrganizationService: CurrentOrganizationService
   ) {}
@@ -29,7 +29,7 @@ export class CreateNewChannelService {
    */
   async createNewSalesChannel(
     createSalesChannelDto: CreateSalesChannelDto
-  ): Promise<SalesChannel> {
+  ): Promise<SalesChannelEntity> {
     // Automatically get the current organization from context
     const organization =
       await this.currentOrganizationService.getCurrentOrganization();
@@ -45,7 +45,7 @@ export class CreateNewChannelService {
   /**
    * Get all sales channels for the current user's organization
    */
-  async getAllForCurrentOrganization(): Promise<SalesChannel[]> {
+  async getAllForCurrentOrganization(): Promise<SalesChannelEntity[]> {
     // Automatically get the current organization from context
     const organization =
       await this.currentOrganizationService.getCurrentOrganization();
@@ -60,7 +60,7 @@ export class CreateNewChannelService {
   /**
    * Find a specific sales channel for the current user's organization
    */
-  async findOneForCurrentOrganization(id: number): Promise<SalesChannel> {
+  async findOneForCurrentOrganization(id: number): Promise<SalesChannelEntity> {
     const organization =
       await this.currentOrganizationService.getCurrentOrganization();
 
@@ -82,7 +82,7 @@ export class CreateNewChannelService {
   async updateForCurrentOrganization(
     id: number,
     updateDto: Partial<CreateSalesChannelDto>
-  ): Promise<SalesChannel> {
+  ): Promise<SalesChannelEntity> {
     const salesChannel = await this.findOneForCurrentOrganization(id);
 
     Object.assign(salesChannel, updateDto);

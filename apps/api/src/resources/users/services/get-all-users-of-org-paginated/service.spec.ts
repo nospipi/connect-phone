@@ -4,12 +4,12 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetAllUsersOfOrgPaginatedService } from './service';
 import {
-  UserOrganization,
+  UserOrganizationEntity,
   //UserOrganizationRole,
 } from '../../../../database/entities/user-organization.entity';
 import { UserOrganizationRole } from '@connect-phone/shared-types';
-import { Organization } from '../../../../database/entities/organization.entity';
-import { User } from '../../../../database/entities/user.entity';
+import { OrganizationEntity } from '../../../../database/entities/organization.entity';
+import { UserEntity } from '../../../../database/entities/user.entity';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 import { paginate } from 'nestjs-typeorm-paginate';
 
@@ -22,11 +22,13 @@ jest.mock('nestjs-typeorm-paginate', () => ({
 
 describe('GetAllUsersOfOrgPaginatedService', () => {
   let service: GetAllUsersOfOrgPaginatedService;
-  let userOrganizationRepository: jest.Mocked<Repository<UserOrganization>>;
+  let userOrganizationRepository: jest.Mocked<
+    Repository<UserOrganizationEntity>
+  >;
   let currentOrganizationService: jest.Mocked<CurrentOrganizationService>;
   let mockPaginate: jest.MockedFunction<typeof paginate>;
 
-  const mockOrganization: Organization = {
+  const mockOrganization: OrganizationEntity = {
     id: 1,
     name: 'Test Organization',
     slug: 'test-org',
@@ -35,9 +37,9 @@ describe('GetAllUsersOfOrgPaginatedService', () => {
     salesChannels: [],
     userOrganizations: [],
     auditLogs: [],
-  } as Organization;
+  } as OrganizationEntity;
 
-  const mockUser: User = {
+  const mockUser: UserEntity = {
     id: 1,
     email: 'test@example.com',
     firstName: 'Test',
@@ -50,16 +52,16 @@ describe('GetAllUsersOfOrgPaginatedService', () => {
     loggedOrganization: mockOrganization,
     userOrganizations: [],
     auditLogs: [],
-  } as User;
+  } as UserEntity;
 
-  const mockUserOrganization: UserOrganization = {
+  const mockUserOrganization: UserOrganizationEntity = {
     id: 1,
     userId: 1,
     organizationId: 1,
     role: UserOrganizationRole.ADMIN,
     user: mockUser,
     organization: mockOrganization,
-  } as UserOrganization;
+  } as UserOrganizationEntity;
 
   const mockPaginationResult = {
     items: [mockUserOrganization],
@@ -91,7 +93,7 @@ describe('GetAllUsersOfOrgPaginatedService', () => {
       providers: [
         GetAllUsersOfOrgPaginatedService,
         {
-          provide: getRepositoryToken(UserOrganization),
+          provide: getRepositoryToken(UserOrganizationEntity),
           useValue: {
             createQueryBuilder: jest.fn().mockReturnValue(mockQueryBuilder),
           },
@@ -109,7 +111,7 @@ describe('GetAllUsersOfOrgPaginatedService', () => {
       GetAllUsersOfOrgPaginatedService
     );
     userOrganizationRepository = module.get(
-      getRepositoryToken(UserOrganization)
+      getRepositoryToken(UserOrganizationEntity)
     );
     currentOrganizationService = module.get(CurrentOrganizationService);
     mockPaginate = paginate as jest.MockedFunction<typeof paginate>;

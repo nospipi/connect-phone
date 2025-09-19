@@ -1,14 +1,16 @@
 // src/database/seeding/seeds/seed.ts
 import { AppDataSource } from '../../data-source';
-import { Organization } from '../../entities/organization.entity';
-import { SalesChannel } from '../../entities/sales-channel.entity';
-import { User } from '../../entities/user.entity';
+import { OrganizationEntity } from '../../entities/organization.entity';
+import { SalesChannelEntity } from '../../entities/sales-channel.entity';
+import { UserEntity } from '../../entities/user.entity';
+import { UserOrganizationEntity } from '../../entities/user-organization.entity';
 import {
-  UserOrganization,
+  IUserOrganization,
   UserOrganizationRole,
-} from '../../entities/user-organization.entity';
+  ISalesChannel,
+} from '@connect-phone/shared-types';
 import {
-  UserInvitation,
+  UserInvitationEntity,
   InvitationStatus,
 } from '../../entities/user-invitation.entity';
 import { faker } from '@faker-js/faker';
@@ -27,7 +29,7 @@ async function seed() {
     await AppDataSource.query('TRUNCATE TABLE organizations CASCADE;');
 
     // Create organizations
-    const organizations: Partial<Organization>[] = Array.from(
+    const organizations: Partial<OrganizationEntity>[] = Array.from(
       { length: 5 },
       () => {
         const name = faker.company.name();
@@ -42,12 +44,12 @@ async function seed() {
     );
 
     const savedOrgs = await AppDataSource.manager.save(
-      Organization,
+      OrganizationEntity,
       organizations
     );
 
     // Create users
-    const users: Partial<User>[] = Array.from({ length: 500 }, () => {
+    const users: Partial<UserEntity>[] = Array.from({ length: 500 }, () => {
       const firstName = faker.person.firstName();
       const lastName = faker.person.lastName();
       return {
@@ -64,10 +66,10 @@ async function seed() {
       };
     });
 
-    const savedUsers = await AppDataSource.manager.save(User, users);
+    const savedUsers = await AppDataSource.manager.save(UserEntity, users);
 
     // Create UserOrganization relationships
-    const userOrgEntries: Partial<UserOrganization>[] = [];
+    const userOrgEntries: Partial<IUserOrganization>[] = [];
     for (const user of savedUsers) {
       // Each user belongs to 1-3 random organizations
       const numOrgs = faker.number.int({ min: 1, max: 3 });
@@ -85,10 +87,10 @@ async function seed() {
       }
     }
 
-    await AppDataSource.manager.save(UserOrganization, userOrgEntries);
+    await AppDataSource.manager.save(UserOrganizationEntity, userOrgEntries);
 
     // Create sales channels
-    const salesChannels: Partial<SalesChannel>[] = [];
+    const salesChannels: Partial<ISalesChannel>[] = [];
     for (const org of savedOrgs) {
       const channelCount = faker.number.int({ min: 2, max: 4 });
       for (let i = 0; i < channelCount; i++) {
@@ -111,10 +113,10 @@ async function seed() {
       }
     }
 
-    await AppDataSource.manager.save(SalesChannel, salesChannels);
+    await AppDataSource.manager.save(SalesChannelEntity, salesChannels);
 
     // Create user invitations
-    const userInvitations: Partial<UserInvitation>[] = [];
+    const userInvitations: Partial<UserInvitationEntity>[] = [];
     for (const org of savedOrgs) {
       // Get users that belong to this organization to use as "invited by"
       const orgUsers = userOrgEntries
@@ -142,7 +144,7 @@ async function seed() {
       }
     }
 
-    await AppDataSource.manager.save(UserInvitation, userInvitations);
+    await AppDataSource.manager.save(UserInvitationEntity, userInvitations);
 
     console.log(`Seeding completed successfully!`);
     console.log(

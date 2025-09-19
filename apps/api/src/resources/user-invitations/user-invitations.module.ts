@@ -1,9 +1,9 @@
 // apps/api/src/resources/user-invitations/user-invitations.module.ts
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserInvitation } from '@/database/entities/user-invitation.entity';
-import { Organization } from '@/database/entities/organization.entity';
-import { User } from '@/database/entities/user.entity';
+import { UserInvitationEntity } from '@/database/entities/user-invitation.entity';
+import { OrganizationEntity } from '@/database/entities/organization.entity';
+import { UserEntity } from '@/database/entities/user.entity';
 
 // controllers
 import { FindAllByOrgPaginatedController } from './services/find-all-by-org-paginated/controller';
@@ -16,7 +16,13 @@ import { CreateNewInvitationService } from './services/create-new-invitation/ser
 //-----------------------------------------
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UserInvitation, Organization, User])],
+  imports: [
+    TypeOrmModule.forFeature([
+      UserInvitationEntity,
+      OrganizationEntity,
+      UserEntity,
+    ]),
+  ],
   controllers: [FindAllByOrgPaginatedController, CreateNewInvitationController],
   providers: [FindAllByOrgPaginatedService, CreateNewInvitationService],
 })

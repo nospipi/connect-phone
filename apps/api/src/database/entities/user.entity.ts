@@ -9,12 +9,15 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { IUser } from '@connect-phone/shared-types';
-import { Organization } from './organization.entity';
-import { AuditLogEntry } from './audit-log.entity';
-import { UserOrganization } from './user-organization.entity';
+import { OrganizationEntity } from './organization.entity';
+import { AuditLogEntryEntity } from './audit-log.entity';
+import { UserOrganizationEntity } from './user-organization.entity';
+import { Expose } from 'class-transformer';
+
+//----------------------------------------------------------------------------
 
 @Entity({ name: 'users' })
-export class User implements IUser {
+export class UserEntity implements IUser {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -30,6 +33,7 @@ export class User implements IUser {
   @Column({ type: 'varchar', length: 255 })
   lastName: string;
 
+  @Expose()
   get fullName(): string {
     return `${this.firstName ?? ''} ${this.lastName ?? ''}`.trim();
   }
@@ -37,13 +41,13 @@ export class User implements IUser {
   @Column({ name: 'loggedOrganizationId', type: 'int', nullable: true })
   loggedOrganizationId: number | null;
 
-  @ManyToOne(() => Organization, { nullable: true })
+  @ManyToOne(() => OrganizationEntity, { nullable: true })
   @JoinColumn({ name: 'loggedOrganizationId' })
-  loggedOrganization: Organization | null;
+  loggedOrganization: OrganizationEntity | null;
 
-  @OneToMany(() => UserOrganization, (userOrg) => userOrg.user)
-  userOrganizations: UserOrganization[];
+  @OneToMany(() => UserOrganizationEntity, (userOrg) => userOrg.user)
+  userOrganizations: UserOrganizationEntity[];
 
-  @OneToMany(() => AuditLogEntry, (auditLog) => auditLog.user)
-  auditLogs: AuditLogEntry[];
+  @OneToMany(() => AuditLogEntryEntity, (auditLog) => auditLog.user)
+  auditLogs: AuditLogEntryEntity[];
 }

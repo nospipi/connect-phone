@@ -20,7 +20,7 @@ import {
 import { Observable } from 'rxjs';
 import { CreateNewInvitationService } from './service';
 import { CreateUserInvitationDto } from './create-user-invitation.dto';
-import { UserInvitation } from '../../../../database/entities/user-invitation.entity';
+import { UserInvitationEntity } from '../../../../database/entities/user-invitation.entity';
 import { OrganizationGuard } from '../../../../common/guards/organization.guard';
 
 //-------------------------------------------
@@ -56,7 +56,7 @@ export class CreateNewInvitationController {
   @UseInterceptors(LogRequestInterceptor)
   async createNew(
     @Body() createUserInvitationDto: CreateUserInvitationDto
-  ): Promise<UserInvitation> {
+  ): Promise<UserInvitationEntity> {
     // Service automatically gets organization from context
     const newUserInvitation =
       await this.createNewInvitationService.createNewUserInvitation(
@@ -71,7 +71,7 @@ export class CreateNewInvitationController {
    * Get all user invitations for current organization
    */
   @Get()
-  async getAllForOrganization(): Promise<UserInvitation[]> {
+  async getAllForOrganization(): Promise<UserInvitationEntity[]> {
     return this.createNewInvitationService.getAllForCurrentOrganization();
   }
 
@@ -81,7 +81,7 @@ export class CreateNewInvitationController {
   @Get(':id')
   async findOne(
     @Param('id', ParseIntPipe) id: number
-  ): Promise<UserInvitation> {
+  ): Promise<UserInvitationEntity> {
     return this.createNewInvitationService.findOneForCurrentOrganization(id);
   }
 
@@ -92,7 +92,7 @@ export class CreateNewInvitationController {
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateDto: Partial<CreateUserInvitationDto>
-  ): Promise<UserInvitation> {
+  ): Promise<UserInvitationEntity> {
     return this.createNewInvitationService.updateForCurrentOrganization(
       id,
       updateDto

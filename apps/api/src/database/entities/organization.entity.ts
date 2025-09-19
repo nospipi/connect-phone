@@ -7,12 +7,12 @@ import {
   CreateDateColumn,
 } from 'typeorm';
 import { IOrganization } from '@connect-phone/shared-types';
-import { SalesChannel } from './sales-channel.entity';
-import { UserOrganization } from './user-organization.entity';
-import { AuditLogEntry } from './audit-log.entity';
+import { SalesChannelEntity } from './sales-channel.entity';
+import { UserOrganizationEntity } from './user-organization.entity';
+import { AuditLogEntryEntity } from './audit-log.entity';
 
 @Entity({ name: 'organizations' })
-export class Organization implements IOrganization {
+export class OrganizationEntity implements IOrganization {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -28,12 +28,15 @@ export class Organization implements IOrganization {
   @Column({ type: 'varchar', length: 500, nullable: true })
   logoUrl: string | null;
 
-  @OneToMany(() => SalesChannel, (salesChannel) => salesChannel.organization)
-  salesChannels: SalesChannel[];
+  @OneToMany(
+    () => SalesChannelEntity,
+    (salesChannel) => salesChannel.organization
+  )
+  salesChannels: SalesChannelEntity[];
 
-  @OneToMany(() => UserOrganization, (userOrg) => userOrg.organization)
-  userOrganizations: UserOrganization[];
+  @OneToMany(() => UserOrganizationEntity, (userOrg) => userOrg.organization)
+  userOrganizations: UserOrganizationEntity[];
 
-  @OneToMany(() => AuditLogEntry, (auditLog) => auditLog.organization)
-  auditLogs: AuditLogEntry[];
+  @OneToMany(() => AuditLogEntryEntity, (auditLog) => auditLog.organization)
+  auditLogs: AuditLogEntryEntity[];
 }

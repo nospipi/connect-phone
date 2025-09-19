@@ -1,7 +1,7 @@
 // src/resources/users/controllers/is-user-logged-in-organization.controller.ts
 import { Controller, Get } from '@nestjs/common';
 import { GetUserLoggedInOrganizationService } from './service';
-import { Organization } from '../../../../database/entities/organization.entity';
+import { OrganizationEntity } from '../../../../database/entities/organization.entity';
 
 @Controller('users')
 export class GetUserLoggedInOrganizationController {
@@ -10,7 +10,7 @@ export class GetUserLoggedInOrganizationController {
   ) {}
 
   @Get('get-logged-organization')
-  async getUserLoggedInOrganization(): Promise<Organization | null> {
+  async getUserLoggedInOrganization(): Promise<OrganizationEntity | null> {
     const loggedOrganization =
       await this.getUserLoggedInOrganizationService.execute();
 

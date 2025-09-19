@@ -6,8 +6,8 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserInvitation } from '../../../../database/entities/user-invitation.entity';
-import { Organization } from '../../../../database/entities/organization.entity';
+import { UserInvitationEntity } from '../../../../database/entities/user-invitation.entity';
+import { OrganizationEntity } from '../../../../database/entities/organization.entity';
 import { CreateUserInvitationDto } from './create-user-invitation.dto';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
@@ -17,10 +17,10 @@ import { CurrentDbUserService } from '../../../../common/core/current-db-user.se
 @Injectable()
 export class CreateNewInvitationService {
   constructor(
-    @InjectRepository(UserInvitation)
-    private userInvitationsRepository: Repository<UserInvitation>,
-    @InjectRepository(Organization)
-    private organizationsRepository: Repository<Organization>,
+    @InjectRepository(UserInvitationEntity)
+    private userInvitationsRepository: Repository<UserInvitationEntity>,
+    @InjectRepository(OrganizationEntity)
+    private organizationsRepository: Repository<OrganizationEntity>,
     private currentOrganizationService: CurrentOrganizationService,
     private currentDbUserService: CurrentDbUserService
   ) {}
@@ -31,7 +31,7 @@ export class CreateNewInvitationService {
    */
   async createNewUserInvitation(
     createUserInvitationDto: CreateUserInvitationDto
-  ): Promise<UserInvitation> {
+  ): Promise<UserInvitationEntity> {
     // Automatically get the current organization from context
     const organization =
       await this.currentOrganizationService.getCurrentOrganization();
@@ -49,7 +49,7 @@ export class CreateNewInvitationService {
   /**
    * Get all user invitations for the current user's organization
    */
-  async getAllForCurrentOrganization(): Promise<UserInvitation[]> {
+  async getAllForCurrentOrganization(): Promise<UserInvitationEntity[]> {
     // Automatically get the current organization from context
     const organization =
       await this.currentOrganizationService.getCurrentOrganization();
@@ -64,7 +64,9 @@ export class CreateNewInvitationService {
   /**
    * Find a specific user invitation for the current user's organization
    */
-  async findOneForCurrentOrganization(id: number): Promise<UserInvitation> {
+  async findOneForCurrentOrganization(
+    id: number
+  ): Promise<UserInvitationEntity> {
     // Automatically get the current organization from context
     const organization =
       await this.currentOrganizationService.getCurrentOrganization();
@@ -87,7 +89,7 @@ export class CreateNewInvitationService {
   async updateForCurrentOrganization(
     id: number,
     updateDto: Partial<CreateUserInvitationDto>
-  ): Promise<UserInvitation> {
+  ): Promise<UserInvitationEntity> {
     const userInvitation = await this.findOneForCurrentOrganization(id);
 
     Object.assign(userInvitation, updateDto);

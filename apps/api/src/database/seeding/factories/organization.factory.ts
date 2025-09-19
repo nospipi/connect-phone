@@ -1,9 +1,9 @@
 import * as Faker from 'faker';
 import { define } from 'typeorm-seeding';
-import { Organization } from '../../entities/organization.entity';
+import { OrganizationEntity } from '../../entities/organization.entity';
 
-define(Organization, (faker: typeof Faker) => {
-  const organization = new Organization();
+define(OrganizationEntity, (faker: typeof Faker) => {
+  const organization = new OrganizationEntity();
   organization.name = faker.company.companyName();
   organization.slug = faker.helpers.slugify(organization.name).toLowerCase();
   organization.logoUrl = faker.random.boolean()

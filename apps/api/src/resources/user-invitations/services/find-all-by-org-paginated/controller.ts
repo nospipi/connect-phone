@@ -8,7 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { FindAllByOrgPaginatedService } from './service';
-import { UserInvitation } from '../../../../database/entities/user-invitation.entity';
+import { UserInvitationEntity } from '../../../../database/entities/user-invitation.entity';
 import { DbUserGuard } from '../../../../common/guards/db-user.guard';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { OrganizationGuard } from '../../../../common/guards/organization.guard';
@@ -24,7 +24,7 @@ export class FindAllByOrgPaginatedController {
   async findAllByOrganizationPaginated(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number
-  ): Promise<Pagination<UserInvitation>> {
+  ): Promise<Pagination<UserInvitationEntity>> {
     return this.findAllByOrgPaginatedService.findAllByOrganizationPaginated(
       page,
       limit
