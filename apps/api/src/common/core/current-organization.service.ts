@@ -6,13 +6,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Request } from 'express';
 import { OrganizationEntity } from '../../database/entities/organization.entity';
+import { IOrganization } from '@connect-phone/shared-types';
 import { CurrentDbUserService } from './current-db-user.service';
 
 //------------------------------------------------------------------------
 
 @Injectable({ scope: Scope.REQUEST })
 export class CurrentOrganizationService {
-  private _currentOrganization: OrganizationEntity | null = null;
+  private _currentOrganization: IOrganization | null = null;
   private _organizationLoaded = false;
 
   constructor(
@@ -26,7 +27,7 @@ export class CurrentOrganizationService {
    * Gets the current organization for the logged-in user
    * Returns null if not found - no errors thrown
    */
-  async getCurrentOrganization(): Promise<OrganizationEntity | null> {
+  async getCurrentOrganization(): Promise<IOrganization | null> {
     if (this._organizationLoaded) {
       return this._currentOrganization;
     }

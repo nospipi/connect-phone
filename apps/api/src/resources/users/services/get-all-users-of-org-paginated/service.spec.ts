@@ -10,6 +10,11 @@ import {
 import { UserOrganizationRole } from '@connect-phone/shared-types';
 import { OrganizationEntity } from '../../../../database/entities/organization.entity';
 import { UserEntity } from '../../../../database/entities/user.entity';
+import {
+  IUser,
+  IOrganization,
+  IUserOrganization,
+} from '@connect-phone/shared-types';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 import { paginate } from 'nestjs-typeorm-paginate';
 
@@ -28,7 +33,7 @@ describe('GetAllUsersOfOrgPaginatedService', () => {
   let currentOrganizationService: jest.Mocked<CurrentOrganizationService>;
   let mockPaginate: jest.MockedFunction<typeof paginate>;
 
-  const mockOrganization: OrganizationEntity = {
+  const mockOrganization: IOrganization = {
     id: 1,
     name: 'Test Organization',
     slug: 'test-org',
@@ -39,29 +44,26 @@ describe('GetAllUsersOfOrgPaginatedService', () => {
     auditLogs: [],
   } as OrganizationEntity;
 
-  const mockUser: UserEntity = {
+  const mockUser: IUser = {
     id: 1,
     email: 'test@example.com',
     firstName: 'Test',
     lastName: 'User',
-    get fullName() {
-      return `${this.firstName} ${this.lastName}`;
-    },
     createdAt: '2024-01-01T00:00:00Z',
     loggedOrganizationId: 1,
     loggedOrganization: mockOrganization,
     userOrganizations: [],
     auditLogs: [],
-  } as UserEntity;
+  } as IUser;
 
-  const mockUserOrganization: UserOrganizationEntity = {
+  const mockUserOrganization: IUserOrganization = {
     id: 1,
     userId: 1,
     organizationId: 1,
     role: UserOrganizationRole.ADMIN,
     user: mockUser,
     organization: mockOrganization,
-  } as UserOrganizationEntity;
+  } as IUserOrganization;
 
   const mockPaginationResult = {
     items: [mockUserOrganization],

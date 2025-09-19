@@ -6,7 +6,11 @@ import {
   OneToMany,
   CreateDateColumn,
 } from 'typeorm';
-import { IOrganization } from '@connect-phone/shared-types';
+import {
+  IOrganization,
+  IAuditLog,
+  ISalesChannel,
+} from '@connect-phone/shared-types';
 import { SalesChannelEntity } from './sales-channel.entity';
 import { UserOrganizationEntity } from './user-organization.entity';
 import { AuditLogEntryEntity } from './audit-log.entity';
@@ -32,11 +36,11 @@ export class OrganizationEntity implements IOrganization {
     () => SalesChannelEntity,
     (salesChannel) => salesChannel.organization
   )
-  salesChannels: SalesChannelEntity[];
+  salesChannels: ISalesChannel[];
 
   @OneToMany(() => UserOrganizationEntity, (userOrg) => userOrg.organization)
   userOrganizations: UserOrganizationEntity[];
 
   @OneToMany(() => AuditLogEntryEntity, (auditLog) => auditLog.organization)
-  auditLogs: AuditLogEntryEntity[];
+  auditLogs: IAuditLog[];
 }

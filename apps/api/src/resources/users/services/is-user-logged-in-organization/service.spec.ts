@@ -4,6 +4,11 @@ import { NotFoundException } from '@nestjs/common';
 import { IsUserLoggedInOrganizationService } from './service';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
 import { UserEntity } from '../../../../database/entities/user.entity';
+import {
+  IUser,
+  IOrganization,
+  IUserOrganization,
+} from '@connect-phone/shared-types';
 
 //-------------------------------------------------------------------------------------------------
 
@@ -11,35 +16,29 @@ describe('IsUserLoggedInOrganizationService', () => {
   let service: IsUserLoggedInOrganizationService;
   let currentDbUserService: jest.Mocked<CurrentDbUserService>;
 
-  const mockUserWithOrganization: UserEntity = {
+  const mockUserWithOrganization: IUser = {
     id: 1,
     email: 'test@example.com',
     firstName: 'Test',
     lastName: 'User',
-    get fullName() {
-      return `${this.firstName} ${this.lastName}`;
-    },
     createdAt: '2024-01-01T00:00:00Z',
     loggedOrganizationId: 1,
     loggedOrganization: null,
     userOrganizations: [],
     auditLogs: [],
-  } as UserEntity;
+  } as IUser;
 
-  const mockUserWithoutOrganization: UserEntity = {
+  const mockUserWithoutOrganization: IUser = {
     id: 2,
     email: 'test2@example.com',
     firstName: 'Test2',
     lastName: 'User2',
-    get fullName() {
-      return `${this.firstName} ${this.lastName}`;
-    },
     createdAt: '2024-01-01T00:00:00Z',
     loggedOrganizationId: null,
     loggedOrganization: null,
     userOrganizations: [],
     auditLogs: [],
-  } as UserEntity;
+  } as IUser;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -99,20 +98,17 @@ describe('IsUserLoggedInOrganizationService', () => {
 
     it('should return false when user has undefined loggedOrganizationId', async () => {
       // Arrange
-      const userWithUndefinedOrgId: UserEntity = {
+      const userWithUndefinedOrgId: IUser = {
         id: 3,
         email: 'test3@example.com',
         firstName: 'Test3',
         lastName: 'User3',
-        get fullName() {
-          return `${this.firstName} ${this.lastName}`;
-        },
         createdAt: '2024-01-01T00:00:00Z',
         loggedOrganizationId: undefined as any,
         loggedOrganization: null,
         userOrganizations: [],
         auditLogs: [],
-      } as UserEntity;
+      } as IUser;
       currentDbUserService.getCurrentDbUser.mockResolvedValue(
         userWithUndefinedOrgId
       );
@@ -130,7 +126,7 @@ describe('IsUserLoggedInOrganizationService', () => {
       const userWithOrgId5 = {
         ...mockUserWithOrganization,
         loggedOrganizationId: 5,
-      } as UserEntity;
+      } as IUser;
       currentDbUserService.getCurrentDbUser.mockResolvedValue(userWithOrgId5);
 
       // Act
@@ -146,7 +142,7 @@ describe('IsUserLoggedInOrganizationService', () => {
       const userWithZeroOrgId = {
         ...mockUserWithOrganization,
         loggedOrganizationId: 0,
-      } as UserEntity;
+      } as IUser;
       currentDbUserService.getCurrentDbUser.mockResolvedValue(
         userWithZeroOrgId
       );

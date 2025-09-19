@@ -2,6 +2,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { GetUserLoggedInOrganizationService } from './service';
 import { OrganizationEntity } from '../../../../database/entities/organization.entity';
+import { IOrganization } from '@connect-phone/shared-types';
 
 @Controller('users')
 export class GetUserLoggedInOrganizationController {
@@ -10,7 +11,7 @@ export class GetUserLoggedInOrganizationController {
   ) {}
 
   @Get('get-logged-organization')
-  async getUserLoggedInOrganization(): Promise<OrganizationEntity | null> {
+  async getUserLoggedInOrganization(): Promise<IOrganization | null> {
     const loggedOrganization =
       await this.getUserLoggedInOrganizationService.execute();
 

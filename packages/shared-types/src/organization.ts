@@ -3,6 +3,8 @@
 import { ISalesChannel } from "./salesChannel";
 import { IUser } from "./user";
 import { UserOrganizationRole } from "./userOrganizationRole";
+import { IAuditLog } from "./auditLog";
+import { IUserOrganization } from "./userOrganization";
 
 export interface IOrganization {
   id: number;
@@ -11,8 +13,6 @@ export interface IOrganization {
   slug: string;
   logoUrl: string | null;
   salesChannels: ISalesChannel[];
-  userOrganizations: {
-    user: IUser;
-    role: UserOrganizationRole;
-  }[];
+  userOrganizations: IUserOrganization[];
+  auditLogs: IAuditLog[];
 }

@@ -5,6 +5,11 @@ import { Repository } from 'typeorm';
 import { NotFoundException } from '@nestjs/common';
 import { LogOutUserFromOrganizationService } from './service';
 import { UserEntity } from '../../../../database/entities/user.entity';
+import {
+  IUser,
+  IOrganization,
+  IUserOrganization,
+} from '@connect-phone/shared-types';
 import { OrganizationEntity } from '../../../../database/entities/organization.entity';
 import { UserOrganizationEntity } from '../../../../database/entities/user-organization.entity';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
@@ -16,7 +21,7 @@ describe('LogOutUserFromOrganizationService', () => {
   let userRepository: jest.Mocked<Repository<UserEntity>>;
   let currentDbUserService: jest.Mocked<CurrentDbUserService>;
 
-  const mockOrganization: OrganizationEntity = {
+  const mockOrganization: IOrganization = {
     id: 1,
     name: 'Org One',
     slug: 'org-one',
@@ -24,30 +29,27 @@ describe('LogOutUserFromOrganizationService', () => {
     createdAt: '2025-01-01T00:00:00Z',
     salesChannels: [],
     userOrganizations: [],
-  } as unknown as OrganizationEntity;
+  } as unknown as IOrganization;
 
-  const mockUserOrg: UserOrganizationEntity = {
+  const mockUserOrg: IUserOrganization = {
     id: 1,
     user: null,
     userId: 1,
     organization: mockOrganization,
     organizationId: mockOrganization.id,
     role: 'ADMIN',
-  } as unknown as UserOrganizationEntity;
+  } as unknown as IUserOrganization;
 
-  const mockUser: UserEntity = {
+  const mockUser: IUser = {
     id: 1,
     email: 'test@example.com',
     firstName: 'Test',
     lastName: 'User',
-    get fullName() {
-      return `${this.firstName} ${this.lastName}`;
-    },
     createdAt: '2025-01-01T00:00:00Z',
     loggedOrganizationId: 1,
     loggedOrganization: mockOrganization,
     userOrganizations: [mockUserOrg],
-  } as unknown as UserEntity;
+  } as unknown as IUser;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -86,13 +88,10 @@ describe('LogOutUserFromOrganizationService', () => {
   describe('logOutUserFromOrganization', () => {
     it('should log out user by setting loggedOrganizationId to null', async () => {
       currentDbUserService.getCurrentDbUser.mockResolvedValue(mockUser);
-      userRepository.save.mockImplementation(async (user: UserEntity) => {
+      userRepository.save.mockImplementation(async (user: IUser) => {
         return {
           ...user,
-          get fullName() {
-            return `${user.firstName} ${user.lastName}`;
-          },
-        } as unknown as UserEntity;
+        } as unknown as IUser;
       });
 
       const result = await service.logOutUserFromOrganization();
@@ -118,19 +117,13 @@ describe('LogOutUserFromOrganizationService', () => {
         ...mockUser,
         loggedOrganizationId: null,
         loggedOrganization: null,
-        get fullName() {
-          return `${this.firstName} ${this.lastName}`;
-        },
-      } as unknown as UserEntity;
+      } as unknown as IUser;
 
       currentDbUserService.getCurrentDbUser.mockResolvedValue(loggedOutUser);
-      userRepository.save.mockImplementation(async (user: UserEntity) => {
+      userRepository.save.mockImplementation(async (user: IUser) => {
         return {
           ...user,
-          get fullName() {
-            return `${user.firstName} ${user.lastName}`;
-          },
-        } as unknown as UserEntity;
+        } as unknown as IUser;
       });
 
       const result = await service.logOutUserFromOrganization();

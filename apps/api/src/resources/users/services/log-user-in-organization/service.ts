@@ -7,6 +7,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../../../../database/entities/user.entity';
+import { IUser } from '@connect-phone/shared-types';
 import { OrganizationEntity } from '../../../../database/entities/organization.entity';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
 import { OrganizationContext } from '../../../../common/context/organization-context';
@@ -21,7 +22,7 @@ export class LogUserInOrganizationService {
     private readonly currentDbUserService: CurrentDbUserService
   ) {}
 
-  async logUserInOrganization(organizationId: number): Promise<UserEntity> {
+  async logUserInOrganization(organizationId: number): Promise<IUser> {
     const user = await this.currentDbUserService.getCurrentDbUser();
     if (!user) throw new NotFoundException('No current user');
 

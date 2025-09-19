@@ -22,6 +22,7 @@ import { CreateNewChannelService } from './service';
 import { CreateSalesChannelDto } from './create-sales-channel.dto';
 import { SalesChannelEntity } from '../../../../database/entities/sales-channel.entity';
 import { OrganizationGuard } from '../../../../common/guards/organization.guard';
+import { ISalesChannel } from '@connect-phone/shared-types';
 
 //-------------------------------------------
 
@@ -56,7 +57,7 @@ export class CreateNewChannelController {
   @UseInterceptors(LogRequestInterceptor)
   async createNew(
     @Body() createSalesChannelDto: CreateSalesChannelDto
-  ): Promise<SalesChannelEntity> {
+  ): Promise<ISalesChannel> {
     // Service automatically gets organization from context
     const newSalesChannel =
       await this.createNewChannelService.createNewSalesChannel(
@@ -71,7 +72,7 @@ export class CreateNewChannelController {
    * Get all sales channels for current organization
    */
   @Get()
-  async getAllForOrganization(): Promise<SalesChannelEntity[]> {
+  async getAllForOrganization(): Promise<ISalesChannel[]> {
     return this.createNewChannelService.getAllForCurrentOrganization();
   }
 
@@ -79,9 +80,7 @@ export class CreateNewChannelController {
    * Get a specific sales channel
    */
   @Get(':id')
-  async findOne(
-    @Param('id', ParseIntPipe) id: number
-  ): Promise<SalesChannelEntity> {
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<ISalesChannel> {
     return this.createNewChannelService.findOneForCurrentOrganization(id);
   }
 

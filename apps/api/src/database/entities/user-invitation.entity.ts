@@ -11,6 +11,7 @@ import {
 import { IUserInvitation } from '@connect-phone/shared-types';
 import { OrganizationEntity } from './organization.entity';
 import { UserEntity } from './user.entity';
+import { IUser, IOrganization } from '@connect-phone/shared-types';
 
 export enum InvitationStatus {
   PENDING = 'PENDING',
@@ -42,12 +43,12 @@ export class UserInvitationEntity implements IUserInvitation {
 
   @ManyToOne(() => OrganizationEntity, { nullable: false })
   @JoinColumn({ name: 'organizationId' })
-  organization: OrganizationEntity;
+  organization: IOrganization;
 
   @Column()
   invitedById: number;
 
   @ManyToOne(() => UserEntity, { nullable: false })
   @JoinColumn({ name: 'invitedById' })
-  invitedBy: UserEntity;
+  invitedBy: IUser;
 }

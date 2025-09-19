@@ -2,6 +2,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
 import { OrganizationEntity } from '../../../../database/entities/organization.entity';
+import { IOrganization } from '@connect-phone/shared-types';
 
 @Injectable()
 export class GetUserLoggedInOrganizationService {
@@ -10,7 +11,7 @@ export class GetUserLoggedInOrganizationService {
   /**
    * Returns true if the current user has a logged organization
    */
-  async execute(): Promise<OrganizationEntity | null> {
+  async execute(): Promise<IOrganization | null> {
     const user = await this.currentDbUserService.getCurrentDbUser();
 
     if (!user) {

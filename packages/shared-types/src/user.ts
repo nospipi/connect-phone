@@ -3,6 +3,7 @@
 import { IOrganization } from "./organization";
 import { IAuditLog } from "./auditLog";
 import { UserOrganizationRole } from "./userOrganizationRole";
+import { IUserOrganization } from "./userOrganization";
 
 export interface IUser {
   id: number;
@@ -10,11 +11,8 @@ export interface IUser {
   email: string;
   firstName: string;
   lastName: string;
-  fullName?: string;
   loggedOrganizationId: number | null;
-  userOrganizations: {
-    organization: IOrganization;
-    role: UserOrganizationRole;
-  }[];
-  auditLogs?: IAuditLog[];
+  loggedOrganization: IOrganization | null;
+  userOrganizations: IUserOrganization[]; // ← changed from simplified
+  auditLogs: IAuditLog[];
 }

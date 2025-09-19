@@ -8,8 +8,9 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { UserEntity } from './user.entity';
+import { IUser } from '@connect-phone/shared-types';
 import { OrganizationEntity } from './organization.entity';
-import { IAuditLog } from '@connect-phone/shared-types';
+import { IAuditLog, IOrganization } from '@connect-phone/shared-types';
 
 //---------------------------------------------------------------------------
 
@@ -44,14 +45,14 @@ export class AuditLogEntryEntity implements IAuditLog {
     }
   )
   @JoinColumn({ name: 'organizationId' })
-  organization: OrganizationEntity | null;
+  organization: IOrganization | null;
 
   @Column({ nullable: true })
   userId: number | null;
 
   @ManyToOne(() => UserEntity, (user) => user.auditLogs, { nullable: true })
   @JoinColumn({ name: 'userId' })
-  user: UserEntity | null;
+  user: IUser | null;
 
   @CreateDateColumn({ type: 'timestamp with time zone' })
   created_at: Date;

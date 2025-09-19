@@ -5,6 +5,11 @@ import { Repository } from 'typeorm';
 import { UnauthorizedException } from '@nestjs/common';
 import { GetAllOrganizationsOfUserService } from './service';
 import { UserEntity } from '../../../../database/entities/user.entity';
+import {
+  IUser,
+  IOrganization,
+  IUserOrganization,
+} from '@connect-phone/shared-types';
 import { OrganizationEntity } from '../../../../database/entities/organization.entity';
 import {
   UserOrganizationEntity,
@@ -20,22 +25,19 @@ describe('GetAllOrganizationsOfUserService', () => {
   let userOrgRepository: jest.Mocked<Repository<UserOrganizationEntity>>;
   let currentDbUserService: jest.Mocked<CurrentDbUserService>;
 
-  const mockUser: UserEntity = {
+  const mockUser: IUser = {
     id: 1,
     email: 'test@example.com',
     firstName: 'Test',
     lastName: 'User',
-    get fullName() {
-      return `${this.firstName} ${this.lastName}`;
-    },
     createdAt: '2024-01-01T00:00:00Z',
     loggedOrganizationId: 1,
     loggedOrganization: null,
     userOrganizations: [],
     auditLogs: [],
-  } as UserEntity;
+  } as IUser;
 
-  const mockOrganization1: OrganizationEntity = {
+  const mockOrganization1: IOrganization = {
     id: 1,
     name: 'Organization 1',
     slug: 'org-1',
@@ -44,9 +46,9 @@ describe('GetAllOrganizationsOfUserService', () => {
     salesChannels: [],
     userOrganizations: [],
     auditLogs: [],
-  } as OrganizationEntity;
+  } as IOrganization;
 
-  const mockOrganization2: OrganizationEntity = {
+  const mockOrganization2: IOrganization = {
     id: 2,
     name: 'Organization 2',
     slug: 'org-2',
@@ -55,9 +57,9 @@ describe('GetAllOrganizationsOfUserService', () => {
     salesChannels: [],
     userOrganizations: [],
     auditLogs: [],
-  } as OrganizationEntity;
+  } as IOrganization;
 
-  const mockUserOrganizations: UserOrganizationEntity[] = [
+  const mockUserOrganizations: IUserOrganization[] = [
     {
       id: 1,
       userId: 1,
@@ -65,7 +67,7 @@ describe('GetAllOrganizationsOfUserService', () => {
       role: UserOrganizationRole.ADMIN,
       user: mockUser,
       organization: mockOrganization1,
-    } as UserOrganizationEntity,
+    } as IUserOrganization,
     {
       id: 2,
       userId: 1,
@@ -73,7 +75,7 @@ describe('GetAllOrganizationsOfUserService', () => {
       role: UserOrganizationRole.OPERATOR,
       user: mockUser,
       organization: mockOrganization2,
-    } as UserOrganizationEntity,
+    } as IUserOrganization,
   ];
 
   beforeEach(async () => {
@@ -215,7 +217,7 @@ describe('GetAllOrganizationsOfUserService', () => {
 
     it('should preserve organization properties and add role', async () => {
       // Arrange
-      const orgWithAllProps: OrganizationEntity = {
+      const orgWithAllProps: IOrganization = {
         id: 3,
         name: 'Full Props Org',
         slug: 'full-props',
@@ -224,16 +226,16 @@ describe('GetAllOrganizationsOfUserService', () => {
         salesChannels: [],
         userOrganizations: [],
         auditLogs: [],
-      } as OrganizationEntity;
+      } as IOrganization;
 
-      const userOrgWithFullProps: UserOrganizationEntity = {
+      const userOrgWithFullProps: IUserOrganization = {
         id: 3,
         userId: 1,
         organizationId: 3,
         role: UserOrganizationRole.OPERATOR,
         user: mockUser,
         organization: orgWithAllProps,
-      } as UserOrganizationEntity;
+      } as IUserOrganization;
 
       currentDbUserService.getCurrentDbUser.mockResolvedValue(mockUser);
       userOrgRepository.find.mockResolvedValue([userOrgWithFullProps]);

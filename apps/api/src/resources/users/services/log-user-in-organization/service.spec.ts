@@ -5,6 +5,11 @@ import { Repository } from 'typeorm';
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
 import { LogUserInOrganizationService } from './service';
 import { UserEntity } from '../../../../database/entities/user.entity';
+import {
+  IUser,
+  IOrganization,
+  ISalesChannel,
+} from '@connect-phone/shared-types';
 import { OrganizationEntity } from '../../../../database/entities/organization.entity';
 import { UserOrganizationEntity } from '../../../../database/entities/user-organization.entity';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
@@ -17,7 +22,7 @@ describe('LogUserInOrganizationService', () => {
   let organizationRepository: jest.Mocked<Repository<OrganizationEntity>>;
   let currentDbUserService: jest.Mocked<CurrentDbUserService>;
 
-  const mockOrganization: OrganizationEntity = {
+  const mockOrganization: IOrganization = {
     id: 1,
     name: 'Org One',
     slug: 'org-one',
@@ -25,7 +30,7 @@ describe('LogUserInOrganizationService', () => {
     createdAt: '2025-01-01T00:00:00Z',
     salesChannels: [],
     userOrganizations: [],
-  } as unknown as OrganizationEntity;
+  } as unknown as IOrganization;
 
   const mockUserOrg: UserOrganizationEntity = {
     id: 1,
@@ -36,19 +41,16 @@ describe('LogUserInOrganizationService', () => {
     role: 'ADMIN',
   } as unknown as UserOrganizationEntity;
 
-  const mockUser: UserEntity = {
+  const mockUser: IUser = {
     id: 1,
     email: 'test@example.com',
     firstName: 'Test',
     lastName: 'User',
-    get fullName() {
-      return `${this.firstName} ${this.lastName}`;
-    },
     createdAt: '2025-01-01T00:00:00Z',
     loggedOrganizationId: null,
     loggedOrganization: null,
     userOrganizations: [mockUserOrg],
-  } as unknown as UserEntity;
+  } as unknown as IUser;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -95,13 +97,10 @@ describe('LogUserInOrganizationService', () => {
     it('updates loggedOrganizationId if user belongs to org', async () => {
       currentDbUserService.getCurrentDbUser.mockResolvedValue(mockUser);
       organizationRepository.findOne.mockResolvedValue(mockOrganization);
-      userRepository.save.mockImplementation(async (user: UserEntity) => {
+      userRepository.save.mockImplementation(async (user: IUser) => {
         return {
           ...user,
-          get fullName() {
-            return `${user.firstName} ${user.lastName}`;
-          },
-        } as unknown as UserEntity;
+        } as unknown as IUser;
       });
       const result = await service.logUserInOrganization(mockOrganization.id);
 
@@ -120,7 +119,7 @@ describe('LogUserInOrganizationService', () => {
       organizationRepository.findOne.mockResolvedValue({
         ...mockOrganization,
         id: otherOrgId,
-      } as OrganizationEntity);
+      } as IOrganization);
 
       await expect(service.logUserInOrganization(otherOrgId)).rejects.toThrow(
         ForbiddenException

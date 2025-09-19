@@ -8,8 +8,9 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { UserEntity } from './user.entity';
+import { IUser } from '@connect-phone/shared-types';
 import { OrganizationEntity } from './organization.entity';
-import { IUserOrganization } from '@connect-phone/shared-types';
+import { IUserOrganization, IOrganization } from '@connect-phone/shared-types';
 
 //----------------------------------------------------------------------------
 
@@ -28,7 +29,7 @@ export class UserOrganizationEntity implements IUserOrganization {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'userId' })
-  user: UserEntity;
+  user: IUser;
 
   @Column()
   userId: number;
@@ -39,7 +40,7 @@ export class UserOrganizationEntity implements IUserOrganization {
     { onDelete: 'CASCADE' }
   )
   @JoinColumn({ name: 'organizationId' })
-  organization: OrganizationEntity;
+  organization: IOrganization;
 
   @Column()
   organizationId: number;

@@ -6,6 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Request } from 'express';
 import { UserEntity } from '../../database/entities/user.entity';
+import { IUser } from '@connect-phone/shared-types';
 import { OrganizationEntity } from '../../database/entities/organization.entity';
 import { CurrentClerkUserService } from './current-clerk-user.service';
 
@@ -29,7 +30,7 @@ export class CurrentDbUserService {
    * Gets the current user from the database
    * Returns null if not found - no errors thrown
    */
-  async getCurrentDbUser(): Promise<UserEntity | null> {
+  async getCurrentDbUser(): Promise<IUser | null> {
     if (this._userLoaded) {
       return this._currentUser;
     }

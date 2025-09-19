@@ -1,9 +1,11 @@
 //packages/shared-types/src/salesChannel.ts
+import { IOrganization } from "./organization";
 
 export interface ISalesChannel {
-  id?: number;
+  id: number;
   name: string;
-  logoUrl?: string | null | undefined;
-  description?: string | null | undefined;
+  logoUrl: string | null | undefined;
+  description: string | null | undefined;
   organizationId: number;
+  organization: IOrganization;
 }

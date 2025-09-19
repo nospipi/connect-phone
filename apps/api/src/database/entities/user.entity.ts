@@ -8,13 +8,12 @@ import {
   OneToMany,
   JoinColumn,
 } from 'typeorm';
-import { IUser } from '@connect-phone/shared-types';
+import { IUser, IOrganization, IAuditLog } from '@connect-phone/shared-types';
 import { OrganizationEntity } from './organization.entity';
 import { AuditLogEntryEntity } from './audit-log.entity';
 import { UserOrganizationEntity } from './user-organization.entity';
-import { Expose } from 'class-transformer';
 
-//----------------------------------------------------------------------------
+//---------------------------------------------------------------------------
 
 @Entity({ name: 'users' })
 export class UserEntity implements IUser {
@@ -33,21 +32,16 @@ export class UserEntity implements IUser {
   @Column({ type: 'varchar', length: 255 })
   lastName: string;
 
-  @Expose()
-  get fullName(): string {
-    return `${this.firstName ?? ''} ${this.lastName ?? ''}`.trim();
-  }
-
   @Column({ name: 'loggedOrganizationId', type: 'int', nullable: true })
   loggedOrganizationId: number | null;
 
   @ManyToOne(() => OrganizationEntity, { nullable: true })
   @JoinColumn({ name: 'loggedOrganizationId' })
-  loggedOrganization: OrganizationEntity | null;
+  loggedOrganization: IOrganization | null;
 
   @OneToMany(() => UserOrganizationEntity, (userOrg) => userOrg.user)
   userOrganizations: UserOrganizationEntity[];
 
   @OneToMany(() => AuditLogEntryEntity, (auditLog) => auditLog.user)
-  auditLogs: AuditLogEntryEntity[];
+  auditLogs: IAuditLog[];
 }

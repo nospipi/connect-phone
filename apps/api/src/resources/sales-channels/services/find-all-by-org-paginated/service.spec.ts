@@ -7,6 +7,7 @@ import { SalesChannelEntity } from '../../../../database/entities/sales-channel.
 import { OrganizationEntity } from '../../../../database/entities/organization.entity';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 import { paginate } from 'nestjs-typeorm-paginate';
+import { IOrganization, ISalesChannel } from '@connect-phone/shared-types';
 
 // Mock paginate function
 jest.mock('nestjs-typeorm-paginate', () => ({
@@ -19,7 +20,7 @@ describe('FindAllByOrgPaginatedService', () => {
   let currentOrganizationService: jest.Mocked<CurrentOrganizationService>;
   let mockPaginate: jest.MockedFunction<typeof paginate>;
 
-  const mockOrganization: OrganizationEntity = {
+  const mockOrganization: IOrganization = {
     id: 1,
     name: 'Test Organization',
     slug: 'test-org',
@@ -28,16 +29,16 @@ describe('FindAllByOrgPaginatedService', () => {
     salesChannels: [],
     userOrganizations: [],
     auditLogs: [],
-  } as OrganizationEntity;
+  } as IOrganization;
 
-  const mockSalesChannel: SalesChannelEntity = {
+  const mockSalesChannel: ISalesChannel = {
     id: 1,
     name: 'Test Sales Channel',
     description: 'Test Description',
     logoUrl: null,
     organizationId: 1,
     organization: mockOrganization,
-  } as SalesChannelEntity;
+  } as ISalesChannel;
 
   const mockPaginationResult = {
     items: [mockSalesChannel],

@@ -6,8 +6,10 @@ import { UserEntity } from '../../entities/user.entity';
 import { UserOrganizationEntity } from '../../entities/user-organization.entity';
 import {
   IUserOrganization,
+  IOrganization,
   UserOrganizationRole,
   ISalesChannel,
+  IUser,
 } from '@connect-phone/shared-types';
 import {
   UserInvitationEntity,
@@ -29,7 +31,7 @@ async function seed() {
     await AppDataSource.query('TRUNCATE TABLE organizations CASCADE;');
 
     // Create organizations
-    const organizations: Partial<OrganizationEntity>[] = Array.from(
+    const organizations: Partial<IOrganization>[] = Array.from(
       { length: 5 },
       () => {
         const name = faker.company.name();
@@ -49,7 +51,7 @@ async function seed() {
     );
 
     // Create users
-    const users: Partial<UserEntity>[] = Array.from({ length: 500 }, () => {
+    const users: Partial<IUser>[] = Array.from({ length: 500 }, () => {
       const firstName = faker.person.firstName();
       const lastName = faker.person.lastName();
       return {

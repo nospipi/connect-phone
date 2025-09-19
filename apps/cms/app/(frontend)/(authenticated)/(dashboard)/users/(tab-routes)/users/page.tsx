@@ -51,7 +51,7 @@ const Page = async ({
 
   console.log(
     "Users Response:",
-    usersResponse.items.map((user) => user.user.fullName),
+    usersResponse.items.map((user) => user.user),
   )
 
   const temp_users = usersResponse?.items || []

@@ -4,6 +4,11 @@ import { NotFoundException } from '@nestjs/common';
 import { GetUserLoggedInOrganizationService } from './service';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
 import { UserEntity } from '../../../../database/entities/user.entity';
+import {
+  IUser,
+  IOrganization,
+  IUserOrganization,
+} from '@connect-phone/shared-types';
 import { OrganizationEntity } from '../../../../database/entities/organization.entity';
 
 //-------------------------------------------------------------------------------------------------
@@ -12,7 +17,7 @@ describe('GetUserLoggedInOrganizationService', () => {
   let service: GetUserLoggedInOrganizationService;
   let currentDbUserService: jest.Mocked<CurrentDbUserService>;
 
-  const mockOrganization: OrganizationEntity = {
+  const mockOrganization: IOrganization = {
     id: 1,
     name: 'Test Organization',
     slug: 'test-org',
@@ -21,37 +26,31 @@ describe('GetUserLoggedInOrganizationService', () => {
     salesChannels: [],
     userOrganizations: [],
     auditLogs: [],
-  } as OrganizationEntity;
+  } as IOrganization;
 
-  const mockUserWithOrganization: UserEntity = {
+  const mockUserWithOrganization: IUser = {
     id: 1,
     email: 'test@example.com',
     firstName: 'Test',
     lastName: 'User',
-    get fullName() {
-      return `${this.firstName} ${this.lastName}`;
-    },
     createdAt: '2024-01-01T00:00:00Z',
     loggedOrganizationId: 1,
     loggedOrganization: mockOrganization,
     userOrganizations: [],
     auditLogs: [],
-  } as UserEntity;
+  } as IUser;
 
-  const mockUserWithoutOrganization: UserEntity = {
+  const mockUserWithoutOrganization: IUser = {
     id: 2,
     email: 'test2@example.com',
     firstName: 'Test2',
     lastName: 'User2',
-    get fullName() {
-      return `${this.firstName} ${this.lastName}`;
-    },
     createdAt: '2024-01-01T00:00:00Z',
     loggedOrganizationId: null,
     loggedOrganization: null,
     userOrganizations: [],
     auditLogs: [],
-  } as UserEntity;
+  } as IUser;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -137,7 +136,7 @@ describe('GetUserLoggedInOrganizationService', () => {
 
     it('should return organization with all properties intact', async () => {
       // Arrange
-      const fullOrganization: OrganizationEntity = {
+      const fullOrganization: IOrganization = {
         id: 2,
         name: 'Full Organization',
         slug: 'full-org',
@@ -146,14 +145,14 @@ describe('GetUserLoggedInOrganizationService', () => {
         salesChannels: [],
         userOrganizations: [],
         auditLogs: [],
-      } as OrganizationEntity;
+      } as IOrganization;
 
-      const userWithFullOrg: UserEntity = {
+      const userWithFullOrg: IUser = {
         ...mockUserWithOrganization,
         id: 3,
         loggedOrganizationId: 2,
         loggedOrganization: fullOrganization,
-      } as UserEntity;
+      } as IUser;
 
       currentDbUserService.getCurrentDbUser.mockResolvedValue(userWithFullOrg);
 

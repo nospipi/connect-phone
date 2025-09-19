@@ -7,6 +7,7 @@ import { AuditLogEntryEntity } from '../../../../database/entities/audit-log.ent
 import { OrganizationEntity } from '../../../../database/entities/organization.entity';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 import { paginate } from 'nestjs-typeorm-paginate';
+import { IOrganization, IAuditLog } from '@connect-phone/shared-types';
 
 // Mock paginate function
 jest.mock('nestjs-typeorm-paginate', () => ({
@@ -19,7 +20,7 @@ describe('FindAllByOrgPaginatedService', () => {
   let currentOrganizationService: jest.Mocked<CurrentOrganizationService>;
   let mockPaginate: jest.MockedFunction<typeof paginate>;
 
-  const mockOrganization: OrganizationEntity = {
+  const mockOrganization: IOrganization = {
     id: 1,
     name: 'Test Organization',
     slug: 'test-org',
@@ -28,9 +29,9 @@ describe('FindAllByOrgPaginatedService', () => {
     salesChannels: [],
     userOrganizations: [],
     auditLogs: [],
-  } as OrganizationEntity;
+  } as IOrganization;
 
-  const mockAuditLog: AuditLogEntryEntity = {
+  const mockAuditLog: IAuditLog = {
     id: 1,
     table_name: 'sales_channels',
     row_id: '1',
@@ -42,7 +43,7 @@ describe('FindAllByOrgPaginatedService', () => {
     userId: 1,
     user: null,
     created_at: new Date(),
-  } as AuditLogEntryEntity;
+  } as IAuditLog;
 
   const mockPaginationResult = {
     items: [mockAuditLog],
