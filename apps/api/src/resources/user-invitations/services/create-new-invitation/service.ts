@@ -11,6 +11,7 @@ import { OrganizationEntity } from '../../../../database/entities/organization.e
 import { CreateUserInvitationDto } from './create-user-invitation.dto';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
+import { IUserInvitation } from '@connect-phone/shared-types';
 
 //-------------------------------------------
 
@@ -31,7 +32,7 @@ export class CreateNewInvitationService {
    */
   async createNewUserInvitation(
     createUserInvitationDto: CreateUserInvitationDto
-  ): Promise<UserInvitationEntity> {
+  ): Promise<IUserInvitation> {
     // Automatically get the current organization from context
     const organization =
       await this.currentOrganizationService.getCurrentOrganization();
@@ -49,7 +50,7 @@ export class CreateNewInvitationService {
   /**
    * Get all user invitations for the current user's organization
    */
-  async getAllForCurrentOrganization(): Promise<UserInvitationEntity[]> {
+  async getAllForCurrentOrganization(): Promise<IUserInvitation[]> {
     // Automatically get the current organization from context
     const organization =
       await this.currentOrganizationService.getCurrentOrganization();
@@ -64,9 +65,7 @@ export class CreateNewInvitationService {
   /**
    * Find a specific user invitation for the current user's organization
    */
-  async findOneForCurrentOrganization(
-    id: number
-  ): Promise<UserInvitationEntity> {
+  async findOneForCurrentOrganization(id: number): Promise<IUserInvitation> {
     // Automatically get the current organization from context
     const organization =
       await this.currentOrganizationService.getCurrentOrganization();
@@ -89,7 +88,7 @@ export class CreateNewInvitationService {
   async updateForCurrentOrganization(
     id: number,
     updateDto: Partial<CreateUserInvitationDto>
-  ): Promise<UserInvitationEntity> {
+  ): Promise<IUserInvitation> {
     const userInvitation = await this.findOneForCurrentOrganization(id);
 
     Object.assign(userInvitation, updateDto);

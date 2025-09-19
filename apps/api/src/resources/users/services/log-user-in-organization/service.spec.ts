@@ -9,6 +9,7 @@ import {
   IUser,
   IOrganization,
   ISalesChannel,
+  IUserOrganization,
 } from '@connect-phone/shared-types';
 import { OrganizationEntity } from '../../../../database/entities/organization.entity';
 import { UserOrganizationEntity } from '../../../../database/entities/user-organization.entity';
@@ -32,14 +33,14 @@ describe('LogUserInOrganizationService', () => {
     userOrganizations: [],
   } as unknown as IOrganization;
 
-  const mockUserOrg: UserOrganizationEntity = {
+  const mockUserOrg: IUserOrganization = {
     id: 1,
     user: null,
     userId: 1,
     organization: mockOrganization,
     organizationId: mockOrganization.id,
     role: 'ADMIN',
-  } as unknown as UserOrganizationEntity;
+  } as unknown as IUserOrganization;
 
   const mockUser: IUser = {
     id: 1,

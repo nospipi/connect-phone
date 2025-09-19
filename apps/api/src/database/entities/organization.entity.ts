@@ -10,6 +10,7 @@ import {
   IOrganization,
   IAuditLog,
   ISalesChannel,
+  IUserOrganization,
 } from '@connect-phone/shared-types';
 import { SalesChannelEntity } from './sales-channel.entity';
 import { UserOrganizationEntity } from './user-organization.entity';
@@ -39,7 +40,7 @@ export class OrganizationEntity implements IOrganization {
   salesChannels: ISalesChannel[];
 
   @OneToMany(() => UserOrganizationEntity, (userOrg) => userOrg.organization)
-  userOrganizations: UserOrganizationEntity[];
+  userOrganizations: IUserOrganization[];
 
   @OneToMany(() => AuditLogEntryEntity, (auditLog) => auditLog.organization)
   auditLogs: IAuditLog[];

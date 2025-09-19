@@ -91,7 +91,7 @@ export class CreateNewChannelController {
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateDto: Partial<CreateSalesChannelDto>
-  ): Promise<SalesChannelEntity> {
+  ): Promise<ISalesChannel> {
     return this.createNewChannelService.updateForCurrentOrganization(
       id,
       updateDto

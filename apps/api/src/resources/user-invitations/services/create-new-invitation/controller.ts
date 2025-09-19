@@ -56,7 +56,7 @@ export class CreateNewInvitationController {
   @UseInterceptors(LogRequestInterceptor)
   async createNew(
     @Body() createUserInvitationDto: CreateUserInvitationDto
-  ): Promise<UserInvitationEntity> {
+  ): Promise<IUserInvitation> {
     // Service automatically gets organization from context
     const newUserInvitation =
       await this.createNewInvitationService.createNewUserInvitation(
@@ -71,7 +71,7 @@ export class CreateNewInvitationController {
    * Get all user invitations for current organization
    */
   @Get()
-  async getAllForOrganization(): Promise<UserInvitationEntity[]> {
+  async getAllForOrganization(): Promise<IUserInvitation[]> {
     return this.createNewInvitationService.getAllForCurrentOrganization();
   }
 

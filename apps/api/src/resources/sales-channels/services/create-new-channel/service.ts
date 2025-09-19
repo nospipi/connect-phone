@@ -11,6 +11,7 @@ import { OrganizationEntity } from '../../../../database/entities/organization.e
 import { CreateSalesChannelDto } from './create-sales-channel.dto';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
+import { IOrganization, ISalesChannel } from '@connect-phone/shared-types';
 
 //-------------------------------------------
 
@@ -29,7 +30,7 @@ export class CreateNewChannelService {
    */
   async createNewSalesChannel(
     createSalesChannelDto: CreateSalesChannelDto
-  ): Promise<SalesChannelEntity> {
+  ): Promise<ISalesChannel> {
     // Automatically get the current organization from context
     const organization =
       await this.currentOrganizationService.getCurrentOrganization();
@@ -45,7 +46,7 @@ export class CreateNewChannelService {
   /**
    * Get all sales channels for the current user's organization
    */
-  async getAllForCurrentOrganization(): Promise<SalesChannelEntity[]> {
+  async getAllForCurrentOrganization(): Promise<ISalesChannel[]> {
     // Automatically get the current organization from context
     const organization =
       await this.currentOrganizationService.getCurrentOrganization();
@@ -60,7 +61,7 @@ export class CreateNewChannelService {
   /**
    * Find a specific sales channel for the current user's organization
    */
-  async findOneForCurrentOrganization(id: number): Promise<SalesChannelEntity> {
+  async findOneForCurrentOrganization(id: number): Promise<ISalesChannel> {
     const organization =
       await this.currentOrganizationService.getCurrentOrganization();
 
@@ -82,7 +83,7 @@ export class CreateNewChannelService {
   async updateForCurrentOrganization(
     id: number,
     updateDto: Partial<CreateSalesChannelDto>
-  ): Promise<SalesChannelEntity> {
+  ): Promise<ISalesChannel> {
     const salesChannel = await this.findOneForCurrentOrganization(id);
 
     Object.assign(salesChannel, updateDto);

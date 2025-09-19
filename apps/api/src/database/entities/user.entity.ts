@@ -8,7 +8,12 @@ import {
   OneToMany,
   JoinColumn,
 } from 'typeorm';
-import { IUser, IOrganization, IAuditLog } from '@connect-phone/shared-types';
+import {
+  IUser,
+  IOrganization,
+  IAuditLog,
+  IUserOrganization,
+} from '@connect-phone/shared-types';
 import { OrganizationEntity } from './organization.entity';
 import { AuditLogEntryEntity } from './audit-log.entity';
 import { UserOrganizationEntity } from './user-organization.entity';
@@ -40,7 +45,7 @@ export class UserEntity implements IUser {
   loggedOrganization: IOrganization | null;
 
   @OneToMany(() => UserOrganizationEntity, (userOrg) => userOrg.user)
-  userOrganizations: UserOrganizationEntity[];
+  userOrganizations: IUserOrganization[];
 
   @OneToMany(() => AuditLogEntryEntity, (auditLog) => auditLog.user)
   auditLogs: IAuditLog[];

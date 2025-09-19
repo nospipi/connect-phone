@@ -10,6 +10,7 @@ import {
   UserOrganizationRole,
   ISalesChannel,
   IUser,
+  IUserInvitation,
 } from '@connect-phone/shared-types';
 import {
   UserInvitationEntity,
@@ -118,7 +119,7 @@ async function seed() {
     await AppDataSource.manager.save(SalesChannelEntity, salesChannels);
 
     // Create user invitations
-    const userInvitations: Partial<UserInvitationEntity>[] = [];
+    const userInvitations: Partial<IUserInvitation>[] = [];
     for (const org of savedOrgs) {
       // Get users that belong to this organization to use as "invited by"
       const orgUsers = userOrgEntries
