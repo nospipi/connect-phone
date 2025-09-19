@@ -35,66 +35,20 @@ export class CreateNewChannelService {
         organizationId: organization?.id,
       });
 
-      return this.salesChannelsRepository.save(salesChannel);
+      //return this.salesChannelsRepository.save(salesChannel);
+
+      const result = await this.salesChannelsRepository
+        .createQueryBuilder()
+        .insert()
+        .into(SalesChannelEntity)
+        .values(salesChannel) // ← Circular refs are automatically ignored!
+        .execute();
+
+      console.log('Insert result:', result);
+      return result.raw[0]; // Return the inserted row
     } catch (error) {
       console.error('Error in createNewSalesChannel:', error);
       throw error;
     }
-  }
-
-  /**
-   * Get all sales channels for the current user's organization
-   */
-  async getAllForCurrentOrganization(): Promise<ISalesChannel[]> {
-    // Automatically get the current organization from context
-    const organization =
-      await this.currentOrganizationService.getCurrentOrganization();
-
-    return this.salesChannelsRepository.find({
-      where: { organizationId: organization?.id },
-      relations: ['organization'],
-      order: { id: 'DESC' },
-    });
-  }
-
-  /**
-   * Find a specific sales channel for the current user's organization
-   */
-  async findOneForCurrentOrganization(id: number): Promise<ISalesChannel> {
-    const organization =
-      await this.currentOrganizationService.getCurrentOrganization();
-
-    const salesChannel = await this.salesChannelsRepository.findOne({
-      where: { id, organizationId: organization?.id },
-      relations: ['organization'],
-    });
-
-    if (!salesChannel) {
-      throw new NotFoundException('Sales channel not found');
-    }
-
-    return salesChannel;
-  }
-
-  /**
-   * Update a sales channel for the current user's organization
-   */
-  async updateForCurrentOrganization(
-    id: number,
-    updateDto: Partial<CreateSalesChannelDto>
-  ): Promise<ISalesChannel> {
-    const salesChannel = await this.findOneForCurrentOrganization(id);
-
-    Object.assign(salesChannel, updateDto);
-
-    return this.salesChannelsRepository.save(salesChannel);
-  }
-
-  /**
-   * Delete a sales channel for the current user's organization
-   */
-  async removeForCurrentOrganization(id: number): Promise<void> {
-    const salesChannel = await this.findOneForCurrentOrganization(id);
-    await this.salesChannelsRepository.remove(salesChannel);
   }
 }

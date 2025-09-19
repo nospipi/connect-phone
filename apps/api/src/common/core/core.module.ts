@@ -1,7 +1,8 @@
-// src/common/core/core.module.ts
+//apps/api/src/common/core/core.module.ts
 import { Module, Global } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CurrentOrganizationService } from './current-organization.service';
+import { CurrentOrganizationIdService } from './current-organization-id.service';
 import { CurrentDbUserService } from './current-db-user.service';
 import { CurrentClerkUserService } from './current-clerk-user.service';
 import { CurrentDbUserRoleService } from './current-db-user-role.service';
@@ -31,12 +32,14 @@ import { UserOrganizationEntity } from '@/database/entities/user-organization.en
     CurrentClerkUserService,
     CurrentDbUserService,
     CurrentOrganizationService,
+    CurrentOrganizationIdService,
     CurrentDbUserRoleService,
   ],
   exports: [
     CurrentClerkUserService,
     CurrentDbUserService,
     CurrentOrganizationService,
+    CurrentOrganizationIdService,
     CurrentDbUserRoleService,
   ],
 })

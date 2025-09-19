@@ -48,46 +48,4 @@ export class CreateNewChannelController {
       throw error; // Re-throw the error after logging it
     }
   }
-
-  /**
-   * Get all sales channels for current organization
-   */
-  @Get()
-  async getAllForOrganization(): Promise<ISalesChannel[]> {
-    return this.createNewChannelService.getAllForCurrentOrganization();
-  }
-
-  /**
-   * Get a specific sales channel
-   */
-  @Get(':id')
-  async findOne(@Param('id', ParseIntPipe) id: number): Promise<ISalesChannel> {
-    return this.createNewChannelService.findOneForCurrentOrganization(id);
-  }
-
-  /**
-   * Update a sales channel
-   */
-  @Put(':id')
-  async update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() updateDto: Partial<CreateSalesChannelDto>
-  ): Promise<ISalesChannel> {
-    return this.createNewChannelService.updateForCurrentOrganization(
-      id,
-      updateDto
-    );
-  }
-
-  /**
-   * Delete a sales channel
-   */
-  @Delete(':id')
-  async remove(
-    @Param('id', ParseIntPipe) id: number
-  ): Promise<{ message: string }> {
-    await this.createNewChannelService.removeForCurrentOrganization(id);
-
-    return { message: `Sales channel ${id} deleted successfully` };
-  }
 }

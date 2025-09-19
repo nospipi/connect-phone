@@ -6,6 +6,7 @@ import { RiAddLine } from "@remixicon/react"
 import Link from "next/link"
 import OrganizationsSelector from "./OrganizationsSelector.client"
 import { getAllOrganizationsOfUser } from "./(backend)/server_actions/getAllOrganizationsOfUser"
+import { getAllOrganizationsOfUserWithoutCurrentOrganization } from "./(backend)/server_actions/getAllOrganizationsOfUserWithoutCurrentOrganization"
 import { isUserLoggedInOrganization } from "./(backend)/server_actions/isUserLoggedInOrganization"
 import { getUserLoggedInOrganization } from "./(backend)/server_actions/getUserLoggedInOrganization"
 import UserButton from "./UserButton"
@@ -29,9 +30,13 @@ const OrganizationSelectPage = async ({
     throw new Error(errorMessage)
   }
 
-  const organizations = await getAllOrganizationsOfUser()
   const loggedInStatus = await isUserLoggedInOrganization()
   const loggedInOrganization = await getUserLoggedInOrganization()
+
+  //we get all organizations from the route without organization guard
+  //because this route is used to select organization, even by users without current org
+  const organizations =
+    await getAllOrganizationsOfUserWithoutCurrentOrganization()
 
   //i will use this to redirect to overview directly before showing ui
   if (loggedInStatus?.loggedIn) {

@@ -18,7 +18,7 @@ export class AuditLogSubscriber implements EntitySubscriberInterface {
 
   async afterInsert(event: InsertEvent<any>) {
     // Prevent logging AuditLogEntry changes to avoid infinite loop
-    if (event.metadata.targetName === 'AuditLogEntry') {
+    if (event.metadata.targetName === 'AuditLogEntryEntity') {
       return;
     }
 
@@ -37,7 +37,7 @@ export class AuditLogSubscriber implements EntitySubscriberInterface {
   }
 
   async afterUpdate(event: UpdateEvent<any>) {
-    if (event.metadata.targetName === 'AuditLogEntry') {
+    if (event.metadata.targetName === 'AuditLogEntryEntity') {
       return;
     }
 
@@ -56,7 +56,7 @@ export class AuditLogSubscriber implements EntitySubscriberInterface {
   }
 
   async afterRemove(event: RemoveEvent<any>) {
-    if (event.metadata.targetName === 'AuditLogEntry') {
+    if (event.metadata.targetName === 'AuditLogEntryEntity') {
       return;
     }
 

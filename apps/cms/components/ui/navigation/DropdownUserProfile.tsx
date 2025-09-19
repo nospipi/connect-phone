@@ -18,19 +18,7 @@ import { RiComputerLine, RiMoonLine, RiSunLine } from "@remixicon/react"
 import { useTheme } from "next-themes"
 import * as React from "react"
 import { Signout } from "./Signout"
-
-import {
-  ClerkProvider,
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-  useAuth,
-  useUser,
-  //useOrganization,
-  useClerk,
-} from "@clerk/nextjs"
+import { useUser, useClerk } from "@clerk/nextjs"
 
 //-------------------------------------------------------------------------
 

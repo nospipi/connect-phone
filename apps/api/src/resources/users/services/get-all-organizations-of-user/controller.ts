@@ -9,14 +9,22 @@ import { OrganizationGuard } from '../../../../common/guards/organization.guard'
 //-------------------------------------------
 
 @Controller('users')
-@UseGuards(DbUserGuard, OrganizationGuard)
 export class GetAllOrganizationsOfUserController {
   constructor(
     private readonly getAllOrganizationsOfUserService: GetAllOrganizationsOfUserService
   ) {}
 
   @Get('organizations')
+  @UseGuards(DbUserGuard, OrganizationGuard)
   async getAllOrganizations(): Promise<
+    (OrganizationEntity & { role: UserOrganizationRole })[]
+  > {
+    return this.getAllOrganizationsOfUserService.getAllOrganizationsOfCurrentUser();
+  }
+
+  @Get('organizations_accessed_by_user_without_current_org')
+  @UseGuards(DbUserGuard) // No OrganizationGuard here
+  async getAllOrganizationsAccessedByUserWithoutCurrentOrg(): Promise<
     (OrganizationEntity & { role: UserOrganizationRole })[]
   > {
     return this.getAllOrganizationsOfUserService.getAllOrganizationsOfCurrentUser();
