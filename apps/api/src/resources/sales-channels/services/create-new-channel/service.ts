@@ -1,17 +1,11 @@
 // apps/api/src/resources/sales-channels/services/create-new-channel/service.ts
-import {
-  Injectable,
-  NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SalesChannelEntity } from '../../../../database/entities/sales-channel.entity';
-import { OrganizationEntity } from '../../../../database/entities/organization.entity';
 import { CreateSalesChannelDto } from './create-sales-channel.dto';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
-import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
-import { IOrganization, ISalesChannel } from '@connect-phone/shared-types';
+import { ISalesChannel } from '@connect-phone/shared-types';
 
 //-------------------------------------------
 
