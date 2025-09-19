@@ -20,7 +20,6 @@ import {
 import { Observable } from 'rxjs';
 import { CreateNewInvitationService } from './service';
 import { CreateUserInvitationDto } from './create-user-invitation.dto';
-import { UserInvitationEntity } from '../../../../database/entities/user-invitation.entity';
 import { OrganizationGuard } from '../../../../common/guards/organization.guard';
 import { IUserInvitation } from '@connect-phone/shared-types';
 
@@ -82,7 +81,7 @@ export class CreateNewInvitationController {
   @Get(':id')
   async findOne(
     @Param('id', ParseIntPipe) id: number
-  ): Promise<UserInvitationEntity> {
+  ): Promise<IUserInvitation> {
     return this.createNewInvitationService.findOneForCurrentOrganization(id);
   }
 
@@ -93,7 +92,7 @@ export class CreateNewInvitationController {
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateDto: Partial<CreateUserInvitationDto>
-  ): Promise<UserInvitationEntity> {
+  ): Promise<IUserInvitation> {
     return this.createNewInvitationService.updateForCurrentOrganization(
       id,
       updateDto

@@ -28,9 +28,9 @@ export class FindAllByOrgPaginatedService {
     private currentOrganizationService: CurrentOrganizationService
   ) {}
 
-  /**
-   * Get paginated sales channels for the current user's organization
-   * Organization is automatically retrieved from the current context
+  /*
+    Get paginated sales channels for the current user's organization
+    Organization is automatically retrieved from the current context
    */
   async findAllByOrganizationPaginated(
     page: number = 1,
