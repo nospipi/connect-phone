@@ -22,6 +22,7 @@ import { CreateNewInvitationService } from './service';
 import { CreateUserInvitationDto } from './create-user-invitation.dto';
 import { UserInvitationEntity } from '../../../../database/entities/user-invitation.entity';
 import { OrganizationGuard } from '../../../../common/guards/organization.guard';
+import { IUserInvitation } from '@connect-phone/shared-types';
 
 //-------------------------------------------
 
