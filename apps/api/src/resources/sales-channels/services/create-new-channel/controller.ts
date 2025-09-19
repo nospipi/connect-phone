@@ -3,7 +3,6 @@ import {
   Controller,
   Post,
   Body,
-  UseInterceptors,
   UseGuards,
   Get,
   Param,
@@ -11,61 +10,43 @@ import {
   Put,
   Delete,
 } from '@nestjs/common';
-import {
-  CallHandler,
-  ExecutionContext,
-  Injectable,
-  NestInterceptor,
-} from '@nestjs/common';
-import { Observable } from 'rxjs';
+import { Injectable } from '@nestjs/common';
 import { CreateNewChannelService } from './service';
 import { CreateSalesChannelDto } from './create-sales-channel.dto';
-import { SalesChannelEntity } from '../../../../database/entities/sales-channel.entity';
 import { OrganizationGuard } from '../../../../common/guards/organization.guard';
+import { DbUserGuard } from '@/common/guards/db-user.guard';
 import { ISalesChannel } from '@connect-phone/shared-types';
 
 //-------------------------------------------
 
-// Interceptor to log request body before validation
 @Injectable()
-export class LogRequestInterceptor implements NestInterceptor {
-  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    const request = context.switchToHttp().getRequest();
-    console.log('Raw request body received:', request.body);
-    return next.handle();
-  }
-}
-
-/**
- * Sales Channels Controller
- *
- * YOU CHOOSE: This controller applies OrganizationGuard to ALL routes
- * because sales channels are organization-specific business logic
- */
 @Controller('sales-channels')
-@UseGuards(OrganizationGuard) // 🎯 YOU CHOOSE: Apply organization guard to entire controller
+@UseGuards(OrganizationGuard, DbUserGuard)
 export class CreateNewChannelController {
   constructor(
     private readonly createNewChannelService: CreateNewChannelService
   ) {}
 
-  /**
-   * Create a new sales channel
-   * Organization is automatically enforced by the guard you applied
-   */
   @Post('new')
-  @UseInterceptors(LogRequestInterceptor)
   async createNew(
     @Body() createSalesChannelDto: CreateSalesChannelDto
   ): Promise<ISalesChannel> {
     // Service automatically gets organization from context
-    const newSalesChannel =
-      await this.createNewChannelService.createNewSalesChannel(
-        createSalesChannelDto
-      );
 
-    console.log('New sales channel created:', newSalesChannel);
-    return newSalesChannel;
+    console.log('createNew Controller:', createSalesChannelDto);
+
+    try {
+      const newSalesChannel =
+        await this.createNewChannelService.createNewSalesChannel(
+          createSalesChannelDto
+        );
+
+      console.log('New sales channel created:', newSalesChannel);
+      return newSalesChannel;
+    } catch (error) {
+      console.error('Error creating sales channel:', error);
+      throw error; // Re-throw the error after logging it
+    }
   }
 
   /**

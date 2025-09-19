@@ -31,16 +31,21 @@ export class CreateNewChannelService {
   async createNewSalesChannel(
     createSalesChannelDto: CreateSalesChannelDto
   ): Promise<ISalesChannel> {
-    // Automatically get the current organization from context
-    const organization =
-      await this.currentOrganizationService.getCurrentOrganization();
+    try {
+      console.log('createNewSalesChannel DTO:', createSalesChannelDto);
+      const organization =
+        await this.currentOrganizationService.getCurrentOrganization();
 
-    const salesChannel = this.salesChannelsRepository.create({
-      ...createSalesChannelDto,
-      organizationId: organization?.id,
-    });
+      const salesChannel = this.salesChannelsRepository.create({
+        ...createSalesChannelDto,
+        organizationId: organization?.id,
+      });
 
-    return this.salesChannelsRepository.save(salesChannel);
+      return this.salesChannelsRepository.save(salesChannel);
+    } catch (error) {
+      console.error('Error in createNewSalesChannel:', error);
+      throw error;
+    }
   }
 
   /**
