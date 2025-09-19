@@ -1,13 +1,13 @@
-import {
-  IsString,
-  IsOptional,
-  IsNotEmpty,
-  IsUUID,
-  IsUrl,
-} from 'class-validator';
-import { ISalesChannel as ISalesChannel } from '@connect-phone/shared-types';
+import { IsString, IsOptional, IsNotEmpty, IsUrl } from 'class-validator';
+import { ISalesChannel } from '@connect-phone/shared-types';
 
-type UpdateSalesChannel = Omit<ISalesChannel, 'organizationId'>;
+type UpdateSalesChannel = Omit<
+  ISalesChannel,
+  'id' | 'organizationId' | 'organization' | 'logoUrl' | 'description'
+> & {
+  description?: string;
+  logoUrl?: string;
+};
 
 export class UpdateSalesChannelDto implements UpdateSalesChannel {
   @IsNotEmpty()
