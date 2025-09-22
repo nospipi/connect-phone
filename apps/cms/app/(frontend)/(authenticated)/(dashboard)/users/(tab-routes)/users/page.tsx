@@ -1,3 +1,4 @@
+// apps/cms/app/(frontend)/(authenticated)/(dashboard)/users/(tab-routes)/users/page.tsx
 import { Button } from "@/components/common/Button"
 import { getAllUsersOfOrganizationPaginated } from "@/app/(backend)/server_actions/getAllUsersOfOrganizationPaginated"
 import Link from "next/link"
@@ -58,6 +59,7 @@ const Page = async ({
   const meta = usersResponse?.meta
   const hasPreviousPage = meta?.currentPage > 1
   const hasNextPage = meta?.currentPage < meta?.totalPages
+  const hasActiveFilters = search !== "" || role !== "all"
 
   return (
     <div className="flex h-full flex-col gap-2 overflow-hidden">
@@ -103,7 +105,7 @@ const Page = async ({
               </div>
             </div>
 
-            <div className="flex justify-end sm:justify-start">
+            <div className="flex items-center justify-end gap-2 sm:justify-start">
               <Button
                 type="submit"
                 variant="secondary"
@@ -111,6 +113,16 @@ const Page = async ({
               >
                 Apply
               </Button>
+              {hasActiveFilters && (
+                <Link href="/users/users">
+                  <Button
+                    variant="secondary"
+                    className="border-red-300 bg-red-50 px-4 text-sm text-red-700 hover:border-red-400 hover:bg-red-100 dark:border-red-700/50 dark:bg-red-900/20 dark:text-red-400 dark:hover:border-red-600/50 dark:hover:bg-red-800/30"
+                  >
+                    Clear
+                  </Button>
+                </Link>
+              )}
             </div>
           </form>
         </div>
