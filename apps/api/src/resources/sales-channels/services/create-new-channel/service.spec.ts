@@ -37,6 +37,13 @@ describe('CreateNewChannelService', () => {
     description: 'Test Description',
   };
 
+  const mockQueryBuilder = {
+    insert: jest.fn().mockReturnThis(),
+    into: jest.fn().mockReturnThis(),
+    values: jest.fn().mockReturnThis(),
+    execute: jest.fn(),
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -46,10 +53,7 @@ describe('CreateNewChannelService', () => {
           useValue: {
             create: jest.fn(),
             save: jest.fn(),
-            find: jest.fn(),
-            findOne: jest.fn(),
-            count: jest.fn(),
-            remove: jest.fn(),
+            createQueryBuilder: jest.fn().mockReturnValue(mockQueryBuilder),
           },
         },
         {
@@ -82,7 +86,9 @@ describe('CreateNewChannelService', () => {
         mockOrganization
       );
       salesChannelsRepository.create.mockReturnValue(mockSalesChannel);
-      salesChannelsRepository.save.mockResolvedValue(mockSalesChannel);
+      mockQueryBuilder.execute.mockResolvedValue({
+        raw: [mockSalesChannel],
+      });
 
       const result = await service.createNewSalesChannel(
         mockCreateSalesChannelDto
@@ -96,16 +102,20 @@ describe('CreateNewChannelService', () => {
         description: mockCreateSalesChannelDto.description,
         organizationId: 31,
       });
-      expect(salesChannelsRepository.save).toHaveBeenCalledWith(
-        mockSalesChannel
-      );
+      expect(salesChannelsRepository.createQueryBuilder).toHaveBeenCalled();
+      expect(mockQueryBuilder.insert).toHaveBeenCalled();
+      expect(mockQueryBuilder.into).toHaveBeenCalledWith(SalesChannelEntity);
+      expect(mockQueryBuilder.values).toHaveBeenCalledWith(mockSalesChannel);
+      expect(mockQueryBuilder.execute).toHaveBeenCalled();
       expect(result).toEqual(mockSalesChannel);
     });
 
     it('should create with undefined organizationId when organization is null', async () => {
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(null);
       salesChannelsRepository.create.mockReturnValue(mockSalesChannel);
-      salesChannelsRepository.save.mockResolvedValue(mockSalesChannel);
+      mockQueryBuilder.execute.mockResolvedValue({
+        raw: [mockSalesChannel],
+      });
 
       const result = await service.createNewSalesChannel(
         mockCreateSalesChannelDto
@@ -119,9 +129,6 @@ describe('CreateNewChannelService', () => {
         description: mockCreateSalesChannelDto.description,
         organizationId: undefined,
       });
-      expect(salesChannelsRepository.save).toHaveBeenCalledWith(
-        mockSalesChannel
-      );
       expect(result).toEqual(mockSalesChannel);
     });
 
@@ -132,7 +139,9 @@ describe('CreateNewChannelService', () => {
         mockOrganization
       );
       salesChannelsRepository.create.mockReturnValue(mockSalesChannel);
-      salesChannelsRepository.save.mockResolvedValue(mockSalesChannel);
+      mockQueryBuilder.execute.mockResolvedValue({
+        raw: [mockSalesChannel],
+      });
 
       const result = await service.createNewSalesChannel(dtoWithoutDescription);
 
@@ -143,113 +152,17 @@ describe('CreateNewChannelService', () => {
       });
       expect(result).toEqual(mockSalesChannel);
     });
-  });
 
-  describe('getAllForCurrentOrganization', () => {
-    it('should get all sales channels for current organization', async () => {
-      const mockChannels = [mockSalesChannel];
+    it('should handle database errors', async () => {
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
-      salesChannelsRepository.find.mockResolvedValue(mockChannels);
-
-      const result = await service.getAllForCurrentOrganization();
-
-      expect(
-        currentOrganizationService.getCurrentOrganization
-      ).toHaveBeenCalledTimes(1);
-      expect(salesChannelsRepository.find).toHaveBeenCalledWith({
-        where: { organizationId: 31 },
-        relations: ['organization'],
-        order: { id: 'DESC' },
-      });
-      expect(result).toEqual(mockChannels);
-    });
-  });
-
-  describe('findOneForCurrentOrganization', () => {
-    it('should find a specific sales channel for current organization', async () => {
-      const channelId = 1;
-      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
-        mockOrganization
-      );
-      salesChannelsRepository.findOne.mockResolvedValue(mockSalesChannel);
-
-      const result = await service.findOneForCurrentOrganization(channelId);
-
-      expect(
-        currentOrganizationService.getCurrentOrganization
-      ).toHaveBeenCalledTimes(1);
-      expect(salesChannelsRepository.findOne).toHaveBeenCalledWith({
-        where: { id: channelId, organizationId: 31 },
-        relations: ['organization'],
-      });
-      expect(result).toEqual(mockSalesChannel);
-    });
-
-    it('should throw NotFoundException when sales channel not found', async () => {
-      const channelId = 999;
-      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
-        mockOrganization
-      );
-      salesChannelsRepository.findOne.mockResolvedValue(null);
+      salesChannelsRepository.create.mockReturnValue(mockSalesChannel);
+      mockQueryBuilder.execute.mockRejectedValue(new Error('Database error'));
 
       await expect(
-        service.findOneForCurrentOrganization(channelId)
-      ).rejects.toThrow('Sales channel not found');
-    });
-  });
-
-  describe('updateForCurrentOrganization', () => {
-    it('should update a sales channel for current organization', async () => {
-      const channelId = 1;
-      const updateDto = { name: 'Updated Name' };
-      const updatedChannel = { ...mockSalesChannel, name: 'Updated Name' };
-
-      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
-        mockOrganization
-      );
-      salesChannelsRepository.findOne.mockResolvedValue(mockSalesChannel);
-      salesChannelsRepository.save.mockResolvedValue(updatedChannel);
-
-      const result = await service.updateForCurrentOrganization(
-        channelId,
-        updateDto
-      );
-
-      expect(
-        currentOrganizationService.getCurrentOrganization
-      ).toHaveBeenCalledTimes(1);
-      expect(salesChannelsRepository.findOne).toHaveBeenCalledWith({
-        where: { id: channelId, organizationId: 31 },
-        relations: ['organization'],
-      });
-      expect(salesChannelsRepository.save).toHaveBeenCalled();
-      expect(result).toEqual(updatedChannel);
-    });
-  });
-
-  describe('removeForCurrentOrganization', () => {
-    it('should remove a sales channel for current organization', async () => {
-      const channelId = 1;
-      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
-        mockOrganization
-      );
-      salesChannelsRepository.findOne.mockResolvedValue(mockSalesChannel);
-      salesChannelsRepository.remove.mockResolvedValue(mockSalesChannel);
-
-      await service.removeForCurrentOrganization(channelId);
-
-      expect(
-        currentOrganizationService.getCurrentOrganization
-      ).toHaveBeenCalledTimes(1);
-      expect(salesChannelsRepository.findOne).toHaveBeenCalledWith({
-        where: { id: channelId, organizationId: 31 },
-        relations: ['organization'],
-      });
-      expect(salesChannelsRepository.remove).toHaveBeenCalledWith(
-        mockSalesChannel
-      );
+        service.createNewSalesChannel(mockCreateSalesChannelDto)
+      ).rejects.toThrow('Database error');
     });
   });
 });

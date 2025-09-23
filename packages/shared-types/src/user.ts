@@ -2,7 +2,6 @@
 
 import { IOrganization } from "./organization";
 import { IAuditLog } from "./auditLog";
-import { UserOrganizationRole } from "./userOrganizationRole";
 import { IUserOrganization } from "./userOrganization";
 
 export interface IUser {

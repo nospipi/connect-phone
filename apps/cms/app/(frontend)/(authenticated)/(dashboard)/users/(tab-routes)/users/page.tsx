@@ -50,10 +50,17 @@ const Page = async ({
     role: role,
   })
 
-  console.log(
-    "Users Response:",
-    usersResponse.items.map((user) => user.user),
-  )
+  console.log("Users Response:", usersResponse.items)
+
+  //   cms:dev: Users Response: [
+  // cms:dev:   {
+  // cms:dev:     id: 1015,
+  // cms:dev:     createdAt: '2025-09-19T11:26:12.642Z',
+  // cms:dev:     email: 'Jocelyn_Sauer@example.com',
+  // cms:dev:     firstName: 'Jocelyn',
+  // cms:dev:     lastName: 'Sauer',
+  // cms:dev:     loggedOrganizationId: null
+  // cms:dev:   },
 
   const temp_users = usersResponse?.items || []
   const meta = usersResponse?.meta

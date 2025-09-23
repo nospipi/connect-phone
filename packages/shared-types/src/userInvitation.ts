@@ -1,6 +1,7 @@
 // packages/shared-types/src/userInvitation.ts
 
 import { IOrganization } from "./organization";
+import { UserOrganizationRole } from "./userOrganizationRole";
 import { IUser } from "./user";
 
 export enum InvitationStatus {
@@ -9,9 +10,12 @@ export enum InvitationStatus {
   REJECTED = "REJECTED",
 }
 
+//----------------------------------------------------------------------------
+
 export interface IUserInvitation {
   id: number;
   email: string;
+  role: UserOrganizationRole;
   status: InvitationStatus;
   createdAt: string;
   organizationId: number;

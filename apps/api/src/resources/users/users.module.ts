@@ -16,6 +16,8 @@ import { GetUserLoggedInOrganizationController } from './services/get-user-logge
 import { GetUserLoggedInOrganizationService } from './services/get-user-logged-in-organization/service';
 import { GetAllUsersOfOrgPaginatedController } from './services/get-all-users-of-org-paginated/controller';
 import { GetAllUsersOfOrgPaginatedService } from './services/get-all-users-of-org-paginated/service';
+import { CreateUserController } from './services/create-user/controller';
+import { CreateUserService } from './services/create-user/service';
 import { CurrentDbUserService } from '../../common/core/current-db-user.service';
 
 //-------------------------------------------------------------------------------------------
@@ -35,6 +37,7 @@ import { CurrentDbUserService } from '../../common/core/current-db-user.service'
     IsUserLoggedInOrganizationController,
     GetUserLoggedInOrganizationController,
     GetAllUsersOfOrgPaginatedController,
+    CreateUserController,
   ],
   providers: [
     GetAllOrganizationsOfUserService,
@@ -43,6 +46,7 @@ import { CurrentDbUserService } from '../../common/core/current-db-user.service'
     IsUserLoggedInOrganizationService,
     GetUserLoggedInOrganizationService,
     GetAllUsersOfOrgPaginatedService,
+    CreateUserService,
     CurrentDbUserService,
   ],
 })
