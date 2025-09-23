@@ -28,8 +28,7 @@ export class GetAllInvitationsOfOrgPaginatedService {
     page: number = 1,
     limit: number = 10,
     search: string = '',
-    role: string = 'all',
-    status: string = 'all'
+    role: string = 'all'
   ): Promise<Pagination<UserInvitationEntity>> {
     // Automatically get the current organization from context
     const organization =
@@ -66,13 +65,6 @@ export class GetAllInvitationsOfOrgPaginatedService {
     if (role && role.toLowerCase() !== 'all') {
       queryBuilder.andWhere('userInvitation.role = :role', {
         role: role.toUpperCase(),
-      });
-    }
-
-    // Add status filtering if status is not 'all'
-    if (status && status.toLowerCase() !== 'all') {
-      queryBuilder.andWhere('userInvitation.status = :status', {
-        status: status.toUpperCase(),
       });
     }
 

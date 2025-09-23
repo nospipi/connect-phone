@@ -37,12 +37,4 @@ export class SearchInvitationsDto {
     typeof value === 'string' ? value.toLowerCase() : 'all'
   )
   role?: string = 'all';
-
-  @IsOptional()
-  @IsString()
-  @IsIn(['all', 'pending', 'accepted', 'rejected'])
-  @Transform(({ value }) =>
-    typeof value === 'string' ? value.toLowerCase() : 'all'
-  )
-  status?: string = 'all';
 }

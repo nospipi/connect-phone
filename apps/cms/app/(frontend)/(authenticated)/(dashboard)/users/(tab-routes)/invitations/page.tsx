@@ -57,7 +57,6 @@ const Page = async ({
   //     id: 54,
   //     email: 'Ressie23@invitation.com',
   //     role: 'ADMIN',
-  //     status: 'REJECTED',
   //     createdAt: '2025-09-23T09:53:47.387Z',
   //     organizationId: 23,
   //     invitedById: 1753,

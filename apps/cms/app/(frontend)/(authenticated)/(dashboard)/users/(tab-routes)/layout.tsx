@@ -1,58 +1,30 @@
-"use client"
-
-import { RiGroupLine, RiMailSendLine } from "@remixicon/react"
-import {
-  TabNavigation,
-  TabNavigationLink,
-} from "@/components/common/TabNavigation"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-
-const navigationSettings = [
-  {
-    name: "Users",
-    href: "/users/users",
-    icon: RiGroupLine,
-    showCount: false,
-  },
-  {
-    name: "Invitations",
-    href: "/users/invitations",
-    icon: RiMailSendLine,
-    showCount: true,
-  },
-]
+import TabNavigationWrapper from "./TabNavigationWrapper.client"
+import { getAllInvitationsOfOrganizationPaginated } from "@/app/(backend)/server_actions/getAllInvitationsOfOrganizationPaginated"
 
 //-------------------------------------------------------------------
 
-export default function Layout({
+const Layout = async ({
   children,
 }: Readonly<{
   children: React.ReactNode
-}>) {
-  const pathname = usePathname()
+}>) => {
+  const invitationsResponse = await getAllInvitationsOfOrganizationPaginated({
+    page: "1",
+    search: "",
+    role: "all",
+  })
+  const meta = invitationsResponse?.meta
+  console.log("invitationsResponse", invitationsResponse)
+
   return (
     <div className="flex h-full flex-col gap-2 py-4 pl-5">
       <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-50">
         Users
       </h1>
-      <TabNavigation className="relative">
-        {navigationSettings.map((item) => (
-          <TabNavigationLink
-            href={item.href}
-            key={item.name}
-            asChild
-            active={pathname === item.href}
-            count={item.showCount ? 10 : undefined}
-          >
-            <Link href={item.href} className="flex items-center">
-              <item.icon className="mr-2 h-4 w-4" />
-              {item.name}
-            </Link>
-          </TabNavigationLink>
-        ))}
-      </TabNavigation>
+      <TabNavigationWrapper invitationsCount={meta?.totalItems ?? 0} />
       <div className="min-h-0 flex-1 overflow-hidden">{children}</div>
     </div>
   )
 }
+
+export default Layout

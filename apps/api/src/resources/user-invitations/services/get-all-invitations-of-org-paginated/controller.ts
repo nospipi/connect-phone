@@ -25,8 +25,7 @@ export class GetAllInvitationsOfOrgPaginatedController {
       searchInvitationsDto.page || 1,
       searchInvitationsDto.limit || 10,
       searchInvitationsDto.search || '',
-      searchInvitationsDto.role || 'all',
-      searchInvitationsDto.status || 'all'
+      searchInvitationsDto.role || 'all'
     );
   }
 }
