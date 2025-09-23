@@ -69,7 +69,7 @@ const Page = async ({
   const hasActiveFilters = search !== "" || role !== "all"
 
   return (
-    <div className="flex h-full flex-col gap-2 overflow-hidden">
+    <div className="flex h-full flex-col gap-2 overflow-hidden py-4 pl-5">
       {/* Filters Bar */}
       <div className="my-2 flex flex-col gap-3 pr-2 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-1 flex-col gap-3 sm:flex-row sm:items-center">
