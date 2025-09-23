@@ -7,8 +7,11 @@ import { UserOrganizationEntity } from './entities/user-organization.entity';
 import { AuditLogEntryEntity } from './entities/audit-log.entity';
 import { UserInvitationEntity } from './entities/user-invitation.entity';
 import { AuditLogSubscriber } from './subscribers/audit-log.subscriber';
+import { UserInvitationSubscriber } from './subscribers/user-invitation.subscriber';
 import * as dotenv from 'dotenv';
 dotenv.config();
+
+//-----------------------------------------------------------------------------
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
@@ -21,7 +24,7 @@ export const AppDataSource = new DataSource({
     AuditLogEntryEntity,
     UserInvitationEntity,
   ],
-  subscribers: [AuditLogSubscriber],
+  subscribers: [AuditLogSubscriber, UserInvitationSubscriber],
   migrations: ['src/database/migrations/*.ts'],
   ssl: {
     rejectUnauthorized: false,

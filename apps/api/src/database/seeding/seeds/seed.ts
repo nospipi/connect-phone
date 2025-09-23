@@ -12,10 +12,7 @@ import {
   IUser,
   IUserInvitation,
 } from '@connect-phone/shared-types';
-import {
-  UserInvitationEntity,
-  InvitationStatus,
-} from '../../entities/user-invitation.entity';
+import { UserInvitationEntity } from '../../entities/user-invitation.entity';
 import { faker } from '@faker-js/faker';
 
 async function seed() {
@@ -159,11 +156,6 @@ async function seed() {
             role: faker.helpers.arrayElement([
               UserOrganizationRole.ADMIN,
               UserOrganizationRole.OPERATOR,
-            ]),
-            status: faker.helpers.arrayElement([
-              InvitationStatus.PENDING,
-              InvitationStatus.ACCEPTED,
-              InvitationStatus.REJECTED,
             ]),
             organizationId: org.id,
             invitedById: invitedBy!.id,

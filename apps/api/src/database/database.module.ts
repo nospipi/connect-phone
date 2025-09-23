@@ -10,6 +10,9 @@ import { UserOrganizationEntity } from './entities/user-organization.entity';
 import { AuditLogEntryEntity } from './entities/audit-log.entity';
 import { UserInvitationEntity } from './entities/user-invitation.entity';
 import { AuditLogSubscriber } from './subscribers/audit-log.subscriber';
+import { UserInvitationSubscriber } from './subscribers/user-invitation.subscriber';
+
+//-----------------------------------------------------------------------------
 
 @Module({
   imports: [
@@ -26,7 +29,7 @@ import { AuditLogSubscriber } from './subscribers/audit-log.subscriber';
           AuditLogEntryEntity,
           UserInvitationEntity,
         ],
-        subscribers: [AuditLogSubscriber],
+        subscribers: [AuditLogSubscriber, UserInvitationSubscriber],
         synchronize: process.env.NODE_ENV !== 'production',
         ssl: {
           rejectUnauthorized: false,

@@ -16,12 +16,6 @@ import { OrganizationEntity } from './organization.entity';
 import { UserEntity } from './user.entity';
 import { IUser, IOrganization } from '@connect-phone/shared-types';
 
-export enum InvitationStatus {
-  PENDING = 'PENDING',
-  ACCEPTED = 'ACCEPTED',
-  REJECTED = 'REJECTED',
-}
-
 @Entity('user_invitations')
 @Unique(['email', 'organizationId'])
 export class UserInvitationEntity implements IUserInvitation {
@@ -37,13 +31,6 @@ export class UserInvitationEntity implements IUserInvitation {
     default: UserOrganizationRole.OPERATOR,
   })
   role: UserOrganizationRole;
-
-  @Column({
-    type: 'enum',
-    enum: InvitationStatus,
-    default: InvitationStatus.PENDING,
-  })
-  status: InvitationStatus;
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: string;
