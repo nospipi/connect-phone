@@ -7,7 +7,6 @@ import {
   JoinColumn,
   CreateDateColumn,
   Unique,
-  BeforeInsert,
 } from 'typeorm';
 import {
   IUserInvitation,
@@ -62,20 +61,4 @@ export class UserInvitationEntity implements IUserInvitation {
   @ManyToOne(() => UserEntity, { nullable: false })
   @JoinColumn({ name: 'invitedById' })
   invitedBy: IUser;
-
-  // ---------------------------------------------------
-  // ✅ Hook to prevent inviting existing users
-  // ---------------------------------------------------
-  @BeforeInsert()
-  async validateNoExistingUser() {
-    const existingUser = await UserEntity.getRepository().findOne({
-      where: { email: this.email },
-    });
-
-    if (existingUser) {
-      throw new Error(
-        `Cannot invite ${this.email}, this user is already registered.`
-      );
-    }
-  }
 }
