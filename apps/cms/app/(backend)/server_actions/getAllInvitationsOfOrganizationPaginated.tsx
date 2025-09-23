@@ -1,7 +1,7 @@
 "use server"
 
 import { AxiosError } from "axios"
-import { ErrorResponse, PaginatedUsersResponse } from "./types"
+import { ErrorResponse, PaginatedInvitationsResponse } from "./types"
 import { createApiClient } from "./api-client"
 
 //----------------------------------------------------------------------
@@ -16,7 +16,7 @@ export const getAllInvitationsOfOrganizationPaginated = async ({
   page = 1,
   search,
   role,
-}: PaginationParams): Promise<PaginatedUsersResponse> => {
+}: PaginationParams): Promise<PaginatedInvitationsResponse> => {
   try {
     console.log("Fetching invitations for organization:", "page:", page)
 

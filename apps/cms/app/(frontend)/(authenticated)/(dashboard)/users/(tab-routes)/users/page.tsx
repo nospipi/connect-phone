@@ -50,7 +50,7 @@ const Page = async ({
     role: role,
   })
 
-  console.log("Users Response:", usersResponse.items)
+  //console.log("Users Response:", usersResponse.items)
 
   //   cms:dev: Users Response: [
   // cms:dev:   {
@@ -62,7 +62,7 @@ const Page = async ({
   // cms:dev:     loggedOrganizationId: null
   // cms:dev:   },
 
-  const temp_users = usersResponse?.items || []
+  const items = usersResponse?.items || []
   const meta = usersResponse?.meta
   const hasPreviousPage = meta?.currentPage > 1
   const hasNextPage = meta?.currentPage < meta?.totalPages
@@ -135,7 +135,7 @@ const Page = async ({
         </div>
       </div>
 
-      {temp_users.length === 0 && (
+      {items.length === 0 && (
         <div className="flex flex-1 items-center justify-center">
           <div className="py-12 text-center">
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100 dark:bg-slate-800/50">
@@ -154,10 +154,10 @@ const Page = async ({
       )}
 
       {/* Users List */}
-      {temp_users.length > 0 && (
+      {items.length > 0 && (
         <div className="flex-1 overflow-hidden">
           <div className="h-full divide-y divide-gray-200 overflow-auto pr-5 dark:divide-slate-800/30">
-            {temp_users.map((userOrganization: any, index) => {
+            {items.map((userOrganization: any, index) => {
               const user = userOrganization.user
               const role = userOrganization.role
               const initials = getInitials(user.firstName, user.lastName)

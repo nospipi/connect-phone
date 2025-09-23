@@ -6,6 +6,7 @@ import {
   IUser,
   IOrganization,
   IUserOrganization,
+  IUserInvitation,
 } from "@connect-phone/shared-types"
 
 //----------------------------------------------------------------------
@@ -53,3 +54,6 @@ export interface PaginatedSalesChannelsResponse
 
 export interface PaginatedUsersResponse
   extends PaginatedResponse<IUserOrganization> {}
+
+export interface PaginatedInvitationsResponse
+  extends PaginatedResponse<IUserInvitation> {}

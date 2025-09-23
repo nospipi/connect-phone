@@ -50,7 +50,7 @@ const Page = async ({
     role: role,
   })
 
-  console.log("Invitations Response:", invitationsResponse.items)
+  //console.log("Invitations Response:", invitationsResponse.items)
 
   // Invitations Response: [
   //{
@@ -79,7 +79,7 @@ const Page = async ({
   //   }
   //]
 
-  const temp_users = invitationsResponse?.items || []
+  const items = invitationsResponse?.items || []
   const meta = invitationsResponse?.meta
   const hasPreviousPage = meta?.currentPage > 1
   const hasNextPage = meta?.currentPage < meta?.totalPages
@@ -87,7 +87,19 @@ const Page = async ({
 
   return (
     <div className="flex h-full flex-col gap-2 overflow-hidden">
-      INVITATIONS
+      <Link href="/users/invite-user">
+        <Button variant="primary" className="mb-4">
+          Invite User
+        </Button>
+      </Link>
+      {items.map((item, index) => {
+        return (
+          <div key={item.id}>
+            {item.email} - {item.role} - {item.status} - Invited by:{" "}
+            {item.invitedBy?.firstName} {item.invitedBy?.lastName}
+          </div>
+        )
+      })}
     </div>
   )
 }
