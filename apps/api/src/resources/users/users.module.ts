@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from '@/database/entities/user.entity';
 import { OrganizationEntity } from '@/database/entities/organization.entity';
 import { UserOrganizationEntity } from '@/database/entities/user-organization.entity';
+import { UserInvitationEntity } from '@/database/entities/user-invitation.entity';
 import { GetAllOrganizationsOfUserController } from './services/get-all-organizations-of-user/controller';
 import { GetAllOrganizationsOfUserService } from './services/get-all-organizations-of-user/service';
 import { LogUserInOrganizationController } from './services/log-user-in-organization/controller';
@@ -16,8 +17,10 @@ import { GetUserLoggedInOrganizationController } from './services/get-user-logge
 import { GetUserLoggedInOrganizationService } from './services/get-user-logged-in-organization/service';
 import { GetAllUsersOfOrgPaginatedController } from './services/get-all-users-of-org-paginated/controller';
 import { GetAllUsersOfOrgPaginatedService } from './services/get-all-users-of-org-paginated/service';
-import { CreateUserController } from './services/create-user/controller';
-import { CreateUserService } from './services/create-user/service';
+import { CreateUserInvitationController } from './services/create-user-invitation/controller';
+import { CreateUserInvitationService } from './services/create-user-invitation/service';
+import { GetAllInvitationsOfOrgPaginatedController } from './services/get-all-invitations-of-org-paginated/controller';
+import { GetAllInvitationsOfOrgPaginatedService } from './services/get-all-invitations-of-org-paginated/service';
 import { CurrentDbUserService } from '../../common/core/current-db-user.service';
 
 //-------------------------------------------------------------------------------------------
@@ -28,6 +31,7 @@ import { CurrentDbUserService } from '../../common/core/current-db-user.service'
       UserEntity,
       OrganizationEntity,
       UserOrganizationEntity,
+      UserInvitationEntity,
     ]),
   ],
   controllers: [
@@ -37,7 +41,8 @@ import { CurrentDbUserService } from '../../common/core/current-db-user.service'
     IsUserLoggedInOrganizationController,
     GetUserLoggedInOrganizationController,
     GetAllUsersOfOrgPaginatedController,
-    CreateUserController,
+    CreateUserInvitationController,
+    GetAllInvitationsOfOrgPaginatedController,
   ],
   providers: [
     GetAllOrganizationsOfUserService,
@@ -46,7 +51,8 @@ import { CurrentDbUserService } from '../../common/core/current-db-user.service'
     IsUserLoggedInOrganizationService,
     GetUserLoggedInOrganizationService,
     GetAllUsersOfOrgPaginatedService,
-    CreateUserService,
+    CreateUserInvitationService,
+    GetAllInvitationsOfOrgPaginatedService,
     CurrentDbUserService,
   ],
 })

@@ -8,7 +8,10 @@ import {
   CreateDateColumn,
   Unique,
 } from 'typeorm';
-import { IUserInvitation } from '@connect-phone/shared-types';
+import {
+  IUserInvitation,
+  UserOrganizationRole,
+} from '@connect-phone/shared-types';
 import { OrganizationEntity } from './organization.entity';
 import { UserEntity } from './user.entity';
 import { IUser, IOrganization } from '@connect-phone/shared-types';
@@ -27,6 +30,13 @@ export class UserInvitationEntity implements IUserInvitation {
 
   @Column({ type: 'varchar', length: 255 })
   email: string;
+
+  @Column({
+    type: 'enum',
+    enum: UserOrganizationRole,
+    default: UserOrganizationRole.OPERATOR,
+  })
+  role: UserOrganizationRole;
 
   @Column({
     type: 'enum',

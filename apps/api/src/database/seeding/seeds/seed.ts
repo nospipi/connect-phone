@@ -92,19 +92,40 @@ async function seed() {
 
     await AppDataSource.manager.save(UserOrganizationEntity, userOrgEntries);
 
-    // Create sales channels
+    // Create sales channels with unique names per organization
     const salesChannels: Partial<ISalesChannel>[] = [];
     for (const org of savedOrgs) {
       const channelCount = faker.number.int({ min: 2, max: 4 });
+      const usedNames = new Set<string>(); // Track used names for this organization
+
       for (let i = 0; i < channelCount; i++) {
-        salesChannels.push({
-          name: `${faker.commerce.department()} ${faker.helpers.arrayElement([
+        let channelName: string;
+        let attempts = 0;
+
+        // Generate unique name for this organization
+        do {
+          const department = faker.commerce.department();
+          const suffix = faker.helpers.arrayElement([
             'Store',
             'Online',
             'Mobile',
             'Retail',
             'Platform',
-          ])}`,
+          ]);
+          channelName = `${department} ${suffix}`;
+          attempts++;
+
+          // If we can't generate a unique name after 10 attempts, add a counter
+          if (attempts > 10) {
+            channelName = `${department} ${suffix} ${i + 1}`;
+            break;
+          }
+        } while (usedNames.has(channelName));
+
+        usedNames.add(channelName);
+
+        salesChannels.push({
+          name: channelName,
           description: faker.datatype.boolean()
             ? faker.company.catchPhrase()
             : null,
@@ -135,6 +156,10 @@ async function seed() {
             email: faker.internet.email({
               provider: 'invitation.com',
             }),
+            role: faker.helpers.arrayElement([
+              UserOrganizationRole.ADMIN,
+              UserOrganizationRole.OPERATOR,
+            ]),
             status: faker.helpers.arrayElement([
               InvitationStatus.PENDING,
               InvitationStatus.ACCEPTED,
