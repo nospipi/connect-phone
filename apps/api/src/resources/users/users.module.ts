@@ -17,10 +17,7 @@ import { GetUserLoggedInOrganizationController } from './services/get-user-logge
 import { GetUserLoggedInOrganizationService } from './services/get-user-logged-in-organization/service';
 import { GetAllUsersOfOrgPaginatedController } from './services/get-all-users-of-org-paginated/controller';
 import { GetAllUsersOfOrgPaginatedService } from './services/get-all-users-of-org-paginated/service';
-import { CreateUserInvitationController } from './services/create-user-invitation/controller';
-import { CreateUserInvitationService } from './services/create-user-invitation/service';
-import { GetAllInvitationsOfOrgPaginatedController } from './services/get-all-invitations-of-org-paginated/controller';
-import { GetAllInvitationsOfOrgPaginatedService } from './services/get-all-invitations-of-org-paginated/service';
+
 import { CurrentDbUserService } from '../../common/core/current-db-user.service';
 
 //-------------------------------------------------------------------------------------------
@@ -41,8 +38,6 @@ import { CurrentDbUserService } from '../../common/core/current-db-user.service'
     IsUserLoggedInOrganizationController,
     GetUserLoggedInOrganizationController,
     GetAllUsersOfOrgPaginatedController,
-    CreateUserInvitationController,
-    GetAllInvitationsOfOrgPaginatedController,
   ],
   providers: [
     GetAllOrganizationsOfUserService,
@@ -51,8 +46,6 @@ import { CurrentDbUserService } from '../../common/core/current-db-user.service'
     IsUserLoggedInOrganizationService,
     GetUserLoggedInOrganizationService,
     GetAllUsersOfOrgPaginatedService,
-    CreateUserInvitationService,
-    GetAllInvitationsOfOrgPaginatedService,
     CurrentDbUserService,
   ],
 })

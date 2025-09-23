@@ -95,8 +95,8 @@ const Page = async ({
       {items.map((item, index) => {
         return (
           <div key={item.id}>
-            {item.email} - {item.role} - {item.status} - Invited by:{" "}
-            {item.invitedBy?.firstName} {item.invitedBy?.lastName}
+            {item.email} - {item.role} - Invited by: {item.invitedBy?.firstName}{" "}
+            {item.invitedBy?.lastName}
           </div>
         )
       })}

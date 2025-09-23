@@ -22,7 +22,7 @@ export const getAllInvitationsOfOrganizationPaginated = async ({
 
     const api = createApiClient()
     const response = await api.get(
-      `/users/invitations/paginated?page=${page}&search=${search}&role=${role}`,
+      `/invitations/paginated?page=${page}&search=${search}&role=${role}`,
     )
 
     if (response.status !== 200) {

@@ -11,14 +11,14 @@ import { IUserInvitation } from '@connect-phone/shared-types';
 //-------------------------------------------
 
 @Injectable()
-@Controller('users')
+@Controller('invitations')
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN', 'OPERATOR'))
 export class CreateUserInvitationController {
   constructor(
     private readonly createUserInvitationService: CreateUserInvitationService
   ) {}
 
-  @Post('invitation')
+  @Post('new')
   async createUserInvitation(
     @Body() createUserInvitationDto: CreateUserInvitationDto
   ): Promise<IUserInvitation> {

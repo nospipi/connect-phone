@@ -4,15 +4,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserInvitationEntity } from '@/database/entities/user-invitation.entity';
 import { OrganizationEntity } from '@/database/entities/organization.entity';
 import { UserEntity } from '@/database/entities/user.entity';
-
-// controllers
-import { FindAllByOrgPaginatedController } from './services/find-all-by-org-paginated/controller';
-import { CreateNewInvitationController } from './services/create-new-invitation/controller';
-
-// services
-import { FindAllByOrgPaginatedService } from './services/find-all-by-org-paginated/service';
-import { CreateNewInvitationService } from './services/create-new-invitation/service';
-
+import { CreateUserInvitationController } from '../user-invitations/services/create-user-invitation/controller';
+import { CreateUserInvitationService } from '../user-invitations/services/create-user-invitation/service';
+import { GetAllInvitationsOfOrgPaginatedController } from '../user-invitations/services/get-all-invitations-of-org-paginated/controller';
+import { GetAllInvitationsOfOrgPaginatedService } from '../user-invitations/services/get-all-invitations-of-org-paginated/service';
 //-----------------------------------------
 
 @Module({
@@ -23,7 +18,13 @@ import { CreateNewInvitationService } from './services/create-new-invitation/ser
       UserEntity,
     ]),
   ],
-  controllers: [FindAllByOrgPaginatedController, CreateNewInvitationController],
-  providers: [FindAllByOrgPaginatedService, CreateNewInvitationService],
+  controllers: [
+    CreateUserInvitationController,
+    GetAllInvitationsOfOrgPaginatedController,
+  ],
+  providers: [
+    CreateUserInvitationService,
+    GetAllInvitationsOfOrgPaginatedService,
+  ],
 })
 export class UserInvitationsModule {}

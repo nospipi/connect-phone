@@ -10,14 +10,14 @@ import { SearchInvitationsDto } from './search-invitations.dto';
 
 //--------------------------------------------------------------------------------
 
-@Controller('users')
+@Controller('invitations')
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN', 'OPERATOR'))
 export class GetAllInvitationsOfOrgPaginatedController {
   constructor(
     private readonly getAllInvitationsOfOrgPaginatedService: GetAllInvitationsOfOrgPaginatedService
   ) {}
 
-  @Get('invitations/paginated')
+  @Get('paginated')
   async findAllByOrganizationPaginated(
     @Query() searchInvitationsDto: SearchInvitationsDto
   ): Promise<Pagination<UserInvitationEntity>> {

@@ -1,15 +1,9 @@
-// apps/api/src/resources/user-invitations/services/find-all-by-org-paginated/service.ts
-import {
-  Injectable,
-  NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common';
+// apps/api/src/resources/users/services/get-all-invitations-of-org-paginated/service.ts
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserInvitationEntity } from '../../../../database/entities/user-invitation.entity';
-import { OrganizationEntity } from '../../../../database/entities/organization.entity';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
-import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
 import {
   paginate,
   Pagination,
@@ -19,14 +13,11 @@ import {
 //-----------------------------------------
 
 @Injectable()
-export class FindAllByOrgPaginatedService {
+export class GetAllInvitationsOfOrgPaginatedService {
   constructor(
     @InjectRepository(UserInvitationEntity)
-    private userInvitationsRepository: Repository<UserInvitationEntity>,
-    @InjectRepository(OrganizationEntity)
-    private organizationsRepository: Repository<OrganizationEntity>,
-    private currentOrganizationService: CurrentOrganizationService,
-    private currentDbUserService: CurrentDbUserService
+    private userInvitationRepository: Repository<UserInvitationEntity>,
+    private currentOrganizationService: CurrentOrganizationService
   ) {}
 
   /**
@@ -35,7 +26,10 @@ export class FindAllByOrgPaginatedService {
    */
   async findAllByOrganizationPaginated(
     page: number = 1,
-    limit: number = 10
+    limit: number = 10,
+    search: string = '',
+    role: string = 'all',
+    status: string = 'all'
   ): Promise<Pagination<UserInvitationEntity>> {
     // Automatically get the current organization from context
     const organization =
@@ -49,18 +43,40 @@ export class FindAllByOrgPaginatedService {
     const options: IPaginationOptions = {
       page,
       limit: Math.min(Math.max(limit, 1), 100), // Validate limit bounds (min: 1, max: 100)
-      route: `/user-invitations/paginated`, // Updated route for generating pagination links
+      route: `/invitations/paginated`, // Updated route for generating pagination links
     };
 
-    // Build query for current organization
-    const queryBuilder = this.userInvitationsRepository
+    const queryBuilder = this.userInvitationRepository
       .createQueryBuilder('userInvitation')
       .leftJoinAndSelect('userInvitation.organization', 'organization')
       .leftJoinAndSelect('userInvitation.invitedBy', 'invitedBy')
       .where('userInvitation.organizationId = :organizationId', {
         organizationId: organization?.id,
-      })
-      .orderBy('userInvitation.id', 'DESC'); // Order by ID descending
+      });
+
+    // Add search functionality if search term is provided
+    if (search && search.trim().length > 0) {
+      const searchTerm = `%${search.trim()}%`;
+      queryBuilder.andWhere('userInvitation.email ILIKE :search', {
+        search: searchTerm,
+      });
+    }
+
+    // Add role filtering if role is not 'all'
+    if (role && role.toLowerCase() !== 'all') {
+      queryBuilder.andWhere('userInvitation.role = :role', {
+        role: role.toUpperCase(),
+      });
+    }
+
+    // Add status filtering if status is not 'all'
+    if (status && status.toLowerCase() !== 'all') {
+      queryBuilder.andWhere('userInvitation.status = :status', {
+        status: status.toUpperCase(),
+      });
+    }
+
+    queryBuilder.orderBy('userInvitation.id', 'DESC');
 
     // Use nestjs-typeorm-paginate to handle pagination
     return paginate<UserInvitationEntity>(queryBuilder, options);

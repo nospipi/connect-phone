@@ -31,7 +31,7 @@ export const createUserInvitation = async (
     })
 
     const api = createApiClient()
-    const response = await api.post("/users/invitation", {
+    const response = await api.post("/invitations/new", {
       email: email,
       role: role,
     })
