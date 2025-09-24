@@ -1,8 +1,6 @@
 //packages/shared-types/src/organization.ts
 
 import { ISalesChannel } from "./salesChannel";
-import { IUser } from "./user";
-import { UserOrganizationRole } from "./userOrganizationRole";
 import { IAuditLog } from "./auditLog";
 import { IUserOrganization } from "./userOrganization";
 

@@ -15,7 +15,7 @@ import { Pagination } from 'nestjs-typeorm-paginate';
 import { OrganizationGuard } from '../../../../common/guards/organization.guard';
 
 @Controller('sales-channels')
-@UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('OPERATOR'))
+@UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN', 'OPERATOR'))
 export class FindAllByOrgPaginatedController {
   constructor(
     private readonly findAllByOrgPaginatedService: FindAllByOrgPaginatedService

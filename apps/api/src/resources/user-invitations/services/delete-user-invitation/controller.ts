@@ -17,7 +17,7 @@ import { IUserInvitation } from '@connect-phone/shared-types';
 
 @Injectable()
 @Controller('invitations')
-@UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN', 'OPERATOR'))
+@UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN'))
 export class DeleteUserInvitationController {
   constructor(
     private readonly deleteUserInvitationService: DeleteUserInvitationService

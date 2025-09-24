@@ -168,7 +168,7 @@ const Page = async ({
               return (
                 <Link
                   key={user.id}
-                  href={`/users/users/${user.id}`}
+                  href={`/users/${user.id}`}
                   className="block"
                 >
                   <div className="duration-2000 group py-4 transition-all">

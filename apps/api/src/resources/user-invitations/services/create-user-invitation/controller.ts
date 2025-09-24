@@ -12,7 +12,7 @@ import { IUserInvitation } from '@connect-phone/shared-types';
 
 @Injectable()
 @Controller('invitations')
-@UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN', 'OPERATOR'))
+@UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN'))
 export class CreateUserInvitationController {
   constructor(
     private readonly createUserInvitationService: CreateUserInvitationService
