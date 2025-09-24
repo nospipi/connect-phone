@@ -30,7 +30,6 @@ const mockUpdateUser = async (formData: FormData): Promise<void> => {
 const Page = async ({ params }: { params: Promise<{ user_id: string }> }) => {
   const { user_id } = await params
   const userData = await getUserById(Number(user_id))
-  console.log("Fetched user data:", userData)
 
   return (
     <div className="flex h-full flex-col overflow-hidden">
