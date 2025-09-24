@@ -27,8 +27,9 @@ const mockUpdateUser = async (formData: FormData): Promise<void> => {
   //we navigate back to the users list page
 }
 
-const Page = async ({ params }: { params: { user_id: string } }) => {
-  const userData = await fetchMockUserData(params.user_id)
+const Page = async ({ params }: { params: Promise<{ user_id: string }> }) => {
+  const { user_id } = await params
+  const userData = await fetchMockUserData(user_id)
 
   return (
     <div className="flex h-full flex-col overflow-hidden">

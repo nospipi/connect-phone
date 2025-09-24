@@ -2,6 +2,7 @@ import { RiArrowLeftLine } from "@remixicon/react"
 import Link from "next/link"
 import { UserOrganizationRole } from "@connect-phone/shared-types"
 import { getUserById } from "@/app/(backend)/server_actions/getUserById"
+import { updateUser } from "@/app/(backend)/server_actions/updateUser"
 
 const USER_ROLES = [
   ...Object.values(UserOrganizationRole).map((role) => ({
@@ -55,7 +56,7 @@ const Page = async ({ params }: { params: { user_id: string } }) => {
       <div className="flex-1 overflow-hidden py-4">
         <div className="flex h-full w-full justify-center overflow-auto px-4">
           <div className="w-full max-w-3xl">
-            <form action={mockUpdateUser} className="flex flex-col gap-6">
+            <form action={updateUser} className="flex flex-col gap-6">
               {/* First Name and Last Name */}
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
