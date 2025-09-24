@@ -1,5 +1,5 @@
 import { createUserInvitation } from "@/app/(backend)/server_actions/createUserInvitation"
-import { RiArrowLeftLine, RiAddLine } from "@remixicon/react"
+import { RiArrowLeftLine, RiMailSendLine } from "@remixicon/react"
 import Link from "next/link"
 
 //----------------------------------------------------------------------
@@ -89,7 +89,7 @@ const Page = async () => {
                   type="submit"
                   className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                 >
-                  <RiAddLine className="mr-2 h-4 w-4" />
+                  <RiMailSendLine className="mr-2 h-4 w-4" />
                   Send Invitation
                 </button>
               </div>

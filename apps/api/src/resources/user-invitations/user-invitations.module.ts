@@ -8,6 +8,8 @@ import { CreateUserInvitationController } from '../user-invitations/services/cre
 import { CreateUserInvitationService } from '../user-invitations/services/create-user-invitation/service';
 import { GetAllInvitationsOfOrgPaginatedController } from '../user-invitations/services/get-all-invitations-of-org-paginated/controller';
 import { GetAllInvitationsOfOrgPaginatedService } from '../user-invitations/services/get-all-invitations-of-org-paginated/service';
+import { DeleteUserInvitationController } from '../user-invitations/services/delete-user-invitation/controller';
+import { DeleteUserInvitationService } from '../user-invitations/services/delete-user-invitation/service';
 //-----------------------------------------
 
 @Module({
@@ -21,10 +23,12 @@ import { GetAllInvitationsOfOrgPaginatedService } from '../user-invitations/serv
   controllers: [
     CreateUserInvitationController,
     GetAllInvitationsOfOrgPaginatedController,
+    DeleteUserInvitationController,
   ],
   providers: [
     CreateUserInvitationService,
     GetAllInvitationsOfOrgPaginatedService,
+    DeleteUserInvitationService,
   ],
 })
 export class UserInvitationsModule {}

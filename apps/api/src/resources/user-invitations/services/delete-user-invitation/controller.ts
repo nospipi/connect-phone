@@ -1,0 +1,42 @@
+// apps/api/src/resources/user-invitations/services/delete-user-invitation/controller.ts
+import {
+  Controller,
+  Delete,
+  Param,
+  UseGuards,
+  ParseIntPipe,
+} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { DeleteUserInvitationService } from './service';
+import { OrganizationGuard } from '../../../../common/guards/organization.guard';
+import { DbUserGuard } from '@/common/guards/db-user.guard';
+import { DbUserRoleGuard } from '@/common/guards/db-user-role.guard';
+import { IUserInvitation } from '@connect-phone/shared-types';
+
+//-------------------------------------------
+
+@Injectable()
+@Controller('invitations')
+@UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN', 'OPERATOR'))
+export class DeleteUserInvitationController {
+  constructor(
+    private readonly deleteUserInvitationService: DeleteUserInvitationService
+  ) {}
+
+  @Delete(':id')
+  async deleteUserInvitation(
+    @Param('id', ParseIntPipe) id: number
+  ): Promise<IUserInvitation> {
+    console.log('deleteUserInvitation Controller - ID:', id);
+
+    try {
+      const deletedInvitation =
+        await this.deleteUserInvitationService.deleteUserInvitation(id);
+      console.log('User invitation deleted successfully:', deletedInvitation);
+      return deletedInvitation;
+    } catch (error) {
+      console.error('Error deleting user invitation:', error);
+      throw error;
+    }
+  }
+}

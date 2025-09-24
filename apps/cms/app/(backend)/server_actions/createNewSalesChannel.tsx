@@ -35,7 +35,7 @@ export const createNewSalesChannel = async (
       logoUrl: logoUrl || undefined,
     })
 
-    console.log("Response from API:", response.data)
+    //console.log("Response from API:", response.data)
 
     if (response.status !== 200 && response.status !== 201) {
       throw new Error("Failed to create sales channel")

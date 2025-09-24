@@ -1,6 +1,7 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/users/(tab-routes)/invitations/page.tsx
 import { Button } from "@/components/common/Button"
 import { getAllInvitationsOfOrganizationPaginated } from "@/app/(backend)/server_actions/getAllInvitationsOfOrganizationPaginated"
+import { deleteUserInvitation } from "@/app/(backend)/server_actions/deleteUserInvitation"
 import Link from "next/link"
 import { Badge } from "@/components/common/Badge"
 import { RiUser2Fill, RiSearchLine, RiDeleteBin6Line } from "@remixicon/react"
@@ -25,11 +26,6 @@ const USER_ROLES = [
 
 const getEmailInitial = (email: string): string => {
   return email ? email[0].toUpperCase() : "?"
-}
-
-const deleteInvitation = async (invitationId: number, email: string) => {
-  "use server"
-  console.log(`Deleting invitation for ${email} (ID: ${invitationId})`)
 }
 
 const Page = async ({
@@ -264,13 +260,12 @@ const Page = async ({
                         >
                           Cancel
                         </label>
-                        <form
-                          action={deleteInvitation.bind(
-                            null,
-                            invitation.id,
-                            invitation.email,
-                          )}
-                        >
+                        <form action={deleteUserInvitation}>
+                          <input
+                            type="hidden"
+                            name="invitationId"
+                            value={invitation.id}
+                          />
                           <button
                             type="submit"
                             className="rounded-md bg-red-600 px-4 py-2 text-white transition-colors duration-200 hover:bg-red-700"

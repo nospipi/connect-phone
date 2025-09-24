@@ -49,7 +49,6 @@ export const OrganizationsDropdownDesktop = ({
   const router = useRouter()
   const [dropdownOpen, setDropdownOpen] = React.useState(false)
   const [hasOpenDialog, setHasOpenDialog] = React.useState(false)
-  const dropdownTriggerRef = React.useRef<null | HTMLButtonElement>(null)
   const focusRef = React.useRef<null | HTMLButtonElement>(null)
 
   const setSelectedOrgInDb = async (orgId: string) => {
@@ -165,14 +164,14 @@ export const OrganizationsDropdownDesktop = ({
             })}
           </DropdownMenuGroup>
 
-          <DropdownMenuSeparator />
+          {/* <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => {
               router.push("/create-organization")
             }}
           >
             Add Organization
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
         </DropdownMenuContent>
       </DropdownMenu>
     </>
@@ -189,7 +188,6 @@ export const OrganizationsDropdownMobile = ({
   const router = useRouter()
   const [dropdownOpen, setDropdownOpen] = React.useState(false)
   const [hasOpenDialog, setHasOpenDialog] = React.useState(false)
-  const dropdownTriggerRef = React.useRef<null | HTMLButtonElement>(null)
   const focusRef = React.useRef<null | HTMLButtonElement>(null)
 
   const setSelectedOrgInDb = async (orgId: string) => {
@@ -304,14 +302,14 @@ export const OrganizationsDropdownMobile = ({
             })}
           </DropdownMenuGroup>
 
-          <DropdownMenuSeparator />
+          {/* <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => {
               router.push("/create-organization")
             }}
           >
             Add Organization
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
         </DropdownMenuContent>
       </DropdownMenu>
     </>
