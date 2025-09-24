@@ -19,8 +19,11 @@ import { GetAllUsersOfOrgPaginatedController } from './services/get-all-users-of
 import { GetAllUsersOfOrgPaginatedService } from './services/get-all-users-of-org-paginated/service';
 import { GetUserByIdController } from './services/get-user-by-id/controller';
 import { GetUserByIdService } from './services/get-user-by-id/service';
+import { UpdateUserController } from './services/update-user/controller';
+import { UpdateUserService } from './services/update-user/service';
 
 import { CurrentDbUserService } from '../../common/core/current-db-user.service';
+import { CurrentOrganizationService } from '../../common/core/current-organization.service';
 
 //-------------------------------------------------------------------------------------------
 
@@ -41,6 +44,7 @@ import { CurrentDbUserService } from '../../common/core/current-db-user.service'
     GetUserLoggedInOrganizationController,
     GetAllUsersOfOrgPaginatedController,
     GetUserByIdController,
+    UpdateUserController,
   ],
   providers: [
     GetAllOrganizationsOfUserService,
@@ -50,7 +54,9 @@ import { CurrentDbUserService } from '../../common/core/current-db-user.service'
     GetUserLoggedInOrganizationService,
     GetAllUsersOfOrgPaginatedService,
     GetUserByIdService,
+    UpdateUserService,
     CurrentDbUserService,
+    CurrentOrganizationService,
   ],
 })
 export class UsersModule {}

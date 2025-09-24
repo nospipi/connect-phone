@@ -16,6 +16,11 @@ import { UserOrganizationRole } from '@connect-phone/shared-types';
 //----------------------------------------------------------------------------
 
 export class UpdateUserDto {
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  id: number;
+
   @IsOptional()
   @IsString()
   @MinLength(1)
@@ -44,10 +49,4 @@ export class UpdateUserDto {
   @IsOptional()
   @IsEnum(UserOrganizationRole)
   role?: UserOrganizationRole;
-
-  @IsOptional()
-  @Type(() => Number)
-  @IsInt()
-  @Min(1)
-  userId?: number;
 }

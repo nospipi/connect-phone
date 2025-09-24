@@ -27,15 +27,12 @@ export class UpdateUserController {
   }
 
   @Put(':userId')
-  @UseGuards(
-    DbUserGuard,
-    OrganizationGuard,
-    DbUserRoleGuard('ADMIN', 'OPERATOR')
-  )
+  @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN'))
   async updateUser(
     @Param('userId', ParseIntPipe) userId: number,
     @Body() updateUserDto: UpdateUserDto
   ): Promise<IUser> {
-    return this.updateUserService.updateUserById({ ...updateUserDto, userId });
+    updateUserDto.id = userId;
+    return this.updateUserService.updateUserById(updateUserDto);
   }
 }

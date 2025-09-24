@@ -27,8 +27,10 @@ const mockUpdateUser = async (formData: FormData): Promise<void> => {
 
 //--------------------------------------------------------------------
 
-const Page = async ({ params }: { params: { user_id: string } }) => {
-  const userData = await getUserById(Number(params.user_id))
+const Page = async ({ params }: { params: Promise<{ user_id: string }> }) => {
+  const { user_id } = await params
+  const userData = await getUserById(Number(user_id))
+  console.log("Fetched user data:", userData)
 
   return (
     <div className="flex h-full flex-col overflow-hidden">
@@ -57,6 +59,8 @@ const Page = async ({ params }: { params: { user_id: string } }) => {
         <div className="flex h-full w-full justify-center overflow-auto px-4">
           <div className="w-full max-w-3xl">
             <form action={updateUser} className="flex flex-col gap-6">
+              {/* Hidden ID Field */}
+              <input type="hidden" name="id" value={userData.id} />
               {/* First Name and Last Name */}
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>

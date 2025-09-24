@@ -50,14 +50,12 @@ export class UpdateUserService {
    * Update user by ID (for admin/operator use)
    */
   async updateUserById(updateData: UpdateUserDto): Promise<IUser> {
-    const { userId, ...userUpdateData } = updateData;
-
-    if (!userId) {
+    if (!updateData.id) {
       throw new NotFoundException('User ID is required');
     }
 
     const user = await this.userRepository.findOne({
-      where: { id: userId },
+      where: { id: updateData.id },
     });
 
     if (!user) {
@@ -65,14 +63,14 @@ export class UpdateUserService {
     }
 
     // Update user basic info
-    if (userUpdateData.firstName !== undefined) {
-      user.firstName = userUpdateData.firstName;
+    if (updateData.firstName !== undefined) {
+      user.firstName = updateData.firstName;
     }
-    if (userUpdateData.lastName !== undefined) {
-      user.lastName = userUpdateData.lastName;
+    if (updateData.lastName !== undefined) {
+      user.lastName = updateData.lastName;
     }
-    if (userUpdateData.email !== undefined) {
-      user.email = userUpdateData.email;
+    if (updateData.email !== undefined) {
+      user.email = updateData.email;
     }
 
     const updatedUser = await this.userRepository.save(user);
@@ -84,7 +82,7 @@ export class UpdateUserService {
 
       const userOrganization = await this.userOrganizationRepository.findOne({
         where: {
-          userId: userId,
+          userId: updateData.id,
           organizationId: organization?.id,
         },
       });
