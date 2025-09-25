@@ -17,15 +17,15 @@ const Layout = async ({
   //console.log("invitationsResponse", invitationsResponse)
 
   return (
-    <div className="flex h-full flex-col gap-2">
+    <div className="relative flex h-full flex-col gap-2">
       <div className="pl-5 pt-4">
         <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-50">
           Users
         </h1>
         <TabNavigationWrapper invitationsCount={meta?.totalItems ?? 0} />
       </div>
-
-      <div className="min-h-0 flex-1 overflow-hidden">{children}</div>
+      {children}
+      {/* <div className="min-h-0 flex-1 overflow-hidden">{children}</div> */}
     </div>
   )
 }
