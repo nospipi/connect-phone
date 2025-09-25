@@ -20,12 +20,6 @@ import { OrganizationGuard } from '../../../../common/guards/organization.guard'
 export class UpdateUserController {
   constructor(private readonly updateUserService: UpdateUserService) {}
 
-  @Put('profile')
-  @UseGuards(DbUserGuard)
-  async updateProfile(@Body() updateUserDto: UpdateUserDto): Promise<IUser> {
-    return this.updateUserService.updateCurrentUser(updateUserDto);
-  }
-
   @Put(':userId')
   @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN'))
   async updateUser(

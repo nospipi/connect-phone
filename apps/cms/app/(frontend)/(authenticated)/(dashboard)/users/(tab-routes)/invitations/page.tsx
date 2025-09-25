@@ -12,6 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/common/Select"
+import InvitationItem from "./InvitationItem"
 import { UserOrganizationRole } from "@connect-phone/shared-types"
 
 //------------------------------------------------------------
@@ -142,143 +143,9 @@ const Page = async ({
       {items.length > 0 && (
         <div className="flex-1 overflow-hidden">
           <div className="h-full divide-y divide-gray-200 overflow-auto pr-5 dark:divide-slate-800/30">
-            {items.map((invitation: any) => {
-              const initial = getEmailInitial(invitation.email)
-              const invitedByName = invitation.invitedBy
-                ? `${invitation.invitedBy.firstName || ""} ${invitation.invitedBy.lastName || ""}`.trim() ||
-                  invitation.invitedBy.email
-                : "Unknown"
-              const createdAt = new Date(
-                invitation.createdAt,
-              ).toLocaleDateString()
-
-              return (
-                <div key={invitation.id}>
-                  {/* Hidden checkbox to control drawer state */}
-                  <input
-                    type="checkbox"
-                    id={`delete-invitation-${invitation.id}`}
-                    className="peer hidden"
-                  />
-                  <div className="duration-2000 group py-4 transition-all">
-                    <div className="flex items-center space-x-4">
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-start justify-between">
-                          <div className="min-w-0 flex-1">
-                            <p className="truncate text-sm font-medium text-gray-900 dark:text-slate-200">
-                              {invitation.email}
-                            </p>
-                            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-slate-400">
-                              <span>Invited by {invitedByName}</span>
-                              <span>•</span>
-                              <span>{createdAt}</span>
-                            </div>
-                          </div>
-
-                          {/* Role Badge */}
-                          <div className="ml-4 flex-shrink-0">
-                            <Badge
-                              variant={
-                                invitation.role === UserOrganizationRole.ADMIN
-                                  ? "warning"
-                                  : "default"
-                              }
-                            >
-                              {invitation.role.charAt(0).toUpperCase() +
-                                invitation.role.slice(1)}
-                            </Badge>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Delete Button */}
-                      <div className="flex-shrink-0">
-                        <label
-                          htmlFor={`delete-invitation-${invitation.id}`}
-                          className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full text-gray-400 transition-all duration-200 hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-900/20 dark:hover:text-red-400"
-                        >
-                          <RiDeleteBin6Line className="h-4 w-4" />
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                  {/* Backdrop Overlay */}
-                  <label
-                    htmlFor={`delete-invitation-${invitation.id}`}
-                    className="invisible fixed inset-0 z-40 bg-black/50 opacity-0 backdrop-blur-sm transition-all duration-300 peer-checked:visible peer-checked:opacity-100"
-                  />
-                  {/* Delete Confirmation Drawer */}
-                  <div className="absolute bottom-0 left-0 right-0 z-50 translate-y-full transform border-t border-gray-200 bg-white transition-transform duration-300 ease-out peer-checked:translate-y-0 dark:border-gray-800 dark:bg-gray-950">
-                    <div className="container mx-auto max-w-5xl px-4 py-6">
-                      {/* Drawer Header */}
-                      <div className="mb-6 flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <h3 className="text-lg font-medium text-gray-900 dark:text-white">
-                            Delete Invitation
-                          </h3>
-                        </div>
-                        {/* Close Drawer Button */}
-                        <label
-                          htmlFor={`delete-invitation-${invitation.id}`}
-                          className="cursor-pointer rounded-full p-2 transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-800"
-                        >
-                          <svg
-                            className="h-5 w-5 text-gray-600 dark:text-gray-400"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M6 18L18 6M6 6l12 12"
-                            />
-                          </svg>
-                        </label>
-                      </div>
-
-                      {/* Confirmation Content */}
-                      <div className="mb-6">
-                        <p className="mb-2 text-gray-700 dark:text-gray-300">
-                          Are you sure you want to delete the invitation for:
-                        </p>
-                        <p className="text-lg font-medium text-gray-900 dark:text-white">
-                          {invitation.email}
-                        </p>
-                        <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                          This action cannot be undone. The user will no longer
-                          be able to accept this invitation.
-                        </p>
-                      </div>
-
-                      {/* Action Buttons */}
-                      <div className="flex items-center justify-end gap-3">
-                        <label
-                          htmlFor={`delete-invitation-${invitation.id}`}
-                          className="cursor-pointer rounded-md bg-gray-200 px-4 py-2 text-gray-700 transition-colors duration-200 hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
-                        >
-                          Cancel
-                        </label>
-                        <form action={deleteUserInvitation}>
-                          <input
-                            type="hidden"
-                            name="invitationId"
-                            value={invitation.id}
-                          />
-                          <button
-                            type="submit"
-                            className="rounded-md bg-red-600 px-4 py-2 text-white transition-colors duration-200 hover:bg-red-700"
-                          >
-                            Delete Invitation
-                          </button>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )
-            })}
+            {items.map((invitation: any) => (
+              <InvitationItem key={invitation.id} invitation={invitation} />
+            ))}
           </div>
         </div>
       )}
@@ -439,3 +306,357 @@ const Page = async ({
 }
 
 export default Page
+
+// // apps/cms/app/(frontend)/(authenticated)/(dashboard)/users/(tab-routes)/invitations/page.tsx
+// import { Button } from "@/components/common/Button"
+// import { getAllInvitationsOfOrganizationPaginated } from "@/app/(backend)/server_actions/getAllInvitationsOfOrganizationPaginated"
+// import Link from "next/link"
+// import { Badge } from "@/components/common/Badge"
+// import { RiUser2Fill, RiSearchLine } from "@remixicon/react"
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from "@/components/common/Select"
+// import { UserOrganizationRole } from "@connect-phone/shared-types"
+// import DeleteInvitation from "./DeleteInvitation"
+
+// //------------------------------------------------------------
+
+// const USER_ROLES = [
+//   { value: "all", label: "All Roles" },
+//   ...Object.values(UserOrganizationRole).map((role) => ({
+//     value: role,
+//     label: role.charAt(0).toUpperCase() + role.slice(1).toLowerCase(),
+//   })),
+// ] as const
+
+// const getEmailInitial = (email: string): string => {
+//   return email ? email[0].toUpperCase() : "?"
+// }
+
+// const Page = async ({
+//   searchParams,
+// }: {
+//   searchParams: Promise<{ [key: string]: string | undefined }>
+// }) => {
+//   const { page = "1", search = "", role = "all" } = await searchParams
+
+//   const invitationsResponse = await getAllInvitationsOfOrganizationPaginated({
+//     page: page,
+//     search: search,
+//     role: role,
+//   })
+
+//   const items = invitationsResponse?.items || []
+//   const meta = invitationsResponse?.meta
+//   const hasPreviousPage = meta?.currentPage > 1
+//   const hasNextPage = meta?.currentPage < meta?.totalPages
+//   const hasActiveFilters = search !== "" || role !== "all"
+
+//   return (
+//     <div className="relative flex h-full flex-col gap-2 overflow-hidden py-4 pl-5">
+//       <Link href="/users/invite-user">
+//         <Button variant="primary" className="mb-4">
+//           Invite User
+//         </Button>
+//       </Link>
+
+//       {/* Filters Bar */}
+//       <div className="my-2 flex flex-col gap-3 pr-2 sm:flex-row sm:items-center sm:justify-between">
+//         <div className="flex flex-1 flex-col gap-3 sm:flex-row sm:items-center">
+//           <form
+//             method="GET"
+//             className="flex flex-1 flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+//           >
+//             <div className="flex flex-1 flex-col gap-3 sm:max-w-lg sm:flex-row sm:items-center">
+//               <div className="relative flex-1 sm:max-w-xs">
+//                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+//                   <RiSearchLine className="h-4 w-4 text-gray-500 dark:text-slate-500" />
+//                 </div>
+//                 <input
+//                   autoFocus
+//                   type="text"
+//                   name="search"
+//                   placeholder="Search invitations..."
+//                   defaultValue={search}
+//                   className="block w-full rounded-md border border-gray-300 bg-white py-2 pl-10 pr-3 text-sm text-gray-900 placeholder-gray-500 outline-none focus:border-blue-500 focus:outline-none focus:ring-0 focus:ring-transparent dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200 dark:placeholder-slate-500 dark:focus:border-slate-700/50"
+//                 />
+//               </div>
+
+//               {/* Role Filter */}
+//               <div className="w-full sm:w-auto">
+//                 <Select name="role" defaultValue={role}>
+//                   <SelectTrigger className="border-gray-300 bg-white text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200 dark:focus:border-slate-600 dark:focus:ring-slate-600">
+//                     <SelectValue placeholder="Filter by role" />
+//                   </SelectTrigger>
+//                   <SelectContent>
+//                     {USER_ROLES.map((roleOption) => (
+//                       <SelectItem
+//                         key={roleOption.value}
+//                         value={roleOption.value}
+//                       >
+//                         {roleOption.label}
+//                       </SelectItem>
+//                     ))}
+//                   </SelectContent>
+//                 </Select>
+//               </div>
+//             </div>
+
+//             <div className="flex items-center justify-end gap-2 sm:justify-start">
+//               <Button
+//                 type="submit"
+//                 variant="secondary"
+//                 className="border-gray-300 bg-gray-50 px-4 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-slate-700/50 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:border-slate-600/50 dark:hover:bg-slate-700/50"
+//               >
+//                 Apply
+//               </Button>
+//               {hasActiveFilters && (
+//                 <Link href="/users/invitations">
+//                   <Button
+//                     variant="secondary"
+//                     className="border-red-300 bg-red-50 px-4 text-sm text-red-700 hover:border-red-400 hover:bg-red-100 dark:border-red-700/50 dark:bg-red-900/20 dark:text-red-400 dark:hover:border-red-600/50 dark:hover:bg-red-800/30"
+//                   >
+//                     Clear
+//                   </Button>
+//                 </Link>
+//               )}
+//             </div>
+//           </form>
+//         </div>
+//       </div>
+
+//       {items.length === 0 && (
+//         <div className="flex flex-1 items-center justify-center">
+//           <div className="py-12 text-center">
+//             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100 dark:bg-slate-800/50">
+//               <RiUser2Fill className="h-8 w-8 text-gray-400 dark:text-slate-600" />
+//             </div>
+//             <h3 className="mb-2 text-lg font-medium text-gray-900 dark:text-slate-200">
+//               No invitations found
+//             </h3>
+//             <p className="text-sm text-gray-500 dark:text-slate-500">
+//               {search || role !== "all"
+//                 ? "Try adjusting your filters to see more results"
+//                 : "Invitations will appear here when you invite users to your organization"}
+//             </p>
+//           </div>
+//         </div>
+//       )}
+
+//       {/* Invitations List */}
+//       {items.length > 0 && (
+//         <div className="flex-1 overflow-hidden">
+//           <div className="h-full divide-y divide-gray-200 overflow-auto pr-5 dark:divide-slate-800/30">
+//             {items.map((invitation: any) => {
+//               const initial = getEmailInitial(invitation.email)
+//               const invitedByName = invitation.invitedBy
+//                 ? `${invitation.invitedBy.firstName || ""} ${invitation.invitedBy.lastName || ""}`.trim() ||
+//                   invitation.invitedBy.email
+//                 : "Unknown"
+//               const createdAt = new Date(
+//                 invitation.createdAt,
+//               ).toLocaleDateString()
+
+//               return (
+//                 <div key={invitation.id}>
+//                   <div className="duration-2000 group py-4 transition-all">
+//                     <div className="flex items-center space-x-4">
+//                       <div className="min-w-0 flex-1">
+//                         <div className="flex items-start justify-between">
+//                           <div className="min-w-0 flex-1">
+//                             <p className="truncate text-sm font-medium text-gray-900 dark:text-slate-200">
+//                               {invitation.email}
+//                             </p>
+//                             <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-slate-400">
+//                               <span>Invited by {invitedByName}</span>
+//                               <span>•</span>
+//                               <span>{createdAt}</span>
+//                             </div>
+//                           </div>
+
+//                           {/* Role Badge */}
+//                           <div className="ml-4 flex-shrink-0">
+//                             <Badge
+//                               variant={
+//                                 invitation.role === UserOrganizationRole.ADMIN
+//                                   ? "warning"
+//                                   : "default"
+//                               }
+//                             >
+//                               {invitation.role.charAt(0).toUpperCase() +
+//                                 invitation.role.slice(1)}
+//                             </Badge>
+//                           </div>
+//                         </div>
+//                       </div>
+
+//                       <DeleteInvitation invitation={invitation} />
+//                     </div>
+//                   </div>
+//                 </div>
+//               )
+//             })}
+//           </div>
+//         </div>
+//       )}
+
+//       {/* Pagination */}
+//       {meta && meta.totalPages > 1 && (
+//         <div className="border-t border-gray-200 pr-5 pt-4 dark:border-slate-800/50">
+//           <div className="flex items-center justify-center sm:justify-between">
+//             <div className="hidden items-center gap-4 text-sm text-gray-500 sm:flex dark:text-slate-500">
+//               <span>
+//                 Showing {(meta.currentPage - 1) * meta.itemsPerPage + 1} to{" "}
+//                 {Math.min(
+//                   meta.currentPage * meta.itemsPerPage,
+//                   meta.totalItems,
+//                 )}{" "}
+//                 of {meta.totalItems} invitations
+//               </span>
+//             </div>
+
+//             {/* Desktop pagination */}
+//             <div className="hidden items-center gap-2 sm:flex">
+//               {hasPreviousPage ? (
+//                 <Link
+//                   href={`?page=1${search ? `&search=${encodeURIComponent(search)}` : ""}${role !== "all" ? `&role=${role}` : ""}`}
+//                 >
+//                   <Button
+//                     variant="secondary"
+//                     className="border-gray-300 bg-gray-50 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-slate-700/50 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:border-slate-600/50 dark:hover:bg-slate-700/50"
+//                   >
+//                     First
+//                   </Button>
+//                 </Link>
+//               ) : (
+//                 <Button
+//                   variant="secondary"
+//                   disabled
+//                   className="border-gray-200 bg-gray-100 text-sm text-gray-400 dark:border-slate-800/50 dark:bg-slate-900/50 dark:text-slate-600"
+//                 >
+//                   First
+//                 </Button>
+//               )}
+//               {hasPreviousPage ? (
+//                 <Link
+//                   href={`?page=${meta.currentPage - 1}${search ? `&search=${encodeURIComponent(search)}` : ""}${role !== "all" ? `&role=${role}` : ""}`}
+//                 >
+//                   <Button
+//                     variant="secondary"
+//                     className="border-gray-300 bg-gray-50 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-slate-700/50 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:border-slate-600/50 dark:hover:bg-slate-700/50"
+//                   >
+//                     Previous
+//                   </Button>
+//                 </Link>
+//               ) : (
+//                 <Button
+//                   variant="secondary"
+//                   disabled
+//                   className="border-gray-200 bg-gray-100 text-sm text-gray-400 dark:border-slate-800/50 dark:bg-slate-900/50 dark:text-slate-600"
+//                 >
+//                   Previous
+//                 </Button>
+//               )}
+//               <span className="px-3 text-sm text-gray-600 dark:text-slate-400">
+//                 Page {meta.currentPage} of {meta.totalPages}
+//               </span>
+//               {hasNextPage ? (
+//                 <Link
+//                   href={`?page=${meta.currentPage + 1}${search ? `&search=${encodeURIComponent(search)}` : ""}${role !== "all" ? `&role=${role}` : ""}`}
+//                 >
+//                   <Button
+//                     variant="secondary"
+//                     className="border-gray-300 bg-gray-50 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-slate-700/50 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:border-slate-600/50 dark:hover:bg-slate-700/50"
+//                   >
+//                     Next
+//                   </Button>
+//                 </Link>
+//               ) : (
+//                 <Button
+//                   variant="secondary"
+//                   disabled
+//                   className="border-gray-200 bg-gray-100 text-sm text-gray-400 dark:border-slate-800/50 dark:bg-slate-900/50 dark:text-slate-600"
+//                 >
+//                   Next
+//                 </Button>
+//               )}
+//               {hasNextPage ? (
+//                 <Link
+//                   href={`?page=${meta.totalPages}${search ? `&search=${encodeURIComponent(search)}` : ""}${role !== "all" ? `&role=${role}` : ""}`}
+//                 >
+//                   <Button
+//                     variant="secondary"
+//                     className="border-gray-300 bg-gray-50 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-slate-700/50 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:border-slate-600/50 dark:hover:bg-slate-700/50"
+//                   >
+//                     Last
+//                   </Button>
+//                 </Link>
+//               ) : (
+//                 <Button
+//                   variant="secondary"
+//                   disabled
+//                   className="border-gray-200 bg-gray-100 text-sm text-gray-400 dark:border-slate-800/50 dark:bg-slate-900/50 dark:text-slate-600"
+//                 >
+//                   Last
+//                 </Button>
+//               )}
+//             </div>
+
+//             {/* Mobile pagination */}
+//             <div className="flex items-center gap-2 sm:hidden">
+//               {hasPreviousPage ? (
+//                 <Link
+//                   href={`?page=${meta.currentPage - 1}${search ? `&search=${encodeURIComponent(search)}` : ""}${role !== "all" ? `&role=${role}` : ""}`}
+//                 >
+//                   <Button
+//                     variant="secondary"
+//                     className="border-gray-300 bg-gray-50 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-slate-700/50 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:border-slate-600/50 dark:hover:bg-slate-700/50"
+//                   >
+//                     Previous
+//                   </Button>
+//                 </Link>
+//               ) : (
+//                 <Button
+//                   variant="secondary"
+//                   disabled
+//                   className="border-gray-200 bg-gray-100 text-sm text-gray-400 dark:border-slate-800/50 dark:bg-slate-900/50 dark:text-slate-600"
+//                 >
+//                   Previous
+//                 </Button>
+//               )}
+//               <span className="px-3 text-sm text-gray-600 dark:text-slate-400">
+//                 {meta.currentPage}/{meta.totalPages}
+//               </span>
+//               {hasNextPage ? (
+//                 <Link
+//                   href={`?page=${meta.currentPage + 1}${search ? `&search=${encodeURIComponent(search)}` : ""}${role !== "all" ? `&role=${role}` : ""}`}
+//                 >
+//                   <Button
+//                     variant="secondary"
+//                     className="border-gray-300 bg-gray-50 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-slate-700/50 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:border-slate-600/50 dark:hover:bg-slate-700/50"
+//                   >
+//                     Next
+//                   </Button>
+//                 </Link>
+//               ) : (
+//                 <Button
+//                   variant="secondary"
+//                   disabled
+//                   className="border-gray-200 bg-gray-100 text-sm text-gray-400 dark:border-slate-800/50 dark:bg-slate-900/50 dark:text-slate-600"
+//                 >
+//                   Next
+//                 </Button>
+//               )}
+//             </div>
+//           </div>
+//         </div>
+//       )}
+//     </div>
+//   )
+// }
+
+// export default Page

@@ -23,30 +23,6 @@ export class UpdateUserService {
   ) {}
 
   /**
-   * Update current user's profile information
-   */
-  async updateCurrentUser(updateData: UpdateUserDto): Promise<IUser> {
-    const user = await this.currentDbUserService.getCurrentDbUser();
-
-    if (!user) {
-      throw new NotFoundException('User not found in database');
-    }
-
-    // Update only the provided fields
-    if (updateData.firstName !== undefined) {
-      user.firstName = updateData.firstName;
-    }
-    if (updateData.lastName !== undefined) {
-      user.lastName = updateData.lastName;
-    }
-    if (updateData.email !== undefined) {
-      user.email = updateData.email;
-    }
-
-    return this.userRepository.save(user);
-  }
-
-  /**
    * Update user by ID (for admin/operator use)
    */
   async updateUserById(updateData: UpdateUserDto): Promise<IUser> {

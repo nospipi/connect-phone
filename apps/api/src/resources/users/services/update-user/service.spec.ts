@@ -99,44 +99,11 @@ describe('UpdateUserService', () => {
     expect(service).toBeDefined();
   });
 
-  describe('updateCurrentUser', () => {
-    it('should update current user firstName', async () => {
-      // Arrange
-      const updateData: UpdateUserDto = { firstName: 'Updated' };
-      const updatedUser = { ...mockUser, firstName: 'Updated' };
-
-      currentDbUserService.getCurrentDbUser.mockResolvedValue(mockUser);
-      userRepository.save.mockResolvedValue(updatedUser as UserEntity);
-
-      // Act
-      const result = await service.updateCurrentUser(updateData);
-
-      // Assert
-      expect(currentDbUserService.getCurrentDbUser).toHaveBeenCalledTimes(1);
-      expect(userRepository.save).toHaveBeenCalledWith({
-        ...mockUser,
-        firstName: 'Updated',
-      });
-      expect(result.firstName).toBe('Updated');
-    });
-
-    it('should throw NotFoundException when user not found', async () => {
-      // Arrange
-      currentDbUserService.getCurrentDbUser.mockResolvedValue(null);
-      const updateData: UpdateUserDto = { firstName: 'Updated' };
-
-      // Act & Assert
-      await expect(service.updateCurrentUser(updateData)).rejects.toThrow(
-        new NotFoundException('User not found in database')
-      );
-    });
-  });
-
   describe('updateUserById', () => {
     it('should update user by ID with basic info', async () => {
       // Arrange
       const updateData: UpdateUserDto = {
-        userId: 1,
+        id: 1,
         firstName: 'Updated',
         lastName: 'User',
         email: 'updated@example.com',
@@ -177,7 +144,7 @@ describe('UpdateUserService', () => {
       };
 
       const updateData: UpdateUserDto = {
-        userId: 1,
+        id: 1,
         role: UserOrganizationRole.ADMIN,
       };
 
@@ -210,9 +177,9 @@ describe('UpdateUserService', () => {
       });
     });
 
-    it('should throw NotFoundException when userId not provided', async () => {
+    it('should throw NotFoundException when id not provided', async () => {
       // Arrange
-      const updateData: UpdateUserDto = { firstName: 'Updated' };
+      const updateData = { firstName: 'Updated' } as unknown as UpdateUserDto;
 
       // Act & Assert
       await expect(service.updateUserById(updateData)).rejects.toThrow(
@@ -222,7 +189,7 @@ describe('UpdateUserService', () => {
 
     it('should throw NotFoundException when user not found', async () => {
       // Arrange
-      const updateData: UpdateUserDto = { userId: 999, firstName: 'Updated' };
+      const updateData: UpdateUserDto = { id: 999, firstName: 'Updated' };
       userRepository.findOne.mockResolvedValue(null);
 
       // Act & Assert
@@ -234,7 +201,7 @@ describe('UpdateUserService', () => {
     it('should handle role update when user organization not found', async () => {
       // Arrange
       const updateData: UpdateUserDto = {
-        userId: 1,
+        id: 1,
         role: UserOrganizationRole.ADMIN,
       };
 

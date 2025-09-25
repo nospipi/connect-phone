@@ -30,7 +30,8 @@
     "migration:show": "npm run typeorm -- migration:show -d src/database/data-source.ts",
     "schema:sync": "npm run typeorm -- schema:sync -d src/database/data-source.ts",
     "schema:drop": "npm run typeorm -- schema:drop -d src/database/data-source.ts",
-    "db:seed": "ts-node src/database/seeding/seeds/seed.ts"
+    "db:seed": "ts-node src/database/seeding/seeds/seed.ts",
+    "create-service": "node create-service.js"
   },
   "dependencies": {
     "@clerk/backend": "^1.24.3",

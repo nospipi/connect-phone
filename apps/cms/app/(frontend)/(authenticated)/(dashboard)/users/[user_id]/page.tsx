@@ -1,3 +1,5 @@
+// apps/cms/app/(frontend)/(authenticated)/(dashboard)/users/(tab-routes)/users/[user_id]/page.tsx
+
 import { RiArrowLeftLine } from "@remixicon/react"
 import Link from "next/link"
 import { UserOrganizationRole } from "@connect-phone/shared-types"
