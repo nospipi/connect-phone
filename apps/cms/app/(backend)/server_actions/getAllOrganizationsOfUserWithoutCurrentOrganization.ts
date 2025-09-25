@@ -1,3 +1,5 @@
+// server_actions/getAllOrganizationsOfUserWithoutCurrentOrganization.ts
+
 "use server"
 
 import { AxiosError } from "axios"

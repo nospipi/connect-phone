@@ -1,10 +1,17 @@
-// apps/cms/app/(frontend)/(authenticated)/(dashboard)/users/(tab-routes)/users/[user_id]/page.tsx
-
-import { RiArrowLeftLine } from "@remixicon/react"
+import { RiArrowLeftLine, RiDeleteBin6Line } from "@remixicon/react"
 import Link from "next/link"
 import { UserOrganizationRole } from "@connect-phone/shared-types"
 import { getUserById } from "@/app/(backend)/server_actions/getUserById"
 import { updateUser } from "@/app/(backend)/server_actions/updateUser"
+import DeleteUserButton from "./DeleteUserButton"
+
+// Example: create a delete action (replace with your actual implementation)
+const deleteUser = async (formData: FormData): Promise<void> => {
+  "use server"
+  const id = formData.get("id")
+  console.log("Deleting user:", id)
+  // your delete logic here...
+}
 
 const USER_ROLES = [
   ...Object.values(UserOrganizationRole).map((role) => ({
@@ -15,26 +22,12 @@ const USER_ROLES = [
 
 //----------------------------------------------------------------------
 
-const mockUpdateUser = async (formData: FormData): Promise<void> => {
-  "use server"
-  // Simulate an API call delay
-  await new Promise((resolve) => setTimeout(resolve, 2000))
-  // Log form data for demonstration purposes
-  console.log("Form Data Submitted:")
-  formData.forEach((value, key) => {
-    console.log(`${key}: ${value}`)
-  })
-  //we navigate back to the users list page
-}
-
-//--------------------------------------------------------------------
-
 const Page = async ({ params }: { params: Promise<{ user_id: string }> }) => {
   const { user_id } = await params
   const userData = await getUserById(Number(user_id))
 
   return (
-    <div className="flex h-full flex-col overflow-hidden">
+    <div className="relative flex h-full flex-col overflow-hidden">
       {/* Header */}
       <div className="flex items-center gap-4 border-b border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950">
         <Link
@@ -62,6 +55,7 @@ const Page = async ({ params }: { params: Promise<{ user_id: string }> }) => {
             <form action={updateUser} className="flex flex-col gap-6">
               {/* Hidden ID Field */}
               <input type="hidden" name="id" value={userData.id} />
+
               {/* First Name and Last Name */}
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
@@ -169,6 +163,8 @@ const Page = async ({ params }: { params: Promise<{ user_id: string }> }) => {
           </div>
         </div>
       </div>
+
+      <DeleteUserButton user={userData} />
     </div>
   )
 }

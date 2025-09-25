@@ -1,32 +1,28 @@
+// server_actions/getAllSalesChannelsOfOrganizationPaginated.ts
+
 "use server"
 
 import { AxiosError } from "axios"
-import { ErrorResponse, PaginatedUsersResponse } from "./types"
+import { ErrorResponse, PaginatedSalesChannelsResponse } from "./types"
 import { createApiClient } from "./api-client"
 
 //----------------------------------------------------------------------
 
 interface PaginationParams {
   page?: string | number
-  search?: string
-  role?: string
 }
 
-export const getAllUsersOfOrganizationPaginated = async ({
+export const getAllSalesChannelsOfOrganizationPaginated = async ({
   page = 1,
-  search,
-  role,
-}: PaginationParams): Promise<PaginatedUsersResponse> => {
+}: PaginationParams): Promise<PaginatedSalesChannelsResponse> => {
   try {
-    console.log("Fetching users for organization:", "page:", page)
+    console.log("Fetching sales channels for organization ID:", "page:", page)
 
     const api = createApiClient()
-    const response = await api.get(
-      `/users/paginated?page=${page}&search=${search}&role=${role}`,
-    )
+    const response = await api.get(`/sales-channels/paginated?page=${page}`)
 
     if (response.status !== 200) {
-      throw new Error("Failed to fetch users")
+      throw new Error("Failed to fetch sales channels")
     }
 
     return response.data

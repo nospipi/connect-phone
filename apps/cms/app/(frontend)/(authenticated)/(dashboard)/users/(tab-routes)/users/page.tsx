@@ -204,22 +204,6 @@ const Page = async ({
                           </div>
                         </div>
                       </div>
-
-                      <div className="flex-shrink-0">
-                        <svg
-                          className="h-5 w-5 text-gray-400 transition-all duration-200 group-hover:text-gray-600 dark:text-slate-600 dark:group-hover:text-slate-400"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth={1.5}
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M8.25 4.5l7.5 7.5-7.5 7.5"
-                          />
-                        </svg>
-                      </div>
                     </div>
                   </div>
                 </Link>

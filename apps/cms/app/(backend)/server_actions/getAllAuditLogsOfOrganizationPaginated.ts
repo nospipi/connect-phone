@@ -1,3 +1,4 @@
+// server_actions/getAllAuditLogsOfOrganizationPaginated.ts
 "use server"
 
 import { AxiosError } from "axios"
