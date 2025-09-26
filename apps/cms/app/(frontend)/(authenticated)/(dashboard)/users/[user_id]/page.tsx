@@ -5,14 +5,6 @@ import { getUserById } from "@/app/(backend)/server_actions/getUserById"
 import { updateUser } from "@/app/(backend)/server_actions/updateUser"
 import DeleteUserButton from "./DeleteUserButton"
 
-// Example: create a delete action (replace with your actual implementation)
-const deleteUser = async (formData: FormData): Promise<void> => {
-  "use server"
-  const id = formData.get("id")
-  console.log("Deleting user:", id)
-  // your delete logic here...
-}
-
 const USER_ROLES = [
   ...Object.values(UserOrganizationRole).map((role) => ({
     value: role,

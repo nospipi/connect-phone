@@ -1,4 +1,4 @@
-// apps/api/src/resources/sales-channels/services/update-channel/service.spec.ts
+// apps/api/src/resources/sales-channels/services/update-sales-channel/service.spec.ts
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -109,6 +109,19 @@ describe('UpdateSalesChannelService', () => {
       expect(result.name).toBe('Updated Channel Name');
       expect(result.description).toBe('Updated description');
       expect(result.isActive).toBe(false);
+    });
+
+    it('should throw NotFoundException when id is not provided', async () => {
+      const updateDto: UpdateSalesChannelDto = {
+        name: 'Updated Channel Name',
+      };
+
+      await expect(service.updateSalesChannel(updateDto)).rejects.toThrow(
+        new NotFoundException('Sales channel ID is required')
+      );
+
+      expect(salesChannelsRepository.findOne).not.toHaveBeenCalled();
+      expect(salesChannelsRepository.save).not.toHaveBeenCalled();
     });
 
     it('should throw ForbiddenException when organization context is null', async () => {
@@ -252,6 +265,39 @@ describe('UpdateSalesChannelService', () => {
       const result = await service.updateSalesChannel(updateDto);
 
       expect(result.isActive).toBe(false);
+    });
+
+    it('should clear description when empty string is provided', async () => {
+      const updateDto: UpdateSalesChannelDto = {
+        id: 1,
+        description: '', // Empty string to clear description
+      };
+
+      const originalChannel = {
+        ...mockSalesChannel,
+        description: 'Original Description',
+      };
+
+      const clearedChannel = {
+        ...originalChannel,
+        description: null, // Should be null after clearing
+      };
+
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
+      salesChannelsRepository.findOne.mockResolvedValue(
+        originalChannel as SalesChannelEntity
+      );
+      salesChannelsRepository.save.mockResolvedValue(
+        clearedChannel as SalesChannelEntity
+      );
+
+      const result = await service.updateSalesChannel(updateDto);
+
+      const savedChannel = salesChannelsRepository.save.mock.calls[0][0];
+      expect(savedChannel.description).toBe(null);
+      expect(result.description).toBe(null);
     });
 
     it('should handle database errors during save', async () => {

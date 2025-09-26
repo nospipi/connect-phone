@@ -13,7 +13,6 @@ const Page = async ({
 }) => {
   const { sales_channel_id } = await params
   const salesChannelData = await getSalesChannelById(Number(sales_channel_id))
-  console.log("Sales Channel Data:", salesChannelData)
 
   return (
     <div className="flex h-full flex-col overflow-hidden">
@@ -95,7 +94,13 @@ const Page = async ({
                   Status
                 </label>
                 <div className="mt-2">
-                  <div className="flex items-center justify-between rounded-lg border border-gray-300 p-4 dark:border-gray-600 dark:bg-gray-800">
+                  <div
+                    className={`flex items-center justify-between rounded-lg border p-4 ${
+                      salesChannelData.isActive
+                        ? "border-green-200 bg-green-50/40 dark:border-green-800/50 dark:bg-green-900/10"
+                        : "border-red-200 bg-red-50/40 dark:border-red-800/50 dark:bg-red-900/10"
+                    }`}
+                  >
                     <div>
                       <h3 className="text-sm font-medium text-gray-900 dark:text-gray-50">
                         Active Channel

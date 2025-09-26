@@ -1,4 +1,4 @@
-// apps/api/src/resources/sales-channels/services/update-channel/controller.ts
+// apps/api/src/resources/sales-channels/services/update-sales-channel/controller.ts
 import {
   Controller,
   Put,

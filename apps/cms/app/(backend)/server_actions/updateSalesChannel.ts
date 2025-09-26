@@ -21,19 +21,20 @@ export const updateSalesChannel = async (formData: FormData): Promise<void> => {
       throw new Error("Name is required")
     }
 
+    // Note: description can be empty string to clear the field
+    const payload = {
+      name,
+      description, // This will be empty string if user wants to clear it
+      isActive: Boolean(isActive),
+    }
+
     console.log("Updating sales channel:", {
       id,
-      name,
-      description: description || undefined,
-      isActive: Boolean(isActive),
+      ...payload,
     })
 
     const api = createApiClient()
-    const response = await api.put(`/sales-channels/${id}`, {
-      name,
-      description: description || undefined,
-      isActive: Boolean(isActive),
-    })
+    const response = await api.put(`/sales-channels/${id}`, payload)
 
     if (response.status !== 200) {
       throw new Error("Failed to update sales channel")

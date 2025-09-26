@@ -1,5 +1,4 @@
 // apps/api/src/resources/sales-channels/services/update-sales-channel/service.ts
-// apps/api/src/resources/sales-channels/services/update-channel/service.ts
 import {
   Injectable,
   NotFoundException,
@@ -31,6 +30,10 @@ export class UpdateSalesChannelService {
   ): Promise<ISalesChannel> {
     console.log('updateSalesChannel DTO:', updateSalesChannelDto);
 
+    if (!updateSalesChannelDto.id) {
+      throw new NotFoundException('Sales channel ID is required');
+    }
+
     const organization =
       await this.currentOrganizationService.getCurrentOrganization();
 
@@ -58,7 +61,7 @@ export class UpdateSalesChannelService {
       salesChannel.name = updateSalesChannelDto.name;
     }
     if (updateSalesChannelDto.description !== undefined) {
-      salesChannel.description = updateSalesChannelDto.description;
+      salesChannel.description = updateSalesChannelDto.description || null;
     }
     if (updateSalesChannelDto.logoUrl !== undefined) {
       salesChannel.logoUrl = updateSalesChannelDto.logoUrl;

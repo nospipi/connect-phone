@@ -10,12 +10,14 @@ import { FindAllByOrgPaginatedController } from './services/find-all-by-org-pagi
 import { CreateNewChannelController } from './services/create-new-channel/controller';
 import { UpdateSalesChannelController } from './services/update-sales-channel/controller';
 import { GetSalesChannelByIdController } from './services/get-sales-channel-by-id/controller';
+import { DeleteSalesChannelController } from './services/delete-sales-channel/controller';
 
 // services
 import { FindAllByOrgPaginatedService } from './services/find-all-by-org-paginated/service';
 import { CreateNewChannelService } from './services/create-new-channel/service';
 import { UpdateSalesChannelService } from './services/update-sales-channel/service';
 import { GetSalesChannelByIdService } from './services/get-sales-channel-by-id/service';
+import { DeleteSalesChannelService } from './services/delete-sales-channel/service';
 
 //-----------------------------------------
 
@@ -32,12 +34,14 @@ import { GetSalesChannelByIdService } from './services/get-sales-channel-by-id/s
     CreateNewChannelController,
     UpdateSalesChannelController,
     GetSalesChannelByIdController,
+    DeleteSalesChannelController,
   ],
   providers: [
     FindAllByOrgPaginatedService,
     CreateNewChannelService,
     UpdateSalesChannelService,
     GetSalesChannelByIdService,
+    DeleteSalesChannelService,
   ],
 })
 export class SalesChannelsModule {}
