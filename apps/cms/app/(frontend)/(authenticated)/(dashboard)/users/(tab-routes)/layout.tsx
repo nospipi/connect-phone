@@ -25,7 +25,6 @@ const Layout = async ({
         <TabNavigationWrapper invitationsCount={meta?.totalItems ?? 0} />
       </div>
       {children}
-      {/* <div className="min-h-0 flex-1 overflow-hidden">{children}</div> */}
     </div>
   )
 }

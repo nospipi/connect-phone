@@ -18,6 +18,7 @@ export const createNewSalesChannel = async (
     const name = formData.get("name") as string
     const description = formData.get("description") as string
     const logoUrl = formData.get("logoUrl") as string
+    const isActive = formData.get("isActive") as string
 
     // Validate required fields
     if (!name) {
@@ -35,6 +36,7 @@ export const createNewSalesChannel = async (
       name,
       description: description || undefined,
       logoUrl: logoUrl || undefined,
+      isActive: Boolean(isActive),
     })
 
     //console.log("Response from API:", response.data)
