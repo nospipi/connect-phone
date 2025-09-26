@@ -36,7 +36,7 @@ const Page = async ({ params }: { params: Promise<{ user_id: string }> }) => {
         >
           <RiArrowLeftLine className="h-4 w-4" />
         </Link>
-        <div className="flex items-center gap-4 py-4">
+        <div className="flex flex-1 items-center justify-between gap-4 py-4 pr-4">
           <div>
             <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-50">
               Edit User
@@ -51,8 +51,8 @@ const Page = async ({ params }: { params: Promise<{ user_id: string }> }) => {
       {/* Form */}
       <div className="flex-1 overflow-hidden py-4">
         <div className="flex h-full w-full justify-center overflow-auto px-4">
-          <div className="w-full max-w-3xl">
-            <form action={updateUser} className="flex flex-col gap-6">
+          <div className="flex w-full max-w-3xl flex-col gap-10">
+            <form action={updateUser} className="flex flex-1 flex-col gap-6">
               {/* Hidden ID Field */}
               <input type="hidden" name="id" value={userData.id} />
 
@@ -145,26 +145,27 @@ const Page = async ({ params }: { params: Promise<{ user_id: string }> }) => {
               </div>
 
               {/* Form Actions */}
-              <div className="flex flex-col gap-3 border-t border-gray-200 pt-6 sm:flex-row sm:justify-end dark:border-gray-800">
-                <Link
-                  href="/users/users"
-                  className="inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
-                >
-                  Cancel
-                </Link>
-                <button
-                  type="submit"
-                  className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                >
-                  Update User
-                </button>
+              <div className="flex flex-row justify-end gap-3 border-t border-gray-200 pt-6 dark:border-gray-800">
+                <div className="flex gap-3">
+                  <Link
+                    href="/users/users"
+                    className="inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+                  >
+                    Cancel
+                  </Link>
+                  <button
+                    type="submit"
+                    className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                  >
+                    Update User
+                  </button>
+                </div>
               </div>
             </form>
+            <DeleteUserButton user={userData} />
           </div>
         </div>
       </div>
-
-      <DeleteUserButton user={userData} />
     </div>
   )
 }

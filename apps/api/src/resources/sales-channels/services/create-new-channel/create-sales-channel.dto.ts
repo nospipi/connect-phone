@@ -1,14 +1,26 @@
 // apps/api/src/resources/sales-channels/services/create-new-channel/create-sales-channel.dto.ts
-import { IsString, IsOptional, IsNotEmpty, IsUrl } from 'class-validator';
+import {
+  IsString,
+  IsOptional,
+  IsNotEmpty,
+  IsUrl,
+  IsBoolean,
+} from 'class-validator';
 import { ISalesChannel } from '@connect-phone/shared-types';
 import { Sanitize } from '@/common/decorators/sanitize.decorator';
 //----------------------------------------------------------------------------
 type CreateSalesChannel = Omit<
   ISalesChannel,
-  'id' | 'organizationId' | 'organization' | 'logoUrl' | 'description'
+  | 'id'
+  | 'organizationId'
+  | 'organization'
+  | 'logoUrl'
+  | 'description'
+  | 'isActive'
 > & {
   description?: string;
   logoUrl?: string;
+  isActive?: boolean;
 };
 
 export class CreateSalesChannelDto implements CreateSalesChannel {
@@ -27,4 +39,8 @@ export class CreateSalesChannelDto implements CreateSalesChannel {
   @IsUrl()
   @Sanitize()
   logoUrl?: string;
+
+  @IsBoolean()
+  @IsOptional()
+  isActive?: boolean;
 }

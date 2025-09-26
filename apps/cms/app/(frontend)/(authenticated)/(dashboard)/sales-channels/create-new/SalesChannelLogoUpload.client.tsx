@@ -13,19 +13,13 @@ import {
 
 //----------------------------------------------------------------------
 
-interface SalesChannelLogoUploadProps {
-  currentName: string
-  currentDescription: string
-  currentLogoUrl: string
-  organizationId: string
-}
-
 export default function SalesChannelLogoUpload({
-  currentName,
-  currentDescription,
   currentLogoUrl,
   organizationId,
-}: SalesChannelLogoUploadProps) {
+}: {
+  currentLogoUrl: string
+  organizationId: string
+}) {
   const router = useRouter()
   const [logoPreview, setLogoPreview] = useState<string | null>(
     currentLogoUrl || null,
@@ -180,14 +174,9 @@ export default function SalesChannelLogoUpload({
 
       // Redirect back to the form with all current values plus the new logo URL
       const searchParams = new URLSearchParams()
-      if (currentName) searchParams.set("name", currentName)
-      if (currentDescription)
-        searchParams.set("description", currentDescription)
       searchParams.set("logoUrl", newBlob.url)
 
-      router.push(
-        `/sales-channels/create-new?${searchParams.toString()}`,
-      )
+      router.push(`/sales-channels/create-new?${searchParams.toString()}`)
     } catch (error) {
       console.error("Upload error:", error)
       setUploadError(error instanceof Error ? error.message : "Upload failed")
@@ -202,15 +191,7 @@ export default function SalesChannelLogoUpload({
       fileInputRef.current.value = ""
     }
 
-    // Redirect back with current values but without logoUrl
-    const searchParams = new URLSearchParams()
-    if (currentName) searchParams.set("name", currentName)
-    if (currentDescription) searchParams.set("description", currentDescription)
-
-    const queryString = searchParams.toString()
-    router.push(
-      `/sales-channels/create-new${queryString ? `?${queryString}` : ""}`,
-    )
+    router.push(`/sales-channels/create-new`)
   }
 
   return (

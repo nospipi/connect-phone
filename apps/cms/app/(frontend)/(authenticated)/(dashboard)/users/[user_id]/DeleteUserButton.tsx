@@ -15,15 +15,19 @@ const DeleteUserButton = ({ user }: { user: IUserWithOrganizationRole }) => {
         id={`delete-user-${user.id}`}
         className="peer hidden"
       />
+      {/* <label
+        htmlFor={`delete-user-${user.id}`}
+        className="flex w-fit cursor-pointer items-center justify-center rounded-md border border-gray-200 bg-transparent p-2 text-gray-400 transition-colors duration-200 hover:border-red-300 hover:bg-red-50 hover:text-red-600 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:border-gray-700 dark:text-gray-500 dark:hover:border-red-500 dark:hover:bg-red-950/20 dark:hover:text-red-400"
+      >
+        <RiDeleteBin6Line className="h-4 w-4" />
+      </label> */}
 
-      <div className="absolute bottom-6 right-6 cursor-pointer">
-        <label
-          htmlFor={`delete-user-${user.id}`}
-          className="flex cursor-pointer items-center justify-center rounded-full bg-red-600 p-4 text-white shadow-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
-        >
-          <RiDeleteBin6Line className="h-4 w-4" />
-        </label>
-      </div>
+      <label
+        htmlFor={`delete-user-${user.id}`}
+        className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full text-gray-400 transition-all duration-200 hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-900/20 dark:hover:text-red-400"
+      >
+        <RiDeleteBin6Line className="h-4 w-4" />
+      </label>
 
       {/* Backdrop Overlay */}
       <label

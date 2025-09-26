@@ -14,6 +14,8 @@ import {
   UserOrganizationRole,
 } from '@connect-phone/shared-types';
 
+//-------------------------------------------------------------------------------------------------
+
 describe('DeleteUserService', () => {
   let service: DeleteUserService;
   let userRepository: jest.Mocked<Repository<UserEntity>>;

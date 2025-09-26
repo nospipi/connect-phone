@@ -1,12 +1,25 @@
-import { IsString, IsOptional, IsNotEmpty, IsUrl } from 'class-validator';
+// apps/api/src/resources/sales-channels/services/update-channel/update-sales-channel.dto.ts
+import {
+  IsString,
+  IsOptional,
+  IsNotEmpty,
+  IsUrl,
+  IsBoolean,
+} from 'class-validator';
 import { ISalesChannel } from '@connect-phone/shared-types';
 
 type UpdateSalesChannel = Omit<
   ISalesChannel,
-  'id' | 'organizationId' | 'organization' | 'logoUrl' | 'description'
+  | 'id'
+  | 'organizationId'
+  | 'organization'
+  | 'logoUrl'
+  | 'description'
+  | 'isActive'
 > & {
   description?: string;
   logoUrl?: string;
+  isActive?: boolean;
 };
 
 export class UpdateSalesChannelDto implements UpdateSalesChannel {
@@ -25,4 +38,8 @@ export class UpdateSalesChannelDto implements UpdateSalesChannel {
   @IsOptional()
   @IsUrl()
   logoUrl?: string;
+
+  @IsBoolean()
+  @IsOptional()
+  isActive?: boolean;
 }

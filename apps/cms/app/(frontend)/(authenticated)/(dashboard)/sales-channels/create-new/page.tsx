@@ -1,3 +1,4 @@
+// apps/cms/app/(frontend)/(authenticated)/(dashboard)/sales-channels/create-new/page.tsx
 import { createNewSalesChannel } from "@/app/(backend)/server_actions/createNewSalesChannel"
 import { getUserLoggedInOrganization } from "@/app/(backend)/server_actions/getUserLoggedInOrganization"
 import SalesChannelLogoUpload from "./SalesChannelLogoUpload.client"
@@ -13,34 +14,8 @@ const Page = async ({
   //params: Promise<{ partner_id: string; page: string }>
   searchParams: Promise<{ [key: string]: string | undefined }>
 }) => {
+  const { logoUrl = "" } = await searchParams
   const loggedInOrganization = await getUserLoggedInOrganization()
-  console.log("Logged in organization:", loggedInOrganization)
-
-  const resolvedSearchParams = await searchParams
-  const prefilledName = resolvedSearchParams.name || ""
-  const prefilledDescription = resolvedSearchParams.description || ""
-  const prefilledLogoUrl = resolvedSearchParams.logoUrl || ""
-
-  if (!loggedInOrganization) {
-    return (
-      <div className="flex h-full flex-col items-center justify-center p-4">
-        <div className="rounded-lg border border-gray-200 bg-white p-8 text-center shadow-sm dark:border-gray-700 dark:bg-gray-800">
-          <h3 className="text-lg font-medium text-gray-900 dark:text-gray-50">
-            No Organization Found
-          </h3>
-          <p className="mt-2 text-sm text-gray-500">
-            You need to be part of an organization to create sales channels.
-          </p>
-          <Link
-            href="/create-organization"
-            className="mt-4 inline-block rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-          >
-            Create Organization
-          </Link>
-        </div>
-      </div>
-    )
-  }
 
   return (
     <div className="flex h-full flex-col overflow-hidden">
@@ -58,7 +33,7 @@ const Page = async ({
               Create New Sales Channel
             </h1>
             <p className="text-sm text-gray-500">
-              Add a new sales channel to {loggedInOrganization.name}
+              Add a new sales channel to {loggedInOrganization?.name}
             </p>
           </div>
         </div>
@@ -86,7 +61,7 @@ const Page = async ({
                   name="name"
                   type="text"
                   placeholder="e.g., Online Store, Retail Outlet, Mobile App"
-                  defaultValue={prefilledName}
+                  //defaultValue={prefilledName}
                   className="mt-2 block w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
                   required
                 />
@@ -108,7 +83,7 @@ const Page = async ({
                   name="description"
                   rows={3}
                   placeholder="Describe this sales channel and its purpose..."
-                  defaultValue={prefilledDescription}
+                  //defaultValue={prefilledDescription}
                   className="mt-2 block w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
                 />
                 <p className="mt-2 text-xs text-gray-500">
@@ -123,10 +98,8 @@ const Page = async ({
                 </label>
                 <div className="mt-2">
                   <SalesChannelLogoUpload
-                    currentName={prefilledName}
-                    currentDescription={prefilledDescription}
-                    currentLogoUrl={prefilledLogoUrl}
-                    organizationId={loggedInOrganization.id.toString()}
+                    currentLogoUrl={logoUrl}
+                    organizationId={loggedInOrganization?.id.toString() || ""}
                   />
                 </div>
                 <p className="mt-2 text-xs text-gray-500">
@@ -135,7 +108,40 @@ const Page = async ({
               </div>
 
               {/* Hidden input for logo URL to be submitted with the form */}
-              <input type="hidden" name="logoUrl" value={prefilledLogoUrl} />
+              <input type="hidden" name="logoUrl" value={logoUrl} />
+
+              {/* Active Status Toggle */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Status
+                </label>
+                <div className="mt-2">
+                  <div className="flex items-center justify-between rounded-lg border border-gray-300 p-4 dark:border-gray-600 dark:bg-gray-800">
+                    <div>
+                      <h3 className="text-sm font-medium text-gray-900 dark:text-gray-50">
+                        Active Channel
+                      </h3>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                        Channel will be available for use immediately after
+                        creation
+                      </p>
+                    </div>
+                    <label className="relative inline-flex cursor-pointer items-center">
+                      <input
+                        type="checkbox"
+                        name="isActive"
+                        defaultChecked={false}
+                        className="peer sr-only"
+                      />
+                      <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-indigo-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 dark:border-gray-600 dark:bg-gray-700 dark:peer-focus:ring-indigo-800"></div>
+                    </label>
+                  </div>
+                </div>
+                <p className="mt-2 text-xs text-gray-500">
+                  Inactive channels can be activated later from the channels
+                  list
+                </p>
+              </div>
 
               {/* Organization Info */}
               <div className="rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
@@ -145,7 +151,7 @@ const Page = async ({
                 <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
                   This channel will be created for{" "}
                   <span className="font-medium">
-                    {loggedInOrganization.name}
+                    {loggedInOrganization?.name}
                   </span>
                 </p>
               </div>
@@ -176,7 +182,8 @@ const Page = async ({
               <p className="mt-1 text-sm text-blue-700 dark:text-blue-200">
                 Sales channels represent different ways your organization sells
                 products or services. Examples include online stores, physical
-                retail locations, mobile apps, or partner networks.
+                retail locations, mobile apps, or partner networks. You can
+                create inactive channels to prepare them for future use.
               </p>
             </div>
           </div>

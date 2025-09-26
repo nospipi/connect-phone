@@ -8,4 +8,5 @@ export interface ISalesChannel {
   description: string | null | undefined;
   organizationId: number;
   organization: IOrganization;
+  isActive: boolean;
 }

@@ -38,6 +38,9 @@ export class SalesChannelEntity implements ISalesChannel {
   @JoinColumn({ name: 'organizationId' })
   organization: OrganizationEntity;
 
+  @Column({ type: 'boolean', default: true })
+  isActive: boolean;
+
   // @AfterLoad()
   // logSalesChannelLoad() {
   //   console.log(`MIDDLEWARE TEST: ${this.name}`);
