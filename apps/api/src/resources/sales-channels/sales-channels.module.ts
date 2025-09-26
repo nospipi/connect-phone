@@ -9,11 +9,13 @@ import { UserEntity } from '@/database/entities/user.entity';
 import { FindAllByOrgPaginatedController } from './services/find-all-by-org-paginated/controller';
 import { CreateNewChannelController } from './services/create-new-channel/controller';
 import { UpdateSalesChannelController } from './services/update-sales-channel/controller';
+import { GetSalesChannelByIdController } from './services/get-sales-channel-by-id/controller';
 
 // services
 import { FindAllByOrgPaginatedService } from './services/find-all-by-org-paginated/service';
 import { CreateNewChannelService } from './services/create-new-channel/service';
 import { UpdateSalesChannelService } from './services/update-sales-channel/service';
+import { GetSalesChannelByIdService } from './services/get-sales-channel-by-id/service';
 
 //-----------------------------------------
 
@@ -29,11 +31,13 @@ import { UpdateSalesChannelService } from './services/update-sales-channel/servi
     FindAllByOrgPaginatedController,
     CreateNewChannelController,
     UpdateSalesChannelController,
+    GetSalesChannelByIdController,
   ],
   providers: [
     FindAllByOrgPaginatedService,
     CreateNewChannelService,
     UpdateSalesChannelService,
+    GetSalesChannelByIdService,
   ],
 })
 export class SalesChannelsModule {}
