@@ -53,7 +53,7 @@ const Page = async ({
                   htmlFor="name"
                   className="block text-sm font-medium text-gray-700 dark:text-gray-300"
                 >
-                  Channel Name *
+                  Channel Name
                 </label>
                 <input
                   autoFocus
@@ -140,19 +140,6 @@ const Page = async ({
                 <p className="mt-2 text-xs text-gray-500">
                   Inactive channels can be activated later from the channels
                   list
-                </p>
-              </div>
-
-              {/* Organization Info */}
-              <div className="rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
-                <h3 className="text-sm font-medium text-gray-900 dark:text-gray-50">
-                  Organization
-                </h3>
-                <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                  This channel will be created for{" "}
-                  <span className="font-medium">
-                    {loggedInOrganization?.name}
-                  </span>
                 </p>
               </div>
 

@@ -1,8 +1,8 @@
-// apps/cms/app/(frontend)/(authenticated)/(dashboard)/sales-channels/[sales_channel_id]/page.tsx
 import { RiArrowLeftLine } from "@remixicon/react"
 import Link from "next/link"
 import { getSalesChannelById } from "@/app/(backend)/server_actions/getSalesChannelById"
 import { updateSalesChannel } from "@/app/(backend)/server_actions/updateSalesChannel"
+import DeleteSalesChannelButton from "./DeleteSalesChannelButton"
 
 //----------------------------------------------------------------------
 
@@ -15,7 +15,7 @@ const Page = async ({
   const salesChannelData = await getSalesChannelById(Number(sales_channel_id))
 
   return (
-    <div className="flex h-full flex-col overflow-hidden">
+    <div className="relative flex h-full flex-col overflow-hidden">
       {/* Header */}
       <div className="flex items-center gap-4 border-b border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950">
         <Link
@@ -39,8 +39,11 @@ const Page = async ({
       {/* Form */}
       <div className="flex-1 overflow-hidden py-4">
         <div className="flex h-full w-full justify-center overflow-auto px-4">
-          <div className="w-full max-w-3xl">
-            <form action={updateSalesChannel} className="flex flex-col gap-6">
+          <div className="flex w-full max-w-3xl flex-col gap-10">
+            <form
+              action={updateSalesChannel}
+              className="flex flex-1 flex-col gap-6"
+            >
               {/* Hidden ID Field */}
               <input type="hidden" name="id" value={salesChannelData.id} />
 
@@ -141,6 +144,7 @@ const Page = async ({
                 </button>
               </div>
             </form>
+            <DeleteSalesChannelButton salesChannel={salesChannelData} />
           </div>
         </div>
       </div>

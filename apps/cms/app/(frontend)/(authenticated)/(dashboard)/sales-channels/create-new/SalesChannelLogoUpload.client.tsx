@@ -13,6 +13,12 @@ import {
 
 //----------------------------------------------------------------------
 
+{
+  /*
+   This uploads the logo to vercel storage and then redirects back to the form with the new logo URL in the search params
+  */
+}
+
 export default function SalesChannelLogoUpload({
   currentLogoUrl,
   organizationId,

@@ -1,8 +1,8 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/sales-channels/page.tsx
 import { getAllSalesChannelsOfOrganizationPaginated } from "@/app/(backend)/server_actions/getAllSalesChannelsOfOrganizationPaginated"
-import AddChannelButton from "./CreateRandomButton.client"
 import SalesChannelItem from "./SalesChannelItem"
 import { ISalesChannel } from "@connect-phone/shared-types"
+import { RiAddLine } from "@remixicon/react"
 import { Card } from "@/components/common/Card"
 import { Button } from "@/components/common/Button"
 import Link from "next/link"
@@ -41,7 +41,10 @@ const Page = async ({
         </div>
         <div className="flex items-center gap-3">
           <Link href="/sales-channels/create-new">
-            <AddChannelButton />
+            <Button variant="primary" className="gap-2">
+              <RiAddLine />
+              <span>Create New Channel</span>
+            </Button>
           </Link>
         </div>
       </div>
