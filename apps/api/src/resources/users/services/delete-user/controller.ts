@@ -27,7 +27,7 @@ export class DeleteUserController {
 
     try {
       const deletedUser = await this.deleteUserService.deleteUserById(id);
-      console.log('User deleted successfully:', deletedUser);
+
       return deletedUser;
     } catch (error) {
       console.error('Error deleting user:', error);

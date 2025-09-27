@@ -28,8 +28,6 @@ export const deleteUserById = async (formData: FormData): Promise<void> => {
       throw new Error("Failed to delete user")
     }
 
-    console.log("User deleted successfully:", response.data)
-
     // Revalidate the users page after deletion
     revalidatePath("/users/users")
   } catch (error: unknown) {
