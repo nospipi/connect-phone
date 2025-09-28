@@ -38,7 +38,7 @@ export class UpdateSalesChannelController {
         await this.updateSalesChannelService.updateSalesChannel(
           updateSalesChannelDto
         );
-      console.log('Sales channel updated successfully:', updatedSalesChannel);
+
       return updatedSalesChannel;
     } catch (error) {
       console.error('Error updating sales channel:', error);

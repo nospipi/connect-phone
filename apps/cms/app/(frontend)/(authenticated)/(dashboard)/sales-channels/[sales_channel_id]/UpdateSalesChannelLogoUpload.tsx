@@ -1,3 +1,4 @@
+// apps/cms/app/(frontend)/(authenticated)/(dashboard)/sales-channels/[sales_channel_id]/UpdateSalesChannelLogoUpload.client.tsx
 "use client"
 
 import { useState, useRef, useEffect } from "react"
@@ -13,18 +14,18 @@ import {
 
 //----------------------------------------------------------------------
 
-{
-  /*
-   This uploads the logo to vercel storage and then redirects back to the form with the new logo URL in the search params
-  */
-}
+/*
+ This uploads the logo to vercel storage and then redirects back to the form with the new logo URL in the search params
+*/
 
-export default function SalesChannelLogoUpload({
+export default function UpdateSalesChannelLogoUpload({
   currentLogoUrl,
   organizationId,
+  salesChannelId,
 }: {
   currentLogoUrl: string
   organizationId: string
+  salesChannelId: string
 }) {
   const router = useRouter()
   const [logoPreview, setLogoPreview] = useState<string | null>(
@@ -178,11 +179,13 @@ export default function SalesChannelLogoUpload({
         },
       })
 
-      // Redirect back to the form with all current values plus the new logo URL
+      // Redirect back to the sales channel edit form with the new logo URL
       const searchParams = new URLSearchParams()
       searchParams.set("logoUrl", newBlob.url)
 
-      router.push(`/sales-channels/create-new?${searchParams.toString()}`)
+      router.push(
+        `/sales-channels/${salesChannelId}?${searchParams.toString()}`,
+      )
     } catch (error) {
       console.error("Upload error:", error)
       setUploadError(error instanceof Error ? error.message : "Upload failed")
@@ -197,7 +200,10 @@ export default function SalesChannelLogoUpload({
       fileInputRef.current.value = ""
     }
 
-    router.push(`/sales-channels/create-new`)
+    const searchParams = new URLSearchParams()
+    searchParams.set("logoUrl", "clear")
+
+    router.push(`/sales-channels/${salesChannelId}?${searchParams.toString()}`)
   }
 
   return (
@@ -236,11 +242,6 @@ export default function SalesChannelLogoUpload({
 
               {/* Text content on the right */}
               <div className="flex-1 text-left">
-                <p className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                  {currentLogoUrl
-                    ? "Logo uploaded successfully"
-                    : "Logo selected"}
-                </p>
                 <p className="mt-1 text-sm text-gray-500">
                   Click anywhere to change or drag a new image here
                 </p>

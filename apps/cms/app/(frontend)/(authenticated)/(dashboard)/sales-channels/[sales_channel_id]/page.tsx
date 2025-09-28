@@ -1,18 +1,32 @@
+// apps/cms/app/(frontend)/(authenticated)/(dashboard)/sales-channels/[sales_channel_id]/page.tsx
 import { RiArrowLeftLine } from "@remixicon/react"
 import Link from "next/link"
 import { getSalesChannelById } from "@/app/(backend)/server_actions/getSalesChannelById"
 import { updateSalesChannel } from "@/app/(backend)/server_actions/updateSalesChannel"
+import { getUserLoggedInOrganization } from "@/app/(backend)/server_actions/getUserLoggedInOrganization"
+import UpdateSalesChannelLogoUpload from "./UpdateSalesChannelLogoUpload"
 import DeleteSalesChannelButton from "./DeleteSalesChannelButton"
 
 //----------------------------------------------------------------------
 
 const Page = async ({
   params,
+  searchParams,
 }: {
   params: Promise<{ sales_channel_id: string }>
+  searchParams: Promise<{ [key: string]: string | undefined }>
 }) => {
   const { sales_channel_id } = await params
+  const { logoUrl } = await searchParams
+
   const salesChannelData = await getSalesChannelById(Number(sales_channel_id))
+  const loggedInOrganization = await getUserLoggedInOrganization()
+
+  // Use logoUrl from searchParams if available, otherwise use existing logo
+  let currentLogoUrl = logoUrl || salesChannelData?.logoUrl || ""
+  if (logoUrl === "clear") {
+    currentLogoUrl = ""
+  }
 
   return (
     <div className="relative flex h-full flex-col overflow-hidden">
@@ -46,6 +60,9 @@ const Page = async ({
             >
               {/* Hidden ID Field */}
               <input type="hidden" name="id" value={salesChannelData.id} />
+
+              {/* Hidden input for logo URL to be submitted with the form */}
+              <input type="hidden" name="logoUrl" value={currentLogoUrl} />
 
               {/* Channel Name */}
               <div>
@@ -88,6 +105,23 @@ const Page = async ({
                 />
                 <p className="mt-2 text-xs text-gray-500">
                   Optional: Provide additional details about this channel
+                </p>
+              </div>
+
+              {/* Logo Upload */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Channel Logo
+                </label>
+                <div className="mt-2">
+                  <UpdateSalesChannelLogoUpload
+                    currentLogoUrl={currentLogoUrl}
+                    organizationId={loggedInOrganization?.id.toString() || ""}
+                    salesChannelId={salesChannelData.id.toString()}
+                  />
+                </div>
+                <p className="mt-2 text-xs text-gray-500">
+                  Optional: Upload a logo to represent this sales channel
                 </p>
               </div>
 

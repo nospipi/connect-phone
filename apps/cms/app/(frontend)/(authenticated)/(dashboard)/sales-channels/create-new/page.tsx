@@ -1,7 +1,7 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/sales-channels/create-new/page.tsx
 import { createNewSalesChannel } from "@/app/(backend)/server_actions/createNewSalesChannel"
 import { getUserLoggedInOrganization } from "@/app/(backend)/server_actions/getUserLoggedInOrganization"
-import SalesChannelLogoUpload from "./SalesChannelLogoUpload.client"
+import CreateSalesChannelLogoUpload from "./CreateSalesChannelLogoUpload"
 import { RiArrowLeftLine, RiAddLine } from "@remixicon/react"
 import Link from "next/link"
 
@@ -97,7 +97,7 @@ const Page = async ({
                   Channel Logo
                 </label>
                 <div className="mt-2">
-                  <SalesChannelLogoUpload
+                  <CreateSalesChannelLogoUpload
                     currentLogoUrl={logoUrl}
                     organizationId={loggedInOrganization?.id.toString() || ""}
                   />
