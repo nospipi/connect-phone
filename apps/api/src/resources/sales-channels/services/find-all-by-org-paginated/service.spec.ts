@@ -6,7 +6,6 @@ import { FindAllByOrgPaginatedService } from './service';
 import { SalesChannelEntity } from '../../../../database/entities/sales-channel.entity';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 import { paginate } from 'nestjs-typeorm-paginate';
-import { ISalesChannel } from '@connect-phone/shared-types';
 import {
   createMockOrganization,
   createMockSalesChannel,
@@ -14,6 +13,8 @@ import {
   createMockPagination,
   createCurrentOrganizationServiceProvider,
 } from '../../../../test/factories';
+
+//-----------------------------------------
 
 jest.mock('nestjs-typeorm-paginate', () => ({
   paginate: jest.fn(),
@@ -26,21 +27,11 @@ describe('FindAllByOrgPaginatedService', () => {
   let mockPaginate: jest.MockedFunction<typeof paginate>;
 
   const mockOrganization = createMockOrganization();
-
-  const mockSalesChannel: ISalesChannel = createMockSalesChannel({
-    id: 1,
-    name: 'Test Sales Channel',
-    description: 'Test Description',
-    logoUrl: null,
-    organizationId: 1,
-    organization: mockOrganization,
-  });
-
+  const mockSalesChannel = createMockSalesChannel();
   const mockPaginationResult = createMockPagination(
     [mockSalesChannel],
     '/sales-channels/paginated'
   );
-
   const mockQueryBuilder = createMockQueryBuilder();
 
   beforeEach(async () => {
@@ -158,3 +149,4 @@ describe('FindAllByOrgPaginatedService', () => {
     });
   });
 });
+// apps/api/src/resources/sales-channels/services/find-all-by-org-paginated/service.spec.ts

@@ -12,7 +12,10 @@ import {
   createMockOrganization,
   createMockUser,
   createMockUserOrganization,
+  createCurrentOrganizationServiceProvider,
 } from '../../../../test/factories';
+
+//--------------------------------------------------------------------------------
 
 describe('GetUserByIdService', () => {
   let service: GetUserByIdService;
@@ -24,7 +27,7 @@ describe('GetUserByIdService', () => {
   const mockOrganization = createMockOrganization();
   const mockUser = createMockUser({ loggedOrganization: mockOrganization });
   const mockUserOrganization = createMockUserOrganization({
-    role: UserOrganizationRole.ADMIN, // Only override role
+    role: UserOrganizationRole.ADMIN,
   });
 
   beforeEach(async () => {
@@ -43,12 +46,7 @@ describe('GetUserByIdService', () => {
             findOne: jest.fn(),
           },
         },
-        {
-          provide: CurrentOrganizationService,
-          useValue: {
-            getCurrentOrganization: jest.fn(),
-          },
-        },
+        createCurrentOrganizationServiceProvider(),
       ],
     }).compile();
 
@@ -138,7 +136,6 @@ describe('GetUserByIdService', () => {
 
     it('should throw NotFoundException when user does not exist in user-organization', async () => {
       const userOrgWithoutUser = createMockUserOrganization({
-        ...mockUserOrganization,
         user: undefined,
       });
 
@@ -181,7 +178,6 @@ describe('GetUserByIdService', () => {
 
     it('should handle different roles correctly', async () => {
       const operatorUserOrganization = createMockUserOrganization({
-        ...mockUserOrganization,
         role: UserOrganizationRole.OPERATOR,
       });
 
@@ -221,7 +217,6 @@ describe('GetUserByIdService', () => {
       };
 
       const userOrganizationWithRelations = createMockUserOrganization({
-        ...mockUserOrganization,
         user: userWithRelations,
       });
 
@@ -236,10 +231,12 @@ describe('GetUserByIdService', () => {
 
       expect(result).toEqual({
         ...userWithRelations,
-        role: UserOrganizationRole.ADMIN,
+        role: UserOrganizationRole.OPERATOR,
       });
       expect(result.userOrganizations).toHaveLength(1);
-      expect(result.role).toBe(UserOrganizationRole.ADMIN);
+      expect(result.role).toBe(UserOrganizationRole.OPERATOR);
     });
   });
 });
+
+// apps/api/src/resources/users/services/get-user-by-id/service.spec.ts

@@ -11,7 +11,10 @@ import {
   createMockOrganization,
   createMockUser,
   createMockUserOrganization,
+  createCurrentOrganizationServiceProvider,
 } from '../../../../test/factories';
+
+//--------------------------------------------------------------------------------
 
 jest.mock('nestjs-typeorm-paginate', () => ({
   paginate: jest.fn(),
@@ -26,26 +29,8 @@ describe('GetAllUsersOfOrgPaginatedService', () => {
   let mockPaginate: jest.MockedFunction<typeof paginate>;
 
   const mockOrganization = createMockOrganization();
-
-  const mockUser = createMockUser({
-    id: 1,
-    email: 'test@example.com',
-    firstName: 'Test',
-    lastName: 'User',
-    createdAt: '2024-01-01T00:00:00Z',
-    loggedOrganizationId: 1,
-    loggedOrganization: mockOrganization,
-  });
-
-  const mockUserOrganization = createMockUserOrganization({
-    id: 1,
-    userId: 1,
-    organizationId: 1,
-    role: UserOrganizationRole.ADMIN,
-    user: mockUser,
-    organization: mockOrganization,
-  });
-
+  const mockUser = createMockUser();
+  const mockUserOrganization = createMockUserOrganization();
   const mockPaginationResult = {
     items: [mockUserOrganization],
     meta: {
@@ -62,7 +47,6 @@ describe('GetAllUsersOfOrgPaginatedService', () => {
       last: '/users/paginated?page=1&limit=10',
     },
   };
-
   const mockQueryBuilder = {
     createQueryBuilder: jest.fn().mockReturnThis(),
     leftJoinAndSelect: jest.fn().mockReturnThis(),
@@ -81,12 +65,7 @@ describe('GetAllUsersOfOrgPaginatedService', () => {
             createQueryBuilder: jest.fn().mockReturnValue(mockQueryBuilder),
           },
         },
-        {
-          provide: CurrentOrganizationService,
-          useValue: {
-            getCurrentOrganization: jest.fn(),
-          },
-        },
+        createCurrentOrganizationServiceProvider(),
       ],
     }).compile();
 
@@ -320,3 +299,5 @@ describe('GetAllUsersOfOrgPaginatedService', () => {
     });
   });
 });
+
+// apps/api/src/resources/users/services/get-all-users-of-org-paginated/service.spec.ts

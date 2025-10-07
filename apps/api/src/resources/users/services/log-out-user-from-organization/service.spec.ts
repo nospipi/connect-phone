@@ -5,21 +5,20 @@ import { Repository } from 'typeorm';
 import { NotFoundException } from '@nestjs/common';
 import { LogOutUserFromOrganizationService } from './service';
 import { UserEntity } from '../../../../database/entities/user.entity';
-import { IUser } from '@connect-phone/shared-types';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
 import {
-  createMockOrganization,
   createMockUser,
-  createMockUserOrganization,
+  createCurrentDbUserServiceProvider,
 } from '../../../../test/factories';
+
+//--------------------------------------------------------------------------------
 
 describe('LogOutUserFromOrganizationService', () => {
   let service: LogOutUserFromOrganizationService;
   let userRepository: jest.Mocked<Repository<UserEntity>>;
   let currentDbUserService: jest.Mocked<CurrentDbUserService>;
 
-  const mockOrganization = createMockOrganization();
-  const mockUser = createMockUser({ loggedOrganization: mockOrganization });
+  const mockUser = createMockUser();
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -31,12 +30,7 @@ describe('LogOutUserFromOrganizationService', () => {
             save: jest.fn(),
           },
         },
-        {
-          provide: CurrentDbUserService,
-          useValue: {
-            getCurrentDbUser: jest.fn(),
-          },
-        },
+        createCurrentDbUserServiceProvider(),
       ],
     }).compile();
 
@@ -58,10 +52,8 @@ describe('LogOutUserFromOrganizationService', () => {
   describe('logOutUserFromOrganization', () => {
     it('should log out user by setting loggedOrganizationId to null', async () => {
       currentDbUserService.getCurrentDbUser.mockResolvedValue(mockUser);
-      userRepository.save.mockImplementation(async (user: IUser) => {
-        return {
-          ...user,
-        } as unknown as IUser;
+      userRepository.save.mockImplementation(async (user) => {
+        return user as UserEntity;
       });
 
       const result = await service.logOutUserFromOrganization();
@@ -84,16 +76,13 @@ describe('LogOutUserFromOrganizationService', () => {
 
     it('should work even if user is already logged out', async () => {
       const loggedOutUser = createMockUser({
-        ...mockUser,
         loggedOrganizationId: null,
         loggedOrganization: null,
       });
 
       currentDbUserService.getCurrentDbUser.mockResolvedValue(loggedOutUser);
-      userRepository.save.mockImplementation(async (user: IUser) => {
-        return {
-          ...user,
-        } as unknown as IUser;
+      userRepository.save.mockImplementation(async (user) => {
+        return user as UserEntity;
       });
 
       const result = await service.logOutUserFromOrganization();
@@ -105,3 +94,5 @@ describe('LogOutUserFromOrganizationService', () => {
     });
   });
 });
+
+// apps/api/src/resources/users/services/log-out-user-from-organization/service.spec.ts

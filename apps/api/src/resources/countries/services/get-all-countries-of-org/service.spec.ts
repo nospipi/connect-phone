@@ -9,8 +9,9 @@ import {
   createMockCountry,
   createCurrentOrganizationServiceProvider,
 } from '../../../../test/factories';
-import { ICountry } from '@connect-phone/shared-types';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
+
+//--------------------------------------------------------------------------------
 
 describe('GetAllCountriesOfOrgService', () => {
   let service: GetAllCountriesOfOrgService;
@@ -18,8 +19,7 @@ describe('GetAllCountriesOfOrgService', () => {
   let currentOrganizationService: jest.Mocked<CurrentOrganizationService>;
 
   const mockOrganization = createMockOrganization();
-
-  const mockCountries: ICountry[] = [createMockCountry(), createMockCountry()];
+  const mockCountries = [createMockCountry(), createMockCountry()];
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -100,7 +100,7 @@ describe('GetAllCountriesOfOrgService', () => {
     });
 
     it('should handle different organization IDs correctly', async () => {
-      const differentOrg = { ...mockOrganization, id: 5 };
+      const differentOrg = createMockOrganization({ id: 5 });
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         differentOrg
       );
@@ -146,3 +146,5 @@ describe('GetAllCountriesOfOrgService', () => {
     });
   });
 });
+
+// apps/api/src/resources/countries/services/get-all-countries-of-org/service.spec.ts

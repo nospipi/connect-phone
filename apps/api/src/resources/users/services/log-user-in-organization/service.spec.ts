@@ -5,13 +5,15 @@ import { Repository } from 'typeorm';
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
 import { LogUserInOrganizationService } from './service';
 import { UserEntity } from '../../../../database/entities/user.entity';
-import { IUser } from '@connect-phone/shared-types';
 import { OrganizationEntity } from '../../../../database/entities/organization.entity';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
 import {
   createMockOrganization,
   createMockUser,
+  createCurrentDbUserServiceProvider,
 } from '../../../../test/factories';
+
+//--------------------------------------------------------------------------------
 
 describe('LogUserInOrganizationService', () => {
   let service: LogUserInOrganizationService;
@@ -38,12 +40,7 @@ describe('LogUserInOrganizationService', () => {
             findOne: jest.fn(),
           },
         },
-        {
-          provide: CurrentDbUserService,
-          useValue: {
-            getCurrentDbUser: jest.fn(),
-          },
-        },
+        createCurrentDbUserServiceProvider(),
       ],
     }).compile();
 
@@ -67,10 +64,8 @@ describe('LogUserInOrganizationService', () => {
     it('updates loggedOrganizationId if user belongs to org', async () => {
       currentDbUserService.getCurrentDbUser.mockResolvedValue(mockUser);
       organizationRepository.findOne.mockResolvedValue(mockOrganization);
-      userRepository.save.mockImplementation(async (user: IUser) => {
-        return {
-          ...user,
-        } as unknown as IUser;
+      userRepository.save.mockImplementation(async (user) => {
+        return user as UserEntity;
       });
       const result = await service.logUserInOrganization(mockOrganization.id);
 
@@ -88,7 +83,6 @@ describe('LogUserInOrganizationService', () => {
       currentDbUserService.getCurrentDbUser.mockResolvedValue(mockUser);
       organizationRepository.findOne.mockResolvedValue(
         createMockOrganization({
-          ...mockOrganization,
           id: otherOrgId,
         })
       );
@@ -115,3 +109,5 @@ describe('LogUserInOrganizationService', () => {
     });
   });
 });
+
+// apps/api/src/resources/users/services/log-user-in-organization/service.spec.ts

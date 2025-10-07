@@ -6,12 +6,13 @@ import { NotFoundException, ForbiddenException } from '@nestjs/common';
 import { GetSalesChannelByIdService } from './service';
 import { SalesChannelEntity } from '../../../../database/entities/sales-channel.entity';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
-import { ISalesChannel } from '@connect-phone/shared-types';
 import {
   createMockOrganization,
   createMockSalesChannel,
   createCurrentOrganizationServiceProvider,
 } from '../../../../test/factories';
+
+//--------------------------------------------------------------------------------
 
 describe('GetSalesChannelByIdService', () => {
   let service: GetSalesChannelByIdService;
@@ -19,16 +20,7 @@ describe('GetSalesChannelByIdService', () => {
   let currentOrganizationService: jest.Mocked<CurrentOrganizationService>;
 
   const mockOrganization = createMockOrganization();
-
-  const mockSalesChannel: ISalesChannel = createMockSalesChannel({
-    id: 1,
-    name: 'Test Sales Channel',
-    description: 'Test Description',
-    logoUrl: null,
-    organizationId: 1,
-    isActive: true,
-    organization: mockOrganization,
-  });
+  const mockSalesChannel = createMockSalesChannel();
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -190,14 +182,12 @@ describe('GetSalesChannelByIdService', () => {
     });
 
     it('should handle sales channels with different properties', async () => {
-      const differentSalesChannel: ISalesChannel = createMockSalesChannel({
+      const differentSalesChannel = createMockSalesChannel({
         id: 2,
         name: 'Different Channel',
         description: 'Different description',
         logoUrl: 'https://example.com/logo.png',
-        organizationId: 1,
         isActive: false,
-        organization: mockOrganization,
       });
 
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(

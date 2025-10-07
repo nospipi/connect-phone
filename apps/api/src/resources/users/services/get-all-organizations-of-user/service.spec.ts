@@ -5,7 +5,6 @@ import { Repository } from 'typeorm';
 import { UnauthorizedException } from '@nestjs/common';
 import { GetAllOrganizationsOfUserService } from './service';
 import { UserEntity } from '../../../../database/entities/user.entity';
-import { IOrganization, IUserOrganization } from '@connect-phone/shared-types';
 import {
   UserOrganizationEntity,
   UserOrganizationRole,
@@ -15,7 +14,10 @@ import {
   createMockUser,
   createMockOrganization,
   createMockUserOrganization,
+  createCurrentDbUserServiceProvider,
 } from '../../../../test/factories';
+
+//--------------------------------------------------------------------------------
 
 describe('GetAllOrganizationsOfUserService', () => {
   let service: GetAllOrganizationsOfUserService;
@@ -23,24 +25,8 @@ describe('GetAllOrganizationsOfUserService', () => {
   let userOrgRepository: jest.Mocked<Repository<UserOrganizationEntity>>;
   let currentDbUserService: jest.Mocked<CurrentDbUserService>;
 
-  const mockUser = createMockUser({
-    id: 1,
-    email: 'test@example.com',
-    firstName: 'Test',
-    lastName: 'User',
-    createdAt: '2024-01-01T00:00:00Z',
-    loggedOrganizationId: 1,
-    loggedOrganization: null,
-  });
-
-  const mockOrganization1 = createMockOrganization({
-    id: 1,
-    name: 'Organization 1',
-    slug: 'org-1',
-    logoUrl: null,
-    createdAt: '2024-01-01T00:00:00Z',
-  });
-
+  const mockUser = createMockUser();
+  const mockOrganization1 = createMockOrganization();
   const mockOrganization2 = createMockOrganization({
     id: 2,
     name: 'Organization 2',
@@ -48,22 +34,15 @@ describe('GetAllOrganizationsOfUserService', () => {
     logoUrl: 'https://example.com/logo.png',
     createdAt: '2024-01-02T00:00:00Z',
   });
-
-  const mockUserOrganizations: IUserOrganization[] = [
+  const mockUserOrganizations = [
     createMockUserOrganization({
-      id: 1,
-      userId: 1,
-      organizationId: 1,
       role: UserOrganizationRole.ADMIN,
-      user: mockUser,
       organization: mockOrganization1,
     }),
     createMockUserOrganization({
       id: 2,
-      userId: 1,
       organizationId: 2,
       role: UserOrganizationRole.OPERATOR,
-      user: mockUser,
       organization: mockOrganization2,
     }),
   ];
@@ -86,12 +65,7 @@ describe('GetAllOrganizationsOfUserService', () => {
             findOne: jest.fn(),
           },
         },
-        {
-          provide: CurrentDbUserService,
-          useValue: {
-            getCurrentDbUser: jest.fn(),
-          },
-        },
+        createCurrentDbUserServiceProvider(),
       ],
     }).compile();
 
@@ -193,7 +167,7 @@ describe('GetAllOrganizationsOfUserService', () => {
     });
 
     it('should preserve organization properties and add role', async () => {
-      const orgWithAllProps: IOrganization = createMockOrganization({
+      const orgWithAllProps = createMockOrganization({
         id: 3,
         name: 'Full Props Org',
         slug: 'full-props',
@@ -203,10 +177,8 @@ describe('GetAllOrganizationsOfUserService', () => {
 
       const userOrgWithFullProps = createMockUserOrganization({
         id: 3,
-        userId: 1,
         organizationId: 3,
         role: UserOrganizationRole.OPERATOR,
-        user: mockUser,
         organization: orgWithAllProps,
       });
 
@@ -231,3 +203,5 @@ describe('GetAllOrganizationsOfUserService', () => {
     });
   });
 });
+
+// apps/api/src/resources/users/services/get-all-organizations-of-user/service.spec.ts

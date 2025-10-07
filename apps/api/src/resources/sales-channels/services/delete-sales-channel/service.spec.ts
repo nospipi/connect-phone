@@ -12,6 +12,8 @@ import {
   createCurrentOrganizationServiceProvider,
 } from '../../../../test/factories';
 
+//--------------------------------------------------------------------------------
+
 describe('DeleteSalesChannelService', () => {
   let service: DeleteSalesChannelService;
   let salesChannelRepository: jest.Mocked<Repository<SalesChannelEntity>>;
@@ -273,3 +275,4 @@ describe('DeleteSalesChannelService', () => {
     });
   });
 });
+// apps/api/src/resources/sales-channels/services/delete-sales-channel/service.spec.ts

@@ -7,12 +7,13 @@ import { UpdateSalesChannelService } from './service';
 import { SalesChannelEntity } from '../../../../database/entities/sales-channel.entity';
 import { UpdateSalesChannelDto } from './update-sales-channel.dto';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
-import { ISalesChannel } from '@connect-phone/shared-types';
 import {
   createMockOrganization,
   createMockSalesChannel,
   createCurrentOrganizationServiceProvider,
 } from '../../../../test/factories';
+
+//--------------------------------------------------------------------------------
 
 describe('UpdateSalesChannelService', () => {
   let service: UpdateSalesChannelService;
@@ -20,16 +21,7 @@ describe('UpdateSalesChannelService', () => {
   let currentOrganizationService: jest.Mocked<CurrentOrganizationService>;
 
   const mockOrganization = createMockOrganization();
-
-  const mockSalesChannel: ISalesChannel = createMockSalesChannel({
-    id: 1,
-    name: 'Test Sales Channel',
-    description: 'Test Description',
-    logoUrl: null,
-    organizationId: 1,
-    isActive: true,
-    organization: mockOrganization,
-  });
+  const mockSalesChannel = createMockSalesChannel();
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -312,3 +304,5 @@ describe('UpdateSalesChannelService', () => {
     });
   });
 });
+
+// apps/api/src/resources/sales-channels/services/update-sales-channel/service.spec.ts

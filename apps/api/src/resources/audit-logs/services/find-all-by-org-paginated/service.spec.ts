@@ -14,6 +14,8 @@ import {
   createCurrentOrganizationServiceProvider,
 } from '../../../../test/factories';
 
+//--------------------------------------------------------------------------------
+
 jest.mock('nestjs-typeorm-paginate', () => ({
   paginate: jest.fn(),
 }));
@@ -164,3 +166,4 @@ describe('FindAllByOrgPaginatedService', () => {
     });
   });
 });
+// apps/api/src/resources/audit-logs/services/find-all-by-org-paginated/service.spec.ts

@@ -7,12 +7,14 @@ import { DeleteUserService } from './service';
 import { UserEntity } from '../../../../database/entities/user.entity';
 import { UserOrganizationEntity } from '../../../../database/entities/user-organization.entity';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
-import { UserOrganizationRole } from '@connect-phone/shared-types';
 import {
   createMockOrganization,
   createMockUser,
   createMockUserOrganization,
+  createCurrentOrganizationServiceProvider,
 } from '../../../../test/factories';
+
+//--------------------------------------------------------------------------------
 
 describe('DeleteUserService', () => {
   let service: DeleteUserService;
@@ -43,12 +45,7 @@ describe('DeleteUserService', () => {
             findOne: jest.fn(),
           },
         },
-        {
-          provide: CurrentOrganizationService,
-          useValue: {
-            getCurrentOrganization: jest.fn(),
-          },
-        },
+        createCurrentOrganizationServiceProvider(),
       ],
     }).compile();
 
@@ -140,7 +137,6 @@ describe('DeleteUserService', () => {
 
     it('should throw NotFoundException when user does not exist in user-organization', async () => {
       const userOrgWithoutUser = createMockUserOrganization({
-        ...mockUserOrganization,
         user: undefined,
       });
 
@@ -245,3 +241,5 @@ describe('DeleteUserService', () => {
     });
   });
 });
+
+// apps/api/src/resources/users/services/delete-user/service.spec.ts

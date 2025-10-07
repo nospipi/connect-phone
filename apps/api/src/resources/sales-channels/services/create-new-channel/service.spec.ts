@@ -20,12 +20,10 @@ describe('CreateNewChannelService', () => {
 
   const mockOrganization = createMockOrganization({ id: 31 });
   const mockSalesChannel = createMockSalesChannel({ organizationId: 31 });
-
   const mockCreateSalesChannelDto: CreateSalesChannelDto = {
     name: 'Test Sales Channel',
     description: 'Test Description',
   };
-
   const mockQueryBuilder = createMockQueryBuilder();
 
   beforeEach(async () => {
@@ -145,3 +143,4 @@ describe('CreateNewChannelService', () => {
     });
   });
 });
+// apps/api/src/resources/sales-channels/services/create-new-channel/service.spec.ts

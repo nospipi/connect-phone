@@ -12,9 +12,11 @@ import {
   createMockOrganization,
   createMockUser,
   createMockUserInvitation,
+  createCurrentOrganizationServiceProvider,
+  createCurrentDbUserServiceProvider,
 } from '../../../../test/factories';
 
-//----------------------------------------------------------------------------
+//--------------------------------------------------------------------------------
 
 describe('CreateUserInvitationService', () => {
   let service: CreateUserInvitationService;
@@ -22,35 +24,15 @@ describe('CreateUserInvitationService', () => {
   let currentOrganizationService: jest.Mocked<CurrentOrganizationService>;
   let currentDbUserService: jest.Mocked<CurrentDbUserService>;
 
-  const mockOrganization = createMockOrganization({
-    id: 31,
-    name: 'Test Organization',
-    slug: 'test-org',
-    logoUrl: null,
-    createdAt: '2024-01-01T00:00:00Z',
-  });
-
+  const mockOrganization = createMockOrganization({ id: 31 });
   const mockUser = createMockUser({
-    id: 1,
-    email: 'admin@example.com',
-    firstName: 'Admin',
-    lastName: 'User',
-    createdAt: '2024-01-01T00:00:00Z',
     loggedOrganizationId: 31,
     loggedOrganization: mockOrganization,
   });
-
   const mockUserInvitation = createMockUserInvitation({
-    id: 1,
-    email: 'invite@example.com',
-    role: UserOrganizationRole.OPERATOR,
-    createdAt: '2024-01-01T00:00:00Z',
     organizationId: 31,
     organization: mockOrganization,
-    invitedById: 1,
-    invitedBy: mockUser,
   });
-
   const mockCreateUserInvitationDto: CreateUserInvitationDto = {
     email: 'invite@example.com',
     role: UserOrganizationRole.OPERATOR,
@@ -67,18 +49,8 @@ describe('CreateUserInvitationService', () => {
             save: jest.fn(),
           },
         },
-        {
-          provide: CurrentOrganizationService,
-          useValue: {
-            getCurrentOrganization: jest.fn(),
-          },
-        },
-        {
-          provide: CurrentDbUserService,
-          useValue: {
-            getCurrentDbUser: jest.fn(),
-          },
-        },
+        createCurrentOrganizationServiceProvider(),
+        createCurrentDbUserServiceProvider(),
       ],
     }).compile();
 
@@ -212,3 +184,5 @@ describe('CreateUserInvitationService', () => {
     });
   });
 });
+
+// apps/api/src/resources/user-invitations/services/create-user-invitation/service.spec.ts

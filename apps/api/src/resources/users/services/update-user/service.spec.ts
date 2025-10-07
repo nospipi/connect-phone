@@ -13,9 +13,11 @@ import { UpdateUserDto } from './update-user.dto';
 import {
   createMockOrganization,
   createMockUser,
+  createCurrentDbUserServiceProvider,
+  createCurrentOrganizationServiceProvider,
 } from '../../../../test/factories';
 
-//-------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------
 
 describe('UpdateUserService', () => {
   let service: UpdateUserService;
@@ -26,16 +28,7 @@ describe('UpdateUserService', () => {
   let currentDbUserService: jest.Mocked<CurrentDbUserService>;
   let currentOrganizationService: jest.Mocked<CurrentOrganizationService>;
 
-  const mockUser = createMockUser({
-    id: 1,
-    email: 'test@example.com',
-    firstName: 'Test',
-    lastName: 'User',
-    createdAt: '2024-01-01T00:00:00Z',
-    loggedOrganizationId: 1,
-    loggedOrganization: null,
-  });
-
+  const mockUser = createMockUser();
   const mockOrganization = createMockOrganization();
 
   beforeEach(async () => {
@@ -56,18 +49,8 @@ describe('UpdateUserService', () => {
             save: jest.fn(),
           },
         },
-        {
-          provide: CurrentDbUserService,
-          useValue: {
-            getCurrentDbUser: jest.fn(),
-          },
-        },
-        {
-          provide: CurrentOrganizationService,
-          useValue: {
-            getCurrentOrganization: jest.fn(),
-          },
-        },
+        createCurrentDbUserServiceProvider(),
+        createCurrentOrganizationServiceProvider(),
       ],
     }).compile();
 
@@ -90,7 +73,6 @@ describe('UpdateUserService', () => {
 
   describe('updateUserById', () => {
     it('should update user by ID with basic info', async () => {
-      // Arrange
       const updateData: UpdateUserDto = {
         id: 1,
         firstName: 'Updated',
@@ -107,10 +89,8 @@ describe('UpdateUserService', () => {
       userRepository.findOne.mockResolvedValue(mockUser as UserEntity);
       userRepository.save.mockResolvedValue(updatedUser as UserEntity);
 
-      // Act
       const result = await service.updateUserById(updateData);
 
-      // Assert
       expect(userRepository.findOne).toHaveBeenCalledWith({
         where: { id: 1 },
       });
@@ -124,7 +104,6 @@ describe('UpdateUserService', () => {
     });
 
     it('should update user role when provided', async () => {
-      // Arrange
       const mockUserOrganization = {
         id: 1,
         userId: 1,
@@ -150,10 +129,8 @@ describe('UpdateUserService', () => {
         role: UserOrganizationRole.ADMIN,
       } as UserOrganizationEntity);
 
-      // Act
       const result = await service.updateUserById(updateData);
 
-      // Assert
       expect(userOrganizationRepository.findOne).toHaveBeenCalledWith({
         where: {
           userId: 1,
@@ -167,28 +144,23 @@ describe('UpdateUserService', () => {
     });
 
     it('should throw NotFoundException when id not provided', async () => {
-      // Arrange
       const updateData = { firstName: 'Updated' } as unknown as UpdateUserDto;
 
-      // Act & Assert
       await expect(service.updateUserById(updateData)).rejects.toThrow(
         new NotFoundException('User ID is required')
       );
     });
 
     it('should throw NotFoundException when user not found', async () => {
-      // Arrange
       const updateData: UpdateUserDto = { id: 999, firstName: 'Updated' };
       userRepository.findOne.mockResolvedValue(null);
 
-      // Act & Assert
       await expect(service.updateUserById(updateData)).rejects.toThrow(
         new NotFoundException('User not found')
       );
     });
 
     it('should handle role update when user organization not found', async () => {
-      // Arrange
       const updateData: UpdateUserDto = {
         id: 1,
         role: UserOrganizationRole.ADMIN,
@@ -201,12 +173,12 @@ describe('UpdateUserService', () => {
       );
       userOrganizationRepository.findOne.mockResolvedValue(null);
 
-      // Act
       const result = await service.updateUserById(updateData);
 
-      // Assert
       expect(userOrganizationRepository.save).not.toHaveBeenCalled();
       expect(result).toEqual(mockUser);
     });
   });
 });
+
+// apps/api/src/resources/users/services/update-user/service.spec.ts
