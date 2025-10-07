@@ -1,5 +1,4 @@
-// src/database/database.module.ts
-
+// apps/api/src/database/database.module.ts
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -9,6 +8,7 @@ import { UserEntity } from './entities/user.entity';
 import { UserOrganizationEntity } from './entities/user-organization.entity';
 import { AuditLogEntryEntity } from './entities/audit-log.entity';
 import { UserInvitationEntity } from './entities/user-invitation.entity';
+import { CountryEntity } from './entities/country.entity';
 import { AuditLogSubscriber } from './subscribers/audit-log.subscriber';
 import { UserInvitationSubscriber } from './subscribers/user-invitation.subscriber';
 
@@ -28,6 +28,7 @@ import { UserInvitationSubscriber } from './subscribers/user-invitation.subscrib
           UserOrganizationEntity,
           AuditLogEntryEntity,
           UserInvitationEntity,
+          CountryEntity,
         ],
         subscribers: [AuditLogSubscriber, UserInvitationSubscriber],
         synchronize: process.env.NODE_ENV !== 'production',

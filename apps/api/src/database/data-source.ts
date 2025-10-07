@@ -1,4 +1,4 @@
-// src/database/data-source.ts
+// apps/api/src/database/data-source.ts
 import { DataSource } from 'typeorm';
 import { OrganizationEntity } from './entities/organization.entity';
 import { SalesChannelEntity } from './entities/sales-channel.entity';
@@ -6,6 +6,7 @@ import { UserEntity } from './entities/user.entity';
 import { UserOrganizationEntity } from './entities/user-organization.entity';
 import { AuditLogEntryEntity } from './entities/audit-log.entity';
 import { UserInvitationEntity } from './entities/user-invitation.entity';
+import { CountryEntity } from './entities/country.entity';
 import { AuditLogSubscriber } from './subscribers/audit-log.subscriber';
 import { UserInvitationSubscriber } from './subscribers/user-invitation.subscriber';
 import * as dotenv from 'dotenv';
@@ -23,13 +24,14 @@ export const AppDataSource = new DataSource({
     UserOrganizationEntity,
     AuditLogEntryEntity,
     UserInvitationEntity,
+    CountryEntity,
   ],
   subscribers: [AuditLogSubscriber, UserInvitationSubscriber],
   migrations: ['src/database/migrations/*.ts'],
   ssl: {
     rejectUnauthorized: false,
   },
-  synchronize: false, // Always false for migrations
+  synchronize: false,
   logging: true,
 });
 
