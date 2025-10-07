@@ -206,3 +206,4 @@ describe('GetSalesChannelByIdService', () => {
     });
   });
 });
+// apps/api/src/resources/sales-channels/services/get-sales-channel-by-id/service.spec.ts
