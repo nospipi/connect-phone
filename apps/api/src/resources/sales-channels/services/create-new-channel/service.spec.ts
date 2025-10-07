@@ -1,5 +1,4 @@
 // apps/api/src/resources/sales-channels/services/create-new-channel/service.spec.ts
-
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -10,9 +9,9 @@ import { CurrentOrganizationService } from '../../../../common/core/current-orga
 import {
   createMockOrganization,
   createMockSalesChannel,
+  createMockQueryBuilder,
+  createCurrentOrganizationServiceProvider,
 } from '../../../../test/factories';
-
-//----------------------------------------------------------------------------
 
 describe('CreateNewChannelService', () => {
   let service: CreateNewChannelService;
@@ -27,12 +26,7 @@ describe('CreateNewChannelService', () => {
     description: 'Test Description',
   };
 
-  const mockQueryBuilder = {
-    insert: jest.fn().mockReturnThis(),
-    into: jest.fn().mockReturnThis(),
-    values: jest.fn().mockReturnThis(),
-    execute: jest.fn(),
-  };
+  const mockQueryBuilder = createMockQueryBuilder();
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -46,12 +40,7 @@ describe('CreateNewChannelService', () => {
             createQueryBuilder: jest.fn().mockReturnValue(mockQueryBuilder),
           },
         },
-        {
-          provide: CurrentOrganizationService,
-          useValue: {
-            getCurrentOrganization: jest.fn(),
-          },
-        },
+        createCurrentOrganizationServiceProvider(),
       ],
     }).compile();
 

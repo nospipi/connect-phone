@@ -1,5 +1,4 @@
 // apps/api/src/resources/sales-channels/services/delete-sales-channel/service.spec.ts
-
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -10,9 +9,8 @@ import { CurrentOrganizationService } from '../../../../common/core/current-orga
 import {
   createMockOrganization,
   createMockSalesChannel,
+  createCurrentOrganizationServiceProvider,
 } from '../../../../test/factories';
-
-//-------------------------------------------------------------------------------------------------
 
 describe('DeleteSalesChannelService', () => {
   let service: DeleteSalesChannelService;
@@ -33,12 +31,7 @@ describe('DeleteSalesChannelService', () => {
             remove: jest.fn(),
           },
         },
-        {
-          provide: CurrentOrganizationService,
-          useValue: {
-            getCurrentOrganization: jest.fn(),
-          },
-        },
+        createCurrentOrganizationServiceProvider(),
       ],
     }).compile();
 

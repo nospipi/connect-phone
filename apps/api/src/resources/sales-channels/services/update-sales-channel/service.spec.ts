@@ -11,9 +11,8 @@ import { ISalesChannel } from '@connect-phone/shared-types';
 import {
   createMockOrganization,
   createMockSalesChannel,
+  createCurrentOrganizationServiceProvider,
 } from '../../../../test/factories';
-
-//----------------------------------------------------------------------------------------------
 
 describe('UpdateSalesChannelService', () => {
   let service: UpdateSalesChannelService;
@@ -43,12 +42,7 @@ describe('UpdateSalesChannelService', () => {
             save: jest.fn(),
           },
         },
-        {
-          provide: CurrentOrganizationService,
-          useValue: {
-            getCurrentOrganization: jest.fn(),
-          },
-        },
+        createCurrentOrganizationServiceProvider(),
       ],
     }).compile();
 
@@ -166,7 +160,7 @@ describe('UpdateSalesChannelService', () => {
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
-      salesChannelsRepository.findOne.mockResolvedValue(null); // Not found in current org
+      salesChannelsRepository.findOne.mockResolvedValue(null);
 
       await expect(service.updateSalesChannel(updateDto)).rejects.toThrow(
         new NotFoundException(
@@ -185,7 +179,6 @@ describe('UpdateSalesChannelService', () => {
       const updateDto: UpdateSalesChannelDto = {
         id: 1,
         name: 'Updated Channel Name',
-        // description and isActive not provided
       };
 
       const originalChannel = {
@@ -208,8 +201,8 @@ describe('UpdateSalesChannelService', () => {
 
       const savedChannel = salesChannelsRepository.save.mock.calls[0][0];
       expect(savedChannel.name).toBe('Updated Channel Name');
-      expect(savedChannel.description).toBe('Original Description'); // Unchanged
-      expect(savedChannel.isActive).toBe(true); // Unchanged
+      expect(savedChannel.description).toBe('Original Description');
+      expect(savedChannel.isActive).toBe(true);
     });
 
     it('should handle logoUrl updates', async () => {
@@ -267,7 +260,7 @@ describe('UpdateSalesChannelService', () => {
     it('should clear description when empty string is provided', async () => {
       const updateDto: UpdateSalesChannelDto = {
         id: 1,
-        description: '', // Empty string to clear description
+        description: '',
       };
 
       const originalChannel = {
@@ -277,7 +270,7 @@ describe('UpdateSalesChannelService', () => {
 
       const clearedChannel = {
         ...originalChannel,
-        description: null, // Should be null after clearing
+        description: null,
       };
 
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(

@@ -1,5 +1,4 @@
 // apps/api/src/resources/countries/services/get-all-countries-of-org/service.spec.ts
-
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -8,8 +7,9 @@ import { CountryEntity } from '../../../../database/entities/country.entity';
 import {
   createMockOrganization,
   createMockCountry,
+  createCurrentOrganizationServiceProvider,
 } from '../../../../test/factories';
-import { ICountry, CountryRegion } from '@connect-phone/shared-types';
+import { ICountry } from '@connect-phone/shared-types';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 
 describe('GetAllCountriesOfOrgService', () => {
@@ -19,20 +19,7 @@ describe('GetAllCountriesOfOrgService', () => {
 
   const mockOrganization = createMockOrganization();
 
-  const mockCountries: ICountry[] = [
-    createMockCountry({
-      id: 1,
-      name: 'Greece',
-      code: 'gr',
-      region: CountryRegion.EUROPE,
-    }),
-    createMockCountry({
-      id: 2,
-      name: 'United States',
-      code: 'us',
-      region: CountryRegion.AMERICA,
-    }),
-  ];
+  const mockCountries: ICountry[] = [createMockCountry(), createMockCountry()];
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -44,12 +31,7 @@ describe('GetAllCountriesOfOrgService', () => {
             find: jest.fn(),
           },
         },
-        {
-          provide: CurrentOrganizationService,
-          useValue: {
-            getCurrentOrganization: jest.fn(),
-          },
-        },
+        createCurrentOrganizationServiceProvider(),
       ],
     }).compile();
 

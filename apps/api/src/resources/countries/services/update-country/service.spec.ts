@@ -1,5 +1,4 @@
 // apps/api/src/resources/countries/services/update-country/service.spec.ts
-
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -12,6 +11,7 @@ import { CurrentOrganizationService } from '../../../../common/core/current-orga
 import {
   createMockOrganization,
   createMockCountry,
+  createCurrentOrganizationServiceProvider,
 } from '../../../../test/factories';
 
 describe('UpdateCountryService', () => {
@@ -33,12 +33,7 @@ describe('UpdateCountryService', () => {
             save: jest.fn(),
           },
         },
-        {
-          provide: CurrentOrganizationService,
-          useValue: {
-            getCurrentOrganization: jest.fn(),
-          },
-        },
+        createCurrentOrganizationServiceProvider(),
       ],
     }).compile();
 

@@ -10,9 +10,8 @@ import { ISalesChannel } from '@connect-phone/shared-types';
 import {
   createMockOrganization,
   createMockSalesChannel,
+  createCurrentOrganizationServiceProvider,
 } from '../../../../test/factories';
-
-//-------------------------------------------------------------------------------------------------
 
 describe('GetSalesChannelByIdService', () => {
   let service: GetSalesChannelByIdService;
@@ -41,12 +40,7 @@ describe('GetSalesChannelByIdService', () => {
             findOne: jest.fn(),
           },
         },
-        {
-          provide: CurrentOrganizationService,
-          useValue: {
-            getCurrentOrganization: jest.fn(),
-          },
-        },
+        createCurrentOrganizationServiceProvider(),
       ],
     }).compile();
 
@@ -124,7 +118,7 @@ describe('GetSalesChannelByIdService', () => {
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
-      salesChannelRepository.findOne.mockResolvedValue(null); // Not found in current org
+      salesChannelRepository.findOne.mockResolvedValue(null);
 
       await expect(service.getSalesChannelById(1)).rejects.toThrow(
         new NotFoundException(

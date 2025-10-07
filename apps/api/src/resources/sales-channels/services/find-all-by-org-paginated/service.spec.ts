@@ -10,11 +10,11 @@ import { ISalesChannel } from '@connect-phone/shared-types';
 import {
   createMockOrganization,
   createMockSalesChannel,
+  createMockQueryBuilder,
+  createMockPagination,
+  createCurrentOrganizationServiceProvider,
 } from '../../../../test/factories';
 
-//-------------------------------------------------------------------------------------
-
-// Mock paginate function
 jest.mock('nestjs-typeorm-paginate', () => ({
   paginate: jest.fn(),
 }));
@@ -36,29 +36,12 @@ describe('FindAllByOrgPaginatedService', () => {
     organization: mockOrganization,
   });
 
-  const mockPaginationResult = {
-    items: [mockSalesChannel],
-    meta: {
-      itemCount: 1,
-      totalItems: 1,
-      itemsPerPage: 10,
-      totalPages: 1,
-      currentPage: 1,
-    },
-    links: {
-      first: '/sales-channels/paginated?page=1&limit=10',
-      previous: '',
-      next: '',
-      last: '/sales-channels/paginated?page=1&limit=10',
-    },
-  };
+  const mockPaginationResult = createMockPagination(
+    [mockSalesChannel],
+    '/sales-channels/paginated'
+  );
 
-  const mockQueryBuilder = {
-    createQueryBuilder: jest.fn().mockReturnThis(),
-    leftJoinAndSelect: jest.fn().mockReturnThis(),
-    where: jest.fn().mockReturnThis(),
-    orderBy: jest.fn().mockReturnThis(),
-  };
+  const mockQueryBuilder = createMockQueryBuilder();
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -70,12 +53,7 @@ describe('FindAllByOrgPaginatedService', () => {
             createQueryBuilder: jest.fn().mockReturnValue(mockQueryBuilder),
           },
         },
-        {
-          provide: CurrentOrganizationService,
-          useValue: {
-            getCurrentOrganization: jest.fn(),
-          },
-        },
+        createCurrentOrganizationServiceProvider(),
       ],
     }).compile();
 
@@ -99,16 +77,13 @@ describe('FindAllByOrgPaginatedService', () => {
 
   describe('findAllByOrganizationPaginated', () => {
     it('should return paginated sales channels for current organization', async () => {
-      // Arrange
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
       mockPaginate.mockResolvedValue(mockPaginationResult);
 
-      // Act
       const result = await service.findAllByOrganizationPaginated(1, 10);
 
-      // Assert
       expect(
         currentOrganizationService.getCurrentOrganization
       ).toHaveBeenCalledTimes(1);
@@ -138,16 +113,13 @@ describe('FindAllByOrgPaginatedService', () => {
     });
 
     it('should use default page and limit values', async () => {
-      // Arrange
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
       mockPaginate.mockResolvedValue(mockPaginationResult);
 
-      // Act
       await service.findAllByOrganizationPaginated();
 
-      // Assert
       expect(mockPaginate).toHaveBeenCalledWith(mockQueryBuilder, {
         page: 1,
         limit: 10,
@@ -156,37 +128,31 @@ describe('FindAllByOrgPaginatedService', () => {
     });
 
     it('should validate limit bounds (minimum 1)', async () => {
-      // Arrange
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
       mockPaginate.mockResolvedValue(mockPaginationResult);
 
-      // Act
       await service.findAllByOrganizationPaginated(1, 0);
 
-      // Assert
       expect(mockPaginate).toHaveBeenCalledWith(mockQueryBuilder, {
         page: 1,
-        limit: 1, // Should be corrected to minimum of 1
+        limit: 1,
         route: '/sales-channels/paginated',
       });
     });
 
     it('should validate limit bounds (maximum 100)', async () => {
-      // Arrange
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
       mockPaginate.mockResolvedValue(mockPaginationResult);
 
-      // Act
       await service.findAllByOrganizationPaginated(1, 150);
 
-      // Assert
       expect(mockPaginate).toHaveBeenCalledWith(mockQueryBuilder, {
         page: 1,
-        limit: 100, // Should be corrected to maximum of 100
+        limit: 100,
         route: '/sales-channels/paginated',
       });
     });
