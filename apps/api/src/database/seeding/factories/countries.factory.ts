@@ -254,7 +254,7 @@ const countriesData = {
 export function generateCountries(): Partial<CountryEntity>[] {
   return Object.entries(countriesData).map(([code, data]) => ({
     name: data.name,
-    code: code.toUpperCase(),
+    code: code,
     flagAvatarUrl: `https://flagcdn.com/56x42/${code}.webp`,
     flagProductImageUrl: `https://flagcdn.com/192x144/${code}.webp`,
     region: data.region,

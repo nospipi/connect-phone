@@ -1,4 +1,4 @@
-// src/app.module.ts
+// apps/api/src/app.module.ts
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -16,6 +16,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './database/entities/user.entity';
 import { AuditLogsModule } from './resources/audit-logs/audit-logs.module';
 import { UserInvitationsModule } from './resources/user-invitations/user-invitations.module';
+import { CountriesModule } from './resources/countries/countries.module';
 
 //---------------------------------------------------------------------------
 
@@ -32,6 +33,7 @@ import { UserInvitationsModule } from './resources/user-invitations/user-invitat
     TypeOrmModule.forFeature([UserEntity]),
     AuditLogsModule,
     UserInvitationsModule,
+    CountriesModule,
   ],
   controllers: [AppController],
   providers: [
