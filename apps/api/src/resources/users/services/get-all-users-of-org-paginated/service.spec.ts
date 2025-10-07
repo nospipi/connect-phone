@@ -3,23 +3,16 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetAllUsersOfOrgPaginatedService } from './service';
-import {
-  UserOrganizationEntity,
-  //UserOrganizationRole,
-} from '../../../../database/entities/user-organization.entity';
+import { UserOrganizationEntity } from '../../../../database/entities/user-organization.entity';
 import { UserOrganizationRole } from '@connect-phone/shared-types';
-import { OrganizationEntity } from '../../../../database/entities/organization.entity';
-import { IUserOrganization } from '@connect-phone/shared-types';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 import { paginate } from 'nestjs-typeorm-paginate';
 import {
   createMockOrganization,
   createMockUser,
+  createMockUserOrganization,
 } from '../../../../test/factories';
 
-//--------------------------------------------------------------------------------------------------
-
-// Mock paginate function
 jest.mock('nestjs-typeorm-paginate', () => ({
   paginate: jest.fn(),
 }));
@@ -44,14 +37,14 @@ describe('GetAllUsersOfOrgPaginatedService', () => {
     loggedOrganization: mockOrganization,
   });
 
-  const mockUserOrganization: IUserOrganization = {
+  const mockUserOrganization = createMockUserOrganization({
     id: 1,
     userId: 1,
     organizationId: 1,
     role: UserOrganizationRole.ADMIN,
     user: mockUser,
     organization: mockOrganization,
-  } as IUserOrganization;
+  });
 
   const mockPaginationResult = {
     items: [mockUserOrganization],
@@ -117,13 +110,11 @@ describe('GetAllUsersOfOrgPaginatedService', () => {
 
   describe('findAllByOrganizationPaginated', () => {
     it('should return paginated users for current organization', async () => {
-      // Arrange
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
       mockPaginate.mockResolvedValue(mockPaginationResult);
 
-      // Act
       const result = await service.findAllByOrganizationPaginated(
         1,
         10,
@@ -131,7 +122,6 @@ describe('GetAllUsersOfOrgPaginatedService', () => {
         'all'
       );
 
-      // Assert
       expect(
         currentOrganizationService.getCurrentOrganization
       ).toHaveBeenCalledTimes(1);
@@ -159,72 +149,59 @@ describe('GetAllUsersOfOrgPaginatedService', () => {
     });
 
     it('should use default parameter values', async () => {
-      // Arrange
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
       mockPaginate.mockResolvedValue(mockPaginationResult);
 
-      // Act
       await service.findAllByOrganizationPaginated();
 
-      // Assert
       expect(mockPaginate).toHaveBeenCalledWith(mockQueryBuilder, {
         page: 1,
         limit: 10,
         route: '/users/paginated',
       });
-      // Should not call andWhere for search or role since they're defaults
       expect(mockQueryBuilder.andWhere).not.toHaveBeenCalled();
     });
 
     it('should validate limit bounds (minimum 1)', async () => {
-      // Arrange
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
       mockPaginate.mockResolvedValue(mockPaginationResult);
 
-      // Act
       await service.findAllByOrganizationPaginated(1, 0);
 
-      // Assert
       expect(mockPaginate).toHaveBeenCalledWith(mockQueryBuilder, {
         page: 1,
-        limit: 1, // Should be corrected to minimum of 1
+        limit: 1,
         route: '/users/paginated',
       });
     });
 
     it('should validate limit bounds (maximum 100)', async () => {
-      // Arrange
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
       mockPaginate.mockResolvedValue(mockPaginationResult);
 
-      // Act
       await service.findAllByOrganizationPaginated(1, 150);
 
-      // Assert
       expect(mockPaginate).toHaveBeenCalledWith(mockQueryBuilder, {
         page: 1,
-        limit: 100, // Should be corrected to maximum of 100
+        limit: 100,
         route: '/users/paginated',
       });
     });
 
     it('should add search functionality when search term provided', async () => {
-      // Arrange
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
       mockPaginate.mockResolvedValue(mockPaginationResult);
 
-      // Act
       await service.findAllByOrganizationPaginated(1, 10, 'john', 'all');
 
-      // Assert
       expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
         '(user.firstName ILIKE :search OR user.lastName ILIKE :search OR user.email ILIKE :search)',
         { search: '%john%' }
@@ -232,13 +209,11 @@ describe('GetAllUsersOfOrgPaginatedService', () => {
     });
 
     it('should trim search term and handle spaces', async () => {
-      // Arrange
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
       mockPaginate.mockResolvedValue(mockPaginationResult);
 
-      // Act
       await service.findAllByOrganizationPaginated(
         1,
         10,
@@ -246,7 +221,6 @@ describe('GetAllUsersOfOrgPaginatedService', () => {
         'all'
       );
 
-      // Assert
       expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
         '(user.firstName ILIKE :search OR user.lastName ILIKE :search OR user.email ILIKE :search)',
         { search: '%jane doe%' }
@@ -254,16 +228,13 @@ describe('GetAllUsersOfOrgPaginatedService', () => {
     });
 
     it('should not add search when search term is empty or whitespace', async () => {
-      // Arrange
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
       mockPaginate.mockResolvedValue(mockPaginationResult);
 
-      // Act
       await service.findAllByOrganizationPaginated(1, 10, '   ', 'all');
 
-      // Assert
       expect(mockQueryBuilder.andWhere).not.toHaveBeenCalledWith(
         expect.stringContaining('ILIKE'),
         expect.any(Object)
@@ -271,16 +242,13 @@ describe('GetAllUsersOfOrgPaginatedService', () => {
     });
 
     it('should add role filtering when role is specified', async () => {
-      // Arrange
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
       mockPaginate.mockResolvedValue(mockPaginationResult);
 
-      // Act
       await service.findAllByOrganizationPaginated(1, 10, '', 'admin');
 
-      // Assert
       expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
         'userOrganization.role = :role',
         { role: 'ADMIN' }
@@ -288,16 +256,13 @@ describe('GetAllUsersOfOrgPaginatedService', () => {
     });
 
     it('should handle role case insensitively', async () => {
-      // Arrange
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
       mockPaginate.mockResolvedValue(mockPaginationResult);
 
-      // Act
       await service.findAllByOrganizationPaginated(1, 10, '', 'OpErAtOr');
 
-      // Assert
       expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
         'userOrganization.role = :role',
         { role: 'OPERATOR' }
@@ -305,16 +270,13 @@ describe('GetAllUsersOfOrgPaginatedService', () => {
     });
 
     it('should not add role filtering when role is "all"', async () => {
-      // Arrange
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
       mockPaginate.mockResolvedValue(mockPaginationResult);
 
-      // Act
       await service.findAllByOrganizationPaginated(1, 10, '', 'all');
 
-      // Assert
       expect(mockQueryBuilder.andWhere).not.toHaveBeenCalledWith(
         'userOrganization.role = :role',
         expect.any(Object)
@@ -322,16 +284,13 @@ describe('GetAllUsersOfOrgPaginatedService', () => {
     });
 
     it('should handle both search and role filtering together', async () => {
-      // Arrange
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
       mockPaginate.mockResolvedValue(mockPaginationResult);
 
-      // Act
       await service.findAllByOrganizationPaginated(1, 10, 'test user', 'admin');
 
-      // Assert
       expect(mockQueryBuilder.andWhere).toHaveBeenCalledTimes(2);
       expect(mockQueryBuilder.andWhere).toHaveBeenNthCalledWith(
         1,
@@ -346,16 +305,13 @@ describe('GetAllUsersOfOrgPaginatedService', () => {
     });
 
     it('should handle different page and limit values', async () => {
-      // Arrange
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
       mockPaginate.mockResolvedValue(mockPaginationResult);
 
-      // Act
       await service.findAllByOrganizationPaginated(3, 25, '', 'all');
 
-      // Assert
       expect(mockPaginate).toHaveBeenCalledWith(mockQueryBuilder, {
         page: 3,
         limit: 25,

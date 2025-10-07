@@ -14,9 +14,8 @@ import { CurrentDbUserService } from '../../../../common/core/current-db-user.se
 import {
   createMockUser,
   createMockOrganization,
+  createMockUserOrganization,
 } from '../../../../test/factories';
-
-//-------------------------------------------------------------------------------------------------
 
 describe('GetAllOrganizationsOfUserService', () => {
   let service: GetAllOrganizationsOfUserService;
@@ -51,22 +50,22 @@ describe('GetAllOrganizationsOfUserService', () => {
   });
 
   const mockUserOrganizations: IUserOrganization[] = [
-    {
+    createMockUserOrganization({
       id: 1,
       userId: 1,
       organizationId: 1,
       role: UserOrganizationRole.ADMIN,
       user: mockUser,
       organization: mockOrganization1,
-    } as IUserOrganization,
-    {
+    }),
+    createMockUserOrganization({
       id: 2,
       userId: 1,
       organizationId: 2,
       role: UserOrganizationRole.OPERATOR,
       user: mockUser,
       organization: mockOrganization2,
-    } as IUserOrganization,
+    }),
   ];
 
   beforeEach(async () => {
@@ -114,14 +113,11 @@ describe('GetAllOrganizationsOfUserService', () => {
 
   describe('getAllOrganizationsOfCurrentUser', () => {
     it('should return organizations with roles for current user', async () => {
-      // Arrange
       currentDbUserService.getCurrentDbUser.mockResolvedValue(mockUser);
       userOrgRepository.find.mockResolvedValue(mockUserOrganizations);
 
-      // Act
       const result = await service.getAllOrganizationsOfCurrentUser();
 
-      // Assert
       expect(currentDbUserService.getCurrentDbUser).toHaveBeenCalledTimes(1);
       expect(userOrgRepository.find).toHaveBeenCalledWith({
         where: { userId: 1 },
@@ -140,10 +136,8 @@ describe('GetAllOrganizationsOfUserService', () => {
     });
 
     it('should throw UnauthorizedException when user not found', async () => {
-      // Arrange
       currentDbUserService.getCurrentDbUser.mockResolvedValue(null);
 
-      // Act & Assert
       await expect(service.getAllOrganizationsOfCurrentUser()).rejects.toThrow(
         new UnauthorizedException('User not found in database')
       );
@@ -153,14 +147,11 @@ describe('GetAllOrganizationsOfUserService', () => {
     });
 
     it('should return empty array when user has no organizations', async () => {
-      // Arrange
       currentDbUserService.getCurrentDbUser.mockResolvedValue(mockUser);
       userOrgRepository.find.mockResolvedValue([]);
 
-      // Act
       const result = await service.getAllOrganizationsOfCurrentUser();
 
-      // Assert
       expect(currentDbUserService.getCurrentDbUser).toHaveBeenCalledTimes(1);
       expect(userOrgRepository.find).toHaveBeenCalledWith({
         where: { userId: 1 },
@@ -171,13 +162,11 @@ describe('GetAllOrganizationsOfUserService', () => {
     });
 
     it('should handle database error gracefully', async () => {
-      // Arrange
       currentDbUserService.getCurrentDbUser.mockResolvedValue(mockUser);
       userOrgRepository.find.mockRejectedValue(
         new Error('Database connection error')
       );
 
-      // Act & Assert
       await expect(service.getAllOrganizationsOfCurrentUser()).rejects.toThrow(
         'Database connection error'
       );
@@ -190,15 +179,12 @@ describe('GetAllOrganizationsOfUserService', () => {
     });
 
     it('should handle single organization correctly', async () => {
-      // Arrange
       const singleUserOrg = [mockUserOrganizations[0]];
       currentDbUserService.getCurrentDbUser.mockResolvedValue(mockUser);
       userOrgRepository.find.mockResolvedValue(singleUserOrg);
 
-      // Act
       const result = await service.getAllOrganizationsOfCurrentUser();
 
-      // Assert
       expect(result).toHaveLength(1);
       expect(result[0]).toEqual({
         ...mockOrganization1,
@@ -207,7 +193,6 @@ describe('GetAllOrganizationsOfUserService', () => {
     });
 
     it('should preserve organization properties and add role', async () => {
-      // Arrange
       const orgWithAllProps: IOrganization = createMockOrganization({
         id: 3,
         name: 'Full Props Org',
@@ -216,22 +201,20 @@ describe('GetAllOrganizationsOfUserService', () => {
         createdAt: '2024-01-03T00:00:00Z',
       });
 
-      const userOrgWithFullProps: IUserOrganization = {
+      const userOrgWithFullProps = createMockUserOrganization({
         id: 3,
         userId: 1,
         organizationId: 3,
         role: UserOrganizationRole.OPERATOR,
         user: mockUser,
         organization: orgWithAllProps,
-      } as IUserOrganization;
+      });
 
       currentDbUserService.getCurrentDbUser.mockResolvedValue(mockUser);
       userOrgRepository.find.mockResolvedValue([userOrgWithFullProps]);
 
-      // Act
       const result = await service.getAllOrganizationsOfCurrentUser();
 
-      // Assert
       expect(result).toHaveLength(1);
       expect(result[0]).toEqual({
         id: 3,

@@ -7,16 +7,12 @@ import { DeleteUserService } from './service';
 import { UserEntity } from '../../../../database/entities/user.entity';
 import { UserOrganizationEntity } from '../../../../database/entities/user-organization.entity';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
-import {
-  IUserOrganization,
-  UserOrganizationRole,
-} from '@connect-phone/shared-types';
+import { UserOrganizationRole } from '@connect-phone/shared-types';
 import {
   createMockOrganization,
   createMockUser,
+  createMockUserOrganization,
 } from '../../../../test/factories';
-
-//-------------------------------------------------------------------------------------------------
 
 describe('DeleteUserService', () => {
   let service: DeleteUserService;
@@ -27,25 +23,8 @@ describe('DeleteUserService', () => {
   let currentOrganizationService: jest.Mocked<CurrentOrganizationService>;
 
   const mockOrganization = createMockOrganization();
-
-  const mockUser = createMockUser({
-    id: 1,
-    email: 'test@example.com',
-    firstName: 'Test',
-    lastName: 'User',
-    createdAt: '2024-01-01T00:00:00Z',
-    loggedOrganizationId: 1,
-    loggedOrganization: mockOrganization,
-  });
-
-  const mockUserOrganization: IUserOrganization = {
-    id: 1,
-    userId: 1,
-    organizationId: 1,
-    role: UserOrganizationRole.OPERATOR,
-    user: mockUser,
-    organization: mockOrganization,
-  } as IUserOrganization;
+  const mockUser = createMockUser({ loggedOrganization: mockOrganization });
+  const mockUserOrganization = createMockUserOrganization();
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -160,10 +139,10 @@ describe('DeleteUserService', () => {
     });
 
     it('should throw NotFoundException when user does not exist in user-organization', async () => {
-      const userOrgWithoutUser = {
+      const userOrgWithoutUser = createMockUserOrganization({
         ...mockUserOrganization,
-        user: null,
-      } as unknown as UserOrganizationEntity;
+        user: undefined,
+      });
 
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization

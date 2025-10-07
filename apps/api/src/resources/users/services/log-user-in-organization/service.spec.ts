@@ -1,11 +1,11 @@
-// src/resources/users/services/log-user-in-organization/service.spec.ts
+// apps/api/src/resources/users/services/log-user-in-organization/service.spec.ts
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
 import { LogUserInOrganizationService } from './service';
 import { UserEntity } from '../../../../database/entities/user.entity';
-import { IUser, IUserOrganization } from '@connect-phone/shared-types';
+import { IUser } from '@connect-phone/shared-types';
 import { OrganizationEntity } from '../../../../database/entities/organization.entity';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
 import {
@@ -13,41 +13,14 @@ import {
   createMockUser,
 } from '../../../../test/factories';
 
-//-------------------------------------------------------------------------------------------------
-
 describe('LogUserInOrganizationService', () => {
   let service: LogUserInOrganizationService;
   let userRepository: jest.Mocked<Repository<UserEntity>>;
   let organizationRepository: jest.Mocked<Repository<OrganizationEntity>>;
   let currentDbUserService: jest.Mocked<CurrentDbUserService>;
 
-  const mockOrganization = createMockOrganization({
-    id: 1,
-    name: 'Org One',
-    slug: 'org-one',
-    logoUrl: null,
-    createdAt: '2025-01-01T00:00:00Z',
-  });
-
-  const mockUserOrg: IUserOrganization = {
-    id: 1,
-    user: null,
-    userId: 1,
-    organization: mockOrganization,
-    organizationId: mockOrganization.id,
-    role: 'ADMIN',
-  } as unknown as IUserOrganization;
-
-  const mockUser = createMockUser({
-    id: 1,
-    email: 'test@example.com',
-    firstName: 'Test',
-    lastName: 'User',
-    createdAt: '2025-01-01T00:00:00Z',
-    loggedOrganizationId: null,
-    loggedOrganization: null,
-    userOrganizations: [mockUserOrg],
-  });
+  const mockOrganization = createMockOrganization();
+  const mockUser = createMockUser({ loggedOrganization: mockOrganization });
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

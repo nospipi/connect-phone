@@ -5,47 +5,21 @@ import { Repository } from 'typeorm';
 import { NotFoundException } from '@nestjs/common';
 import { LogOutUserFromOrganizationService } from './service';
 import { UserEntity } from '../../../../database/entities/user.entity';
-import { IUser, IUserOrganization } from '@connect-phone/shared-types';
+import { IUser } from '@connect-phone/shared-types';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
 import {
   createMockOrganization,
   createMockUser,
+  createMockUserOrganization,
 } from '../../../../test/factories';
-
-//-------------------------------------------------------------------------------------------------
 
 describe('LogOutUserFromOrganizationService', () => {
   let service: LogOutUserFromOrganizationService;
   let userRepository: jest.Mocked<Repository<UserEntity>>;
   let currentDbUserService: jest.Mocked<CurrentDbUserService>;
 
-  const mockOrganization = createMockOrganization({
-    id: 1,
-    name: 'Org One',
-    slug: 'org-one',
-    logoUrl: null,
-    createdAt: '2025-01-01T00:00:00Z',
-  });
-
-  const mockUserOrg: IUserOrganization = {
-    id: 1,
-    user: null,
-    userId: 1,
-    organization: mockOrganization,
-    organizationId: mockOrganization.id,
-    role: 'ADMIN',
-  } as unknown as IUserOrganization;
-
-  const mockUser = createMockUser({
-    id: 1,
-    email: 'test@example.com',
-    firstName: 'Test',
-    lastName: 'User',
-    createdAt: '2025-01-01T00:00:00Z',
-    loggedOrganizationId: 1,
-    loggedOrganization: mockOrganization,
-    userOrganizations: [mockUserOrg],
-  });
+  const mockOrganization = createMockOrganization();
+  const mockUser = createMockUser({ loggedOrganization: mockOrganization });
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
