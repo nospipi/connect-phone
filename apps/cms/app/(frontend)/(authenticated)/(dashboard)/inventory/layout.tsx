@@ -1,6 +1,6 @@
 "use client"
 
-import { RiCoupon2Line, RiBox3Fill } from "@remixicon/react"
+import { RiCoupon2Line, RiBox3Fill, RiFlagLine } from "@remixicon/react"
 import {
   TabNavigation,
   TabNavigationLink,
@@ -19,6 +19,11 @@ const navigationSettings = [
     href: "/inventory/packages",
     icon: RiBox3Fill,
   },
+  {
+    name: "Countries",
+    href: "/inventory/countries",
+    icon: RiFlagLine,
+  },
 ]
 
 export default function Layout({
@@ -30,7 +35,7 @@ export default function Layout({
   return (
     <div className="p-4 sm:px-6 sm:pb-10 sm:pt-10 lg:px-10 lg:pt-7">
       <h1 className="text-lg font-semibold text-gray-900 sm:text-xl dark:text-gray-50">
-        Offers
+        Inventory
       </h1>
       <TabNavigation className="mt-4 sm:mt-6 lg:mt-10">
         {navigationSettings.map((item) => (
@@ -38,6 +43,7 @@ export default function Layout({
             key={item.name}
             asChild
             active={pathname === item.href}
+            href="#"
           >
             <Link href={item.href} className="flex items-center">
               <item.icon className="mr-2 h-4 w-4" />
