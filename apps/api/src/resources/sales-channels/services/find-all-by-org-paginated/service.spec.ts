@@ -4,10 +4,15 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { FindAllByOrgPaginatedService } from './service';
 import { SalesChannelEntity } from '../../../../database/entities/sales-channel.entity';
-import { OrganizationEntity } from '../../../../database/entities/organization.entity';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 import { paginate } from 'nestjs-typeorm-paginate';
-import { IOrganization, ISalesChannel } from '@connect-phone/shared-types';
+import { ISalesChannel } from '@connect-phone/shared-types';
+import {
+  createMockOrganization,
+  createMockSalesChannel,
+} from '../../../../test/factories';
+
+//-------------------------------------------------------------------------------------
 
 // Mock paginate function
 jest.mock('nestjs-typeorm-paginate', () => ({
@@ -20,25 +25,16 @@ describe('FindAllByOrgPaginatedService', () => {
   let currentOrganizationService: jest.Mocked<CurrentOrganizationService>;
   let mockPaginate: jest.MockedFunction<typeof paginate>;
 
-  const mockOrganization: IOrganization = {
-    id: 1,
-    name: 'Test Organization',
-    slug: 'test-org',
-    logoUrl: null,
-    createdAt: '2024-01-01T00:00:00Z',
-    salesChannels: [],
-    userOrganizations: [],
-    auditLogs: [],
-  } as IOrganization;
+  const mockOrganization = createMockOrganization();
 
-  const mockSalesChannel: ISalesChannel = {
+  const mockSalesChannel: ISalesChannel = createMockSalesChannel({
     id: 1,
     name: 'Test Sales Channel',
     description: 'Test Description',
     logoUrl: null,
     organizationId: 1,
     organization: mockOrganization,
-  } as ISalesChannel;
+  });
 
   const mockPaginationResult = {
     items: [mockSalesChannel],

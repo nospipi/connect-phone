@@ -6,12 +6,14 @@ import { GetAllInvitationsOfOrgPaginatedService } from './service';
 import { UserInvitationEntity } from '../../../../database/entities/user-invitation.entity';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 import { paginate } from 'nestjs-typeorm-paginate';
+import { UserOrganizationRole } from '@connect-phone/shared-types';
 import {
-  IOrganization,
-  IUser,
-  IUserInvitation,
-  UserOrganizationRole,
-} from '@connect-phone/shared-types';
+  createMockOrganization,
+  createMockUser,
+  createMockUserInvitation,
+} from '../../../../test/factories';
+
+//-----------------------------------------------------------------------------
 
 // Mock paginate function
 jest.mock('nestjs-typeorm-paginate', () => ({
@@ -24,18 +26,9 @@ describe('GetAllInvitationsOfOrgPaginatedService', () => {
   let currentOrganizationService: jest.Mocked<CurrentOrganizationService>;
   let mockPaginate: jest.MockedFunction<typeof paginate>;
 
-  const mockOrganization: IOrganization = {
-    id: 1,
-    name: 'Test Organization',
-    slug: 'test-org',
-    logoUrl: null,
-    createdAt: '2024-01-01T00:00:00Z',
-    salesChannels: [],
-    userOrganizations: [],
-    auditLogs: [],
-  } as IOrganization;
+  const mockOrganization = createMockOrganization();
 
-  const mockUser: IUser = {
+  const mockUser = createMockUser({
     id: 1,
     email: 'admin@example.com',
     firstName: 'Admin',
@@ -43,11 +36,9 @@ describe('GetAllInvitationsOfOrgPaginatedService', () => {
     createdAt: '2024-01-01T00:00:00Z',
     loggedOrganizationId: 1,
     loggedOrganization: mockOrganization,
-    userOrganizations: [],
-    auditLogs: [],
-  } as IUser;
+  });
 
-  const mockUserInvitation: IUserInvitation = {
+  const mockUserInvitation = createMockUserInvitation({
     id: 1,
     email: 'invite@example.com',
     role: UserOrganizationRole.OPERATOR,
@@ -56,7 +47,7 @@ describe('GetAllInvitationsOfOrgPaginatedService', () => {
     organization: mockOrganization,
     invitedById: 1,
     invitedBy: mockUser,
-  } as IUserInvitation;
+  });
 
   const mockPaginationResult = {
     items: [mockUserInvitation],

@@ -8,11 +8,13 @@ import { UserEntity } from '../../../../database/entities/user.entity';
 import { UserOrganizationEntity } from '../../../../database/entities/user-organization.entity';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 import {
-  IOrganization,
-  IUser,
   IUserOrganization,
   UserOrganizationRole,
 } from '@connect-phone/shared-types';
+import {
+  createMockOrganization,
+  createMockUser,
+} from '../../../../test/factories';
 
 //-------------------------------------------------------------------------------------------------
 
@@ -24,18 +26,9 @@ describe('DeleteUserService', () => {
   >;
   let currentOrganizationService: jest.Mocked<CurrentOrganizationService>;
 
-  const mockOrganization: IOrganization = {
-    id: 1,
-    name: 'Test Organization',
-    slug: 'test-org',
-    logoUrl: null,
-    createdAt: '2024-01-01T00:00:00Z',
-    salesChannels: [],
-    userOrganizations: [],
-    auditLogs: [],
-  } as IOrganization;
+  const mockOrganization = createMockOrganization();
 
-  const mockUser: IUser = {
+  const mockUser = createMockUser({
     id: 1,
     email: 'test@example.com',
     firstName: 'Test',
@@ -43,9 +36,7 @@ describe('DeleteUserService', () => {
     createdAt: '2024-01-01T00:00:00Z',
     loggedOrganizationId: 1,
     loggedOrganization: mockOrganization,
-    userOrganizations: [],
-    auditLogs: [],
-  } as IUser;
+  });
 
   const mockUserOrganization: IUserOrganization = {
     id: 1,

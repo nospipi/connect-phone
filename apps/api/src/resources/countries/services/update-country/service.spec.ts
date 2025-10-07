@@ -1,27 +1,26 @@
 // apps/api/src/resources/countries/services/update-country/service.spec.ts
+
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { NotFoundException } from '@nestjs/common';
+import { NotFoundException, ForbiddenException } from '@nestjs/common';
 import { UpdateCountryService } from './service';
 import { CountryEntity } from '../../../../database/entities/country.entity';
 import { UpdateCountryDto } from './update-country.dto';
-import { ICountry, CountryRegion } from '@connect-phone/shared-types';
+import { CountryRegion } from '@connect-phone/shared-types';
+import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
+import {
+  createMockOrganization,
+  createMockCountry,
+} from '../../../../test/factories';
 
 describe('UpdateCountryService', () => {
   let service: UpdateCountryService;
   let countryRepository: jest.Mocked<Repository<CountryEntity>>;
+  let currentOrganizationService: jest.Mocked<CurrentOrganizationService>;
 
-  const mockCountry: ICountry = {
-    id: 1,
-    name: 'Greece',
-    code: 'gr',
-    flagAvatarUrl: 'https://flagcdn.com/56x42/gr.webp',
-    flagProductImageUrl: 'https://flagcdn.com/192x144/gr.webp',
-    region: CountryRegion.EUROPE,
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: '2024-01-01T00:00:00Z',
-  };
+  const mockOrganization = createMockOrganization();
+  const mockCountry = createMockCountry();
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -34,11 +33,18 @@ describe('UpdateCountryService', () => {
             save: jest.fn(),
           },
         },
+        {
+          provide: CurrentOrganizationService,
+          useValue: {
+            getCurrentOrganization: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
     service = module.get<UpdateCountryService>(UpdateCountryService);
     countryRepository = module.get(getRepositoryToken(CountryEntity));
+    currentOrganizationService = module.get(CurrentOrganizationService);
   });
 
   afterEach(() => {
@@ -57,18 +63,23 @@ describe('UpdateCountryService', () => {
         region: CountryRegion.EUROPE,
       };
 
-      const updatedCountry = {
-        ...mockCountry,
+      const updatedCountry = createMockCountry({
         name: 'Hellenic Republic',
-      };
+      });
 
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
       countryRepository.findOne.mockResolvedValue(mockCountry as CountryEntity);
       countryRepository.save.mockResolvedValue(updatedCountry as CountryEntity);
 
       const result = await service.updateCountry(updateDto);
 
+      expect(
+        currentOrganizationService.getCurrentOrganization
+      ).toHaveBeenCalledTimes(1);
       expect(countryRepository.findOne).toHaveBeenCalledWith({
-        where: { id: 1 },
+        where: { id: 1, organizationId: 1 },
       });
       expect(countryRepository.save).toHaveBeenCalled();
       expect(result.name).toBe('Hellenic Republic');
@@ -83,6 +94,28 @@ describe('UpdateCountryService', () => {
         new NotFoundException('Country ID is required')
       );
 
+      expect(
+        currentOrganizationService.getCurrentOrganization
+      ).not.toHaveBeenCalled();
+      expect(countryRepository.findOne).not.toHaveBeenCalled();
+      expect(countryRepository.save).not.toHaveBeenCalled();
+    });
+
+    it('should throw ForbiddenException when organization context is null', async () => {
+      const updateDto: UpdateCountryDto = {
+        id: 1,
+        name: 'Updated Name',
+      };
+
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(null);
+
+      await expect(service.updateCountry(updateDto)).rejects.toThrow(
+        new ForbiddenException('Organization context required')
+      );
+
+      expect(
+        currentOrganizationService.getCurrentOrganization
+      ).toHaveBeenCalledTimes(1);
       expect(countryRepository.findOne).not.toHaveBeenCalled();
       expect(countryRepository.save).not.toHaveBeenCalled();
     });
@@ -93,14 +126,42 @@ describe('UpdateCountryService', () => {
         name: 'Updated Name',
       };
 
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
       countryRepository.findOne.mockResolvedValue(null);
 
       await expect(service.updateCountry(updateDto)).rejects.toThrow(
-        new NotFoundException('Country with ID 999 not found')
+        new NotFoundException(
+          'Country with ID 999 not found in current organization'
+        )
       );
 
       expect(countryRepository.findOne).toHaveBeenCalledWith({
-        where: { id: 999 },
+        where: { id: 999, organizationId: 1 },
+      });
+      expect(countryRepository.save).not.toHaveBeenCalled();
+    });
+
+    it('should throw NotFoundException when country belongs to different organization', async () => {
+      const updateDto: UpdateCountryDto = {
+        id: 1,
+        name: 'Updated Name',
+      };
+
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
+      countryRepository.findOne.mockResolvedValue(null);
+
+      await expect(service.updateCountry(updateDto)).rejects.toThrow(
+        new NotFoundException(
+          'Country with ID 1 not found in current organization'
+        )
+      );
+
+      expect(countryRepository.findOne).toHaveBeenCalledWith({
+        where: { id: 1, organizationId: 1 },
       });
       expect(countryRepository.save).not.toHaveBeenCalled();
     });
@@ -111,6 +172,9 @@ describe('UpdateCountryService', () => {
         name: 'Updated Name',
       };
 
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
       countryRepository.findOne.mockResolvedValue(mockCountry as CountryEntity);
       countryRepository.save.mockImplementation(
         async (entity) => entity as CountryEntity
@@ -120,7 +184,7 @@ describe('UpdateCountryService', () => {
 
       const savedCountry = countryRepository.save.mock.calls[0][0];
       expect(savedCountry.name).toBe('Updated Name');
-      expect(savedCountry.code).toBe('GR');
+      expect(savedCountry.code).toBe('gr');
       expect(savedCountry.region).toBe(CountryRegion.EUROPE);
     });
 
@@ -131,12 +195,14 @@ describe('UpdateCountryService', () => {
         flagProductImageUrl: 'https://example.com/new-product.webp',
       };
 
-      const updatedCountry = {
-        ...mockCountry,
+      const updatedCountry = createMockCountry({
         flagAvatarUrl: 'https://example.com/new-avatar.webp',
         flagProductImageUrl: 'https://example.com/new-product.webp',
-      };
+      });
 
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
       countryRepository.findOne.mockResolvedValue(mockCountry as CountryEntity);
       countryRepository.save.mockResolvedValue(updatedCountry as CountryEntity);
 
@@ -154,12 +220,38 @@ describe('UpdateCountryService', () => {
         name: 'Updated Name',
       };
 
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
       countryRepository.findOne.mockResolvedValue(mockCountry as CountryEntity);
       countryRepository.save.mockRejectedValue(new Error('Database error'));
 
       await expect(service.updateCountry(updateDto)).rejects.toThrow(
         'Database error'
       );
+    });
+
+    it('should handle different organization IDs correctly', async () => {
+      const updateDto: UpdateCountryDto = {
+        id: 1,
+        name: 'Updated Name',
+      };
+
+      const differentOrg = createMockOrganization({ id: 5 });
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        differentOrg
+      );
+      countryRepository.findOne.mockResolvedValue(null);
+
+      await expect(service.updateCountry(updateDto)).rejects.toThrow(
+        new NotFoundException(
+          'Country with ID 1 not found in current organization'
+        )
+      );
+
+      expect(countryRepository.findOne).toHaveBeenCalledWith({
+        where: { id: 1, organizationId: 5 },
+      });
     });
   });
 });

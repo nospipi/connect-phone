@@ -7,25 +7,22 @@ import { UpdateSalesChannelService } from './service';
 import { SalesChannelEntity } from '../../../../database/entities/sales-channel.entity';
 import { UpdateSalesChannelDto } from './update-sales-channel.dto';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
-import { IOrganization, ISalesChannel } from '@connect-phone/shared-types';
+import { ISalesChannel } from '@connect-phone/shared-types';
+import {
+  createMockOrganization,
+  createMockSalesChannel,
+} from '../../../../test/factories';
+
+//----------------------------------------------------------------------------------------------
 
 describe('UpdateSalesChannelService', () => {
   let service: UpdateSalesChannelService;
   let salesChannelsRepository: jest.Mocked<Repository<SalesChannelEntity>>;
   let currentOrganizationService: jest.Mocked<CurrentOrganizationService>;
 
-  const mockOrganization: IOrganization = {
-    id: 1,
-    name: 'Test Organization',
-    slug: 'test-org',
-    logoUrl: null,
-    createdAt: '2024-01-01T00:00:00Z',
-    salesChannels: [],
-    userOrganizations: [],
-    auditLogs: [],
-  } as IOrganization;
+  const mockOrganization = createMockOrganization();
 
-  const mockSalesChannel: ISalesChannel = {
+  const mockSalesChannel: ISalesChannel = createMockSalesChannel({
     id: 1,
     name: 'Test Sales Channel',
     description: 'Test Description',
@@ -33,7 +30,7 @@ describe('UpdateSalesChannelService', () => {
     organizationId: 1,
     isActive: true,
     organization: mockOrganization,
-  } as ISalesChannel;
+  });
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

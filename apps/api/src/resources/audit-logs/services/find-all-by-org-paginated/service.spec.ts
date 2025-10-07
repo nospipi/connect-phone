@@ -1,13 +1,16 @@
 // apps/api/src/resources/audit-logs/services/find-all-by-org-paginated/service.spec.ts
+
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { FindAllByOrgPaginatedService } from './service';
 import { AuditLogEntryEntity } from '../../../../database/entities/audit-log.entity';
-import { OrganizationEntity } from '../../../../database/entities/organization.entity';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 import { paginate } from 'nestjs-typeorm-paginate';
-import { IOrganization, IAuditLog } from '@connect-phone/shared-types';
+import {
+  createMockOrganization,
+  createMockAuditLog,
+} from '../../../../test/factories';
 
 // Mock paginate function
 jest.mock('nestjs-typeorm-paginate', () => ({
@@ -20,30 +23,8 @@ describe('FindAllByOrgPaginatedService', () => {
   let currentOrganizationService: jest.Mocked<CurrentOrganizationService>;
   let mockPaginate: jest.MockedFunction<typeof paginate>;
 
-  const mockOrganization: IOrganization = {
-    id: 1,
-    name: 'Test Organization',
-    slug: 'test-org',
-    logoUrl: null,
-    createdAt: '2024-01-01T00:00:00Z',
-    salesChannels: [],
-    userOrganizations: [],
-    auditLogs: [],
-  } as IOrganization;
-
-  const mockAuditLog: IAuditLog = {
-    id: 1,
-    table_name: 'sales_channels',
-    row_id: '1',
-    operation: 'INSERT',
-    before: null,
-    after: { name: 'Test Channel' },
-    organizationId: 1,
-    organization: mockOrganization,
-    userId: 1,
-    user: null,
-    created_at: new Date(),
-  } as IAuditLog;
+  const mockOrganization = createMockOrganization();
+  const mockAuditLog = createMockAuditLog();
 
   const mockPaginationResult = {
     items: [mockAuditLog],

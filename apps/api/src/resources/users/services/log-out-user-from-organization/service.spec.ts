@@ -5,14 +5,12 @@ import { Repository } from 'typeorm';
 import { NotFoundException } from '@nestjs/common';
 import { LogOutUserFromOrganizationService } from './service';
 import { UserEntity } from '../../../../database/entities/user.entity';
-import {
-  IUser,
-  IOrganization,
-  IUserOrganization,
-} from '@connect-phone/shared-types';
-import { OrganizationEntity } from '../../../../database/entities/organization.entity';
-import { UserOrganizationEntity } from '../../../../database/entities/user-organization.entity';
+import { IUser, IUserOrganization } from '@connect-phone/shared-types';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
+import {
+  createMockOrganization,
+  createMockUser,
+} from '../../../../test/factories';
 
 //-------------------------------------------------------------------------------------------------
 
@@ -21,15 +19,13 @@ describe('LogOutUserFromOrganizationService', () => {
   let userRepository: jest.Mocked<Repository<UserEntity>>;
   let currentDbUserService: jest.Mocked<CurrentDbUserService>;
 
-  const mockOrganization: IOrganization = {
+  const mockOrganization = createMockOrganization({
     id: 1,
     name: 'Org One',
     slug: 'org-one',
     logoUrl: null,
     createdAt: '2025-01-01T00:00:00Z',
-    salesChannels: [],
-    userOrganizations: [],
-  } as unknown as IOrganization;
+  });
 
   const mockUserOrg: IUserOrganization = {
     id: 1,
@@ -40,7 +36,7 @@ describe('LogOutUserFromOrganizationService', () => {
     role: 'ADMIN',
   } as unknown as IUserOrganization;
 
-  const mockUser: IUser = {
+  const mockUser = createMockUser({
     id: 1,
     email: 'test@example.com',
     firstName: 'Test',
@@ -49,7 +45,7 @@ describe('LogOutUserFromOrganizationService', () => {
     loggedOrganizationId: 1,
     loggedOrganization: mockOrganization,
     userOrganizations: [mockUserOrg],
-  } as unknown as IUser;
+  });
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -113,11 +109,11 @@ describe('LogOutUserFromOrganizationService', () => {
     });
 
     it('should work even if user is already logged out', async () => {
-      const loggedOutUser = {
+      const loggedOutUser = createMockUser({
         ...mockUser,
         loggedOrganizationId: null,
         loggedOrganization: null,
-      } as unknown as IUser;
+      });
 
       currentDbUserService.getCurrentDbUser.mockResolvedValue(loggedOutUser);
       userRepository.save.mockImplementation(async (user: IUser) => {

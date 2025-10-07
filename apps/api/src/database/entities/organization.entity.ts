@@ -1,4 +1,5 @@
-// src/database/entities/organization.entity.ts
+// apps/api/src/database/entities/organization.entity.ts
+
 import {
   Entity,
   Column,
@@ -11,10 +12,12 @@ import {
   IAuditLog,
   ISalesChannel,
   IUserOrganization,
+  ICountry,
 } from '@connect-phone/shared-types';
 import { SalesChannelEntity } from './sales-channel.entity';
 import { UserOrganizationEntity } from './user-organization.entity';
 import { AuditLogEntryEntity } from './audit-log.entity';
+import { CountryEntity } from './country.entity';
 
 @Entity({ name: 'organizations' })
 export class OrganizationEntity implements IOrganization {
@@ -44,4 +47,7 @@ export class OrganizationEntity implements IOrganization {
 
   @OneToMany(() => AuditLogEntryEntity, (auditLog) => auditLog.organization)
   auditLogs: IAuditLog[];
+
+  @OneToMany(() => CountryEntity, (country) => country.organization)
+  countries: ICountry[];
 }

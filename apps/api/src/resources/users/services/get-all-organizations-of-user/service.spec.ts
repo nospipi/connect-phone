@@ -5,17 +5,16 @@ import { Repository } from 'typeorm';
 import { UnauthorizedException } from '@nestjs/common';
 import { GetAllOrganizationsOfUserService } from './service';
 import { UserEntity } from '../../../../database/entities/user.entity';
-import {
-  IUser,
-  IOrganization,
-  IUserOrganization,
-} from '@connect-phone/shared-types';
-import { OrganizationEntity } from '../../../../database/entities/organization.entity';
+import { IOrganization, IUserOrganization } from '@connect-phone/shared-types';
 import {
   UserOrganizationEntity,
   UserOrganizationRole,
 } from '../../../../database/entities/user-organization.entity';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
+import {
+  createMockUser,
+  createMockOrganization,
+} from '../../../../test/factories';
 
 //-------------------------------------------------------------------------------------------------
 
@@ -25,7 +24,7 @@ describe('GetAllOrganizationsOfUserService', () => {
   let userOrgRepository: jest.Mocked<Repository<UserOrganizationEntity>>;
   let currentDbUserService: jest.Mocked<CurrentDbUserService>;
 
-  const mockUser: IUser = {
+  const mockUser = createMockUser({
     id: 1,
     email: 'test@example.com',
     firstName: 'Test',
@@ -33,31 +32,23 @@ describe('GetAllOrganizationsOfUserService', () => {
     createdAt: '2024-01-01T00:00:00Z',
     loggedOrganizationId: 1,
     loggedOrganization: null,
-    userOrganizations: [],
-    auditLogs: [],
-  } as IUser;
+  });
 
-  const mockOrganization1: IOrganization = {
+  const mockOrganization1 = createMockOrganization({
     id: 1,
     name: 'Organization 1',
     slug: 'org-1',
     logoUrl: null,
     createdAt: '2024-01-01T00:00:00Z',
-    salesChannels: [],
-    userOrganizations: [],
-    auditLogs: [],
-  } as IOrganization;
+  });
 
-  const mockOrganization2: IOrganization = {
+  const mockOrganization2 = createMockOrganization({
     id: 2,
     name: 'Organization 2',
     slug: 'org-2',
     logoUrl: 'https://example.com/logo.png',
     createdAt: '2024-01-02T00:00:00Z',
-    salesChannels: [],
-    userOrganizations: [],
-    auditLogs: [],
-  } as IOrganization;
+  });
 
   const mockUserOrganizations: IUserOrganization[] = [
     {
@@ -217,16 +208,13 @@ describe('GetAllOrganizationsOfUserService', () => {
 
     it('should preserve organization properties and add role', async () => {
       // Arrange
-      const orgWithAllProps: IOrganization = {
+      const orgWithAllProps: IOrganization = createMockOrganization({
         id: 3,
         name: 'Full Props Org',
         slug: 'full-props',
         logoUrl: 'https://example.com/full.png',
         createdAt: '2024-01-03T00:00:00Z',
-        salesChannels: [],
-        userOrganizations: [],
-        auditLogs: [],
-      } as IOrganization;
+      });
 
       const userOrgWithFullProps: IUserOrganization = {
         id: 3,
@@ -254,6 +242,7 @@ describe('GetAllOrganizationsOfUserService', () => {
         salesChannels: [],
         userOrganizations: [],
         auditLogs: [],
+        countries: [],
         role: UserOrganizationRole.OPERATOR,
       });
     });

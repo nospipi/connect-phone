@@ -1,4 +1,5 @@
 // apps/api/src/resources/sales-channels/services/delete-sales-channel/service.spec.ts
+
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -6,7 +7,10 @@ import { NotFoundException, ForbiddenException } from '@nestjs/common';
 import { DeleteSalesChannelService } from './service';
 import { SalesChannelEntity } from '../../../../database/entities/sales-channel.entity';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
-import { IOrganization, ISalesChannel } from '@connect-phone/shared-types';
+import {
+  createMockOrganization,
+  createMockSalesChannel,
+} from '../../../../test/factories';
 
 //-------------------------------------------------------------------------------------------------
 
@@ -15,26 +19,8 @@ describe('DeleteSalesChannelService', () => {
   let salesChannelRepository: jest.Mocked<Repository<SalesChannelEntity>>;
   let currentOrganizationService: jest.Mocked<CurrentOrganizationService>;
 
-  const mockOrganization: IOrganization = {
-    id: 1,
-    name: 'Test Organization',
-    slug: 'test-org',
-    logoUrl: null,
-    createdAt: '2024-01-01T00:00:00Z',
-    salesChannels: [],
-    userOrganizations: [],
-    auditLogs: [],
-  } as IOrganization;
-
-  const mockSalesChannel: ISalesChannel = {
-    id: 1,
-    name: 'Test Sales Channel',
-    description: 'Test Description',
-    logoUrl: null,
-    organizationId: 1,
-    isActive: true,
-    organization: mockOrganization,
-  } as ISalesChannel;
+  const mockOrganization = createMockOrganization();
+  const mockSalesChannel = createMockSalesChannel();
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -136,7 +122,7 @@ describe('DeleteSalesChannelService', () => {
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
-      salesChannelRepository.findOne.mockResolvedValue(null); // Not found in current org
+      salesChannelRepository.findOne.mockResolvedValue(null);
 
       await expect(service.deleteSalesChannel(1)).rejects.toThrow(
         new NotFoundException(
@@ -156,7 +142,7 @@ describe('DeleteSalesChannelService', () => {
 
     it('should handle different sales channel IDs correctly', async () => {
       const salesChannelId = 999;
-      const differentChannel = { ...mockSalesChannel, id: salesChannelId };
+      const differentChannel = createMockSalesChannel({ id: salesChannelId });
 
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
@@ -216,15 +202,13 @@ describe('DeleteSalesChannelService', () => {
     });
 
     it('should preserve sales channel properties in return value', async () => {
-      const detailedSalesChannel: ISalesChannel = {
+      const detailedSalesChannel = createMockSalesChannel({
         id: 5,
         name: 'Detailed Channel',
         description: 'Detailed description',
         logoUrl: 'https://example.com/logo.png',
-        organizationId: 1,
         isActive: false,
-        organization: mockOrganization,
-      } as ISalesChannel;
+      });
 
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
@@ -250,10 +234,9 @@ describe('DeleteSalesChannelService', () => {
     });
 
     it('should work with inactive sales channels', async () => {
-      const inactiveSalesChannel = {
-        ...mockSalesChannel,
+      const inactiveSalesChannel = createMockSalesChannel({
         isActive: false,
-      };
+      });
 
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
@@ -274,10 +257,9 @@ describe('DeleteSalesChannelService', () => {
     });
 
     it('should work with sales channels that have no description', async () => {
-      const channelWithoutDescription = {
-        ...mockSalesChannel,
+      const channelWithoutDescription = createMockSalesChannel({
         description: null,
-      };
+      });
 
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization

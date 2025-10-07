@@ -8,11 +8,13 @@ import { UserEntity } from '../../../../database/entities/user.entity';
 import { UserOrganizationEntity } from '../../../../database/entities/user-organization.entity';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 import {
-  IUser,
-  IOrganization,
   IUserOrganization,
   UserOrganizationRole,
 } from '@connect-phone/shared-types';
+import {
+  createMockOrganization,
+  createMockUser,
+} from '../../../../test/factories';
 
 //-------------------------------------------------------------------------------------------------
 
@@ -23,18 +25,9 @@ describe('GetUserByIdService', () => {
   >;
   let currentOrganizationService: jest.Mocked<CurrentOrganizationService>;
 
-  const mockOrganization: IOrganization = {
-    id: 1,
-    name: 'Test Organization',
-    slug: 'test-org',
-    logoUrl: null,
-    createdAt: '2024-01-01T00:00:00Z',
-    salesChannels: [],
-    userOrganizations: [],
-    auditLogs: [],
-  } as IOrganization;
+  const mockOrganization = createMockOrganization();
 
-  const mockUser: IUser = {
+  const mockUser = createMockUser({
     id: 1,
     email: 'test@example.com',
     firstName: 'Test',
@@ -42,9 +35,7 @@ describe('GetUserByIdService', () => {
     createdAt: '2024-01-01T00:00:00Z',
     loggedOrganizationId: 1,
     loggedOrganization: mockOrganization,
-    userOrganizations: [],
-    auditLogs: [],
-  } as IUser;
+  });
 
   const mockUserOrganization: IUserOrganization = {
     id: 1,

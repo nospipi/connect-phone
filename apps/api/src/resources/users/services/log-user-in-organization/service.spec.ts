@@ -5,15 +5,13 @@ import { Repository } from 'typeorm';
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
 import { LogUserInOrganizationService } from './service';
 import { UserEntity } from '../../../../database/entities/user.entity';
-import {
-  IUser,
-  IOrganization,
-  ISalesChannel,
-  IUserOrganization,
-} from '@connect-phone/shared-types';
+import { IUser, IUserOrganization } from '@connect-phone/shared-types';
 import { OrganizationEntity } from '../../../../database/entities/organization.entity';
-import { UserOrganizationEntity } from '../../../../database/entities/user-organization.entity';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
+import {
+  createMockOrganization,
+  createMockUser,
+} from '../../../../test/factories';
 
 //-------------------------------------------------------------------------------------------------
 
@@ -23,15 +21,13 @@ describe('LogUserInOrganizationService', () => {
   let organizationRepository: jest.Mocked<Repository<OrganizationEntity>>;
   let currentDbUserService: jest.Mocked<CurrentDbUserService>;
 
-  const mockOrganization: IOrganization = {
+  const mockOrganization = createMockOrganization({
     id: 1,
     name: 'Org One',
     slug: 'org-one',
     logoUrl: null,
     createdAt: '2025-01-01T00:00:00Z',
-    salesChannels: [],
-    userOrganizations: [],
-  } as unknown as IOrganization;
+  });
 
   const mockUserOrg: IUserOrganization = {
     id: 1,
@@ -42,7 +38,7 @@ describe('LogUserInOrganizationService', () => {
     role: 'ADMIN',
   } as unknown as IUserOrganization;
 
-  const mockUser: IUser = {
+  const mockUser = createMockUser({
     id: 1,
     email: 'test@example.com',
     firstName: 'Test',
@@ -51,7 +47,7 @@ describe('LogUserInOrganizationService', () => {
     loggedOrganizationId: null,
     loggedOrganization: null,
     userOrganizations: [mockUserOrg],
-  } as unknown as IUser;
+  });
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -117,10 +113,12 @@ describe('LogUserInOrganizationService', () => {
     it('throws ForbiddenException if user does not belong to organization', async () => {
       const otherOrgId = 999;
       currentDbUserService.getCurrentDbUser.mockResolvedValue(mockUser);
-      organizationRepository.findOne.mockResolvedValue({
-        ...mockOrganization,
-        id: otherOrgId,
-      } as IOrganization);
+      organizationRepository.findOne.mockResolvedValue(
+        createMockOrganization({
+          ...mockOrganization,
+          id: otherOrgId,
+        })
+      );
 
       await expect(service.logUserInOrganization(otherOrgId)).rejects.toThrow(
         ForbiddenException

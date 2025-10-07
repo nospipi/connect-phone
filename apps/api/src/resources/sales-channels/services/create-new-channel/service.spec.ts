@@ -1,4 +1,5 @@
 // apps/api/src/resources/sales-channels/services/create-new-channel/service.spec.ts
+
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -6,31 +7,20 @@ import { CreateNewChannelService } from './service';
 import { SalesChannelEntity } from '../../../../database/entities/sales-channel.entity';
 import { CreateSalesChannelDto } from './create-sales-channel.dto';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
-import { IOrganization, ISalesChannel } from '@connect-phone/shared-types';
+import {
+  createMockOrganization,
+  createMockSalesChannel,
+} from '../../../../test/factories';
+
+//----------------------------------------------------------------------------
 
 describe('CreateNewChannelService', () => {
   let service: CreateNewChannelService;
   let salesChannelsRepository: jest.Mocked<Repository<SalesChannelEntity>>;
   let currentOrganizationService: jest.Mocked<CurrentOrganizationService>;
 
-  const mockOrganization: IOrganization = {
-    id: 31,
-    name: 'Test Organization',
-    slug: 'test-org',
-    logoUrl: null,
-    createdAt: '2024-01-01T00:00:00Z',
-    salesChannels: [],
-    userOrganizations: [] as any[],
-  } as unknown as IOrganization;
-
-  const mockSalesChannel: ISalesChannel = {
-    id: 1,
-    name: 'Test Sales Channel',
-    description: 'Test Description',
-    organizationId: 31,
-    logoUrl: null,
-    organization: mockOrganization,
-  } as unknown as ISalesChannel;
+  const mockOrganization = createMockOrganization({ id: 31 });
+  const mockSalesChannel = createMockSalesChannel({ organizationId: 31 });
 
   const mockCreateSalesChannelDto: CreateSalesChannelDto = {
     name: 'Test Sales Channel',

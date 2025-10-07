@@ -6,30 +6,29 @@ import { NotFoundException, ForbiddenException } from '@nestjs/common';
 import { DeleteUserInvitationService } from './service';
 import { UserInvitationEntity } from '../../../../database/entities/user-invitation.entity';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
+import { UserOrganizationRole } from '@connect-phone/shared-types';
 import {
-  IOrganization,
-  IUser,
-  IUserInvitation,
-  UserOrganizationRole,
-} from '@connect-phone/shared-types';
+  createMockOrganization,
+  createMockUser,
+  createMockUserInvitation,
+} from '../../../../test/factories';
+
+//-----------------------------------------------------------------------------
 
 describe('DeleteUserInvitationService', () => {
   let service: DeleteUserInvitationService;
   let userInvitationRepository: jest.Mocked<Repository<UserInvitationEntity>>;
   let currentOrganizationService: jest.Mocked<CurrentOrganizationService>;
 
-  const mockOrganization: IOrganization = {
+  const mockOrganization = createMockOrganization({
     id: 31,
     name: 'Test Organization',
     slug: 'test-org',
     logoUrl: null,
     createdAt: '2024-01-01T00:00:00Z',
-    salesChannels: [],
-    userOrganizations: [],
-    auditLogs: [],
-  } as IOrganization;
+  });
 
-  const mockUser: IUser = {
+  const mockUser = createMockUser({
     id: 1,
     email: 'admin@example.com',
     firstName: 'Admin',
@@ -37,11 +36,9 @@ describe('DeleteUserInvitationService', () => {
     createdAt: '2024-01-01T00:00:00Z',
     loggedOrganizationId: 31,
     loggedOrganization: mockOrganization,
-    userOrganizations: [],
-    auditLogs: [],
-  } as IUser;
+  });
 
-  const mockUserInvitation: IUserInvitation = {
+  const mockUserInvitation = createMockUserInvitation({
     id: 1,
     email: 'invite@example.com',
     role: UserOrganizationRole.OPERATOR,
@@ -50,7 +47,7 @@ describe('DeleteUserInvitationService', () => {
     organization: mockOrganization,
     invitedById: 1,
     invitedBy: mockUser,
-  } as IUserInvitation;
+  });
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -126,10 +123,10 @@ describe('DeleteUserInvitationService', () => {
     });
 
     it('should throw ForbiddenException when invitation belongs to different organization', async () => {
-      const differentOrgInvitation = {
+      const differentOrgInvitation = createMockUserInvitation({
         ...mockUserInvitation,
         organizationId: 999,
-      };
+      });
 
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
@@ -148,7 +145,10 @@ describe('DeleteUserInvitationService', () => {
     });
 
     it('should handle different invitation IDs correctly', async () => {
-      const invitation2 = { ...mockUserInvitation, id: 2 };
+      const invitation2 = createMockUserInvitation({
+        ...mockUserInvitation,
+        id: 2,
+      });
 
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
@@ -197,7 +197,7 @@ describe('DeleteUserInvitationService', () => {
     });
 
     it('should preserve invitation properties in return value', async () => {
-      const fullInvitation: IUserInvitation = {
+      const fullInvitation = createMockUserInvitation({
         id: 5,
         email: 'detailed@example.com',
         role: UserOrganizationRole.ADMIN,
@@ -206,7 +206,7 @@ describe('DeleteUserInvitationService', () => {
         organization: mockOrganization,
         invitedById: 1,
         invitedBy: mockUser,
-      } as IUserInvitation;
+      });
 
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization

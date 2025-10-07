@@ -7,12 +7,14 @@ import { UserInvitationEntity } from '../../../../database/entities/user-invitat
 import { CreateUserInvitationDto } from './create-user-invitation.dto';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
+import { UserOrganizationRole } from '@connect-phone/shared-types';
 import {
-  IOrganization,
-  IUser,
-  IUserInvitation,
-  UserOrganizationRole,
-} from '@connect-phone/shared-types';
+  createMockOrganization,
+  createMockUser,
+  createMockUserInvitation,
+} from '../../../../test/factories';
+
+//----------------------------------------------------------------------------
 
 describe('CreateUserInvitationService', () => {
   let service: CreateUserInvitationService;
@@ -20,18 +22,15 @@ describe('CreateUserInvitationService', () => {
   let currentOrganizationService: jest.Mocked<CurrentOrganizationService>;
   let currentDbUserService: jest.Mocked<CurrentDbUserService>;
 
-  const mockOrganization: IOrganization = {
+  const mockOrganization = createMockOrganization({
     id: 31,
     name: 'Test Organization',
     slug: 'test-org',
     logoUrl: null,
     createdAt: '2024-01-01T00:00:00Z',
-    salesChannels: [],
-    userOrganizations: [],
-    auditLogs: [],
-  } as IOrganization;
+  });
 
-  const mockUser: IUser = {
+  const mockUser = createMockUser({
     id: 1,
     email: 'admin@example.com',
     firstName: 'Admin',
@@ -39,11 +38,9 @@ describe('CreateUserInvitationService', () => {
     createdAt: '2024-01-01T00:00:00Z',
     loggedOrganizationId: 31,
     loggedOrganization: mockOrganization,
-    userOrganizations: [],
-    auditLogs: [],
-  } as IUser;
+  });
 
-  const mockUserInvitation: IUserInvitation = {
+  const mockUserInvitation = createMockUserInvitation({
     id: 1,
     email: 'invite@example.com',
     role: UserOrganizationRole.OPERATOR,
@@ -52,7 +49,7 @@ describe('CreateUserInvitationService', () => {
     organization: mockOrganization,
     invitedById: 1,
     invitedBy: mockUser,
-  } as IUserInvitation;
+  });
 
   const mockCreateUserInvitationDto: CreateUserInvitationDto = {
     email: 'invite@example.com',

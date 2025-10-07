@@ -1,16 +1,23 @@
 // apps/api/src/resources/countries/services/update-country/service.ts
-import { Injectable, NotFoundException } from '@nestjs/common';
+
+import {
+  Injectable,
+  NotFoundException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CountryEntity } from '../../../../database/entities/country.entity';
 import { UpdateCountryDto } from './update-country.dto';
 import { ICountry } from '@connect-phone/shared-types';
+import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 
 @Injectable()
 export class UpdateCountryService {
   constructor(
     @InjectRepository(CountryEntity)
-    private countryRepository: Repository<CountryEntity>
+    private countryRepository: Repository<CountryEntity>,
+    private currentOrganizationService: CurrentOrganizationService
   ) {}
 
   async updateCountry(updateCountryDto: UpdateCountryDto): Promise<ICountry> {
@@ -18,13 +25,23 @@ export class UpdateCountryService {
       throw new NotFoundException('Country ID is required');
     }
 
+    const organization =
+      await this.currentOrganizationService.getCurrentOrganization();
+
+    if (!organization) {
+      throw new ForbiddenException('Organization context required');
+    }
+
     const country = await this.countryRepository.findOne({
-      where: { id: updateCountryDto.id },
+      where: {
+        id: updateCountryDto.id,
+        organizationId: organization.id,
+      },
     });
 
     if (!country) {
       throw new NotFoundException(
-        `Country with ID ${updateCountryDto.id} not found`
+        `Country with ID ${updateCountryDto.id} not found in current organization`
       );
     }
 

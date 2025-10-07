@@ -6,14 +6,14 @@ import { NotFoundException } from '@nestjs/common';
 import { UpdateUserService } from './service';
 import { UserEntity } from '../../../../database/entities/user.entity';
 import { UserOrganizationEntity } from '../../../../database/entities/user-organization.entity';
-import {
-  IUser,
-  IOrganization,
-  UserOrganizationRole,
-} from '@connect-phone/shared-types';
+import { UserOrganizationRole } from '@connect-phone/shared-types';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 import { UpdateUserDto } from './update-user.dto';
+import {
+  createMockOrganization,
+  createMockUser,
+} from '../../../../test/factories';
 
 //-------------------------------------------------------------------------------------------------
 
@@ -26,7 +26,7 @@ describe('UpdateUserService', () => {
   let currentDbUserService: jest.Mocked<CurrentDbUserService>;
   let currentOrganizationService: jest.Mocked<CurrentOrganizationService>;
 
-  const mockUser: IUser = {
+  const mockUser = createMockUser({
     id: 1,
     email: 'test@example.com',
     firstName: 'Test',
@@ -34,20 +34,9 @@ describe('UpdateUserService', () => {
     createdAt: '2024-01-01T00:00:00Z',
     loggedOrganizationId: 1,
     loggedOrganization: null,
-    userOrganizations: [],
-    auditLogs: [],
-  } as IUser;
+  });
 
-  const mockOrganization: IOrganization = {
-    id: 1,
-    name: 'Test Organization',
-    slug: 'test-org',
-    logoUrl: null,
-    createdAt: '2024-01-01T00:00:00Z',
-    salesChannels: [],
-    userOrganizations: [],
-    auditLogs: [],
-  } as IOrganization;
+  const mockOrganization = createMockOrganization();
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

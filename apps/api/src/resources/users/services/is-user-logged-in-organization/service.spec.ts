@@ -3,12 +3,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException } from '@nestjs/common';
 import { IsUserLoggedInOrganizationService } from './service';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
-import { UserEntity } from '../../../../database/entities/user.entity';
-import {
-  IUser,
-  IOrganization,
-  IUserOrganization,
-} from '@connect-phone/shared-types';
+import { IUser } from '@connect-phone/shared-types';
+import { createMockUser } from '../../../../test/factories';
 
 //-------------------------------------------------------------------------------------------------
 
@@ -16,7 +12,7 @@ describe('IsUserLoggedInOrganizationService', () => {
   let service: IsUserLoggedInOrganizationService;
   let currentDbUserService: jest.Mocked<CurrentDbUserService>;
 
-  const mockUserWithOrganization: IUser = {
+  const mockUserWithOrganization = createMockUser({
     id: 1,
     email: 'test@example.com',
     firstName: 'Test',
@@ -24,11 +20,9 @@ describe('IsUserLoggedInOrganizationService', () => {
     createdAt: '2024-01-01T00:00:00Z',
     loggedOrganizationId: 1,
     loggedOrganization: null,
-    userOrganizations: [],
-    auditLogs: [],
-  } as IUser;
+  });
 
-  const mockUserWithoutOrganization: IUser = {
+  const mockUserWithoutOrganization = createMockUser({
     id: 2,
     email: 'test2@example.com',
     firstName: 'Test2',
@@ -36,9 +30,7 @@ describe('IsUserLoggedInOrganizationService', () => {
     createdAt: '2024-01-01T00:00:00Z',
     loggedOrganizationId: null,
     loggedOrganization: null,
-    userOrganizations: [],
-    auditLogs: [],
-  } as IUser;
+  });
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -98,7 +90,7 @@ describe('IsUserLoggedInOrganizationService', () => {
 
     it('should return false when user has undefined loggedOrganizationId', async () => {
       // Arrange
-      const userWithUndefinedOrgId: IUser = {
+      const userWithUndefinedOrgId: IUser = createMockUser({
         id: 3,
         email: 'test3@example.com',
         firstName: 'Test3',
@@ -106,9 +98,7 @@ describe('IsUserLoggedInOrganizationService', () => {
         createdAt: '2024-01-01T00:00:00Z',
         loggedOrganizationId: undefined as any,
         loggedOrganization: null,
-        userOrganizations: [],
-        auditLogs: [],
-      } as IUser;
+      });
       currentDbUserService.getCurrentDbUser.mockResolvedValue(
         userWithUndefinedOrgId
       );
@@ -123,10 +113,10 @@ describe('IsUserLoggedInOrganizationService', () => {
 
     it('should return true when user has any positive organization ID', async () => {
       // Arrange
-      const userWithOrgId5 = {
+      const userWithOrgId5 = createMockUser({
         ...mockUserWithOrganization,
         loggedOrganizationId: 5,
-      } as IUser;
+      });
       currentDbUserService.getCurrentDbUser.mockResolvedValue(userWithOrgId5);
 
       // Act
@@ -139,10 +129,10 @@ describe('IsUserLoggedInOrganizationService', () => {
 
     it('should return false when user has zero loggedOrganizationId', async () => {
       // Arrange
-      const userWithZeroOrgId = {
+      const userWithZeroOrgId = createMockUser({
         ...mockUserWithOrganization,
         loggedOrganizationId: 0,
-      } as IUser;
+      });
       currentDbUserService.getCurrentDbUser.mockResolvedValue(
         userWithZeroOrgId
       );

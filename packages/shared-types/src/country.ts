@@ -1,4 +1,6 @@
-//packages/shared-types/src/country.ts
+// packages/shared-types/src/country.ts
+
+import { IOrganization } from "./organization";
 
 export enum CountryRegion {
   EUROPE = "europe",
@@ -15,6 +17,8 @@ export interface ICountry {
   flagAvatarUrl: string | null;
   flagProductImageUrl: string | null;
   region: CountryRegion;
+  organizationId: number;
+  organization: IOrganization;
   createdAt: string;
   updatedAt: string;
 }
