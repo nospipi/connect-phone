@@ -28,8 +28,6 @@ export class UpdateSalesChannelController {
     @Param('id', ParseIntPipe) id: number,
     @Body() updateSalesChannelDto: UpdateSalesChannelDto
   ): Promise<ISalesChannel> {
-    console.log('updateSalesChannel Controller - ID:', id);
-
     // Set the ID from the URL parameter
     updateSalesChannelDto.id = id;
 

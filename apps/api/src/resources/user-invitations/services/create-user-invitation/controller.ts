@@ -22,14 +22,11 @@ export class CreateUserInvitationController {
   async createUserInvitation(
     @Body() createUserInvitationDto: CreateUserInvitationDto
   ): Promise<IUserInvitation> {
-    console.log('createUserInvitation Controller:', createUserInvitationDto);
-
     try {
       const newUserInvitation =
         await this.createUserInvitationService.createUserInvitation(
           createUserInvitationDto
         );
-      console.log('New user invitation created:', newUserInvitation);
       return newUserInvitation;
     } catch (error) {
       console.error('Error creating user invitation:', error);

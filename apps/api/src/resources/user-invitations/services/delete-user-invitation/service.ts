@@ -25,8 +25,6 @@ export class DeleteUserInvitationService {
    * Organization context is automatically retrieved and validated
    */
   async deleteUserInvitation(invitationId: number): Promise<IUserInvitation> {
-    console.log('deleteUserInvitation ID:', invitationId);
-
     const organization =
       await this.currentOrganizationService.getCurrentOrganization();
 
@@ -52,7 +50,6 @@ export class DeleteUserInvitationService {
     // Delete the invitation
     await this.userInvitationRepository.remove(invitation);
 
-    console.log('User invitation deleted:', invitation);
     return invitation;
   }
 }

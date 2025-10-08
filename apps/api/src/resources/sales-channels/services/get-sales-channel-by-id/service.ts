@@ -21,8 +21,6 @@ export class GetSalesChannelByIdService {
   ) {}
 
   async getSalesChannelById(salesChannelId: number): Promise<ISalesChannel> {
-    console.log(`Getting sales channel by ID: ${salesChannelId}`);
-
     const organization =
       await this.currentOrganizationService.getCurrentOrganization();
 
@@ -44,10 +42,6 @@ export class GetSalesChannelByIdService {
         `Sales channel with ID ${salesChannelId} not found in current organization`
       );
     }
-
-    console.log(
-      `Sales channel found: ${salesChannel.name} (ID: ${salesChannel.id})`
-    );
 
     return salesChannel;
   }

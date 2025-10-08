@@ -34,10 +34,6 @@ export class GetAllOrganizationsOfUserService {
       throw new UnauthorizedException('User not found in database');
     }
 
-    console.log(
-      `Getting organizations for user: ${user.email} (ID: ${user.id})`
-    );
-
     // Fetch UserOrganization entries for the user with organization relation
     const userOrganizations = await this.userOrgRepository.find({
       where: { userId: user.id },
@@ -45,13 +41,8 @@ export class GetAllOrganizationsOfUserService {
     });
 
     if (!userOrganizations || userOrganizations.length === 0) {
-      console.log(`No organizations found for user ${user.email}`);
       return [];
     }
-
-    console.log(
-      `Found ${userOrganizations.length} organizations for user ${user.email}`
-    );
 
     // Return flattened objects with organization properties + role
     return userOrganizations.map((uo) => ({

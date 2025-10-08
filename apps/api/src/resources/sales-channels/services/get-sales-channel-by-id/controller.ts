@@ -25,8 +25,6 @@ export class GetSalesChannelByIdController {
   async getSalesChannelById(
     @Param('id', ParseIntPipe) id: number
   ): Promise<ISalesChannel> {
-    console.log('getSalesChannelById Controller - ID:', id);
-
     try {
       const salesChannel =
         await this.getSalesChannelByIdService.getSalesChannelById(id);

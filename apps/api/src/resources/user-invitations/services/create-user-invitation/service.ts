@@ -26,8 +26,6 @@ export class CreateUserInvitationService {
   async createUserInvitation(
     createUserInvitationDto: CreateUserInvitationDto
   ): Promise<IUserInvitation> {
-    console.log('createUserInvitation DTO:', createUserInvitationDto);
-
     const organization =
       await this.currentOrganizationService.getCurrentOrganization();
     const currentUser = await this.currentDbUserService.getCurrentDbUser();
@@ -41,7 +39,6 @@ export class CreateUserInvitationService {
     const savedInvitation =
       await this.userInvitationRepository.save(userInvitation);
 
-    console.log('User invitation created:', savedInvitation);
     return savedInvitation;
   }
 }

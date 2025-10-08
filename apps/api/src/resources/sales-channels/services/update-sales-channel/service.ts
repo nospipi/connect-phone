@@ -28,8 +28,6 @@ export class UpdateSalesChannelService {
   async updateSalesChannel(
     updateSalesChannelDto: UpdateSalesChannelDto
   ): Promise<ISalesChannel> {
-    console.log('updateSalesChannel DTO:', updateSalesChannelDto);
-
     if (!updateSalesChannelDto.id) {
       throw new NotFoundException('Sales channel ID is required');
     }
@@ -73,7 +71,6 @@ export class UpdateSalesChannelService {
     const updatedSalesChannel =
       await this.salesChannelsRepository.save(salesChannel);
 
-    console.log('Sales channel updated:', updatedSalesChannel);
     return updatedSalesChannel;
   }
 }

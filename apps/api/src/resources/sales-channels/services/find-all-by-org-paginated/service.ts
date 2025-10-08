@@ -40,10 +40,6 @@ export class FindAllByOrgPaginatedService {
     const organization =
       await this.currentOrganizationService.getCurrentOrganization();
 
-    console.log(
-      `Getting paginated sales channels for organization: ${organization?.name}`
-    );
-
     // Configure pagination options
     const options: IPaginationOptions = {
       page,

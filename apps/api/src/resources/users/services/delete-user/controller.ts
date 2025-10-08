@@ -23,8 +23,6 @@ export class DeleteUserController {
 
   @Delete(':id')
   async deleteUser(@Param('id', ParseIntPipe) id: number): Promise<IUser> {
-    console.log('deleteUser Controller - ID:', id);
-
     try {
       const deletedUser = await this.deleteUserService.deleteUserById(id);
       return deletedUser;

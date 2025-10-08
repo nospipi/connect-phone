@@ -27,12 +27,9 @@ export class DeleteSalesChannelController {
   async deleteSalesChannel(
     @Param('id', ParseIntPipe) id: number
   ): Promise<ISalesChannel> {
-    console.log('deleteSalesChannel Controller - ID:', id);
-
     try {
       const deletedSalesChannel =
         await this.deleteSalesChannelService.deleteSalesChannel(id);
-      console.log('Sales channel deleted successfully:', deletedSalesChannel);
       return deletedSalesChannel;
     } catch (error) {
       console.error('Error deleting sales channel:', error);

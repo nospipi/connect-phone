@@ -23,8 +23,6 @@ export class GetUserByIdController {
   async getUserById(
     @Param('id', ParseIntPipe) id: number
   ): Promise<IUserWithOrganizationRole> {
-    console.log('getUserById Controller - ID:', id);
-
     try {
       const user = await this.getUserByIdService.getUserById(id);
       return user;

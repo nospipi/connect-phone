@@ -26,7 +26,6 @@ export class CreateNewChannelService {
     createSalesChannelDto: CreateSalesChannelDto
   ): Promise<ISalesChannel> {
     try {
-      console.log('createNewSalesChannel DTO:', createSalesChannelDto);
       const organization =
         await this.currentOrganizationService.getCurrentOrganization();
 
@@ -44,7 +43,6 @@ export class CreateNewChannelService {
         .values(salesChannel) // ← Circular refs are automatically ignored!
         .execute();
 
-      console.log('Insert result:', result);
       return result.raw[0]; // Return the inserted row
     } catch (error) {
       console.error('Error in createNewSalesChannel:', error);

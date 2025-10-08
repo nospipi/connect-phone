@@ -33,15 +33,12 @@ export class CreateNewChannelController {
   ): Promise<ISalesChannel> {
     // Service automatically gets organization from context
 
-    console.log('createNew Controller:', createSalesChannelDto);
-
     try {
       const newSalesChannel =
         await this.createNewChannelService.createNewSalesChannel(
           createSalesChannelDto
         );
 
-      console.log('New sales channel created:', newSalesChannel);
       return newSalesChannel;
     } catch (error) {
       console.error('Error creating sales channel:', error);

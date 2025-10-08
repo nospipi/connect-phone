@@ -34,10 +34,6 @@ export class GetAllInvitationsOfOrgPaginatedService {
     const organization =
       await this.currentOrganizationService.getCurrentOrganization();
 
-    console.log(
-      `Getting paginated user invitations for organization: ${organization?.name}`
-    );
-
     // Configure pagination options
     const options: IPaginationOptions = {
       page,

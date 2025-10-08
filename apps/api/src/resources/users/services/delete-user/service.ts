@@ -28,8 +28,6 @@ export class DeleteUserService {
    * Organization context is automatically retrieved and validated
    */
   async deleteUserById(userId: number): Promise<IUser> {
-    console.log('deleteUser ID:', userId);
-
     const organization =
       await this.currentOrganizationService.getCurrentOrganization();
 
@@ -73,7 +71,6 @@ export class DeleteUserService {
     // Delete the user (cascade deletes will handle UserOrganization relationships)
     await this.userRepository.remove(user);
 
-    console.log('User deleted:', user);
     return user;
   }
 }

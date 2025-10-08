@@ -27,12 +27,9 @@ export class DeleteUserInvitationController {
   async deleteUserInvitation(
     @Param('id', ParseIntPipe) id: number
   ): Promise<IUserInvitation> {
-    console.log('deleteUserInvitation Controller - ID:', id);
-
     try {
       const deletedInvitation =
         await this.deleteUserInvitationService.deleteUserInvitation(id);
-      console.log('User invitation deleted successfully:', deletedInvitation);
       return deletedInvitation;
     } catch (error) {
       console.error('Error deleting user invitation:', error);

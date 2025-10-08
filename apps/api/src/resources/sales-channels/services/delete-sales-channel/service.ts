@@ -25,8 +25,6 @@ export class DeleteSalesChannelService {
    * Organization context is automatically retrieved and validated
    */
   async deleteSalesChannel(salesChannelId: number): Promise<ISalesChannel> {
-    console.log('deleteSalesChannel ID:', salesChannelId);
-
     const organization =
       await this.currentOrganizationService.getCurrentOrganization();
 
@@ -52,7 +50,6 @@ export class DeleteSalesChannelService {
     // Delete the sales channel
     await this.salesChannelRepository.remove(salesChannel);
 
-    console.log('Sales channel deleted:', salesChannel);
     return salesChannel;
   }
 }

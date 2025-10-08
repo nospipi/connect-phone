@@ -24,8 +24,6 @@ export class GetUserByIdService {
   ) {}
 
   async getUserById(userId: number): Promise<IUserWithOrganizationRole> {
-    console.log(`Getting user by ID: ${userId}`);
-
     const organization =
       await this.currentOrganizationService.getCurrentOrganization();
 
@@ -56,10 +54,6 @@ export class GetUserByIdService {
     if (!userOrganization.user) {
       throw new NotFoundException(`User with ID ${userId} not found`);
     }
-
-    console.log(
-      `User found: ${userOrganization.user.email} (ID: ${userOrganization.user.id}) with role: ${userOrganization.role}`
-    );
 
     // Return user with role
     return {
