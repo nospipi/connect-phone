@@ -129,7 +129,7 @@ const Page = async ({
               return (
                 <Link
                   key={country.id}
-                  href={`/countries/${country.id}`}
+                  href={`/inventory/countries/${country.id}`}
                   className="block"
                 >
                   <div className="duration-2000 group py-4 transition-all">
