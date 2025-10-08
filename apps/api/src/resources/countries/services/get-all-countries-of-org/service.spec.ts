@@ -10,8 +10,7 @@ import {
   createCurrentOrganizationServiceProvider,
 } from '../../../../test/factories';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
-
-//--------------------------------------------------------------------------------
+import { CountryRegion } from '@connect-phone/shared-types';
 
 describe('GetAllCountriesOfOrgService', () => {
   let service: GetAllCountriesOfOrgService;
@@ -20,6 +19,12 @@ describe('GetAllCountriesOfOrgService', () => {
 
   const mockOrganization = createMockOrganization();
   const mockCountries = [createMockCountry(), createMockCountry()];
+  const mockQueryBuilder = {
+    where: jest.fn().mockReturnThis(),
+    andWhere: jest.fn().mockReturnThis(),
+    orderBy: jest.fn().mockReturnThis(),
+    getMany: jest.fn(),
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -28,7 +33,7 @@ describe('GetAllCountriesOfOrgService', () => {
         {
           provide: getRepositoryToken(CountryEntity),
           useValue: {
-            find: jest.fn(),
+            createQueryBuilder: jest.fn().mockReturnValue(mockQueryBuilder),
           },
         },
         createCurrentOrganizationServiceProvider(),
@@ -55,23 +60,24 @@ describe('GetAllCountriesOfOrgService', () => {
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
-      countryRepository.find.mockResolvedValue(
-        mockCountries as CountryEntity[]
-      );
+      mockQueryBuilder.getMany.mockResolvedValue(mockCountries);
 
-      const result = await service.getAllCountries();
+      const result = await service.getAllCountries('', 'all');
 
       expect(
         currentOrganizationService.getCurrentOrganization
       ).toHaveBeenCalledTimes(1);
-      expect(countryRepository.find).toHaveBeenCalledWith({
-        where: {
-          organizationId: 1,
-        },
-        order: {
-          name: 'ASC',
-        },
-      });
+      expect(countryRepository.createQueryBuilder).toHaveBeenCalledWith(
+        'country'
+      );
+      expect(mockQueryBuilder.where).toHaveBeenCalledWith(
+        'country.organizationId = :organizationId',
+        { organizationId: 1 }
+      );
+      expect(mockQueryBuilder.orderBy).toHaveBeenCalledWith(
+        'country.name',
+        'ASC'
+      );
       expect(result).toEqual(mockCountries);
       expect(result).toHaveLength(2);
     });
@@ -80,23 +86,124 @@ describe('GetAllCountriesOfOrgService', () => {
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
-      countryRepository.find.mockResolvedValue([]);
+      mockQueryBuilder.getMany.mockResolvedValue([]);
 
-      const result = await service.getAllCountries();
+      const result = await service.getAllCountries('', 'all');
 
       expect(
         currentOrganizationService.getCurrentOrganization
       ).toHaveBeenCalledTimes(1);
-      expect(countryRepository.find).toHaveBeenCalledWith({
-        where: {
-          organizationId: 1,
-        },
-        order: {
-          name: 'ASC',
-        },
-      });
+      expect(mockQueryBuilder.where).toHaveBeenCalledWith(
+        'country.organizationId = :organizationId',
+        { organizationId: 1 }
+      );
       expect(result).toEqual([]);
       expect(result).toHaveLength(0);
+    });
+
+    it('should add search functionality when search term provided', async () => {
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
+      mockQueryBuilder.getMany.mockResolvedValue(mockCountries);
+
+      await service.getAllCountries('greece', 'all');
+
+      expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
+        'country.name ILIKE :search',
+        { search: '%greece%' }
+      );
+    });
+
+    it('should trim search term and handle spaces', async () => {
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
+      mockQueryBuilder.getMany.mockResolvedValue(mockCountries);
+
+      await service.getAllCountries('  united states  ', 'all');
+
+      expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
+        'country.name ILIKE :search',
+        { search: '%united states%' }
+      );
+    });
+
+    it('should not add search when search term is empty or whitespace', async () => {
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
+      mockQueryBuilder.getMany.mockResolvedValue(mockCountries);
+
+      await service.getAllCountries('   ', 'all');
+
+      expect(mockQueryBuilder.andWhere).not.toHaveBeenCalledWith(
+        expect.stringContaining('ILIKE'),
+        expect.any(Object)
+      );
+    });
+
+    it('should add region filtering when region is specified', async () => {
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
+      mockQueryBuilder.getMany.mockResolvedValue(mockCountries);
+
+      await service.getAllCountries('', 'europe');
+
+      expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
+        'country.region = :region',
+        { region: 'EUROPE' }
+      );
+    });
+
+    it('should handle region case insensitively', async () => {
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
+      mockQueryBuilder.getMany.mockResolvedValue(mockCountries);
+
+      await service.getAllCountries('', 'AsIa');
+
+      expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
+        'country.region = :region',
+        { region: 'ASIA' }
+      );
+    });
+
+    it('should not add region filtering when region is "all"', async () => {
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
+      mockQueryBuilder.getMany.mockResolvedValue(mockCountries);
+
+      await service.getAllCountries('', 'all');
+
+      expect(mockQueryBuilder.andWhere).not.toHaveBeenCalledWith(
+        'country.region = :region',
+        expect.any(Object)
+      );
+    });
+
+    it('should handle both search and region filters together', async () => {
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
+      mockQueryBuilder.getMany.mockResolvedValue(mockCountries);
+
+      await service.getAllCountries('greece', 'europe');
+
+      expect(mockQueryBuilder.andWhere).toHaveBeenCalledTimes(2);
+      expect(mockQueryBuilder.andWhere).toHaveBeenNthCalledWith(
+        1,
+        'country.name ILIKE :search',
+        { search: '%greece%' }
+      );
+      expect(mockQueryBuilder.andWhere).toHaveBeenNthCalledWith(
+        2,
+        'country.region = :region',
+        { region: 'EUROPE' }
+      );
     });
 
     it('should handle different organization IDs correctly', async () => {
@@ -104,47 +211,39 @@ describe('GetAllCountriesOfOrgService', () => {
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         differentOrg
       );
-      countryRepository.find.mockResolvedValue([]);
+      mockQueryBuilder.getMany.mockResolvedValue([]);
 
-      await service.getAllCountries();
+      await service.getAllCountries('', 'all');
 
-      expect(countryRepository.find).toHaveBeenCalledWith({
-        where: {
-          organizationId: 5,
-        },
-        order: {
-          name: 'ASC',
-        },
-      });
+      expect(mockQueryBuilder.where).toHaveBeenCalledWith(
+        'country.organizationId = :organizationId',
+        { organizationId: 5 }
+      );
     });
 
     it('should handle null organization', async () => {
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(null);
-      countryRepository.find.mockResolvedValue([]);
+      mockQueryBuilder.getMany.mockResolvedValue([]);
 
-      await service.getAllCountries();
+      await service.getAllCountries('', 'all');
 
-      expect(countryRepository.find).toHaveBeenCalledWith({
-        where: {
-          organizationId: undefined,
-        },
-        order: {
-          name: 'ASC',
-        },
-      });
+      expect(mockQueryBuilder.where).toHaveBeenCalledWith(
+        'country.organizationId = :organizationId',
+        { organizationId: undefined }
+      );
     });
 
     it('should handle database errors', async () => {
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
-      countryRepository.find.mockRejectedValue(new Error('Database error'));
+      mockQueryBuilder.getMany.mockRejectedValue(new Error('Database error'));
 
-      await expect(service.getAllCountries()).rejects.toThrow('Database error');
+      await expect(service.getAllCountries('', 'all')).rejects.toThrow(
+        'Database error'
+      );
 
-      expect(countryRepository.find).toHaveBeenCalledTimes(1);
+      expect(mockQueryBuilder.getMany).toHaveBeenCalledTimes(1);
     });
   });
 });
-
-// apps/api/src/resources/countries/services/get-all-countries-of-org/service.spec.ts

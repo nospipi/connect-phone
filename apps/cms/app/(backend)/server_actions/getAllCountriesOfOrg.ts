@@ -6,12 +6,26 @@ import { ICountry } from "@connect-phone/shared-types"
 import { ErrorResponse } from "./types"
 import { createApiClient } from "./api-client"
 
-//--------------------------------------------------------------------------------
-
-export const getAllCountriesOfOrg = async (): Promise<ICountry[]> => {
+export const getAllCountriesOfOrg = async (
+  search?: string,
+  region?: string,
+): Promise<ICountry[]> => {
   try {
     const api = createApiClient()
-    const response = await api.get("/countries")
+    const params = new URLSearchParams()
+
+    if (search) {
+      params.append("search", search)
+    }
+
+    if (region && region !== "all") {
+      params.append("region", region)
+    }
+
+    const queryString = params.toString()
+    const url = queryString ? `/countries?${queryString}` : "/countries"
+
+    const response = await api.get(url)
 
     if (response.status !== 200) {
       throw new Error("Failed to fetch countries")
