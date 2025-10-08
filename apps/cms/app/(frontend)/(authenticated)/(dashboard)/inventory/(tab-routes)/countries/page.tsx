@@ -165,7 +165,7 @@ const Page = async ({
 
                           {/* Region Badge */}
                           <div className="ml-4 flex-shrink-0">
-                            <Badge>
+                            <Badge variant="neutral">
                               {country.region?.charAt(0).toUpperCase() +
                                 country.region?.slice(1).toLowerCase()}
                             </Badge>

@@ -45,17 +45,11 @@ export class UpdateCountryService {
       );
     }
 
-    if (updateCountryDto.name !== undefined) {
-      country.name = updateCountryDto.name;
-    }
     if (updateCountryDto.flagAvatarUrl !== undefined) {
       country.flagAvatarUrl = updateCountryDto.flagAvatarUrl;
     }
     if (updateCountryDto.flagProductImageUrl !== undefined) {
       country.flagProductImageUrl = updateCountryDto.flagProductImageUrl;
-    }
-    if (updateCountryDto.region !== undefined) {
-      country.region = updateCountryDto.region;
     }
 
     return this.countryRepository.save(country);

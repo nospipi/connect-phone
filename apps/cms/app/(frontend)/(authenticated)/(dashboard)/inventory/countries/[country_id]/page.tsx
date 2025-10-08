@@ -114,6 +114,7 @@ const Page = async ({
                     currentFlagUrl={currentFlagAvatarUrl}
                     organizationId={loggedInOrganization?.id.toString() || ""}
                     countryId={countryData.id.toString()}
+                    countryCode={countryData.code}
                     flagType="avatar"
                     requiredDimensions={{ width: 56, height: 42 }}
                   />
@@ -134,6 +135,7 @@ const Page = async ({
                     currentFlagUrl={currentFlagProductImageUrl}
                     organizationId={loggedInOrganization?.id.toString() || ""}
                     countryId={countryData.id.toString()}
+                    countryCode={countryData.code}
                     flagType="product"
                     requiredDimensions={{ width: 192, height: 144 }}
                   />

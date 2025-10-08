@@ -10,6 +10,7 @@ import {
   RiDragDropLine,
   RiDeleteBinLine,
   RiExternalLinkLine,
+  RiRefreshLine,
 } from "@remixicon/react"
 
 //----------------------------------------------------------------------
@@ -18,6 +19,7 @@ interface UpdateCountryFlagUploadProps {
   currentFlagUrl: string
   organizationId: string
   countryId: string
+  countryCode: string
   flagType: "avatar" | "product"
   requiredDimensions: { width: number; height: number }
 }
@@ -26,6 +28,7 @@ export default function UpdateCountryFlagUpload({
   currentFlagUrl,
   organizationId,
   countryId,
+  countryCode,
   flagType,
   requiredDimensions,
 }: UpdateCountryFlagUploadProps) {
@@ -38,6 +41,12 @@ export default function UpdateCountryFlagUpload({
   const [uploadError, setUploadError] = useState<string | null>(null)
   const [isDragOver, setIsDragOver] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
+
+  // Get the default flag URL
+  const defaultFlagUrl = `https://flagcdn.com/${requiredDimensions.width}x${requiredDimensions.height}/${countryCode.toLowerCase()}.webp`
+
+  // Check if current URL is already the default
+  const isDefaultUrl = currentFlagUrl === defaultFlagUrl
 
   // Clear uploading state when we have a currentFlagUrl from search params
   useEffect(() => {
@@ -221,6 +230,20 @@ export default function UpdateCountryFlagUpload({
     router.push(`/inventory/countries/${countryId}?${searchParams.toString()}`)
   }
 
+  // Revert to default flag from flagcdn
+  const handleRevertToDefault = () => {
+    setFlagPreview(defaultFlagUrl)
+
+    const searchParams = new URLSearchParams(window.location.search)
+    if (flagType === "avatar") {
+      searchParams.set("flagAvatarUrl", defaultFlagUrl)
+    } else {
+      searchParams.set("flagProductImageUrl", defaultFlagUrl)
+    }
+
+    router.push(`/inventory/countries/${countryId}?${searchParams.toString()}`)
+  }
+
   return (
     <div className="space-y-4">
       {/* Droppable Flag Upload Area */}
@@ -274,7 +297,7 @@ export default function UpdateCountryFlagUpload({
                 </a>
               </div>
 
-              {/* Trash button - positioned at the far right */}
+              {/* Delete button - positioned at the far right */}
               <div className="flex-shrink-0">
                 <button
                   type="button"
@@ -283,6 +306,7 @@ export default function UpdateCountryFlagUpload({
                     handleClearFlag()
                   }}
                   className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-red-300 bg-red-50 text-red-600 shadow-sm hover:bg-red-100 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:border-red-700 dark:bg-red-900/50 dark:text-red-400 dark:hover:bg-red-800/50 dark:hover:text-red-300"
+                  title="Clear flag"
                 >
                   <RiDeleteBinLine className="h-4 w-4" />
                 </button>
@@ -323,6 +347,18 @@ export default function UpdateCountryFlagUpload({
         accept="image/*"
         className="hidden"
       />
+
+      {/* Revert to Default Button */}
+      {!isDefaultUrl && (
+        <button
+          type="button"
+          onClick={handleRevertToDefault}
+          className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+        >
+          <RiRefreshLine className="h-4 w-4" />
+          Revert to default flag
+        </button>
+      )}
 
       {/* Upload Progress */}
       {isUploading && (

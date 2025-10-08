@@ -43,5 +43,5 @@ export const updateCountry = async (formData: FormData): Promise<void> => {
     throw new Error(errorMessage)
   }
 
-  redirect("/countries")
+  redirect("/inventory/countries")
 }
