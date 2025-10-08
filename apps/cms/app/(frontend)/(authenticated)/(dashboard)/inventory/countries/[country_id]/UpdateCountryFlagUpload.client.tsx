@@ -5,6 +5,7 @@ import { useState, useRef, useEffect } from "react"
 import { upload } from "@vercel/blob/client"
 import { type PutBlobResult } from "@vercel/blob"
 import { useRouter } from "next/navigation"
+import NextImage from "next/image"
 import {
   RiImageLine,
   RiDragDropLine,
@@ -268,16 +269,20 @@ export default function UpdateCountryFlagUpload({
               {/* Flag on the left */}
               <div className="relative flex-shrink-0">
                 <div
-                  className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900"
+                  className="relative overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900"
                   style={{
-                    width: `${requiredDimensions.width}px`,
-                    height: `${requiredDimensions.height}px`,
-                    backgroundImage: `url(${flagPreview})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    backgroundRepeat: "no-repeat",
+                    width: requiredDimensions.width,
+                    height: requiredDimensions.height,
                   }}
-                />
+                >
+                  <NextImage
+                    src={flagPreview!} // guaranteed non-null here
+                    alt={`${countryCode} flag`}
+                    fill
+                    style={{ objectFit: "cover" }}
+                    sizes={`${requiredDimensions.width}px`}
+                  />
+                </div>
               </div>
 
               {/* Text content on the right */}
