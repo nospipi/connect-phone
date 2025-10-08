@@ -15,8 +15,6 @@ import {
   createCurrentOrganizationServiceProvider,
 } from '../../../../test/factories';
 
-//--------------------------------------------------------------------------------
-
 describe('GetUserByIdService', () => {
   let service: GetUserByIdService;
   let userOrganizationRepository: jest.Mocked<
@@ -25,9 +23,13 @@ describe('GetUserByIdService', () => {
   let currentOrganizationService: jest.Mocked<CurrentOrganizationService>;
 
   const mockOrganization = createMockOrganization();
-  const mockUser = createMockUser({ loggedOrganization: mockOrganization });
+  const mockUser = createMockUser({
+    loggedOrganizationId: null,
+    loggedOrganization: null,
+  });
   const mockUserOrganization = createMockUserOrganization({
     role: UserOrganizationRole.ADMIN,
+    user: mockUser,
   });
 
   beforeEach(async () => {
@@ -179,6 +181,7 @@ describe('GetUserByIdService', () => {
     it('should handle different roles correctly', async () => {
       const operatorUserOrganization = createMockUserOrganization({
         role: UserOrganizationRole.OPERATOR,
+        user: mockUser,
       });
 
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
@@ -238,5 +241,3 @@ describe('GetUserByIdService', () => {
     });
   });
 });
-
-// apps/api/src/resources/users/services/get-user-by-id/service.spec.ts

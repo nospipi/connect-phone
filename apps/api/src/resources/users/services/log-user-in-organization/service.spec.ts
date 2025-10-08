@@ -10,10 +10,9 @@ import { CurrentDbUserService } from '../../../../common/core/current-db-user.se
 import {
   createMockOrganization,
   createMockUser,
+  createMockUserOrganization,
   createCurrentDbUserServiceProvider,
 } from '../../../../test/factories';
-
-//--------------------------------------------------------------------------------
 
 describe('LogUserInOrganizationService', () => {
   let service: LogUserInOrganizationService;
@@ -22,7 +21,14 @@ describe('LogUserInOrganizationService', () => {
   let currentDbUserService: jest.Mocked<CurrentDbUserService>;
 
   const mockOrganization = createMockOrganization();
-  const mockUser = createMockUser({ loggedOrganization: mockOrganization });
+  const mockUserOrganization = createMockUserOrganization({
+    organizationId: mockOrganization.id,
+    organization: mockOrganization,
+  });
+  const mockUser = createMockUser({
+    loggedOrganization: mockOrganization,
+    userOrganizations: [mockUserOrganization],
+  });
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -109,5 +115,3 @@ describe('LogUserInOrganizationService', () => {
     });
   });
 });
-
-// apps/api/src/resources/users/services/log-user-in-organization/service.spec.ts
