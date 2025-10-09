@@ -28,7 +28,7 @@ const Page = async ({
   }
 
   return (
-    <div className="relative mt-2 flex h-full flex-col overflow-hidden">
+    <div className="relative flex h-full flex-col overflow-hidden">
       <div className="h-full flex-1 overflow-hidden pr-4">
         <div className="flex h-full w-full overflow-auto">
           <div className="flex h-full w-full max-w-3xl flex-col gap-10">
@@ -36,7 +36,7 @@ const Page = async ({
               action={updateOrganization}
               className="flex flex-1 flex-col gap-6"
             >
-              <div className="flex flex-1 flex-col gap-6">
+              <div className="flex flex-1 flex-col gap-6 px-1">
                 <input type="hidden" name="id" value={organizationData?.id} />
 
                 <input type="hidden" name="logoUrl" value={currentLogoUrl} />
@@ -79,7 +79,7 @@ const Page = async ({
                 </div>
               </div>
 
-              <div className="flex flex-col gap-3 border-t border-gray-200 pt-6 sm:flex-row sm:justify-end dark:border-gray-800">
+              <div className="flex flex-col gap-3 border-t border-gray-200 pb-1 pr-1 pt-6 sm:flex-row sm:justify-end dark:border-gray-800">
                 <button
                   formAction={refreshPageAction}
                   className="inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"

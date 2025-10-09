@@ -16,7 +16,7 @@ export const updateOrganization = async (formData: FormData): Promise<void> => {
 
     const payload = {
       name: name || undefined,
-      logoUrl: logoUrl || undefined,
+      logoUrl: logoUrl === "" ? null : logoUrl || undefined,
     }
 
     console.log("Updating organization:", payload)

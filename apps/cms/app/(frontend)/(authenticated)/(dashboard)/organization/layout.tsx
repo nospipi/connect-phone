@@ -6,7 +6,7 @@ import {
 } from "@/components/common/TabNavigation"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { RiHistoryLine, RiSettingsLine } from "@remixicon/react"
+import { RiHistoryLine, RiListSettingsLine } from "@remixicon/react"
 
 //----------------------------------------------------
 
@@ -14,7 +14,7 @@ const navigationSettings = [
   {
     name: "Details",
     href: "/organization/details",
-    icon: RiSettingsLine,
+    icon: RiListSettingsLine,
   },
   { name: "Audit Log", href: "/organization/audit-log", icon: RiHistoryLine },
 ]

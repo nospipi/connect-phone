@@ -26,8 +26,8 @@ export class FindAllByOrgPaginatedService {
    * Organization is automatically retrieved from the current context
    */
   async findAllByOrganizationPaginated(
-    page: number = 1,
-    limit: number = 10
+    page: number,
+    limit: number
   ): Promise<Pagination<IAuditLog>> {
     // Automatically get the current organization from context
     const organization =
