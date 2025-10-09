@@ -1,30 +1,45 @@
 // apps/api/src/resources/organizations/services/get-current-organization/service.spec.ts
 import { Test, TestingModule } from '@nestjs/testing';
+import { getRepositoryToken } from '@nestjs/typeorm';
 import { GetCurrentOrganizationService } from './service';
-import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
+import { OrganizationEntity } from '../../../../database/entities/organization.entity';
+import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
 import {
   createMockOrganization,
-  createCurrentOrganizationServiceProvider,
+  createMockUser,
+  createCurrentDbUserServiceProvider,
 } from '../../../../test/factories';
 
 describe('GetCurrentOrganizationService', () => {
   let service: GetCurrentOrganizationService;
-  let currentOrganizationService: jest.Mocked<CurrentOrganizationService>;
+  let organizationRepository: jest.Mocked<any>;
+  let currentDbUserService: jest.Mocked<CurrentDbUserService>;
 
   const mockOrganization = createMockOrganization();
+  const mockUser = createMockUser({
+    loggedOrganizationId: 1,
+    loggedOrganization: mockOrganization,
+  });
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         GetCurrentOrganizationService,
-        createCurrentOrganizationServiceProvider(),
+        {
+          provide: getRepositoryToken(OrganizationEntity),
+          useValue: {
+            findOne: jest.fn(),
+          },
+        },
+        createCurrentDbUserServiceProvider(),
       ],
     }).compile();
 
     service = module.get<GetCurrentOrganizationService>(
       GetCurrentOrganizationService
     );
-    currentOrganizationService = module.get(CurrentOrganizationService);
+    organizationRepository = module.get(getRepositoryToken(OrganizationEntity));
+    currentDbUserService = module.get(CurrentDbUserService);
   });
 
   afterEach(() => {
@@ -37,26 +52,36 @@ describe('GetCurrentOrganizationService', () => {
 
   describe('getCurrentOrganization', () => {
     it('should return current organization', async () => {
-      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
-        mockOrganization
-      );
+      currentDbUserService.getCurrentDbUser.mockResolvedValue(mockUser);
+      organizationRepository.findOne.mockResolvedValue(mockOrganization);
 
       const result = await service.getCurrentOrganization();
 
-      expect(
-        currentOrganizationService.getCurrentOrganization
-      ).toHaveBeenCalledTimes(1);
+      expect(currentDbUserService.getCurrentDbUser).toHaveBeenCalledTimes(1);
+      expect(organizationRepository.findOne).toHaveBeenCalledWith({
+        where: { id: 1 },
+      });
       expect(result).toEqual(mockOrganization);
     });
 
-    it('should return null when no organization', async () => {
-      currentOrganizationService.getCurrentOrganization.mockResolvedValue(null);
+    it('should return null when no user', async () => {
+      currentDbUserService.getCurrentDbUser.mockResolvedValue(null);
 
       const result = await service.getCurrentOrganization();
 
-      expect(
-        currentOrganizationService.getCurrentOrganization
-      ).toHaveBeenCalledTimes(1);
+      expect(currentDbUserService.getCurrentDbUser).toHaveBeenCalledTimes(1);
+      expect(organizationRepository.findOne).not.toHaveBeenCalled();
+      expect(result).toBeNull();
+    });
+
+    it('should return null when user has no logged organization', async () => {
+      const userWithoutOrg = createMockUser({ loggedOrganizationId: null });
+      currentDbUserService.getCurrentDbUser.mockResolvedValue(userWithoutOrg);
+
+      const result = await service.getCurrentOrganization();
+
+      expect(currentDbUserService.getCurrentDbUser).toHaveBeenCalledTimes(1);
+      expect(organizationRepository.findOne).not.toHaveBeenCalled();
       expect(result).toBeNull();
     });
   });

@@ -1,13 +1,7 @@
-import { columns } from "@/components/ui/data-table/columns"
-import { DataTable } from "@/components/ui/data-table/DataTable"
-import { usage } from "@/data/data"
+import UnderConstruction from "@/components/common/UnderConstruction"
 
 const Page = () => {
-  return (
-    <div className="h-screen overflow-auto p-4 sm:px-6 sm:pb-10 sm:pt-10 lg:px-10 lg:pt-7">
-      <span>PRODUCTS</span>
-    </div>
-  )
+  return <UnderConstruction />
 }
 
 export default Page

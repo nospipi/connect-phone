@@ -26,7 +26,7 @@ export const updateSalesChannel = async (formData: FormData): Promise<void> => {
     const payload = {
       name,
       description, // This will be empty string if user wants to clear it
-      logoUrl: logoUrl || null, // Set to null if empty to clear existing logo
+      logoUrl: logoUrl || null, // Convert empty string to null to clear existing logo
       isActive: Boolean(isActive),
     }
 
@@ -41,8 +41,6 @@ export const updateSalesChannel = async (formData: FormData): Promise<void> => {
     if (response.status !== 200) {
       throw new Error("Failed to update sales channel")
     }
-
-
 
     // Revalidate the sales channels page after updating
     revalidatePath("/sales-channels")

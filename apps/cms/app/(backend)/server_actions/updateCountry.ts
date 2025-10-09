@@ -15,9 +15,14 @@ export const updateCountry = async (formData: FormData): Promise<void> => {
     const flagAvatarUrl = formData.get("flagAvatarUrl") as string
     const flagProductImageUrl = formData.get("flagProductImageUrl") as string
 
-    const payload = {
-      flagAvatarUrl: flagAvatarUrl || undefined,
-      flagProductImageUrl: flagProductImageUrl || undefined,
+    const payload: Record<string, string | null> = {}
+
+    // Only include fields that have values or are being cleared
+    if (flagAvatarUrl !== undefined && flagAvatarUrl !== null) {
+      payload.flagAvatarUrl = flagAvatarUrl || null
+    }
+    if (flagProductImageUrl !== undefined && flagProductImageUrl !== null) {
+      payload.flagProductImageUrl = flagProductImageUrl || null
     }
 
     console.log("Updating country:", {

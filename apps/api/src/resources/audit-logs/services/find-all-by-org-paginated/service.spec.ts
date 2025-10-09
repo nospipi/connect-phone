@@ -111,7 +111,7 @@ describe('FindAllByOrgPaginatedService', () => {
       );
       mockPaginate.mockResolvedValue(mockPaginationResult);
 
-      await service.findAllByOrganizationPaginated();
+      await service.findAllByOrganizationPaginated(1, 10);
 
       expect(mockPaginate).toHaveBeenCalledWith(mockQueryBuilder, {
         page: 1,
@@ -166,4 +166,3 @@ describe('FindAllByOrgPaginatedService', () => {
     });
   });
 });
-// apps/api/src/resources/audit-logs/services/find-all-by-org-paginated/service.spec.ts

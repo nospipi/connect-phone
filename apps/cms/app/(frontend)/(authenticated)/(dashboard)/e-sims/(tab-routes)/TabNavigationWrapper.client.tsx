@@ -1,6 +1,6 @@
 "use client"
 
-import { RiCoupon2Line, RiBox3Fill, RiFlagLine } from "@remixicon/react"
+import { RiSimCardLine, RiBuildingLine } from "@remixicon/react"
 import {
   TabNavigation,
   TabNavigationLink,
@@ -15,19 +15,14 @@ const TabNavigationWrapper = () => {
 
   const navigationSettings = [
     {
-      name: "Products",
-      href: "/inventory/products",
-      icon: RiCoupon2Line,
+      name: "My E-Sims",
+      href: "/e-sims/my-esims",
+      icon: RiSimCardLine,
     },
     {
-      name: "Packages",
-      href: "/inventory/packages",
-      icon: RiBox3Fill,
-    },
-    {
-      name: "Countries",
-      href: "/inventory/countries",
-      icon: RiFlagLine,
+      name: "Marketplace",
+      href: "/e-sims/marketplace",
+      icon: RiBuildingLine,
     },
   ]
 
