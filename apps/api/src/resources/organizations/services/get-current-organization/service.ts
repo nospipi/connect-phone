@@ -1,13 +1,38 @@
 // apps/api/src/resources/organizations/services/get-current-organization/service.ts
 import { Injectable } from '@nestjs/common';
-import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { OrganizationEntity } from '../../../../database/entities/organization.entity';
+import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
 import { IOrganization } from '@connect-phone/shared-types';
 
 @Injectable()
 export class GetCurrentOrganizationService {
-  constructor(private currentOrganizationService: CurrentOrganizationService) {}
+  constructor(
+    @InjectRepository(OrganizationEntity)
+    private organizationRepository: Repository<OrganizationEntity>,
+    private currentDbUserService: CurrentDbUserService
+  ) {}
 
   async getCurrentOrganization(): Promise<IOrganization | null> {
-    return this.currentOrganizationService.getCurrentOrganization();
+    const user = await this.currentDbUserService.getCurrentDbUser();
+    if (!user) {
+      return null;
+    }
+
+    if (!user.loggedOrganizationId) {
+      return null;
+    }
+
+    try {
+      const organization = await this.organizationRepository.findOne({
+        where: { id: user.loggedOrganizationId },
+      });
+
+      return organization;
+    } catch (error) {
+      console.error('Error fetching organization from database:', error);
+      return null;
+    }
   }
 }

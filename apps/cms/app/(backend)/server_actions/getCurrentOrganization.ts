@@ -12,7 +12,7 @@ export const getCurrentOrganization =
   async (): Promise<IOrganization | null> => {
     try {
       const api = createApiClient()
-      const response = await api.get("/organizations/current")
+      const response = await api.get(`/organizations/current`)
 
       if (response.status !== 200) {
         throw new Error("Failed to fetch current organization")

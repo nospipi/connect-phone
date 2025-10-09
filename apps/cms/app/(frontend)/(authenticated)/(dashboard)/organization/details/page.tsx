@@ -7,16 +7,16 @@ import UpdateOrganizationLogoUpload from "./UpdateOrganizationLogoUpload.client"
 
 //----------------------------------------------------------------------
 
+async function refreshPageAction() {
+  "use server"
+  redirect("/organization/details") // Reload the page from server (optional)
+}
+
 const Page = async ({
   searchParams,
 }: {
   searchParams: Promise<{ [key: string]: string | undefined }>
 }) => {
-  async function refreshPageAction() {
-    "use server"
-    redirect("/organization/details") // Reload the page from server (optional)
-  }
-
   const { logoUrl } = await searchParams
   const organizationData = await getCurrentOrganization()
 
@@ -31,6 +31,7 @@ const Page = async ({
         <div className="flex h-full w-full overflow-auto">
           <div className="flex h-full w-full max-w-3xl flex-col gap-10">
             <form
+              key={organizationData?.id} //this is to reset the form when org changes
               action={updateOrganization}
               className="flex flex-1 flex-col gap-6"
             >
