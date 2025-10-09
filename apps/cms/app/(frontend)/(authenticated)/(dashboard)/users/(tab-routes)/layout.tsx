@@ -17,7 +17,7 @@ const Layout = async ({
   //console.log("invitationsResponse", invitationsResponse)
 
   return (
-    <div className="relative flex h-full flex-col gap-2">
+    <div className="relative flex h-full flex-col">
       <div className="pl-5 pt-4">
         <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-50">
           Users
