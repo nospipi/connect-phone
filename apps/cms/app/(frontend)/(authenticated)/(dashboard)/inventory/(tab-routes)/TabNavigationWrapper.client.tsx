@@ -1,6 +1,11 @@
 "use client"
 
-import { RiCoupon2Line, RiBox3Fill, RiFlagLine } from "@remixicon/react"
+import {
+  RiCoupon2Line,
+  RiBox3Fill,
+  RiFlagLine,
+  RiCoinsLine,
+} from "@remixicon/react"
 import {
   TabNavigation,
   TabNavigationLink,
@@ -28,6 +33,11 @@ const TabNavigationWrapper = () => {
       name: "Countries",
       href: "/inventory/countries",
       icon: RiFlagLine,
+    },
+    {
+      name: "Prices",
+      href: "/inventory/prices",
+      icon: RiCoinsLine,
     },
   ]
 

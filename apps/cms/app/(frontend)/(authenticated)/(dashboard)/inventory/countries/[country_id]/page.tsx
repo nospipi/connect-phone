@@ -74,33 +74,31 @@ const Page = async ({
               />
 
               {/* Country Info (Read-only) */}
-              <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800/50">
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Country Name
-                    </label>
-                    <p className="mt-1 text-sm text-gray-900 dark:text-gray-100">
-                      {countryData.name}
-                    </p>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Country Code
-                    </label>
-                    <p className="mt-1 text-sm text-gray-900 dark:text-gray-100">
-                      {countryData.code.toUpperCase()}
-                    </p>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Region
-                    </label>
-                    <p className="mt-1 text-sm text-gray-900 dark:text-gray-100">
-                      {countryData.region.charAt(0).toUpperCase() +
-                        countryData.region.slice(1).toLowerCase()}
-                    </p>
-                  </div>
+              <div className="grid grid-cols-3 gap-8 border-b border-gray-200 pb-6 dark:border-gray-800">
+                <div>
+                  <p className="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                    Country Name
+                  </p>
+                  <p className="mt-1 text-lg font-semibold text-gray-900 dark:text-gray-100">
+                    {countryData.name}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                    Code
+                  </p>
+                  <p className="mt-1 text-lg font-semibold text-gray-900 dark:text-gray-100">
+                    {countryData.code.toUpperCase()}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                    Region
+                  </p>
+                  <p className="mt-1 text-lg font-semibold text-gray-900 dark:text-gray-100">
+                    {countryData.region.charAt(0).toUpperCase() +
+                      countryData.region.slice(1).toLowerCase()}
+                  </p>
                 </div>
               </div>
 
