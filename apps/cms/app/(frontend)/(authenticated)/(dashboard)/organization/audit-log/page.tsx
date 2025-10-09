@@ -1,10 +1,11 @@
 import { getAllAuditLogsOfOrganizationPaginated } from "@/app/(backend)/server_actions/getAllAuditLogsOfOrganizationPaginated"
 import { IAuditLog } from "@connect-phone/shared-types"
-import { Card } from "@/components/common/Card"
 import { Button } from "@/components/common/Button"
 import Link from "next/link"
 import { RiNodeTree } from "@remixicon/react"
 import { AuditLogItem } from "./AuditLogItem"
+
+//------------------------------------------------------------
 
 const Page = async ({
   //params,
@@ -14,7 +15,6 @@ const Page = async ({
   searchParams: Promise<{ [key: string]: string | undefined }>
 }) => {
   const { page = "1" } = await searchParams
-  console.log("Current page:", page)
 
   //await new Promise((resolve) => setTimeout(resolve, 50000)) // Simulated delay
   const auditLogsResponse = await getAllAuditLogsOfOrganizationPaginated({

@@ -17,6 +17,7 @@ import { UserEntity } from './database/entities/user.entity';
 import { AuditLogsModule } from './resources/audit-logs/audit-logs.module';
 import { UserInvitationsModule } from './resources/user-invitations/user-invitations.module';
 import { CountriesModule } from './resources/countries/countries.module';
+import { OrganizationsModule } from './resources/organizations/organizations.module';
 
 //---------------------------------------------------------------------------
 
@@ -34,6 +35,7 @@ import { CountriesModule } from './resources/countries/countries.module';
     AuditLogsModule,
     UserInvitationsModule,
     CountriesModule,
+    OrganizationsModule,
   ],
   controllers: [AppController],
   providers: [

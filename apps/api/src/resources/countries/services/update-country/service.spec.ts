@@ -56,12 +56,13 @@ describe('UpdateCountryService', () => {
     it('should update a country successfully', async () => {
       const updateDto: UpdateCountryDto = {
         id: 1,
-        name: 'Hellenic Republic',
-        region: CountryRegion.EUROPE,
+        flagAvatarUrl: 'https://example.com/new-avatar.webp',
+        flagProductImageUrl: 'https://example.com/new-product.webp',
       };
 
       const updatedCountry = createMockCountry({
-        name: 'Hellenic Republic',
+        flagAvatarUrl: 'https://example.com/new-avatar.webp',
+        flagProductImageUrl: 'https://example.com/new-product.webp',
       });
 
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
@@ -79,12 +80,15 @@ describe('UpdateCountryService', () => {
         where: { id: 1, organizationId: 1 },
       });
       expect(countryRepository.save).toHaveBeenCalled();
-      expect(result.name).toBe('Hellenic Republic');
+      expect(result.flagAvatarUrl).toBe('https://example.com/new-avatar.webp');
+      expect(result.flagProductImageUrl).toBe(
+        'https://example.com/new-product.webp'
+      );
     });
 
     it('should throw NotFoundException when id is not provided', async () => {
       const updateDto: UpdateCountryDto = {
-        name: 'Updated Name',
+        flagAvatarUrl: 'https://example.com/avatar.webp',
       };
 
       await expect(service.updateCountry(updateDto)).rejects.toThrow(
@@ -101,7 +105,7 @@ describe('UpdateCountryService', () => {
     it('should throw ForbiddenException when organization context is null', async () => {
       const updateDto: UpdateCountryDto = {
         id: 1,
-        name: 'Updated Name',
+        flagAvatarUrl: 'https://example.com/avatar.webp',
       };
 
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(null);
@@ -120,7 +124,7 @@ describe('UpdateCountryService', () => {
     it('should throw NotFoundException when country does not exist', async () => {
       const updateDto: UpdateCountryDto = {
         id: 999,
-        name: 'Updated Name',
+        flagAvatarUrl: 'https://example.com/avatar.webp',
       };
 
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
@@ -143,7 +147,7 @@ describe('UpdateCountryService', () => {
     it('should throw NotFoundException when country belongs to different organization', async () => {
       const updateDto: UpdateCountryDto = {
         id: 1,
-        name: 'Updated Name',
+        flagAvatarUrl: 'https://example.com/avatar.webp',
       };
 
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
@@ -166,7 +170,7 @@ describe('UpdateCountryService', () => {
     it('should update only provided fields', async () => {
       const updateDto: UpdateCountryDto = {
         id: 1,
-        name: 'Updated Name',
+        flagAvatarUrl: 'https://example.com/new-avatar.webp',
       };
 
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
@@ -180,7 +184,10 @@ describe('UpdateCountryService', () => {
       await service.updateCountry(updateDto);
 
       const savedCountry = countryRepository.save.mock.calls[0][0];
-      expect(savedCountry.name).toBe('Updated Name');
+      expect(savedCountry.flagAvatarUrl).toBe(
+        'https://example.com/new-avatar.webp'
+      );
+      expect(savedCountry.name).toBe('Greece');
       expect(savedCountry.code).toBe('gr');
       expect(savedCountry.region).toBe(CountryRegion.EUROPE);
     });
@@ -214,7 +221,7 @@ describe('UpdateCountryService', () => {
     it('should handle database errors', async () => {
       const updateDto: UpdateCountryDto = {
         id: 1,
-        name: 'Updated Name',
+        flagAvatarUrl: 'https://example.com/avatar.webp',
       };
 
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
@@ -231,7 +238,7 @@ describe('UpdateCountryService', () => {
     it('should handle different organization IDs correctly', async () => {
       const updateDto: UpdateCountryDto = {
         id: 1,
-        name: 'Updated Name',
+        flagAvatarUrl: 'https://example.com/avatar.webp',
       };
 
       const differentOrg = createMockOrganization({ id: 5 });

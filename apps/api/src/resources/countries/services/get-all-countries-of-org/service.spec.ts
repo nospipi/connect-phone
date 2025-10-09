@@ -10,7 +10,8 @@ import {
   createCurrentOrganizationServiceProvider,
 } from '../../../../test/factories';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
-import { CountryRegion } from '@connect-phone/shared-types';
+
+//--------------------------------------------------------------------------------
 
 describe('GetAllCountriesOfOrgService', () => {
   let service: GetAllCountriesOfOrgService;
@@ -153,7 +154,7 @@ describe('GetAllCountriesOfOrgService', () => {
 
       expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
         'country.region = :region',
-        { region: 'EUROPE' }
+        { region: 'europe' }
       );
     });
 
@@ -167,7 +168,7 @@ describe('GetAllCountriesOfOrgService', () => {
 
       expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
         'country.region = :region',
-        { region: 'ASIA' }
+        { region: 'asia' }
       );
     });
 
@@ -202,7 +203,7 @@ describe('GetAllCountriesOfOrgService', () => {
       expect(mockQueryBuilder.andWhere).toHaveBeenNthCalledWith(
         2,
         'country.region = :region',
-        { region: 'EUROPE' }
+        { region: 'europe' }
       );
     });
 
