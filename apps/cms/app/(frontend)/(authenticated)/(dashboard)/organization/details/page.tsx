@@ -1,7 +1,6 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/organization/details/page.tsx
 import Link from "next/link"
 import { getCurrentOrganization } from "@/app/(backend)/server_actions/getCurrentOrganization"
-import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import { updateOrganization } from "@/app/(backend)/server_actions/updateOrganization"
 import UpdateOrganizationLogoUpload from "./UpdateOrganizationLogoUpload.client"
@@ -19,7 +18,6 @@ const Page = async ({
   }
 
   const { logoUrl } = await searchParams
-
   const organizationData = await getCurrentOrganization()
 
   let currentLogoUrl = logoUrl || organizationData?.logoUrl || ""

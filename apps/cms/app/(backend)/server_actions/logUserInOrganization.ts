@@ -4,6 +4,8 @@
 
 import { AxiosError } from "axios"
 import { redirect } from "next/navigation"
+import { headers as nextHeaders } from "next/headers"
+import { revalidatePath } from "next/cache"
 import { ErrorResponse } from "./types"
 import { createApiClient } from "./api-client"
 
@@ -13,7 +15,8 @@ export const logUserInOrganization = async (
   organizationId: string,
 ): Promise<void> => {
   try {
-    console.log("Logging user in organization:", organizationId)
+    const headers = await nextHeaders()
+    const currentPath = headers.get("x-current-path") || "/"
     const api = createApiClient()
     const response = await api.patch(
       `/users/log-in-organization/${organizationId}`,
@@ -22,6 +25,7 @@ export const logUserInOrganization = async (
     if (response.status !== 200 && response.status !== 201) {
       throw new Error("Failed to log user in organization")
     }
+    revalidatePath(currentPath)
   } catch (error: unknown) {
     const messageFallback = (error as Error).message ?? "An error occurred"
     const errorMessage =
