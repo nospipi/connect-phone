@@ -25,7 +25,8 @@ export const logUserInOrganization = async (
     if (response.status !== 200 && response.status !== 201) {
       throw new Error("Failed to log user in organization")
     }
-    revalidatePath(currentPath)
+    revalidatePath(currentPath) //this does not make the page get new organization data
+    //revalidatePath("/", "layout") //this does not do it either
   } catch (error: unknown) {
     const messageFallback = (error as Error).message ?? "An error occurred"
     const errorMessage =
