@@ -13,10 +13,12 @@ export const updateOrganization = async (formData: FormData): Promise<void> => {
   try {
     const name = formData.get("name") as string
     const logoUrl = formData.get("logoUrl") as string
+    const mainCurrency = formData.get("mainCurrency") as string
 
     const payload = {
       name: name || undefined,
       logoUrl: logoUrl === "" ? null : logoUrl || undefined,
+      mainCurrency: mainCurrency || undefined,
     }
 
     console.log("Updating organization:", payload)
@@ -30,7 +32,6 @@ export const updateOrganization = async (formData: FormData): Promise<void> => {
 
     console.log("Organization updated successfully:", response.data)
 
-    // Revalidate relevant paths
     revalidatePath("/organization/details")
     revalidatePath("/")
   } catch (error: unknown) {

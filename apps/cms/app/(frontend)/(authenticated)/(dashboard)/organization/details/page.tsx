@@ -4,13 +4,17 @@ import { getCurrentOrganization } from "@/app/(backend)/server_actions/getCurren
 import { redirect } from "next/navigation"
 import { updateOrganization } from "@/app/(backend)/server_actions/updateOrganization"
 import UpdateOrganizationLogoUpload from "./UpdateOrganizationLogoUpload.client"
-
-//----------------------------------------------------------------------
+import { Currencies } from "@connect-phone/shared-types"
 
 async function refreshPageAction() {
   "use server"
-  redirect("/organization/details") // Reload the page from server (optional)
+  redirect("/organization/details")
 }
+
+const CURRENCIES = Object.values(Currencies).map((currency) => ({
+  value: currency,
+  label: currency,
+}))
 
 const Page = async ({
   searchParams,
@@ -31,7 +35,7 @@ const Page = async ({
         <div className="flex h-full w-full overflow-auto">
           <div className="flex h-full w-full max-w-3xl flex-col gap-10">
             <form
-              key={organizationData?.id} //this is to reset the form when org changes
+              key={organizationData?.id}
               action={updateOrganization}
               className="flex flex-1 flex-col gap-6"
             >
@@ -59,6 +63,33 @@ const Page = async ({
                   />
                   <p className="mt-2 text-xs text-gray-500">
                     The official name of your organization
+                  </p>
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="mainCurrency"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                  >
+                    Main Currency *
+                  </label>
+                  <select
+                    defaultValue={
+                      organizationData?.mainCurrency || Currencies.USD
+                    }
+                    id="mainCurrency"
+                    name="mainCurrency"
+                    className="mt-2 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                    required
+                  >
+                    {CURRENCIES.map((currency) => (
+                      <option key={currency.value} value={currency.value}>
+                        {currency.label}
+                      </option>
+                    ))}
+                  </select>
+                  <p className="mt-2 text-xs text-gray-500">
+                    The main currency for your organization
                   </p>
                 </div>
 

@@ -11,6 +11,7 @@ import {
   createMockOrganization,
   createCurrentOrganizationServiceProvider,
 } from '../../../../test/factories';
+import { Currencies } from '@connect-phone/shared-types';
 
 describe('UpdateOrganizationService', () => {
   let service: UpdateOrganizationService;
@@ -93,6 +94,27 @@ describe('UpdateOrganizationService', () => {
       expect(result.logoUrl).toBe('https://example.com/new-logo.png');
     });
 
+    it('should update organization mainCurrency', async () => {
+      const updateDto: UpdateOrganizationDto = {
+        mainCurrency: Currencies.EUR,
+      };
+
+      const updatedOrganization = createMockOrganization({
+        mainCurrency: Currencies.EUR,
+      });
+
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
+      organizationRepository.save.mockResolvedValue(
+        updatedOrganization as OrganizationEntity
+      );
+
+      const result = await service.updateOrganization(updateDto);
+
+      expect(result.mainCurrency).toBe(Currencies.EUR);
+    });
+
     it('should update both name and logoUrl', async () => {
       const updateDto: UpdateOrganizationDto = {
         name: 'Updated Organization',
@@ -115,6 +137,33 @@ describe('UpdateOrganizationService', () => {
 
       expect(result.name).toBe('Updated Organization');
       expect(result.logoUrl).toBe('https://example.com/new-logo.png');
+    });
+
+    it('should update name, logoUrl, and mainCurrency', async () => {
+      const updateDto: UpdateOrganizationDto = {
+        name: 'Updated Organization',
+        logoUrl: 'https://example.com/new-logo.png',
+        mainCurrency: Currencies.GBP,
+      };
+
+      const updatedOrganization = createMockOrganization({
+        name: 'Updated Organization',
+        logoUrl: 'https://example.com/new-logo.png',
+        mainCurrency: Currencies.GBP,
+      });
+
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
+      organizationRepository.save.mockResolvedValue(
+        updatedOrganization as OrganizationEntity
+      );
+
+      const result = await service.updateOrganization(updateDto);
+
+      expect(result.name).toBe('Updated Organization');
+      expect(result.logoUrl).toBe('https://example.com/new-logo.png');
+      expect(result.mainCurrency).toBe(Currencies.GBP);
     });
 
     it('should throw ForbiddenException when organization context is null', async () => {

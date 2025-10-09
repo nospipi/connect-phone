@@ -35,6 +35,9 @@ export class UpdateOrganizationService {
     if (updateOrganizationDto.logoUrl !== undefined) {
       organization.logoUrl = updateOrganizationDto.logoUrl;
     }
+    if (updateOrganizationDto.mainCurrency !== undefined) {
+      organization.mainCurrency = updateOrganizationDto.mainCurrency;
+    }
 
     return this.organizationRepository.save(organization);
   }
