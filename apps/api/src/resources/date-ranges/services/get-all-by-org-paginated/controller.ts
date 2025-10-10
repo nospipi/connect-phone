@@ -31,7 +31,8 @@ export class GetAllByOrgPaginatedController {
     return this.getAllByOrgPaginatedService.getAllDateRangesPaginated(
       searchDateRangesDto.page || 1,
       searchDateRangesDto.limit || 10,
-      searchDateRangesDto.date || ''
+      searchDateRangesDto.date || '',
+      searchDateRangesDto.search || ''
     );
   }
 }

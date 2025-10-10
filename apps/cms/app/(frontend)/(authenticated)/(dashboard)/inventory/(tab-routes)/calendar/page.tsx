@@ -26,11 +26,12 @@ const Page = async ({
 }: {
   searchParams: Promise<{ [key: string]: string | undefined }>
 }) => {
-  const { page = "1", date } = await searchParams
+  const { page = "1", date, search } = await searchParams
 
   const paginationParams: {
     page: string | number
     date?: string
+    search?: string
   } = {
     page: page,
   }
@@ -39,13 +40,18 @@ const Page = async ({
     paginationParams.date = date
   }
 
+  if (search && search !== "undefined") {
+    paginationParams.search = search
+  }
+
   const dateRangesResponse = await getAllDateRangesPaginated(paginationParams)
 
   const items: IDateRange[] = dateRangesResponse?.items || []
   const meta = dateRangesResponse?.meta
   const hasPreviousPage = meta?.currentPage > 1
   const hasNextPage = meta?.currentPage < meta?.totalPages
-  const hasActiveFilters = !!date && date !== "undefined"
+  const hasActiveFilters =
+    (!!date && date !== "undefined") || (!!search && search !== "undefined")
 
   return (
     <div className="flex h-full flex-col gap-2 overflow-hidden py-4 pl-5">
@@ -56,7 +62,16 @@ const Page = async ({
             method="GET"
             className="flex flex-1 flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
           >
-            <div className="flex flex-1 flex-col gap-3 sm:max-w-lg sm:flex-row sm:items-center">
+            <div className="flex flex-1 flex-col gap-3 sm:max-w-2xl sm:flex-row sm:items-center">
+              <div className="w-full sm:max-w-xs">
+                <input
+                  type="text"
+                  name="search"
+                  defaultValue={search && search !== "undefined" ? search : ""}
+                  placeholder="Search by name..."
+                  className="block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-500 outline-none focus:border-blue-500 focus:outline-none focus:ring-0 focus:ring-transparent dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200 dark:placeholder-slate-500 dark:focus:border-slate-700/50"
+                />
+              </div>
               <div className="w-full sm:max-w-xs">
                 <input
                   type="date"
@@ -131,7 +146,10 @@ const Page = async ({
                     <div className="min-w-0 flex-1">
                       <div className="flex items-start justify-between">
                         <div className="min-w-0 flex-1">
-                          <p className="truncate text-sm font-medium text-gray-900 group-hover:text-gray-700 dark:text-slate-200 dark:group-hover:text-slate-100">
+                          <p className="truncate text-base font-medium text-gray-900 group-hover:text-gray-700 dark:text-slate-200 dark:group-hover:text-slate-100">
+                            {dateRange.name}
+                          </p>
+                          <p className="mt-1 truncate text-sm text-gray-600 group-hover:text-gray-500 dark:text-slate-400 dark:group-hover:text-slate-300">
                             {format(
                               new Date(dateRange.startDate),
                               "MMM dd, yyyy",
@@ -142,7 +160,7 @@ const Page = async ({
                               "MMM dd, yyyy",
                             )}
                           </p>
-                          <p className="truncate text-sm text-gray-600 group-hover:text-gray-500 dark:text-slate-400 dark:group-hover:text-slate-300">
+                          <p className="mt-0.5 truncate text-xs text-gray-500 dark:text-slate-500">
                             Duration:{" "}
                             {calculateDuration(
                               dateRange.startDate,
@@ -180,7 +198,7 @@ const Page = async ({
             <div className="hidden items-center gap-2 sm:flex">
               {hasPreviousPage ? (
                 <Link
-                  href={`?page=1${date && date !== "undefined" ? `&date=${date}` : ""}`}
+                  href={`?page=1${date && date !== "undefined" ? `&date=${date}` : ""}${search && search !== "undefined" ? `&search=${search}` : ""}`}
                 >
                   <Button
                     variant="secondary"
@@ -200,7 +218,7 @@ const Page = async ({
               )}
               {hasPreviousPage ? (
                 <Link
-                  href={`?page=${meta.currentPage - 1}${date && date !== "undefined" ? `&date=${date}` : ""}`}
+                  href={`?page=${meta.currentPage - 1}${date && date !== "undefined" ? `&date=${date}` : ""}${search && search !== "undefined" ? `&search=${search}` : ""}`}
                 >
                   <Button
                     variant="secondary"
@@ -223,7 +241,7 @@ const Page = async ({
               </span>
               {hasNextPage ? (
                 <Link
-                  href={`?page=${meta.currentPage + 1}${date && date !== "undefined" ? `&date=${date}` : ""}`}
+                  href={`?page=${meta.currentPage + 1}${date && date !== "undefined" ? `&date=${date}` : ""}${search && search !== "undefined" ? `&search=${search}` : ""}`}
                 >
                   <Button
                     variant="secondary"
@@ -243,7 +261,7 @@ const Page = async ({
               )}
               {hasNextPage ? (
                 <Link
-                  href={`?page=${meta.totalPages}${date && date !== "undefined" ? `&date=${date}` : ""}`}
+                  href={`?page=${meta.totalPages}${date && date !== "undefined" ? `&date=${date}` : ""}${search && search !== "undefined" ? `&search=${search}` : ""}`}
                 >
                   <Button
                     variant="secondary"
@@ -267,7 +285,7 @@ const Page = async ({
             <div className="flex items-center gap-2 sm:hidden">
               {hasPreviousPage ? (
                 <Link
-                  href={`?page=${meta.currentPage - 1}${date && date !== "undefined" ? `&date=${date}` : ""}`}
+                  href={`?page=${meta.currentPage - 1}${date && date !== "undefined" ? `&date=${date}` : ""}${search && search !== "undefined" ? `&search=${search}` : ""}`}
                 >
                   <Button
                     variant="secondary"
@@ -290,7 +308,7 @@ const Page = async ({
               </span>
               {hasNextPage ? (
                 <Link
-                  href={`?page=${meta.currentPage + 1}${date && date !== "undefined" ? `&date=${date}` : ""}`}
+                  href={`?page=${meta.currentPage + 1}${date && date !== "undefined" ? `&date=${date}` : ""}${search && search !== "undefined" ? `&search=${search}` : ""}`}
                 >
                   <Button
                     variant="secondary"

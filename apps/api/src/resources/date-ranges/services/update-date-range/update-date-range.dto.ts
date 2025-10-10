@@ -5,13 +5,20 @@ import { Sanitize } from '@/common/decorators/sanitize.decorator';
 
 //----------------------------------------------------------------------
 
-type UpdateDateRange = Partial<Pick<IDateRange, 'startDate' | 'endDate'>> & {
+type UpdateDateRange = Partial<
+  Pick<IDateRange, 'name' | 'startDate' | 'endDate'>
+> & {
   id?: number;
 };
 
 export class UpdateDateRangeDto implements UpdateDateRange {
   @IsOptional()
   id?: number;
+
+  @IsString()
+  @IsOptional()
+  @Sanitize()
+  name?: string;
 
   @IsString()
   @IsOptional()

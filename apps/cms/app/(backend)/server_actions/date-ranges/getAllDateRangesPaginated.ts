@@ -1,4 +1,4 @@
-// apps/cms/app/(backend)/server_actions/getAllDateRangesPaginated.ts
+// apps/cms/app/(backend)/server_actions/date-ranges/getAllDateRangesPaginated.ts
 "use server"
 
 import { AxiosError } from "axios"
@@ -10,14 +10,24 @@ import { createApiClient } from "../api-client"
 interface PaginationParams {
   page?: string | number
   date?: string
+  search?: string
 }
 
 export const getAllDateRangesPaginated = async ({
   page = 1,
   date,
+  search,
 }: PaginationParams): Promise<PaginatedDateRangesResponse> => {
   try {
-    console.log("Fetching date ranges:", "page:", page, "date:", date)
+    console.log(
+      "Fetching date ranges:",
+      "page:",
+      page,
+      "date:",
+      date,
+      "search:",
+      search,
+    )
 
     const api = createApiClient()
     const params = new URLSearchParams()
@@ -25,6 +35,10 @@ export const getAllDateRangesPaginated = async ({
 
     if (date) {
       params.append("date", date)
+    }
+
+    if (search) {
+      params.append("search", search)
     }
 
     const response = await api.get(

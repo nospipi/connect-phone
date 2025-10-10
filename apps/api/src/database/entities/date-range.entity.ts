@@ -19,6 +19,9 @@ export class DateRangeEntity implements IDateRange {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({ type: 'varchar', length: 255 })
+  name: string;
+
   @Column({ type: 'date' })
   startDate: string;
 

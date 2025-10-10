@@ -24,7 +24,8 @@ export class GetAllByOrgPaginatedService {
   async getAllDateRangesPaginated(
     page: number = 1,
     limit: number = 10,
-    date: string = ''
+    date: string = '',
+    search: string = ''
   ): Promise<Pagination<IDateRange>> {
     const organization =
       await this.currentOrganizationService.getCurrentOrganization();
@@ -41,6 +42,12 @@ export class GetAllByOrgPaginatedService {
         organizationId: organization?.id,
       })
       .orderBy('dateRange.startDate', 'ASC');
+
+    if (search && search.trim().length > 0) {
+      queryBuilder.andWhere('dateRange.name ILIKE :search', {
+        search: `%${search.trim()}%`,
+      });
+    }
 
     if (date && date.trim().length > 0) {
       queryBuilder.andWhere(

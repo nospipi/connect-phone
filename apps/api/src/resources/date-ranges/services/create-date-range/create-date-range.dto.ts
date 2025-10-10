@@ -5,9 +5,14 @@ import { Sanitize } from '@/common/decorators/sanitize.decorator';
 
 //----------------------------------------------------------------------
 
-type CreateDateRange = Pick<IDateRange, 'startDate' | 'endDate'>;
+type CreateDateRange = Pick<IDateRange, 'name' | 'startDate' | 'endDate'>;
 
 export class CreateDateRangeDto implements CreateDateRange {
+  @IsString()
+  @IsNotEmpty()
+  @Sanitize()
+  name: string;
+
   @IsString()
   @IsNotEmpty()
   @Matches(/^\d{4}-\d{2}-\d{2}$/, {

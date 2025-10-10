@@ -48,6 +48,9 @@ export class UpdateDateRangeService {
       );
     }
 
+    if (updateDateRangeDto.name !== undefined) {
+      dateRange.name = updateDateRangeDto.name;
+    }
     if (updateDateRangeDto.startDate !== undefined) {
       dateRange.startDate = updateDateRangeDto.startDate;
     }

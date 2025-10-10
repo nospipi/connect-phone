@@ -29,6 +29,14 @@ export class SearchDateRangesDto {
 
   @IsOptional()
   @IsString()
+  @Sanitize()
+  @Transform(({ value }) =>
+    value && typeof value === 'string' ? value.trim() : ''
+  )
+  search?: string = '';
+
+  @IsOptional()
+  @IsString()
   @ValidateIf((o) => o.date && o.date.trim().length > 0)
   @Matches(/^\d{4}-\d{2}-\d{2}$/, {
     message: 'date must be in YYYY-MM-DD format',

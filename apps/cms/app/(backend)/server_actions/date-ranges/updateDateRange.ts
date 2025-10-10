@@ -1,4 +1,4 @@
-// apps/cms/app/(backend)/server_actions/updateDateRange.ts
+// apps/cms/app/(backend)/server_actions/date-ranges/updateDateRange.ts
 "use server"
 
 import { AxiosError } from "axios"
@@ -10,11 +10,15 @@ import { createApiClient } from "../api-client"
 export const updateDateRange = async (formData: FormData): Promise<void> => {
   try {
     const id = Number(formData.get("id"))
+    const name = formData.get("name") as string
     const startDate = formData.get("startDate") as string
     const endDate = formData.get("endDate") as string
 
     const payload: Record<string, string> = {}
 
+    if (name) {
+      payload.name = name
+    }
     if (startDate) {
       payload.startDate = startDate
     }
@@ -36,7 +40,7 @@ export const updateDateRange = async (formData: FormData): Promise<void> => {
 
     console.log("Date range updated successfully:", response.data)
 
-    revalidatePath("/inventory/date-ranges")
+    revalidatePath("/inventory/calendar")
   } catch (error: unknown) {
     const messageFallback = (error as Error).message ?? "An error occurred"
     const errorMessage =
@@ -47,5 +51,5 @@ export const updateDateRange = async (formData: FormData): Promise<void> => {
     throw new Error(errorMessage)
   }
 
-  redirect("/inventory/date-ranges")
+  redirect("/inventory/calendar")
 }
