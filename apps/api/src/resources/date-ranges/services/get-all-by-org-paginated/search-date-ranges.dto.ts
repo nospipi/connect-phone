@@ -6,6 +6,7 @@ import {
   Min,
   Max,
   Matches,
+  ValidateIf,
 } from 'class-validator';
 import { Type, Transform } from 'class-transformer';
 import { Sanitize } from '@/common/decorators/sanitize.decorator';
@@ -28,10 +29,13 @@ export class SearchDateRangesDto {
 
   @IsOptional()
   @IsString()
+  @ValidateIf((o) => o.date && o.date.trim().length > 0)
   @Matches(/^\d{4}-\d{2}-\d{2}$/, {
     message: 'date must be in YYYY-MM-DD format',
   })
   @Sanitize()
-  @Transform(({ value }) => (typeof value === 'string' ? value.trim() : ''))
-  date?: string = '';
+  @Transform(({ value }) =>
+    value && typeof value === 'string' ? value.trim() : undefined
+  )
+  date?: string;
 }
