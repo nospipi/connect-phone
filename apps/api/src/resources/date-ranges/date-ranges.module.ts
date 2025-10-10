@@ -10,8 +10,8 @@ import { GetAllByOrgPaginatedController } from './services/get-all-by-org-pagina
 import { GetAllByOrgPaginatedService } from './services/get-all-by-org-paginated/service';
 import { UpdateDateRangeController } from './services/update-date-range/controller';
 import { UpdateDateRangeService } from './services/update-date-range/service';
-
-//-----------------------------------------------------------------------------
+import { GetDateRangeByIdController } from './services/get-date-range-by-id/controller';
+import { GetDateRangeByIdService } from './services/get-date-range-by-id/service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([DateRangeEntity])],
@@ -20,12 +20,14 @@ import { UpdateDateRangeService } from './services/update-date-range/service';
     DeleteDateRangeController,
     GetAllByOrgPaginatedController,
     UpdateDateRangeController,
+    GetDateRangeByIdController,
   ],
   providers: [
     CreateDateRangeService,
     DeleteDateRangeService,
     GetAllByOrgPaginatedService,
     UpdateDateRangeService,
+    GetDateRangeByIdService,
   ],
 })
 export class DateRangesModule {}

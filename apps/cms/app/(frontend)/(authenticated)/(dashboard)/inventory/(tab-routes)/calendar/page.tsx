@@ -105,13 +105,14 @@ const Page = async ({
           </form>
         </div>
       </div>
-
-      <Link href="/inventory/calendar/create-new">
-        <Button variant="primary" className="mb-4 gap-2">
-          <RiAddLine />
-          <span>Create Date Range</span>
-        </Button>
-      </Link>
+      <div className="inline-block">
+        <Link href="/inventory/calendar/create-new">
+          <Button variant="primary" className="mb-4 gap-2">
+            <RiAddLine />
+            <span>Create Date Range</span>
+          </Button>
+        </Link>
+      </div>
 
       {items.length === 0 && (
         <div className="flex flex-1 items-center justify-center">
