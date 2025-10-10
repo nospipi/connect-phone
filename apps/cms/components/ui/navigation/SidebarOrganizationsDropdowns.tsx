@@ -19,7 +19,7 @@ import React from "react"
 import { useRouter } from "next/navigation"
 import { IOrganizationWithUserRole } from "@connect-phone/shared-types"
 import Image from "next/image"
-import { logUserInOrganization } from "@/app/(backend)/server_actions/logUserInOrganization"
+import { logUserInOrganization } from "@/app/(backend)/server_actions/users/logUserInOrganization"
 
 //-----------------------------------------------------------------------------
 const getInitials = (name: string): string => {

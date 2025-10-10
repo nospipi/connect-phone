@@ -4,8 +4,8 @@
 import { AxiosError } from "axios"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
-import { ErrorResponse } from "./types"
-import { createApiClient } from "./api-client"
+import { ErrorResponse } from "../types"
+import { createApiClient } from "../api-client"
 
 export const updateDateRange = async (formData: FormData): Promise<void> => {
   try {

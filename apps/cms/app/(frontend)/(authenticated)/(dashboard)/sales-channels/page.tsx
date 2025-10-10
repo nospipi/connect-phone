@@ -1,5 +1,5 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/sales-channels/page.tsx
-import { getAllSalesChannelsOfOrganizationPaginated } from "@/app/(backend)/server_actions/getAllSalesChannelsOfOrganizationPaginated"
+import { getAllSalesChannelsOfOrganizationPaginated } from "@/app/(backend)/server_actions/sales-channels/getAllSalesChannelsOfOrganizationPaginated"
 import SalesChannelItem from "./SalesChannelItem"
 import { ISalesChannel } from "@connect-phone/shared-types"
 import { RiAddLine } from "@remixicon/react"

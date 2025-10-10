@@ -2,8 +2,8 @@
 "use server"
 
 import { AxiosError } from "axios"
-import { ErrorResponse, PaginatedAuditLogsResponse } from "./types"
-import { createApiClient } from "./api-client"
+import { ErrorResponse, PaginatedAuditLogsResponse } from "../types"
+import { createApiClient } from "../api-client"
 
 //----------------------------------------------------------------------
 

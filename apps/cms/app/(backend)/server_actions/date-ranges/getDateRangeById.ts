@@ -3,8 +3,8 @@
 
 import { AxiosError } from "axios"
 import { IDateRange } from "@connect-phone/shared-types"
-import { ErrorResponse } from "./types"
-import { createApiClient } from "./api-client"
+import { ErrorResponse } from "../types"
+import { createApiClient } from "../api-client"
 
 //----------------------------------------------------------------------
 

@@ -9,12 +9,16 @@ import {
   Pagination,
   IPaginationOptions,
 } from 'nestjs-typeorm-paginate';
+import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
+
+//----------------------------------------------------------------------
 
 @Injectable()
 export class GetAllByOrgPaginatedService {
   constructor(
     @InjectRepository(DateRangeEntity)
-    private dateRangeRepository: Repository<DateRangeEntity>
+    private dateRangeRepository: Repository<DateRangeEntity>,
+    private currentOrganizationService: CurrentOrganizationService
   ) {}
 
   async getAllDateRangesPaginated(
@@ -22,6 +26,9 @@ export class GetAllByOrgPaginatedService {
     limit: number = 10,
     date: string = ''
   ): Promise<Pagination<IDateRange>> {
+    const organization =
+      await this.currentOrganizationService.getCurrentOrganization();
+
     const options: IPaginationOptions = {
       page,
       limit: Math.min(Math.max(limit, 1), 100),
@@ -30,6 +37,9 @@ export class GetAllByOrgPaginatedService {
 
     const queryBuilder = this.dateRangeRepository
       .createQueryBuilder('dateRange')
+      .where('dateRange.organizationId = :organizationId', {
+        organizationId: organization?.id,
+      })
       .orderBy('dateRange.startDate', 'ASC');
 
     if (date && date.trim().length > 0) {

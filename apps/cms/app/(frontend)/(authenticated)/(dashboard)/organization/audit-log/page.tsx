@@ -1,4 +1,4 @@
-import { getAllAuditLogsOfOrganizationPaginated } from "@/app/(backend)/server_actions/getAllAuditLogsOfOrganizationPaginated"
+import { getAllAuditLogsOfOrganizationPaginated } from "@/app/(backend)/server_actions/audit-logs/getAllAuditLogsOfOrganizationPaginated"
 import { IAuditLog } from "@connect-phone/shared-types"
 import { Button } from "@/components/common/Button"
 import Link from "next/link"

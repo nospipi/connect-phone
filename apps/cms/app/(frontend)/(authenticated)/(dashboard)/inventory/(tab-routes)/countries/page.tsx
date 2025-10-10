@@ -3,7 +3,7 @@ import { Button } from "@/components/common/Button"
 import Link from "next/link"
 import Image from "next/image"
 import { RiSearchLine, RiMapPinLine } from "@remixicon/react"
-import { getAllCountriesOfOrg } from "@/app/(backend)/server_actions/getAllCountriesOfOrg"
+import { getAllCountriesOfOrg } from "@/app/(backend)/server_actions/countries/getAllCountriesOfOrg"
 import { CountryRegion } from "@connect-phone/shared-types"
 import {
   Select,

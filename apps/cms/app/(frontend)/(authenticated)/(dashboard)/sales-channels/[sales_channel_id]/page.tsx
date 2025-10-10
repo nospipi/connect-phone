@@ -2,7 +2,7 @@
 import { RiArrowLeftLine } from "@remixicon/react"
 import Link from "next/link"
 import { getSalesChannelById } from "@/app/(backend)/server_actions/getSalesChannelById"
-import { updateSalesChannel } from "@/app/(backend)/server_actions/updateSalesChannel"
+import { updateSalesChannel } from "@/app/(backend)/server_actions/sales-channels/updateSalesChannel"
 import { getUserLoggedInOrganization } from "@/app/(backend)/server_actions/getUserLoggedInOrganization"
 import UpdateSalesChannelLogoUpload from "./UpdateSalesChannelLogoUpload"
 import DeleteSalesChannelButton from "./DeleteSalesChannelButton"

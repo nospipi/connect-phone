@@ -10,6 +10,8 @@ import {
 import { Type, Transform } from 'class-transformer';
 import { Sanitize } from '@/common/decorators/sanitize.decorator';
 
+//----------------------------------------------------------------------
+
 export class SearchDateRangesDto {
   @IsOptional()
   @Type(() => Number)

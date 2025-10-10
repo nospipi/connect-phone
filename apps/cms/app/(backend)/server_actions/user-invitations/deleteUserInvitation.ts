@@ -3,8 +3,8 @@
 
 import { AxiosError } from "axios"
 import { revalidatePath } from "next/cache"
-import { ErrorResponse } from "./types"
-import { createApiClient } from "./api-client"
+import { ErrorResponse } from "../types"
+import { createApiClient } from "../api-client"
 
 //----------------------------------------------------------------------
 

@@ -7,8 +7,10 @@ import { OrganizationGuard } from '../../../../common/guards/organization.guard'
 import { DbUserRoleGuard } from '../../../../common/guards/db-user-role.guard';
 import { IDateRange } from '@connect-phone/shared-types';
 
+//----------------------------------------------------------------------
+
 @Controller('date-ranges')
-@UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN'))
+@UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN', 'OPERATOR'))
 export class CreateDateRangeController {
   constructor(
     private readonly createDateRangeService: CreateDateRangeService

@@ -14,8 +14,10 @@ import { DbUserGuard } from '../../../../common/guards/db-user.guard';
 import { DbUserRoleGuard } from '../../../../common/guards/db-user-role.guard';
 import { OrganizationGuard } from '../../../../common/guards/organization.guard';
 
+//----------------------------------------------------------------------
+
 @Controller('date-ranges')
-@UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN'))
+@UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN', 'OPERATOR'))
 export class UpdateDateRangeController {
   constructor(
     private readonly updateDateRangeService: UpdateDateRangeService

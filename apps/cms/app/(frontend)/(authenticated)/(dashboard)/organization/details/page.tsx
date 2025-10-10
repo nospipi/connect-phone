@@ -1,8 +1,8 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/organization/details/page.tsx
 import Link from "next/link"
-import { getCurrentOrganization } from "@/app/(backend)/server_actions/getCurrentOrganization"
+import { getCurrentOrganization } from "@/app/(backend)/server_actions/organizations/getCurrentOrganization"
 import { redirect } from "next/navigation"
-import { updateOrganization } from "@/app/(backend)/server_actions/updateOrganization"
+import { updateOrganization } from "@/app/(backend)/server_actions/organizations/updateOrganization"
 import UpdateOrganizationLogoUpload from "./UpdateOrganizationLogoUpload.client"
 import { Currency } from "@connect-phone/shared-types"
 

@@ -1,9 +1,9 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/(tab-routes)/countries/[country_id]/page.tsx
 import { RiArrowLeftLine } from "@remixicon/react"
 import Link from "next/link"
-import { getCountryById } from "@/app/(backend)/server_actions/getCountryById"
-import { updateCountry } from "@/app/(backend)/server_actions/updateCountry"
-import { getUserLoggedInOrganization } from "@/app/(backend)/server_actions/getUserLoggedInOrganization"
+import { getCountryById } from "@/app/(backend)/server_actions/countries/getCountryById"
+import { updateCountry } from "@/app/(backend)/server_actions/countries/updateCountry"
+import { getUserLoggedInOrganization } from "@/app/(backend)/server_actions/users/getUserLoggedInOrganization"
 import UpdateCountryFlagUpload from "./UpdateCountryFlagUpload.client"
 
 //----------------------------------------------------------------------

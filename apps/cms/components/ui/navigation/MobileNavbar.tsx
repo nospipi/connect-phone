@@ -2,8 +2,8 @@
 import { OrganizationsDropdownMobile } from "./SidebarOrganizationsDropdowns"
 import { UserProfileMobile } from "./UserProfile"
 import MobileSidebar from "./MobileSidebar"
-import { getAllOrganizationsOfUser } from "@/app/(backend)/server_actions/getAllOrganizationsOfUser"
-import { getUserLoggedInOrganization } from "@/app/(backend)/server_actions/getUserLoggedInOrganization"
+import { getAllOrganizationsOfUser } from "@/app/(backend)/server_actions/users/getAllOrganizationsOfUser"
+import { getUserLoggedInOrganization } from "@/app/(backend)/server_actions/users/getUserLoggedInOrganization"
 
 //----------------------------------------------------------------------------
 

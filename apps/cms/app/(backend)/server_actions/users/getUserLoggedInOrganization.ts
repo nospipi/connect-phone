@@ -1,21 +1,22 @@
-// apps/cms/app/(backend)/server_actions/getCurrentOrganization.ts
+// apps/cms/app/(backend)/server_actions/getUserLoggedInOrganization.ts
+
 "use server"
 
 import { AxiosError } from "axios"
 import { IOrganization } from "@connect-phone/shared-types"
-import { ErrorResponse } from "./types"
-import { createApiClient } from "./api-client"
+import { ErrorResponse } from "../types"
+import { createApiClient } from "../api-client"
 
 //--------------------------------------------------------------------------------
 
-export const getCurrentOrganization =
+export const getUserLoggedInOrganization =
   async (): Promise<IOrganization | null> => {
     try {
       const api = createApiClient()
-      const response = await api.get(`/organizations/current`)
+      const response = await api.get("/users/get-logged-organization")
 
       if (response.status !== 200) {
-        throw new Error("Failed to fetch current organization")
+        throw new Error("Failed to check user organization status")
       }
 
       return response.data || null
@@ -25,7 +26,7 @@ export const getCurrentOrganization =
         (error as AxiosError<ErrorResponse>).response?.data.message ??
         messageFallback
 
-      console.error("Error getting current organization:", errorMessage)
+      console.error("Error getting user organization status:", errorMessage)
       throw new Error(errorMessage)
     }
   }

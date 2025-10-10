@@ -3,8 +3,8 @@
 
 import { AxiosError } from "axios"
 import { ICountry } from "@connect-phone/shared-types"
-import { ErrorResponse } from "./types"
-import { createApiClient } from "./api-client"
+import { ErrorResponse } from "../types"
+import { createApiClient } from "../api-client"
 
 export const getAllCountriesOfOrg = async (
   search?: string,

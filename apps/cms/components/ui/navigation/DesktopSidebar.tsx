@@ -2,8 +2,8 @@
 import { OrganizationsDropdownDesktop } from "./SidebarOrganizationsDropdowns"
 import { UserProfileDesktop } from "./UserProfile"
 import { SidebarNavigation } from "./SidebarNavigation"
-import { getAllOrganizationsOfUser } from "@/app/(backend)/server_actions/getAllOrganizationsOfUser"
-import { getUserLoggedInOrganization } from "@/app/(backend)/server_actions/getUserLoggedInOrganization"
+import { getAllOrganizationsOfUser } from "@/app/(backend)/server_actions/users/getAllOrganizationsOfUser"
+import { getUserLoggedInOrganization } from "@/app/(backend)/server_actions/users/getUserLoggedInOrganization"
 
 const DesktopSidebar = async () => {
   const organizations = await getAllOrganizationsOfUser()

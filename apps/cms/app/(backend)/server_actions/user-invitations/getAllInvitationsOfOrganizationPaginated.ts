@@ -3,8 +3,8 @@
 
 import { cache } from "react"
 import { AxiosError } from "axios"
-import { ErrorResponse, PaginatedInvitationsResponse } from "./types"
-import { createApiClient } from "./api-client"
+import { ErrorResponse, PaginatedInvitationsResponse } from "../types"
+import { createApiClient } from "../api-client"
 
 interface PaginationParams {
   page?: string | number

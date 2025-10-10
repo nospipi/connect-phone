@@ -1,6 +1,6 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/users/(tab-routes)/users/page.tsx
 import { Button } from "@/components/common/Button"
-import { getAllUsersOfOrganizationPaginated } from "@/app/(backend)/server_actions/getAllUsersOfOrganizationPaginated"
+import { getAllUsersOfOrganizationPaginated } from "@/app/(backend)/server_actions/organizations/getAllUsersOfOrganizationPaginated"
 import Link from "next/link"
 import { Badge } from "@/components/common/Badge"
 import { RiUser2Fill, RiSearchLine } from "@remixicon/react"
@@ -157,7 +157,7 @@ const Page = async ({
       {items.length > 0 && (
         <div className="flex-1 overflow-hidden">
           <div className="h-full divide-y divide-gray-200 overflow-auto pr-5 dark:divide-slate-800/30">
-            {items.map((userOrganization: any, index) => {
+            {items.map((userOrganization: any, index: number) => {
               const user = userOrganization.user
               const role = userOrganization.role
               const initials = getInitials(user.firstName, user.lastName)

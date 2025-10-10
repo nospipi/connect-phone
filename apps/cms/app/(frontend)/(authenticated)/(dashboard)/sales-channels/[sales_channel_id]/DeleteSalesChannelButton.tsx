@@ -1,6 +1,6 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/sales-channels/[sales_channel_id]/DeleteSalesChannelButton.tsx
 import { RiDeleteBin6Line } from "@remixicon/react"
-import { deleteSalesChannelById } from "@/app/(backend)/server_actions/deleteSalesChannelById"
+import { deleteSalesChannelById } from "@/app/(backend)/server_actions/sales-channels/deleteSalesChannelById"
 import { ISalesChannel } from "@connect-phone/shared-types"
 
 //----------------------------------------------------------------------

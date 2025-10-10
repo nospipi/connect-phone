@@ -9,7 +9,7 @@ import {
 } from "@/components/common/Select"
 import { useRouter } from "next/navigation"
 import { IOrganizationWithUserRole } from "@connect-phone/shared-types"
-import { logUserInOrganization } from "./(backend)/server_actions/logUserInOrganization"
+import { logUserInOrganization } from "./(backend)/server_actions/users/logUserInOrganization"
 import { IOrganization } from "@connect-phone/shared-types"
 import Image from "next/image"
 

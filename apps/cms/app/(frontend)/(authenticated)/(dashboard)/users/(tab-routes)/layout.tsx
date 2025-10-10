@@ -1,5 +1,5 @@
 import TabNavigationWrapper from "./TabNavigationWrapper.client"
-import { getAllInvitationsOfOrganizationPaginated } from "@/app/(backend)/server_actions/getAllInvitationsOfOrganizationPaginated"
+import { getAllInvitationsOfOrganizationPaginated } from "@/app/(backend)/server_actions/user-invitations/getAllInvitationsOfOrganizationPaginated"
 
 //-------------------------------------------------------------------
 

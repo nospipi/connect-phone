@@ -11,7 +11,7 @@ import {
 } from "@/components/common/Dialog"
 import { cx } from "@/lib/utils"
 import { useClerk } from "@clerk/nextjs"
-import { logoutUserFromOrganization } from "@/app/(backend)/server_actions/logoutUserFromOrganization"
+import { logoutUserFromOrganization } from "@/app/(backend)/server_actions/users/logoutUserFromOrganization"
 
 export const Signout = () => {
   const { signOut } = useClerk()
