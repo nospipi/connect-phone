@@ -6,8 +6,13 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
-import { IDateRange } from '@connect-phone/shared-types';
+import { IDateRange, IOrganization } from '@connect-phone/shared-types';
+import { OrganizationEntity } from './organization.entity';
+
+//----------------------------------------------------------------------
 
 @Entity({ name: 'date_ranges' })
 export class DateRangeEntity implements IDateRange {
@@ -19,6 +24,16 @@ export class DateRangeEntity implements IDateRange {
 
   @Column({ type: 'date' })
   endDate: string;
+
+  @Column()
+  organizationId: number;
+
+  @ManyToOne(
+    () => OrganizationEntity,
+    (organization) => organization.dateRanges
+  )
+  @JoinColumn({ name: 'organizationId' })
+  organization: IOrganization;
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: string;

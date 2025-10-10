@@ -1,5 +1,4 @@
 // apps/cms/app/(backend)/server_actions/types.ts
-
 import {
   IAuditLog,
   ISalesChannel,
@@ -7,6 +6,7 @@ import {
   IOrganization,
   IUserOrganization,
   IUserInvitation,
+  IDateRange,
 } from "@connect-phone/shared-types"
 
 //----------------------------------------------------------------------
@@ -57,3 +57,6 @@ export interface PaginatedUsersResponse
 
 export interface PaginatedInvitationsResponse
   extends PaginatedResponse<IUserInvitation> {}
+
+export interface PaginatedDateRangesResponse
+  extends PaginatedResponse<IDateRange> {}

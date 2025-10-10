@@ -7,16 +7,22 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToMany,
+  ManyToOne,
   JoinTable,
+  JoinColumn,
 } from 'typeorm';
 import {
   IPrice,
   Currency,
   IDateRange,
   ISalesChannel,
+  IOrganization,
 } from '@connect-phone/shared-types';
 import { DateRangeEntity } from './date-range.entity';
 import { SalesChannelEntity } from './sales-channel.entity';
+import { OrganizationEntity } from './organization.entity';
+
+//----------------------------------------------------------------------
 
 @Entity({ name: 'prices' })
 export class PriceEntity implements IPrice {
@@ -35,6 +41,13 @@ export class PriceEntity implements IPrice {
 
   @Column({ type: 'boolean', default: false })
   isDateBased: boolean;
+
+  @Column()
+  organizationId: number;
+
+  @ManyToOne(() => OrganizationEntity, (organization) => organization.prices)
+  @JoinColumn({ name: 'organizationId' })
+  organization: IOrganization;
 
   @ManyToMany(() => DateRangeEntity, { onDelete: 'RESTRICT' })
   @JoinTable({

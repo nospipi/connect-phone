@@ -18,8 +18,9 @@ import { AuditLogsModule } from './resources/audit-logs/audit-logs.module';
 import { UserInvitationsModule } from './resources/user-invitations/user-invitations.module';
 import { CountriesModule } from './resources/countries/countries.module';
 import { OrganizationsModule } from './resources/organizations/organizations.module';
+import { DateRangesModule } from './resources/date-ranges/date-ranges.module';
 
-//---------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { OrganizationsModule } from './resources/organizations/organizations.mod
     UserInvitationsModule,
     CountriesModule,
     OrganizationsModule,
+    DateRangesModule,
   ],
   controllers: [AppController],
   providers: [

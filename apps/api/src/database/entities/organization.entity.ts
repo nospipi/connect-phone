@@ -13,14 +13,18 @@ import {
   ISalesChannel,
   IUserOrganization,
   ICountry,
+  IPrice,
+  IDateRange,
   Currency,
 } from '@connect-phone/shared-types';
 import { SalesChannelEntity } from './sales-channel.entity';
 import { UserOrganizationEntity } from './user-organization.entity';
 import { AuditLogEntryEntity } from './audit-log.entity';
 import { CountryEntity } from './country.entity';
+import { PriceEntity } from './price.entity';
+import { DateRangeEntity } from './date-range.entity';
 
-//--------------------------------------------------------------------------------
+//----------------------------------------------------------------------
 
 @Entity({ name: 'organizations' })
 export class OrganizationEntity implements IOrganization {
@@ -42,7 +46,7 @@ export class OrganizationEntity implements IOrganization {
   @Column({
     type: 'enum',
     enum: Currency,
-    default: Currency.EUR,
+    default: Currency.USD,
   })
   mainCurrency: Currency;
 
@@ -60,4 +64,10 @@ export class OrganizationEntity implements IOrganization {
 
   @OneToMany(() => CountryEntity, (country) => country.organization)
   countries: ICountry[];
+
+  @OneToMany(() => PriceEntity, (price) => price.organization)
+  prices: IPrice[];
+
+  @OneToMany(() => DateRangeEntity, (dateRange) => dateRange.organization)
+  dateRanges: IDateRange[];
 }
