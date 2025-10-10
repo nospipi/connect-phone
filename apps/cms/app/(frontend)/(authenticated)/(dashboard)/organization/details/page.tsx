@@ -4,14 +4,14 @@ import { getCurrentOrganization } from "@/app/(backend)/server_actions/getCurren
 import { redirect } from "next/navigation"
 import { updateOrganization } from "@/app/(backend)/server_actions/updateOrganization"
 import UpdateOrganizationLogoUpload from "./UpdateOrganizationLogoUpload.client"
-import { Currencies } from "@connect-phone/shared-types"
+import { Currency } from "@connect-phone/shared-types"
 
 async function refreshPageAction() {
   "use server"
   redirect("/organization/details")
 }
 
-const CURRENCIES = Object.values(Currencies).map((currency) => ({
+const CURRENCIES = Object.values(Currency).map((currency) => ({
   value: currency,
   label: currency,
 }))
@@ -75,7 +75,7 @@ const Page = async ({
                   </label>
                   <select
                     defaultValue={
-                      organizationData?.mainCurrency || Currencies.USD
+                      organizationData?.mainCurrency || Currency.USD
                     }
                     id="mainCurrency"
                     name="mainCurrency"

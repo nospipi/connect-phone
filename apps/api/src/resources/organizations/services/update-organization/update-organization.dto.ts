@@ -1,6 +1,6 @@
 // apps/api/src/resources/organizations/services/update-organization/update-organization.dto.ts
 import { IsString, IsOptional, IsUrl, IsEnum } from 'class-validator';
-import { IOrganization, Currencies } from '@connect-phone/shared-types';
+import { IOrganization, Currency } from '@connect-phone/shared-types';
 import { Sanitize } from '@/common/decorators/sanitize.decorator';
 
 type UpdateOrganization = Partial<
@@ -24,7 +24,7 @@ export class UpdateOrganizationDto implements UpdateOrganization {
   @Sanitize()
   logoUrl?: string;
 
-  @IsEnum(Currencies)
+  @IsEnum(Currency)
   @IsOptional()
-  mainCurrency?: Currencies;
+  mainCurrency?: Currency;
 }

@@ -13,12 +13,14 @@ import {
   ISalesChannel,
   IUserOrganization,
   ICountry,
-  Currencies,
+  Currency,
 } from '@connect-phone/shared-types';
 import { SalesChannelEntity } from './sales-channel.entity';
 import { UserOrganizationEntity } from './user-organization.entity';
 import { AuditLogEntryEntity } from './audit-log.entity';
 import { CountryEntity } from './country.entity';
+
+//--------------------------------------------------------------------------------
 
 @Entity({ name: 'organizations' })
 export class OrganizationEntity implements IOrganization {
@@ -39,10 +41,10 @@ export class OrganizationEntity implements IOrganization {
 
   @Column({
     type: 'enum',
-    enum: Currencies,
-    default: Currencies.USD,
+    enum: Currency,
+    default: Currency.EUR,
   })
-  mainCurrency: Currencies;
+  mainCurrency: Currency;
 
   @OneToMany(
     () => SalesChannelEntity,

@@ -11,7 +11,7 @@ import {
   createMockOrganization,
   createCurrentOrganizationServiceProvider,
 } from '../../../../test/factories';
-import { Currencies } from '@connect-phone/shared-types';
+import { Currency } from '@connect-phone/shared-types';
 
 describe('UpdateOrganizationService', () => {
   let service: UpdateOrganizationService;
@@ -96,11 +96,11 @@ describe('UpdateOrganizationService', () => {
 
     it('should update organization mainCurrency', async () => {
       const updateDto: UpdateOrganizationDto = {
-        mainCurrency: Currencies.EUR,
+        mainCurrency: Currency.EUR,
       };
 
       const updatedOrganization = createMockOrganization({
-        mainCurrency: Currencies.EUR,
+        mainCurrency: Currency.EUR,
       });
 
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
@@ -112,7 +112,7 @@ describe('UpdateOrganizationService', () => {
 
       const result = await service.updateOrganization(updateDto);
 
-      expect(result.mainCurrency).toBe(Currencies.EUR);
+      expect(result.mainCurrency).toBe(Currency.EUR);
     });
 
     it('should update both name and logoUrl', async () => {
@@ -143,13 +143,13 @@ describe('UpdateOrganizationService', () => {
       const updateDto: UpdateOrganizationDto = {
         name: 'Updated Organization',
         logoUrl: 'https://example.com/new-logo.png',
-        mainCurrency: Currencies.GBP,
+        mainCurrency: Currency.GBP,
       };
 
       const updatedOrganization = createMockOrganization({
         name: 'Updated Organization',
         logoUrl: 'https://example.com/new-logo.png',
-        mainCurrency: Currencies.GBP,
+        mainCurrency: Currency.GBP,
       });
 
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
@@ -163,7 +163,7 @@ describe('UpdateOrganizationService', () => {
 
       expect(result.name).toBe('Updated Organization');
       expect(result.logoUrl).toBe('https://example.com/new-logo.png');
-      expect(result.mainCurrency).toBe(Currencies.GBP);
+      expect(result.mainCurrency).toBe(Currency.GBP);
     });
 
     it('should throw ForbiddenException when organization context is null', async () => {

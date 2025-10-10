@@ -9,6 +9,8 @@ import { UserOrganizationEntity } from './entities/user-organization.entity';
 import { AuditLogEntryEntity } from './entities/audit-log.entity';
 import { UserInvitationEntity } from './entities/user-invitation.entity';
 import { CountryEntity } from './entities/country.entity';
+import { PriceEntity } from './entities/price.entity';
+import { DateRangeEntity } from './entities/date-range.entity';
 import { AuditLogSubscriber } from './subscribers/audit-log.subscriber';
 import { UserInvitationSubscriber } from './subscribers/user-invitation.subscriber';
 
@@ -29,6 +31,8 @@ import { UserInvitationSubscriber } from './subscribers/user-invitation.subscrib
           AuditLogEntryEntity,
           UserInvitationEntity,
           CountryEntity,
+          PriceEntity,
+          DateRangeEntity,
         ],
         subscribers: [AuditLogSubscriber, UserInvitationSubscriber],
         synchronize: process.env.NODE_ENV !== 'production',

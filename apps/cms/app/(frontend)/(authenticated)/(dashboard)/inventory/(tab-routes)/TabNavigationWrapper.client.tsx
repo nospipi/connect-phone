@@ -5,6 +5,7 @@ import {
   RiBox3Fill,
   RiFlagLine,
   RiCoinsLine,
+  RiCalendarEventLine,
 } from "@remixicon/react"
 import {
   TabNavigation,
@@ -20,9 +21,9 @@ const TabNavigationWrapper = () => {
 
   const navigationSettings = [
     {
-      name: "Products",
-      href: "/inventory/products",
-      icon: RiCoupon2Line,
+      name: "Countries",
+      href: "/inventory/countries",
+      icon: RiFlagLine,
     },
     {
       name: "Packages",
@@ -30,14 +31,19 @@ const TabNavigationWrapper = () => {
       icon: RiBox3Fill,
     },
     {
-      name: "Countries",
-      href: "/inventory/countries",
-      icon: RiFlagLine,
+      name: "Products",
+      href: "/inventory/products",
+      icon: RiCoupon2Line,
     },
     {
       name: "Prices",
       href: "/inventory/prices",
       icon: RiCoinsLine,
+    },
+    {
+      name: "Calendar",
+      href: "/inventory/calendar",
+      icon: RiCalendarEventLine,
     },
   ]
 

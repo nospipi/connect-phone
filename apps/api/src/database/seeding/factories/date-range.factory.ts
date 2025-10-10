@@ -1,0 +1,13 @@
+// apps/api/src/database/seeding/factories/date-range.factory.ts
+
+export function generateDateRanges(): Partial<{
+  startDate: string;
+  endDate: string;
+}>[] {
+  return [
+    { startDate: '2025-01-01', endDate: '2025-03-31' },
+    { startDate: '2025-04-01', endDate: '2025-06-30' },
+    { startDate: '2025-07-01', endDate: '2025-09-30' },
+    { startDate: '2025-10-01', endDate: '2025-12-31' },
+  ];
+}

@@ -32,6 +32,7 @@
     "schema:drop": "npm run typeorm -- schema:drop -d src/database/data-source.ts",
     "db:seed": "ts-node src/database/seeding/seeds/seed.ts",
     "db:seed:countries": "ts-node src/database/seeding/seeds/seed-countries.ts",
+    "db:seed:prices": "ts-node src/database/seeding/seeds/seed-prices.ts",
     "create-service": "node create-service.js"
   },
   "dependencies": {
