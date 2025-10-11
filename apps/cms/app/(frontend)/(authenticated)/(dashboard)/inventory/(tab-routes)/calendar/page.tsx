@@ -21,6 +21,34 @@ const calculateDuration = (startDate: string, endDate: string) => {
   )
 }
 
+const groupDateRangesByYearMonth = (dateRanges: IDateRange[]) => {
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+
+  const presentDateRanges = dateRanges.filter((dr) => {
+    const [endYear, endMonth, endDay] = dr.endDate.split("-").map(Number)
+    const endDate = new Date(endYear, endMonth - 1, endDay)
+    return endDate >= today
+  })
+
+  const grouped: Record<string, Record<string, IDateRange[]>> = {}
+
+  presentDateRanges.forEach((dr) => {
+    const [year, month] = dr.startDate.split("-")
+    const monthName = format(new Date(dr.startDate), "MMMM")
+
+    if (!grouped[year]) {
+      grouped[year] = {}
+    }
+    if (!grouped[year][monthName]) {
+      grouped[year][monthName] = []
+    }
+    grouped[year][monthName].push(dr)
+  })
+
+  return grouped
+}
+
 const Page = async ({
   searchParams,
 }: {
@@ -52,6 +80,11 @@ const Page = async ({
   const hasNextPage = meta?.currentPage < meta?.totalPages
   const hasActiveFilters =
     (!!date && date !== "undefined") || (!!search && search !== "undefined")
+
+  const groupedDateRanges = groupDateRangesByYearMonth(items)
+  const years = Object.keys(groupedDateRanges).sort((a, b) =>
+    Number(a) > Number(b) ? 1 : -1,
+  )
 
   return (
     <div className="flex h-full flex-col gap-2 overflow-hidden py-4 pl-5">
@@ -132,50 +165,97 @@ const Page = async ({
         </div>
       )}
 
-      {/* Date Ranges List */}
-      {items.length > 0 && (
+      {/* Date Ranges List with Sticky Headers */}
+      {items.length > 0 && years.length > 0 && (
         <div className="flex-1 overflow-hidden">
-          <div className="h-full divide-y divide-gray-200 overflow-auto pr-5 dark:divide-slate-800/30">
-            {items.map((dateRange: IDateRange) => (
-              <Link
-                key={dateRange.id}
-                href={`/inventory/calendar/${dateRange.id}`}
-                className="block"
-              >
-                <div className="duration-2000 group py-4 transition-all">
-                  <div className="flex items-center justify-between gap-4">
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-start justify-between">
-                        <div className="min-w-0 flex-1">
-                          <p className="truncate text-base font-medium text-gray-900 group-hover:text-gray-700 dark:text-slate-200 dark:group-hover:text-slate-100">
-                            {dateRange.name}
-                          </p>
-                          <p className="mt-1 truncate text-sm text-gray-600 group-hover:text-gray-500 dark:text-slate-400 dark:group-hover:text-slate-300">
-                            {format(
-                              new Date(dateRange.startDate),
-                              "MMM dd, yyyy",
-                            )}{" "}
-                            -{" "}
-                            {format(
-                              new Date(dateRange.endDate),
-                              "MMM dd, yyyy",
-                            )}
-                          </p>
-                          <p className="mt-0.5 truncate text-xs text-gray-500 dark:text-slate-500">
-                            Duration:{" "}
-                            {calculateDuration(
-                              dateRange.startDate,
-                              dateRange.endDate,
-                            )}{" "}
-                            days
-                          </p>
+          <div className="h-full overflow-auto pr-5">
+            {years.map((year) => {
+              const months = Object.keys(groupedDateRanges[year])
+              return (
+                <div key={year}>
+                  {/* Year Sticky Header */}
+                  <div className="sticky top-0 z-20 bg-white py-3 dark:bg-gray-950">
+                    <h2 className="text-xl font-bold text-gray-900 dark:text-slate-100">
+                      {year}
+                    </h2>
+                  </div>
+
+                  {months.map((month) => {
+                    const dateRanges = groupedDateRanges[year][month]
+                    return (
+                      <div key={`${year}-${month}`} className="mb-6">
+                        {/* Month Sticky Header */}
+                        <div className="sticky top-[52px] z-10 border-b border-gray-200 bg-white py-2 dark:border-slate-800/50 dark:bg-gray-950">
+                          <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-600 dark:text-slate-400">
+                            {month}
+                          </h3>
+                        </div>
+
+                        {/* Date Ranges */}
+                        <div className="divide-y divide-gray-200 dark:divide-slate-800/30">
+                          {dateRanges.map((dateRange: IDateRange) => (
+                            <Link
+                              key={dateRange.id}
+                              href={`/inventory/calendar/${dateRange.id}`}
+                              className="block"
+                            >
+                              <div className="duration-2000 group py-4 transition-all">
+                                <div className="flex items-center justify-between gap-4">
+                                  <div className="min-w-0 flex-1">
+                                    <div className="flex items-start justify-between">
+                                      <div className="min-w-0 flex-1">
+                                        <p className="truncate text-base font-medium text-gray-900 group-hover:text-gray-700 dark:text-slate-200 dark:group-hover:text-slate-100">
+                                          {dateRange.name}
+                                        </p>
+                                        <p className="mt-1 truncate text-sm text-gray-600 group-hover:text-gray-500 dark:text-slate-400 dark:group-hover:text-slate-300">
+                                          {format(
+                                            new Date(dateRange.startDate),
+                                            "MMM dd, yyyy",
+                                          )}{" "}
+                                          -{" "}
+                                          {format(
+                                            new Date(dateRange.endDate),
+                                            "MMM dd, yyyy",
+                                          )}
+                                        </p>
+                                        <p className="mt-0.5 truncate text-xs text-gray-500 dark:text-slate-500">
+                                          Duration:{" "}
+                                          {calculateDuration(
+                                            dateRange.startDate,
+                                            dateRange.endDate,
+                                          )}{" "}
+                                          days
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </Link>
+                          ))}
                         </div>
                       </div>
-                    </div>
-                  </div>
+                    )
+                  })}
                 </div>
-              </Link>
-            ))}
+              )
+            })}
+          </div>
+        </div>
+      )}
+
+      {items.length > 0 && years.length === 0 && (
+        <div className="flex flex-1 items-center justify-center">
+          <div className="py-12 text-center">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100 dark:bg-slate-800/50">
+              <RiCalendarEventLine className="h-8 w-8 text-gray-400 dark:text-slate-600" />
+            </div>
+            <h3 className="mb-2 text-lg font-medium text-gray-900 dark:text-slate-200">
+              No present or future date ranges
+            </h3>
+            <p className="text-sm text-gray-500 dark:text-slate-500">
+              All date ranges have ended. Create new ones to see them here.
+            </p>
           </div>
         </div>
       )}
