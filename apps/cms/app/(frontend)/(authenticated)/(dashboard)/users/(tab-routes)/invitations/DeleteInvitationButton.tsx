@@ -1,6 +1,6 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/users/(tab-routes)/invitations/DeleteInvitationButton.tsx
 
-import { deleteUserInvitation } from "@/app/(backend)/server_actions/deleteUserInvitation"
+import { deleteUserInvitation } from "@/app/(backend)/server_actions/user-invitations/deleteUserInvitation"
 import { RiDeleteBin6Line } from "@remixicon/react"
 
 //----------------------------------------------------------------------

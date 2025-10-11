@@ -1,6 +1,6 @@
 import Image from "next/image"
 import logo from "@/public/logo.png"
-import PulsingRingProvider from "../providers/PulsingRingProvider.client"
+import PulsingRingProvider from "@/app/providers/PulsingRingProvider.client"
 import { currentUser } from "@clerk/nextjs/server"
 import { UserButton } from "@clerk/nextjs"
 

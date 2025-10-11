@@ -3,6 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { NotFoundException, ForbiddenException } from '@nestjs/common';
+import { validate } from 'class-validator';
 import { UpdateDateRangeService } from './service';
 import { DateRangeEntity } from '../../../../database/entities/date-range.entity';
 import { UpdateDateRangeDto } from './update-date-range.dto';
@@ -21,7 +22,6 @@ describe('UpdateDateRangeService', () => {
   let currentOrganizationService: jest.Mocked<CurrentOrganizationService>;
 
   const mockOrganization = createMockOrganization();
-  const mockDateRange = createMockDateRange();
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -53,6 +53,7 @@ describe('UpdateDateRangeService', () => {
 
   describe('updateDateRange', () => {
     it('should update a date range successfully', async () => {
+      const mockDateRange = createMockDateRange();
       const updateDto: UpdateDateRangeDto = {
         id: 1,
         name: 'Updated Q1 2025',
@@ -163,6 +164,7 @@ describe('UpdateDateRangeService', () => {
     });
 
     it('should update only provided fields', async () => {
+      const mockDateRange = createMockDateRange();
       const updateDto: UpdateDateRangeDto = {
         id: 1,
         name: 'Updated Q1 2025',
@@ -185,6 +187,7 @@ describe('UpdateDateRangeService', () => {
     });
 
     it('should update name when provided', async () => {
+      const mockDateRange = createMockDateRange();
       const updateDto: UpdateDateRangeDto = {
         id: 1,
         name: 'Holiday Season',
@@ -209,6 +212,7 @@ describe('UpdateDateRangeService', () => {
     });
 
     it('should update startDate when provided', async () => {
+      const mockDateRange = createMockDateRange();
       const updateDto: UpdateDateRangeDto = {
         id: 1,
         startDate: '2025-01-15',
@@ -233,6 +237,7 @@ describe('UpdateDateRangeService', () => {
     });
 
     it('should update endDate when provided', async () => {
+      const mockDateRange = createMockDateRange();
       const updateDto: UpdateDateRangeDto = {
         id: 1,
         endDate: '2025-04-15',
@@ -257,6 +262,7 @@ describe('UpdateDateRangeService', () => {
     });
 
     it('should handle database errors', async () => {
+      const mockDateRange = createMockDateRange();
       const updateDto: UpdateDateRangeDto = {
         id: 1,
         name: 'Updated Q1 2025',
@@ -294,6 +300,99 @@ describe('UpdateDateRangeService', () => {
       expect(dateRangeRepository.findOne).toHaveBeenCalledWith({
         where: { id: 1, organizationId: 5 },
       });
+    });
+  });
+
+  describe('UpdateDateRangeDto validation', () => {
+    it('should validate successfully with valid data', async () => {
+      const dto = new UpdateDateRangeDto();
+      dto.id = 1;
+      dto.name = 'Updated Q1 2025';
+      dto.startDate = '2025-01-01';
+      dto.endDate = '2025-03-31';
+
+      const errors = await validate(dto);
+      expect(errors.length).toBe(0);
+    });
+
+    it('should validate successfully when endDate equals startDate', async () => {
+      const dto = new UpdateDateRangeDto();
+      dto.id = 1;
+      dto.startDate = '2025-01-01';
+      dto.endDate = '2025-01-01';
+
+      const errors = await validate(dto);
+      expect(errors.length).toBe(0);
+    });
+
+    it('should fail validation when endDate is before startDate', async () => {
+      const dto = new UpdateDateRangeDto();
+      dto.id = 1;
+      dto.startDate = '2025-03-31';
+      dto.endDate = '2025-01-01';
+
+      const errors = await validate(dto);
+      expect(errors.length).toBeGreaterThan(0);
+      expect(errors[0].property).toBe('endDate');
+      expect(errors[0].constraints).toHaveProperty('isEndDateAfterStart');
+    });
+
+    it('should validate successfully with only name update', async () => {
+      const dto = new UpdateDateRangeDto();
+      dto.id = 1;
+      dto.name = 'Updated Name';
+
+      const errors = await validate(dto);
+      expect(errors.length).toBe(0);
+    });
+
+    it('should validate successfully with only startDate update', async () => {
+      const dto = new UpdateDateRangeDto();
+      dto.id = 1;
+      dto.startDate = '2025-01-01';
+
+      const errors = await validate(dto);
+      expect(errors.length).toBe(0);
+    });
+
+    it('should validate successfully with only endDate update', async () => {
+      const dto = new UpdateDateRangeDto();
+      dto.id = 1;
+      dto.endDate = '2025-03-31';
+
+      const errors = await validate(dto);
+      expect(errors.length).toBe(0);
+    });
+
+    it('should fail validation when startDate format is invalid', async () => {
+      const dto = new UpdateDateRangeDto();
+      dto.id = 1;
+      dto.startDate = '2025/01/01';
+
+      const errors = await validate(dto);
+      expect(errors.length).toBeGreaterThan(0);
+      expect(errors[0].property).toBe('startDate');
+    });
+
+    it('should fail validation when endDate format is invalid', async () => {
+      const dto = new UpdateDateRangeDto();
+      dto.id = 1;
+      dto.endDate = '2025/03/31';
+
+      const errors = await validate(dto);
+      expect(errors.length).toBeGreaterThan(0);
+      expect(errors[0].property).toBe('endDate');
+    });
+
+    it('should validate successfully with date range spanning years', async () => {
+      const dto = new UpdateDateRangeDto();
+      dto.id = 1;
+      dto.name = 'Holiday Period';
+      dto.startDate = '2025-12-20';
+      dto.endDate = '2026-01-05';
+
+      const errors = await validate(dto);
+      expect(errors.length).toBe(0);
     });
   });
 });

@@ -1,6 +1,6 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/sales-channels/create-new/page.tsx
-import { createNewSalesChannel } from "@/app/(backend)/server_actions/createNewSalesChannel"
-import { getUserLoggedInOrganization } from "@/app/(backend)/server_actions/getUserLoggedInOrganization"
+import { createNewSalesChannel } from "@/app/(backend)/server_actions/sales-channels/createNewSalesChannel"
+import { getUserLoggedInOrganization } from "@/app/(backend)/server_actions/users/getUserLoggedInOrganization"
 import CreateSalesChannelLogoUpload from "./CreateSalesChannelLogoUpload"
 import { RiArrowLeftLine, RiAddLine } from "@remixicon/react"
 import Link from "next/link"

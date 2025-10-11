@@ -1,9 +1,9 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/sales-channels/[sales_channel_id]/page.tsx
 import { RiArrowLeftLine } from "@remixicon/react"
 import Link from "next/link"
-import { getSalesChannelById } from "@/app/(backend)/server_actions/getSalesChannelById"
+import { getSalesChannelById } from "@/app/(backend)/server_actions/sales-channels/getSalesChannelById"
 import { updateSalesChannel } from "@/app/(backend)/server_actions/sales-channels/updateSalesChannel"
-import { getUserLoggedInOrganization } from "@/app/(backend)/server_actions/getUserLoggedInOrganization"
+import { getUserLoggedInOrganization } from "@/app/(backend)/server_actions/users/getUserLoggedInOrganization"
 import UpdateSalesChannelLogoUpload from "./UpdateSalesChannelLogoUpload"
 import DeleteSalesChannelButton from "./DeleteSalesChannelButton"
 

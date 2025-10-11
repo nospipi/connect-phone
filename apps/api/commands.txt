@@ -25,6 +25,7 @@ _______________________
 
 npx jest -t "test_name"
 npx jest -t "test_name1 | test_name2"
+ npx jest "src/resources/date-ranges/.*"
 
 _________________________________________________________________________________________
 # Custom create resource

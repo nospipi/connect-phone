@@ -2,6 +2,7 @@
 import { IsString, IsOptional, Matches } from 'class-validator';
 import { IDateRange } from '@connect-phone/shared-types';
 import { Sanitize } from '@/common/decorators/sanitize.decorator';
+import { IsEndDateAfterStart } from '@/common/validators/is-end-date-after-start.validator';
 
 //----------------------------------------------------------------------
 
@@ -32,6 +33,9 @@ export class UpdateDateRangeDto implements UpdateDateRange {
   @IsOptional()
   @Matches(/^\d{4}-\d{2}-\d{2}$/, {
     message: 'endDate must be in YYYY-MM-DD format',
+  })
+  @IsEndDateAfterStart('startDate', {
+    message: 'endDate must be equal to or after startDate',
   })
   @Sanitize()
   endDate?: string;

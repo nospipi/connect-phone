@@ -1,9 +1,9 @@
 // components/UserDataDisplay.tsx
-import { getCurrentUserFromBackend } from "@/components/app/server_actions"
+import { getUserLoggedInOrganization } from "@/app/(backend)/server_actions/users/getUserLoggedInOrganization"
 import RevalidateButton from "./RevalidateButton.client"
 
 const UserDataDisplayInternalDb = async () => {
-  const userData = await getCurrentUserFromBackend()
+  const userData = await getUserLoggedInOrganization()
   const hasUserData = userData !== null && userData !== undefined
 
   return (

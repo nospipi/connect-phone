@@ -2,6 +2,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { validate } from 'class-validator';
 import { CreateDateRangeService } from './service';
 import { DateRangeEntity } from '../../../../database/entities/date-range.entity';
 import { CreateDateRangeDto } from './create-date-range.dto';
@@ -127,6 +128,83 @@ describe('CreateDateRangeService', () => {
       await expect(
         service.createDateRange(mockCreateDateRangeDto)
       ).rejects.toThrow('Database error');
+    });
+  });
+
+  describe('CreateDateRangeDto validation', () => {
+    it('should validate successfully with valid data', async () => {
+      const dto = new CreateDateRangeDto();
+      dto.name = 'Q1 2025';
+      dto.startDate = '2025-01-01';
+      dto.endDate = '2025-03-31';
+
+      const errors = await validate(dto);
+      expect(errors.length).toBe(0);
+    });
+
+    it('should validate successfully when endDate equals startDate', async () => {
+      const dto = new CreateDateRangeDto();
+      dto.name = 'Single Day';
+      dto.startDate = '2025-01-01';
+      dto.endDate = '2025-01-01';
+
+      const errors = await validate(dto);
+      expect(errors.length).toBe(0);
+    });
+
+    it('should fail validation when endDate is before startDate', async () => {
+      const dto = new CreateDateRangeDto();
+      dto.name = 'Invalid Range';
+      dto.startDate = '2025-03-31';
+      dto.endDate = '2025-01-01';
+
+      const errors = await validate(dto);
+      expect(errors.length).toBeGreaterThan(0);
+      expect(errors[0].property).toBe('endDate');
+      expect(errors[0].constraints).toHaveProperty('isEndDateAfterStart');
+    });
+
+    it('should fail validation when name is empty', async () => {
+      const dto = new CreateDateRangeDto();
+      dto.name = '';
+      dto.startDate = '2025-01-01';
+      dto.endDate = '2025-03-31';
+
+      const errors = await validate(dto);
+      expect(errors.length).toBeGreaterThan(0);
+      expect(errors[0].property).toBe('name');
+    });
+
+    it('should fail validation when startDate format is invalid', async () => {
+      const dto = new CreateDateRangeDto();
+      dto.name = 'Q1 2025';
+      dto.startDate = '2025/01/01';
+      dto.endDate = '2025-03-31';
+
+      const errors = await validate(dto);
+      expect(errors.length).toBeGreaterThan(0);
+      expect(errors[0].property).toBe('startDate');
+    });
+
+    it('should fail validation when endDate format is invalid', async () => {
+      const dto = new CreateDateRangeDto();
+      dto.name = 'Q1 2025';
+      dto.startDate = '2025-01-01';
+      dto.endDate = '2025/03/31';
+
+      const errors = await validate(dto);
+      expect(errors.length).toBeGreaterThan(0);
+      expect(errors[0].property).toBe('endDate');
+    });
+
+    it('should validate successfully with date range spanning years', async () => {
+      const dto = new CreateDateRangeDto();
+      dto.name = 'Holiday Period';
+      dto.startDate = '2025-12-20';
+      dto.endDate = '2026-01-05';
+
+      const errors = await validate(dto);
+      expect(errors.length).toBe(0);
     });
   });
 });

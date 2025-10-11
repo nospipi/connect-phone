@@ -1,10 +1,8 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/users/(tab-routes)/invitations/page.tsx
 import { Button } from "@/components/common/Button"
-import { getAllInvitationsOfOrganizationPaginated } from "@/app/(backend)/server_actions/getAllInvitationsOfOrganizationPaginated"
-import { deleteUserInvitation } from "@/app/(backend)/server_actions/deleteUserInvitation"
+import { getAllInvitationsOfOrganizationPaginated } from "@/app/(backend)/server_actions/user-invitations/getAllInvitationsOfOrganizationPaginated"
 import Link from "next/link"
-import { Badge } from "@/components/common/Badge"
-import { RiUser2Fill, RiSearchLine, RiDeleteBin6Line } from "@remixicon/react"
+import { RiUser2Fill, RiSearchLine } from "@remixicon/react"
 import {
   Select,
   SelectContent,

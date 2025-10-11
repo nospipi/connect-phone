@@ -1,12 +1,11 @@
 // components/UserDataDisplay.tsx
-import {
-  getCurrentUserFromBackend,
-  getCurrentUserOrganization,
-} from "@/components/app/server_actions"
+import { getCurrentOrganization } from "@/app/(backend)/server_actions/organizations/getCurrentOrganization"
 import RevalidateButton from "./RevalidateButton.client"
 
+//----------------------------------------------------------------------
+
 const UserDataDisplayCurrentOrganization = async () => {
-  const userData = await getCurrentUserOrganization()
+  const userData = await getCurrentOrganization()
   const hasUserData = userData !== null && userData !== undefined
 
   return (
