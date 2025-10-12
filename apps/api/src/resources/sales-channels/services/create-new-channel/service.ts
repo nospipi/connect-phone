@@ -25,28 +25,23 @@ export class CreateNewChannelService {
   async createNewSalesChannel(
     createSalesChannelDto: CreateSalesChannelDto
   ): Promise<ISalesChannel> {
-    try {
-      const organization =
-        await this.currentOrganizationService.getCurrentOrganization();
+    const organization =
+      await this.currentOrganizationService.getCurrentOrganization();
 
-      const salesChannel = this.salesChannelsRepository.create({
-        ...createSalesChannelDto,
-        organizationId: organization?.id,
-      });
+    const salesChannel = this.salesChannelsRepository.create({
+      ...createSalesChannelDto,
+      organizationId: organization?.id,
+    });
 
-      //return this.salesChannelsRepository.save(salesChannel);
+    //return this.salesChannelsRepository.save(salesChannel);
 
-      const result = await this.salesChannelsRepository
-        .createQueryBuilder()
-        .insert()
-        .into(SalesChannelEntity)
-        .values(salesChannel) // ← Circular refs are automatically ignored!
-        .execute();
+    const result = await this.salesChannelsRepository
+      .createQueryBuilder()
+      .insert()
+      .into(SalesChannelEntity)
+      .values(salesChannel) // ← Circular refs are automatically ignored!
+      .execute();
 
-      return result.raw[0]; // Return the inserted row
-    } catch (error) {
-      console.error('Error in createNewSalesChannel:', error);
-      throw error;
-    }
+    return result.raw[0]; // Return the inserted row
   }
 }
