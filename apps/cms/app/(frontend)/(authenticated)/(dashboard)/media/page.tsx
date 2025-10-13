@@ -8,6 +8,7 @@ const Page = async () => {
     <div>
       Media Page
       <Link href="/media/select">Go to Select Media Page</Link>
+      <Link href="/media/upload">Go to Upload Media Page</Link>
     </div>
   )
 }
