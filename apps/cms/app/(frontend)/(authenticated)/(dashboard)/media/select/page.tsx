@@ -129,7 +129,7 @@ const Page = async ({ searchParams }: PageProps) => {
 
       {/* Content */}
       <div className="flex flex-1 overflow-hidden py-2">
-        <div className="flex-1 overflow-auto px-2">
+        <div className="flex-1 overflow-auto px-3 py-1">
           {items.length === 0 ? (
             <div className="flex h-full flex-col items-center justify-center gap-6">
               <div className="rounded-2xl bg-gradient-to-br from-gray-100 to-gray-200/50 p-8 dark:from-gray-800/50 dark:to-gray-900/50">
