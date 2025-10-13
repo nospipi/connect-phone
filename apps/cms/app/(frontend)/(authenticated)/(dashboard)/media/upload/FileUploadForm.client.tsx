@@ -174,7 +174,10 @@ export default function FileUploadForm() {
           <div className="flex items-start gap-3">
             <div className="flex-shrink-0">
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-red-100 dark:bg-red-800/50">
-                <RiAlertLine className="h-5 w-5 text-red-600 dark:text-red-400" />
+                <RiAlertLine
+                  className="text-red-600 dark:text-red-400"
+                  size={14}
+                />
               </div>
             </div>
             <div className="flex-1">
