@@ -175,6 +175,9 @@ const Page = async ({ searchParams }: PageProps) => {
                           alt={media.description || "Media"}
                           fill
                           className="object-cover p-2"
+                          style={{
+                            borderRadius: 17,
+                          }}
                         />
                       </div>
 

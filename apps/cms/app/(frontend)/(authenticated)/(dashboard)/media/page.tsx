@@ -1,3 +1,4 @@
+// apps/cms/app/(frontend)/(authenticated)/(dashboard)/media/page.tsx
 import Link from "next/link"
 
 //-------------------------------------------------------------------
