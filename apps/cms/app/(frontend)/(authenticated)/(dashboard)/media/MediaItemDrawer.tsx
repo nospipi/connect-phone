@@ -113,7 +113,7 @@ const MediaItemDrawer = ({ media }: MediaItemDrawerProps) => {
             </form>
 
             <form action={deleteMediaById}>
-              <input type="hidden" name="id" value={media.id} />
+              <input type="hidden" name="mediaId" value={media.id} />
               <button
                 type="submit"
                 className="rounded-md bg-red-600 px-4 py-2 text-white transition-colors duration-200 hover:bg-red-700"
