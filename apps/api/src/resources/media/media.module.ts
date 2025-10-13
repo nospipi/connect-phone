@@ -10,7 +10,8 @@ import { UpdateMediaController } from './services/update-media/controller';
 import { UpdateMediaService } from './services/update-media/service';
 import { DeleteMediaController } from './services/delete-media/controller';
 import { DeleteMediaService } from './services/delete-media/service';
-
+import { GetMediaByIdController } from './services/get-media-by-id/controller';
+import { GetMediaByIdService } from './services/get-media-by-id/service';
 //----------------------------------------------------------------------
 
 @Module({
@@ -20,11 +21,13 @@ import { DeleteMediaService } from './services/delete-media/service';
     GetAllByOrgPaginatedController,
     UpdateMediaController,
     DeleteMediaController,
+    GetMediaByIdController,
   ],
   providers: [
     CreateMediaService,
     GetAllByOrgPaginatedService,
     UpdateMediaService,
+    GetMediaByIdService,
     DeleteMediaService,
   ],
 })
