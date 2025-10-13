@@ -17,7 +17,7 @@ export class SearchMediaDto {
   @IsInt()
   @Min(1)
   @Max(100)
-  limit?: number = 50;
+  limit?: number = 20;
 
   @IsOptional()
   @IsString()
