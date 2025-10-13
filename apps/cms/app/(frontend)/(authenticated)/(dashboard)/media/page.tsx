@@ -2,9 +2,9 @@
 import { getAllMediaPaginated } from "@/app/(backend)/server_actions/media/getAllMediaPaginated"
 import { Button } from "@/components/common/Button"
 import Link from "next/link"
-import Image from "next/image"
 import { RiImageLine, RiSearchLine, RiAddLine } from "@remixicon/react"
 import MediaItemDrawer from "./MediaItemDrawer"
+import MediaItem from "./MediaItemButton.client"
 
 //------------------------------------------------------------
 
@@ -13,7 +13,7 @@ const Page = async ({
 }: {
   searchParams: Promise<{ [key: string]: string | undefined }>
 }) => {
-  const { page = "1", search = "", selectedId } = await searchParams
+  const { page = "1", search = "" } = await searchParams
 
   const mediaData = await getAllMediaPaginated({
     page,
@@ -25,13 +25,8 @@ const Page = async ({
   const hasNextPage = meta.currentPage < meta.totalPages
   const hasActiveFilters = search !== ""
 
-  const selectedMedia = selectedId
-    ? items.find((item) => item.id === Number(selectedId))
-    : null
-
   return (
     <div className="relative flex h-full flex-col gap-2 overflow-hidden py-4 pl-5">
-      {/* Header with Actions */}
       <div className="flex items-center justify-between pr-5">
         <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-50">
           Media Library
@@ -44,7 +39,6 @@ const Page = async ({
         </Link>
       </div>
 
-      {/* Search Bar */}
       <div className="my-2 flex flex-col gap-3 pr-2 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-1 flex-col gap-3 sm:flex-row sm:items-center">
           <form
@@ -106,46 +100,21 @@ const Page = async ({
         </div>
       )}
 
-      {/* Media Grid */}
       {items.length > 0 && (
         <div className="flex-1 overflow-hidden">
           <div className="h-full overflow-auto pr-5">
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8">
               {items.map((media) => (
-                <Link
-                  key={media.id}
-                  href={`/media?page=${page}${search ? `&search=${search}` : ""}&selectedId=${media.id}`}
-                  className="group relative"
-                >
-                  <div className="relative aspect-square overflow-hidden rounded-xl ring-1 ring-gray-200/50 transition-all duration-300 hover:ring-gray-300 dark:ring-gray-800/50 dark:hover:ring-gray-700">
-                    <div className="relative h-full w-full overflow-hidden rounded-lg bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900">
-                      <Image
-                        src={media.url}
-                        alt={media.description || "Media"}
-                        fill
-                        className="object-cover p-2"
-                        style={{
-                          borderRadius: 17,
-                        }}
-                      />
-                    </div>
-
-                    <div className="absolute inset-2 rounded-lg bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
-                    <div className="absolute bottom-2 left-2 right-2 translate-y-full rounded-lg bg-gradient-to-t from-black/90 to-transparent p-3 transition-transform duration-300 group-hover:translate-y-0">
-                      <p className="truncate text-xs font-medium text-white">
-                        {media.description || "No description"}
-                      </p>
-                    </div>
-                  </div>
-                </Link>
+                <div key={media.id}>
+                  <MediaItem media={media} />
+                  <MediaItemDrawer media={media} />
+                </div>
               ))}
             </div>
           </div>
         </div>
       )}
 
-      {/* Pagination */}
       {meta && meta.totalPages > 1 && (
         <div className="border-t border-gray-200 pr-5 pt-4 dark:border-slate-800/50">
           <div className="flex items-center justify-center sm:justify-between">
@@ -160,7 +129,6 @@ const Page = async ({
               </span>
             </div>
 
-            {/* Desktop pagination */}
             <div className="hidden items-center gap-2 sm:flex">
               {hasPreviousPage ? (
                 <Link href={`?page=1${search ? `&search=${search}` : ""}`}>
@@ -245,7 +213,6 @@ const Page = async ({
               )}
             </div>
 
-            {/* Mobile pagination */}
             <div className="flex items-center gap-2 sm:hidden">
               {hasPreviousPage ? (
                 <Link
@@ -293,15 +260,6 @@ const Page = async ({
             </div>
           </div>
         </div>
-      )}
-
-      {/* Media Item Drawer */}
-      {selectedMedia && (
-        <MediaItemDrawer
-          media={selectedMedia}
-          currentPage={page}
-          currentSearch={search}
-        />
       )}
     </div>
   )

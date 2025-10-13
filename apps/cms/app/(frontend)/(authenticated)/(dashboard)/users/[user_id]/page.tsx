@@ -1,8 +1,8 @@
 import { RiArrowLeftLine, RiDeleteBin6Line } from "@remixicon/react"
 import Link from "next/link"
 import { UserOrganizationRole } from "@connect-phone/shared-types"
-import { getUserById } from "@/app/(backend)/server_actions/getUserById"
-import { updateUser } from "@/app/(backend)/server_actions/updateUser"
+import { getUserById } from "@/app/(backend)/server_actions/users/getUserById"
+import { updateUser } from "@/app/(backend)/server_actions/users/updateUser"
 import DeleteUserButton from "./DeleteUserButton"
 
 const USER_ROLES = [

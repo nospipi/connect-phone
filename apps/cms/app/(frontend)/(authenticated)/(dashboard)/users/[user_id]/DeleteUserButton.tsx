@@ -1,6 +1,6 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/users/(tab-routes)/users/DeleteUserButton.tsx
 
-import { deleteUserById } from "@/app/(backend)/server_actions/deleteUserById"
+import { deleteUserById } from "@/app/(backend)/server_actions/users/deleteUserById"
 import { RiDeleteBin6Line } from "@remixicon/react"
 import { IUserWithOrganizationRole } from "@connect-phone/shared-types"
 

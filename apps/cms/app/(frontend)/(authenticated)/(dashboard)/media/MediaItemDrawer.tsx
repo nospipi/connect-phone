@@ -2,7 +2,6 @@
 import { updateMedia } from "@/app/(backend)/server_actions/media/updateMedia"
 import { deleteMediaById } from "@/app/(backend)/server_actions/media/deleteMediaById"
 import Image from "next/image"
-import Link from "next/link"
 import { RiExternalLinkLine } from "@remixicon/react"
 import { IMedia } from "@connect-phone/shared-types"
 
@@ -10,24 +9,15 @@ import { IMedia } from "@connect-phone/shared-types"
 
 interface MediaItemDrawerProps {
   media: IMedia
-  currentPage: string
-  currentSearch: string
 }
 
-const MediaItemDrawer = ({
-  media,
-  currentPage,
-  currentSearch,
-}: MediaItemDrawerProps) => {
-  const closeUrl = `/media?page=${currentPage}${currentSearch ? `&search=${currentSearch}` : ""}`
-
+const MediaItemDrawer = ({ media }: MediaItemDrawerProps) => {
   return (
     <>
       <input
         type="checkbox"
         id={`media-drawer-${media.id}`}
         className="peer hidden"
-        defaultChecked
       />
 
       <label
@@ -43,9 +33,9 @@ const MediaItemDrawer = ({
                 Edit Media
               </h3>
             </div>
-            <Link
-              href={closeUrl}
-              className="rounded-full p-2 transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+            <label
+              htmlFor={`media-drawer-${media.id}`}
+              className="cursor-pointer rounded-full p-2 transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-800"
             >
               <svg
                 className="h-5 w-5 text-gray-600 dark:text-gray-400"
@@ -60,7 +50,7 @@ const MediaItemDrawer = ({
                   d="M6 18L18 6M6 6l12 12"
                 />
               </svg>
-            </Link>
+            </label>
           </div>
 
           <div className="mb-6">
@@ -70,7 +60,7 @@ const MediaItemDrawer = ({
                   src={media.url}
                   alt={media.description || "Media"}
                   fill
-                  className="object-cover"
+                  className="object-scale-down p-2"
                 />
               </div>
               <div className="flex-1">
@@ -88,7 +78,6 @@ const MediaItemDrawer = ({
 
             <form action={updateMedia} className="space-y-4">
               <input type="hidden" name="id" value={media.id} />
-              <input type="hidden" name="returnUrl" value={closeUrl} />
 
               <div>
                 <label
@@ -108,12 +97,12 @@ const MediaItemDrawer = ({
               </div>
 
               <div className="flex items-center justify-end gap-3 border-t border-gray-200 pt-4 dark:border-gray-800">
-                <Link
-                  href={closeUrl}
-                  className="rounded-md bg-gray-200 px-4 py-2 text-gray-700 transition-colors duration-200 hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
+                <label
+                  htmlFor={`media-drawer-${media.id}`}
+                  className="cursor-pointer rounded-md bg-gray-200 px-4 py-2 text-gray-700 transition-colors duration-200 hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
                 >
                   Cancel
-                </Link>
+                </label>
                 <button
                   type="submit"
                   className="rounded-md bg-indigo-600 px-4 py-2 text-white transition-colors duration-200 hover:bg-indigo-700"
@@ -123,21 +112,15 @@ const MediaItemDrawer = ({
               </div>
             </form>
 
-            <div className="mt-6 border-t border-gray-200 pt-6 dark:border-gray-800">
-              <h4 className="mb-4 text-sm font-medium text-gray-900 dark:text-white">
-                Danger Zone
-              </h4>
-              <form action={deleteMediaById}>
-                <input type="hidden" name="id" value={media.id} />
-                <input type="hidden" name="returnUrl" value={closeUrl} />
-                <button
-                  type="submit"
-                  className="rounded-md bg-red-600 px-4 py-2 text-white transition-colors duration-200 hover:bg-red-700"
-                >
-                  Delete Media
-                </button>
-              </form>
-            </div>
+            <form action={deleteMediaById}>
+              <input type="hidden" name="id" value={media.id} />
+              <button
+                type="submit"
+                className="rounded-md bg-red-600 px-4 py-2 text-white transition-colors duration-200 hover:bg-red-700"
+              >
+                Delete Media
+              </button>
+            </form>
           </div>
         </div>
       </div>
