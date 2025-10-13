@@ -1,7 +1,7 @@
-1. esims should be set so the client will choose a registration date, their portal will give the ability to get an esim 
+1. esims should be set so the client will choose an activation date, their portal will give the ability to get an esim 
 directly (it will fetch one that is topped-up already), otherwise will top up and assign one at the requested date.
 _________________________________________________________________________________________
-2. 
+2. Media deletion should also delete from vercel storage, not only from DB
 _________________________________________________________________________________________
 3.
 _________________________________________________________________________________________

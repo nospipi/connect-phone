@@ -42,7 +42,6 @@ export default function FileUploadForm() {
     const selectedFiles = Array.from(e.target.files || [])
     const totalFiles = files.length + selectedFiles.length
 
-    // Clear previous messages
     setUploadSuccess(null)
     setUploadError(null)
 
@@ -86,7 +85,6 @@ export default function FileUploadForm() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    // Clear previous messages
     setUploadSuccess(null)
     setUploadError(null)
 
@@ -119,11 +117,9 @@ export default function FileUploadForm() {
         await uploadMedia(uploadFormData)
       }
 
-      // Clean up
       files.forEach((f) => URL.revokeObjectURL(f.preview))
       if (fileInputRef.current) fileInputRef.current.value = ""
 
-      // Show success and clear files
       setUploadSuccess({ show: true, count: validFiles.length })
       setFiles([])
       setUploadProgress({ current: 0, total: 0 })
@@ -140,7 +136,6 @@ export default function FileUploadForm() {
 
   return (
     <div className="relative">
-      {/* Success Message */}
       {uploadSuccess?.show && (
         <div className="mb-6 rounded-lg border border-green-200 bg-green-50 p-4 dark:border-green-800 dark:bg-green-900/20">
           <div className="flex items-start gap-3">
@@ -168,7 +163,6 @@ export default function FileUploadForm() {
         </div>
       )}
 
-      {/* Error Message */}
       {uploadError && (
         <div className="mb-6 rounded-lg border border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-900/20">
           <div className="flex items-start gap-3">
@@ -199,7 +193,6 @@ export default function FileUploadForm() {
       )}
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-        {/* File Upload */}
         <div>
           <label
             htmlFor="files"
@@ -229,7 +222,6 @@ export default function FileUploadForm() {
           )}
         </div>
 
-        {/* Image Previews */}
         {files.length > 0 && (
           <div>
             <div className="mb-3 flex items-center justify-between">
@@ -315,7 +307,23 @@ export default function FileUploadForm() {
           </div>
         )}
 
-        {/* Form Actions */}
+        <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800/50">
+          <label className="flex cursor-pointer items-start gap-3">
+            <input
+              type="checkbox"
+              name="mediaRightsAcknowledgement"
+              required
+              disabled={isUploading}
+              className="mt-1 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-2 focus:ring-indigo-500 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:bg-gray-700"
+            />
+            <span className="text-sm text-gray-700 dark:text-gray-300">
+              I confirm that I have the rights to upload and use these images,
+              and that they do not violate any copyright, trademark, or other
+              intellectual property rights.
+            </span>
+          </label>
+        </div>
+
         <div className="flex flex-col gap-3 border-t border-gray-200 pt-6 sm:flex-row sm:justify-end dark:border-gray-800">
           <Link
             href="/media"
@@ -338,7 +346,6 @@ export default function FileUploadForm() {
         </div>
       </form>
 
-      {/* Overlay Upload Indicator */}
       {isUploading && (
         <div className="absolute inset-0 z-50 flex flex-col items-center justify-center rounded-lg bg-black/60 backdrop-blur-sm">
           <RiLoader4Line className="mb-4 h-10 w-10 animate-spin text-white" />
