@@ -10,12 +10,9 @@ import {
   RiLineChartLine,
   RiNodeTree,
   RiArchive2Line,
-  RiContactsBook2Line,
   RiGovernmentLine,
   RiShoppingBagLine,
-  RiClipboardLine,
-  RiFileListLine,
-  RiBillLine,
+  RiMultiImageLine,
 } from "@remixicon/react"
 import Link from "next/link"
 
@@ -54,6 +51,11 @@ const navigation = [
     name: "Organization",
     href: "/organization/details",
     icon: RiGovernmentLine,
+  },
+  {
+    name: "Media",
+    href: "/media",
+    icon: RiMultiImageLine,
   },
 ] as const
 
