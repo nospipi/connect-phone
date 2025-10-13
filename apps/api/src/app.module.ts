@@ -20,6 +20,7 @@ import { CountriesModule } from './resources/countries/countries.module';
 import { OrganizationsModule } from './resources/organizations/organizations.module';
 import { DateRangesModule } from './resources/date-ranges/date-ranges.module';
 import { PricesModule } from './resources/prices/prices.module';
+import { MediaModule } from './resources/media/media.module';
 
 //-----------------------------------------------------------------------------
 
@@ -40,6 +41,7 @@ import { PricesModule } from './resources/prices/prices.module';
     OrganizationsModule,
     DateRangesModule,
     PricesModule,
+    MediaModule,
   ],
   controllers: [AppController],
   providers: [
