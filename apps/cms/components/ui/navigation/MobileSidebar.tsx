@@ -37,7 +37,7 @@ const navigation = [
   },
   {
     name: "Inventory",
-    href: "/inventory/products",
+    href: "/inventory/countries",
     icon: RiArchive2Line,
   },
   {
