@@ -1,16 +1,21 @@
+// apps/cms/app/(frontend)/(authenticated)/(dashboard)/media/upload/FileUploadForm.client.tsx
 "use client"
 
-import { useState, useEffect, useRef } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useState, useRef } from "react"
+import { useRouter } from "next/navigation"
 import {
   RiUploadLine,
   RiCloseLine,
   RiImageLine,
   RiLoader4Line,
+  RiCheckLine,
+  RiAlertLine,
 } from "@remixicon/react"
 import Link from "next/link"
 import Image from "next/image"
 import { uploadMedia } from "@/app/(backend)/server_actions/media/uploadMedia"
+
+//----------------------------------------------------------------------
 
 interface FilePreview {
   file: File
@@ -22,25 +27,24 @@ const MAX_FILES = 5
 
 export default function FileUploadForm() {
   const router = useRouter()
-  const searchParams = useSearchParams()
   const [files, setFiles] = useState<FilePreview[]>([])
   const [isUploading, setIsUploading] = useState(false)
   const [uploadProgress, setUploadProgress] = useState({ current: 0, total: 0 })
   const [limitError, setLimitError] = useState<string | null>(null)
+  const [uploadSuccess, setUploadSuccess] = useState<{
+    show: boolean
+    count: number
+  } | null>(null)
+  const [uploadError, setUploadError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement | null>(null)
-
-  useEffect(() => {
-    const success = searchParams.get("success")
-    if (success) {
-      setFiles([])
-      setUploadProgress({ current: 0, total: 0 })
-      setLimitError(null)
-    }
-  }, [searchParams])
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = Array.from(e.target.files || [])
     const totalFiles = files.length + selectedFiles.length
+
+    // Clear previous messages
+    setUploadSuccess(null)
+    setUploadError(null)
 
     if (totalFiles > MAX_FILES) {
       setLimitError(`You can only upload up to ${MAX_FILES} images.`)
@@ -82,14 +86,18 @@ export default function FileUploadForm() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
+    // Clear previous messages
+    setUploadSuccess(null)
+    setUploadError(null)
+
     if (files.length === 0) {
-      router.push("/media/upload?error=No files selected")
+      setUploadError("No files selected")
       return
     }
 
     const validFiles = files.filter((f) => !f.error)
     if (validFiles.length === 0) {
-      router.push("/media/upload?error=No valid files to upload")
+      setUploadError("No valid files to upload")
       return
     }
 
@@ -111,17 +119,20 @@ export default function FileUploadForm() {
         await uploadMedia(uploadFormData)
       }
 
+      // Clean up
       files.forEach((f) => URL.revokeObjectURL(f.preview))
-      router.push(`/media/upload?success=true&total=${validFiles.length}`)
       if (fileInputRef.current) fileInputRef.current.value = ""
+
+      // Show success and clear files
+      setUploadSuccess({ show: true, count: validFiles.length })
       setFiles([])
+      setUploadProgress({ current: 0, total: 0 })
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "Upload failed"
-      router.push(`/media/upload?error=${encodeURIComponent(errorMessage)}`)
+      setUploadError(errorMessage)
     } finally {
       setIsUploading(false)
-      setUploadProgress({ current: 0, total: 0 })
     }
   }
 
@@ -129,6 +140,61 @@ export default function FileUploadForm() {
 
   return (
     <div className="relative">
+      {/* Success Message */}
+      {uploadSuccess?.show && (
+        <div className="mb-6 rounded-lg border border-green-200 bg-green-50 p-4 dark:border-green-800 dark:bg-green-900/20">
+          <div className="flex items-start gap-3">
+            <div className="flex-shrink-0">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-100 dark:bg-green-800/50">
+                <RiCheckLine className="h-5 w-5 text-green-600 dark:text-green-400" />
+              </div>
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-medium text-green-900 dark:text-green-100">
+                Upload complete
+              </p>
+              <p className="mt-1 text-sm text-green-700 dark:text-green-200">
+                Successfully uploaded {uploadSuccess.count}{" "}
+                {uploadSuccess.count === 1 ? "image" : "images"}
+              </p>
+            </div>
+            <button
+              onClick={() => setUploadSuccess(null)}
+              className="text-sm text-green-600 underline hover:text-green-800 dark:text-green-400 dark:hover:text-green-300"
+            >
+              Dismiss
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Error Message */}
+      {uploadError && (
+        <div className="mb-6 rounded-lg border border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-900/20">
+          <div className="flex items-start gap-3">
+            <div className="flex-shrink-0">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-red-100 dark:bg-red-800/50">
+                <RiAlertLine className="h-5 w-5 text-red-600 dark:text-red-400" />
+              </div>
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-medium text-red-900 dark:text-red-100">
+                Upload failed
+              </p>
+              <p className="mt-1 text-sm text-red-700 dark:text-red-200">
+                {uploadError}
+              </p>
+            </div>
+            <button
+              onClick={() => setUploadError(null)}
+              className="text-sm text-red-600 underline hover:text-red-800 dark:text-red-400 dark:hover:text-red-300"
+            >
+              Dismiss
+            </button>
+          </div>
+        </div>
+      )}
+
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
         {/* File Upload */}
         <div>
@@ -147,7 +213,7 @@ export default function FileUploadForm() {
             multiple
             onChange={handleFileChange}
             disabled={isUploading || files.length >= MAX_FILES}
-            className="mt-2 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm file:mr-4 file:rounded-md file:border-0 file:bg-gray-50 file:px-4 file:py-2 file:text-sm file:font-medium file:text-gray-700 hover:file:bg-gray-100 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:file:bg-gray-600 dark:file:text-gray-200 dark:hover:file:bg-gray-500"
+            className="mt-2 block w-full cursor-pointer rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm file:mr-4 file:rounded-md file:border-0 file:bg-gray-50 file:px-4 file:py-2 file:text-sm file:font-medium file:text-gray-700 hover:file:bg-gray-100 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:file:bg-gray-600 dark:file:text-gray-200 dark:hover:file:bg-gray-500"
           />
           <p className="mt-2 text-xs text-gray-500">
             You can upload up to {MAX_FILES} images. Each file must be 1MB or
@@ -159,28 +225,6 @@ export default function FileUploadForm() {
             </p>
           )}
         </div>
-
-        {/* Upload Progress Bar */}
-        {isUploading && uploadProgress.total > 0 && (
-          <div className="rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-900/20">
-            <div className="mb-2 flex items-center justify-between">
-              <p className="text-sm font-medium text-blue-900 dark:text-blue-100">
-                Uploading images...
-              </p>
-              <span className="text-sm text-blue-700 dark:text-blue-200">
-                {uploadProgress.current} of {uploadProgress.total}
-              </span>
-            </div>
-            <div className="h-2 w-full overflow-hidden rounded-full bg-blue-200 dark:bg-blue-800">
-              <div
-                className="h-2 rounded-full bg-blue-600 transition-all duration-300 ease-in-out dark:bg-blue-500"
-                style={{
-                  width: `${(uploadProgress.current / uploadProgress.total) * 100}%`,
-                }}
-              ></div>
-            </div>
-          </div>
-        )}
 
         {/* Image Previews */}
         {files.length > 0 && (
@@ -216,7 +260,7 @@ export default function FileUploadForm() {
                             src={filePreview.preview}
                             alt={filePreview.file.name}
                             fill
-                            className="object-cover"
+                            className="object-scale-down p-2"
                           />
                         ) : (
                           <div className="flex h-full w-full items-center justify-center">
@@ -302,7 +346,7 @@ export default function FileUploadForm() {
             {uploadProgress.current} of {uploadProgress.total} uploaded
           </p>
           <p className="mt-4 text-xs italic text-gray-300">
-            Please don’t close or refresh this page
+            Please don&apos;t close or refresh this page
           </p>
         </div>
       )}

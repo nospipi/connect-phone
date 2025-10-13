@@ -7,6 +7,7 @@ import {
   IUserOrganization,
   IUserInvitation,
   IDateRange,
+  IMedia,
 } from "@connect-phone/shared-types"
 
 //----------------------------------------------------------------------
@@ -60,3 +61,5 @@ export interface PaginatedInvitationsResponse
 
 export interface PaginatedDateRangesResponse
   extends PaginatedResponse<IDateRange> {}
+
+export interface PaginatedMediaResponse extends PaginatedResponse<IMedia> {}

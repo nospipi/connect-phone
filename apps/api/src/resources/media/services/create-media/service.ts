@@ -4,8 +4,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { put } from '@vercel/blob';
 import { MediaEntity } from '../../../../database/entities/media.entity';
-import { IMedia } from '@connect-phone/shared-types';
+import { CreateMediaDto } from './create-media.dto';
+import { IMedia, IUploadedFile } from '@connect-phone/shared-types';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
+
+//----------------------------------------------------------------------
 
 @Injectable()
 export class CreateMediaService {
@@ -15,7 +18,10 @@ export class CreateMediaService {
     private currentOrganizationService: CurrentOrganizationService
   ) {}
 
-  async createMedia(file: any, description?: string): Promise<IMedia> {
+  async createMedia(
+    file: IUploadedFile,
+    createMediaDto: CreateMediaDto
+  ): Promise<IMedia> {
     const organization =
       await this.currentOrganizationService.getCurrentOrganization();
 
@@ -30,7 +36,7 @@ export class CreateMediaService {
 
     const media = this.mediaRepository.create({
       url: blob.url,
-      description: description || null,
+      description: createMediaDto.description || null,
       organizationId: organization?.id,
     });
 

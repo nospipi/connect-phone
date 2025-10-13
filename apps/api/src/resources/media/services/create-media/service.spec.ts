@@ -3,8 +3,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateMediaService } from './service';
+import { CreateMediaDto } from './create-media.dto';
 import { MediaEntity } from '../../../../database/entities/media.entity';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
+import { IUploadedFile } from '@connect-phone/shared-types';
 import * as vercelBlob from '@vercel/blob';
 import {
   createMockOrganization,
@@ -22,12 +24,20 @@ describe('CreateMediaService', () => {
   let currentOrganizationService: jest.Mocked<CurrentOrganizationService>;
 
   const mockOrganization = createMockOrganization({ id: 31 });
-  const mockFile = {
+
+  const mockFile: IUploadedFile = {
+    fieldname: 'file',
     originalname: 'test-image.jpg',
-    buffer: Buffer.from('test'),
+    encoding: '7bit',
     mimetype: 'image/jpeg',
     size: 500000,
+    buffer: Buffer.from('test'),
   };
+
+  const mockCreateMediaDto: CreateMediaDto = {
+    description: 'Test description',
+  };
+
   const mockMedia = createMockMedia({ organizationId: 31 });
 
   beforeEach(async () => {
@@ -69,10 +79,7 @@ describe('CreateMediaService', () => {
       mediaRepository.create.mockReturnValue(mockMedia as any);
       mediaRepository.save.mockResolvedValue(mockMedia as any);
 
-      const result = await service.createMedia(
-        mockFile as any,
-        'Test description'
-      );
+      const result = await service.createMedia(mockFile, mockCreateMediaDto);
 
       expect(
         currentOrganizationService.getCurrentOrganization
@@ -95,6 +102,10 @@ describe('CreateMediaService', () => {
     });
 
     it('should create media without description', async () => {
+      const dtoWithoutDescription: CreateMediaDto = {
+        description: null,
+      };
+
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
@@ -104,7 +115,7 @@ describe('CreateMediaService', () => {
       mediaRepository.create.mockReturnValue(mockMedia as any);
       mediaRepository.save.mockResolvedValue(mockMedia as any);
 
-      await service.createMedia(mockFile as any);
+      await service.createMedia(mockFile, dtoWithoutDescription);
 
       expect(mediaRepository.create).toHaveBeenCalledWith({
         url: 'https://blob.vercel-storage.com/test.jpg',
@@ -114,7 +125,7 @@ describe('CreateMediaService', () => {
     });
 
     it('should sanitize filename with special characters', async () => {
-      const fileWithSpecialChars = {
+      const fileWithSpecialChars: IUploadedFile = {
         ...mockFile,
         originalname: 'test image@#$%.jpg',
       };
@@ -128,7 +139,7 @@ describe('CreateMediaService', () => {
       mediaRepository.create.mockReturnValue(mockMedia as any);
       mediaRepository.save.mockResolvedValue(mockMedia as any);
 
-      await service.createMedia(fileWithSpecialChars as any);
+      await service.createMedia(fileWithSpecialChars, mockCreateMediaDto);
 
       expect(vercelBlob.put).toHaveBeenCalledWith(
         expect.stringMatching(/test-image----\.jpg$/),
@@ -149,7 +160,7 @@ describe('CreateMediaService', () => {
       mediaRepository.create.mockReturnValue(mockMedia as any);
       mediaRepository.save.mockResolvedValue(mockMedia as any);
 
-      await service.createMedia(mockFile as any);
+      await service.createMedia(mockFile, mockCreateMediaDto);
 
       expect(vercelBlob.put).toHaveBeenCalledWith(
         'media/31/1234567890-test-image.jpg',
@@ -168,7 +179,7 @@ describe('CreateMediaService', () => {
       mediaRepository.create.mockReturnValue(mockMedia as any);
       mediaRepository.save.mockResolvedValue(mockMedia as any);
 
-      await service.createMedia(mockFile as any);
+      await service.createMedia(mockFile, mockCreateMediaDto);
 
       expect(vercelBlob.put).toHaveBeenCalledWith(
         expect.stringContaining('media/undefined/'),
@@ -177,7 +188,7 @@ describe('CreateMediaService', () => {
       );
       expect(mediaRepository.create).toHaveBeenCalledWith({
         url: 'https://blob.vercel-storage.com/test.jpg',
-        description: null,
+        description: 'Test description',
         organizationId: undefined,
       });
     });
@@ -190,9 +201,9 @@ describe('CreateMediaService', () => {
         new Error('Upload failed')
       );
 
-      await expect(service.createMedia(mockFile as any)).rejects.toThrow(
-        'Upload failed'
-      );
+      await expect(
+        service.createMedia(mockFile, mockCreateMediaDto)
+      ).rejects.toThrow('Upload failed');
 
       expect(mediaRepository.save).not.toHaveBeenCalled();
     });
@@ -207,13 +218,13 @@ describe('CreateMediaService', () => {
       mediaRepository.create.mockReturnValue(mockMedia as any);
       mediaRepository.save.mockRejectedValue(new Error('Database error'));
 
-      await expect(service.createMedia(mockFile as any)).rejects.toThrow(
-        'Database error'
-      );
+      await expect(
+        service.createMedia(mockFile, mockCreateMediaDto)
+      ).rejects.toThrow('Database error');
     });
 
     it('should handle different file types', async () => {
-      const pngFile = {
+      const pngFile: IUploadedFile = {
         ...mockFile,
         originalname: 'test.png',
         mimetype: 'image/png',
@@ -228,7 +239,7 @@ describe('CreateMediaService', () => {
       mediaRepository.create.mockReturnValue(mockMedia as any);
       mediaRepository.save.mockResolvedValue(mockMedia as any);
 
-      await service.createMedia(pngFile as any);
+      await service.createMedia(pngFile, mockCreateMediaDto);
 
       expect(vercelBlob.put).toHaveBeenCalledWith(
         expect.any(String),
@@ -237,6 +248,55 @@ describe('CreateMediaService', () => {
           access: 'public',
           contentType: 'image/png',
         }
+      );
+    });
+
+    it('should handle empty description string', async () => {
+      const dtoWithEmptyDescription: CreateMediaDto = {
+        description: '',
+      };
+
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
+      (vercelBlob.put as jest.Mock).mockResolvedValue({
+        url: 'https://blob.vercel-storage.com/test.jpg',
+      });
+      mediaRepository.create.mockReturnValue(mockMedia as any);
+      mediaRepository.save.mockResolvedValue(mockMedia as any);
+
+      await service.createMedia(mockFile, dtoWithEmptyDescription);
+
+      expect(mediaRepository.create).toHaveBeenCalledWith({
+        url: 'https://blob.vercel-storage.com/test.jpg',
+        description: null,
+        organizationId: 31,
+      });
+    });
+
+    it('should properly type file buffer', async () => {
+      const largeBuffer = Buffer.alloc(1024 * 500); // 500KB
+      const fileWithLargeBuffer: IUploadedFile = {
+        ...mockFile,
+        buffer: largeBuffer,
+        size: largeBuffer.length,
+      };
+
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
+      (vercelBlob.put as jest.Mock).mockResolvedValue({
+        url: 'https://blob.vercel-storage.com/test.jpg',
+      });
+      mediaRepository.create.mockReturnValue(mockMedia as any);
+      mediaRepository.save.mockResolvedValue(mockMedia as any);
+
+      await service.createMedia(fileWithLargeBuffer, mockCreateMediaDto);
+
+      expect(vercelBlob.put).toHaveBeenCalledWith(
+        expect.any(String),
+        largeBuffer,
+        expect.any(Object)
       );
     });
   });

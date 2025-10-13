@@ -1,18 +1,11 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/media/upload/page.tsx
-import { RiArrowLeftLine, RiCheckLine, RiAlertLine } from "@remixicon/react"
+import { RiArrowLeftLine } from "@remixicon/react"
 import Link from "next/link"
 import FileUploadForm from "./FileUploadForm.client"
 
 //----------------------------------------------------------------------
 
-const Page = async ({
-  searchParams,
-}: {
-  searchParams: Promise<{ [key: string]: string | undefined }>
-}) => {
-  const params = await searchParams
-  const { success, error, total } = params
-
+const Page = async () => {
   return (
     <div className="flex h-full flex-col overflow-hidden">
       {/* Header */}
@@ -39,61 +32,6 @@ const Page = async ({
       <div className="flex-1 overflow-hidden py-4">
         <div className="flex h-full w-full justify-center overflow-auto px-4">
           <div className="w-full max-w-4xl">
-            {/* Success Message */}
-            {success && (
-              <div className="mb-6 rounded-lg border border-green-200 bg-green-50 p-4 dark:border-green-800 dark:bg-green-900/20">
-                <div className="flex items-start gap-3">
-                  <div className="flex-shrink-0">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-100 dark:bg-green-800/50">
-                      <RiCheckLine className="h-5 w-5 text-green-600 dark:text-green-400" />
-                    </div>
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-sm font-medium text-green-900 dark:text-green-100">
-                      Upload complete
-                    </p>
-                    <p className="mt-1 text-sm text-green-700 dark:text-green-200">
-                      Successfully uploaded {total}{" "}
-                      {Number(total) === 1 ? "image" : "images"}
-                    </p>
-                  </div>
-                  <Link
-                    href="/media/upload"
-                    className="text-sm text-green-600 underline hover:text-green-800 dark:text-green-400 dark:hover:text-green-300"
-                  >
-                    Dismiss
-                  </Link>
-                </div>
-              </div>
-            )}
-
-            {/* Error Message */}
-            {error && (
-              <div className="mb-6 rounded-lg border border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-900/20">
-                <div className="flex items-start gap-3">
-                  <div className="flex-shrink-0">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-red-100 dark:bg-red-800/50">
-                      <RiAlertLine className="h-5 w-5 text-red-600 dark:text-red-400" />
-                    </div>
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-sm font-medium text-red-900 dark:text-red-100">
-                      Upload failed
-                    </p>
-                    <p className="mt-1 text-sm text-red-700 dark:text-red-200">
-                      {decodeURIComponent(error)}
-                    </p>
-                  </div>
-                  <Link
-                    href="/media/upload"
-                    className="text-sm text-red-600 underline hover:text-red-800 dark:text-red-400 dark:hover:text-red-300"
-                  >
-                    Dismiss
-                  </Link>
-                </div>
-              </div>
-            )}
-
             <FileUploadForm />
 
             {/* Help Section */}

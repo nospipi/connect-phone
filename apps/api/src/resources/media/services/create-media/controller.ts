@@ -6,14 +6,15 @@ import {
   UseInterceptors,
   UploadedFile,
   Body,
-  BadRequestException,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateMediaService } from './service';
+import { CreateMediaDto } from './create-media.dto';
 import { DbUserGuard } from '../../../../common/guards/db-user.guard';
 import { OrganizationGuard } from '../../../../common/guards/organization.guard';
 import { DbUserRoleGuard } from '../../../../common/guards/db-user-role.guard';
-import { IMedia } from '@connect-phone/shared-types';
+import { FileValidationPipe } from '../../../../common/pipes/file-validation.pipe';
+import { IMedia, IUploadedFile } from '@connect-phone/shared-types';
 
 //----------------------------------------------------------------------
 
@@ -25,21 +26,16 @@ export class CreateMediaController {
   @Post('new')
   @UseInterceptors(FileInterceptor('file'))
   async createMedia(
-    @UploadedFile() file: any,
-    @Body('description') description?: string
+    @UploadedFile(
+      new FileValidationPipe({
+        maxSize: 1 * 1024 * 1024,
+        allowedMimeTypes: ['image/'],
+        required: true,
+      })
+    )
+    file: IUploadedFile,
+    @Body() createMediaDto: CreateMediaDto
   ): Promise<IMedia> {
-    if (!file) {
-      throw new BadRequestException('No file provided');
-    }
-
-    if (file.size > 1 * 1024 * 1024) {
-      throw new BadRequestException('File size must be less than 1MB');
-    }
-
-    if (!file.mimetype.startsWith('image/')) {
-      throw new BadRequestException('Only image files are allowed');
-    }
-
-    return this.createMediaService.createMedia(file, description);
+    return this.createMediaService.createMedia(file, createMediaDto);
   }
 }
