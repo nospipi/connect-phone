@@ -2,7 +2,7 @@
 import { IsString, IsNotEmpty, Matches } from 'class-validator';
 import { IDateRange } from '@connect-phone/shared-types';
 import { Sanitize } from '@/common/decorators/sanitize.decorator';
-import { IsEndDateAfterStart } from '@/common/validators/is-end-date-after-start.validator';
+import { IsEndDateAfterStart } from '@/database/validators/is-end-date-after-start.validator';
 
 //----------------------------------------------------------------------
 

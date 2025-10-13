@@ -4,6 +4,8 @@ import { IDateRange } from "./dateRange";
 import { ISalesChannel } from "./salesChannel";
 import { IOrganization } from "./organization";
 
+//----------------------------------------------------------------------
+
 export enum Currency {
   USD = "USD",
   EUR = "EUR",
@@ -19,6 +21,7 @@ export enum Currency {
 
 export interface IPrice {
   id: number;
+  name: string;
   amount: number;
   currency: Currency;
   isDateBased: boolean;
