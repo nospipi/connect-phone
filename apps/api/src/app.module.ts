@@ -19,6 +19,7 @@ import { UserInvitationsModule } from './resources/user-invitations/user-invitat
 import { CountriesModule } from './resources/countries/countries.module';
 import { OrganizationsModule } from './resources/organizations/organizations.module';
 import { DateRangesModule } from './resources/date-ranges/date-ranges.module';
+import { PricesModule } from './resources/prices/prices.module';
 
 //-----------------------------------------------------------------------------
 
@@ -38,6 +39,7 @@ import { DateRangesModule } from './resources/date-ranges/date-ranges.module';
     CountriesModule,
     OrganizationsModule,
     DateRangesModule,
+    PricesModule,
   ],
   controllers: [AppController],
   providers: [
