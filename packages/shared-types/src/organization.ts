@@ -6,6 +6,7 @@ import { IUserOrganization } from "./userOrganization";
 import { ICountry } from "./country";
 import { IPrice } from "./price";
 import { IDateRange } from "./dateRange";
+import { IMedia } from "./media";
 import { Currency } from "./price";
 
 //----------------------------------------------------------------------
@@ -22,5 +23,6 @@ export interface IOrganization {
   countries: ICountry[];
   prices: IPrice[];
   dateRanges: IDateRange[];
+  media: IMedia[];
   mainCurrency: Currency;
 }

@@ -15,6 +15,7 @@ import {
   ICountry,
   IPrice,
   IDateRange,
+  IMedia,
   Currency,
 } from '@connect-phone/shared-types';
 import { SalesChannelEntity } from './sales-channel.entity';
@@ -23,6 +24,7 @@ import { AuditLogEntryEntity } from './audit-log.entity';
 import { CountryEntity } from './country.entity';
 import { PriceEntity } from './price.entity';
 import { DateRangeEntity } from './date-range.entity';
+import { MediaEntity } from './media.entity';
 
 //----------------------------------------------------------------------
 
@@ -70,4 +72,7 @@ export class OrganizationEntity implements IOrganization {
 
   @OneToMany(() => DateRangeEntity, (dateRange) => dateRange.organization)
   dateRanges: IDateRange[];
+
+  @OneToMany(() => MediaEntity, (media) => media.organization)
+  media: IMedia[];
 }
