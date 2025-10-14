@@ -146,12 +146,15 @@ const Page = async ({ searchParams }: PageProps) => {
 
       <div className="border-b border-gray-200/80 bg-white/50 p-3 backdrop-blur-sm dark:border-gray-800/80 dark:bg-gray-950/50">
         <div className="flex flex-wrap items-center gap-4">
+          {/* Type '{ currentSearch: string; currentPage: string; previousPage: string; selectedParam: string; }' is missing the following properties from type 'SearchFormProps': multipleSelection, targetField, formDatats(2739) */}
           <div className="min-w-[300px] flex-1">
             <SearchForm
               currentSearch={search}
-              currentPage={page}
               previousPage={previousPage}
               selectedParam={selectedParam}
+              multipleSelection={multipleSelection}
+              targetField={targetField}
+              formData={formData}
             />
           </div>
 
