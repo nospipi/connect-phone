@@ -34,9 +34,9 @@ const Page = async ({
   const hasActiveFilters = search !== "" || region !== "all"
 
   return (
-    <div className="flex h-full flex-col gap-2 overflow-hidden py-4 pl-5">
+    <div className="flex h-full flex-col gap-2 overflow-hidden pb-5">
       {/* Filters Bar */}
-      <div className="my-2 flex flex-col gap-3 pr-2 sm:flex-row sm:items-center sm:justify-between">
+      <div className="my-2 flex flex-col gap-3 px-5 pr-2 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-1 flex-col gap-3 sm:flex-row sm:items-center">
           <form
             method="GET"
@@ -121,7 +121,7 @@ const Page = async ({
       {/* Countries List */}
       {countries.length > 0 && (
         <div className="flex-1 overflow-hidden">
-          <div className="h-full divide-y divide-gray-200 overflow-auto pr-5 dark:divide-slate-800/30">
+          <div className="h-full divide-y divide-gray-200 overflow-auto p-5 dark:divide-slate-800/30">
             {countries.map((country: any) => {
               const flagUrl =
                 country.flagAvatarUrl || country.flagProductImageUrl

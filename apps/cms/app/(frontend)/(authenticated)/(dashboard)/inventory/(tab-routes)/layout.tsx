@@ -8,14 +8,17 @@ const Layout = async ({
   children: React.ReactNode
 }>) => {
   return (
-    <div className="relative flex h-full flex-col">
-      <div className="pl-5 pt-4">
+    <div className="flex h-full flex-col gap-2">
+      <div className="flex flex-col gap-2 pl-5 pr-3 pt-4">
         <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-50">
           Inventory
         </h1>
-        <TabNavigationWrapper />
+
+        <div className="flex items-center justify-between">
+          <TabNavigationWrapper />
+        </div>
       </div>
-      {children}
+      <div className="flex-1 overflow-hidden">{children}</div>
     </div>
   )
 }
