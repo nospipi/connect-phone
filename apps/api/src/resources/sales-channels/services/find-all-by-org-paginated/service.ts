@@ -51,6 +51,7 @@ export class FindAllByOrgPaginatedService {
     const queryBuilder = this.salesChannelsRepository
       .createQueryBuilder('salesChannel')
       .leftJoinAndSelect('salesChannel.organization', 'organization')
+      .leftJoinAndSelect('salesChannel.logo', 'logo')
       .where('salesChannel.organizationId = :organizationId', {
         organizationId: organization?.id,
       })

@@ -85,6 +85,10 @@ describe('FindAllByOrgPaginatedService', () => {
         'salesChannel.organization',
         'organization'
       );
+      expect(mockQueryBuilder.leftJoinAndSelect).toHaveBeenCalledWith(
+        'salesChannel.logo',
+        'logo'
+      );
       expect(mockQueryBuilder.where).toHaveBeenCalledWith(
         'salesChannel.organizationId = :organizationId',
         {
