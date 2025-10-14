@@ -14,6 +14,7 @@ interface PageProps {
     search?: string
     previousPage?: string
     selected?: string
+    multipleSelection?: string
   }>
 }
 
@@ -23,6 +24,8 @@ const Page = async ({ searchParams }: PageProps) => {
   const search = params.search || ""
   const previousPage = params.previousPage || "/media"
   const selectedParam = params.selected || ""
+  const multipleSelection = params.multipleSelection === "true"
+
   const selectedIds = selectedParam
     ? selectedParam.split(",").map(Number).filter(Boolean)
     : []
@@ -41,6 +44,7 @@ const Page = async ({ searchParams }: PageProps) => {
     urlParams.set("page", page)
     if (search) urlParams.set("search", search)
     urlParams.set("previousPage", previousPage)
+    urlParams.set("multipleSelection", String(multipleSelection))
     if (newSelectedIds.length > 0) {
       urlParams.set("selected", newSelectedIds.join(","))
     }
@@ -57,6 +61,7 @@ const Page = async ({ searchParams }: PageProps) => {
     urlParams.set("page", page)
     if (search) urlParams.set("search", search)
     urlParams.set("previousPage", previousPage)
+    urlParams.set("multipleSelection", String(multipleSelection))
     return `/media/select?${urlParams.toString()}`
   }
 
@@ -75,7 +80,9 @@ const Page = async ({ searchParams }: PageProps) => {
               Select Media
             </h1>
             <p className="text-sm text-gray-500">
-              Choose images from your library
+              {multipleSelection
+                ? "Choose images from your library"
+                : "Choose one image from your library"}
             </p>
           </div>
         </div>
@@ -139,9 +146,11 @@ const Page = async ({ searchParams }: PageProps) => {
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8">
               {items.map((media) => {
                 const isSelected = selectedIds.includes(media.id)
-                const newSelectedIds = isSelected
-                  ? selectedIds.filter((id) => id !== media.id)
-                  : [...selectedIds, media.id]
+                const newSelectedIds = multipleSelection
+                  ? isSelected
+                    ? selectedIds.filter((id) => id !== media.id)
+                    : [...selectedIds, media.id]
+                  : [media.id]
 
                 return (
                   <MediaItemButton
@@ -174,7 +183,7 @@ const Page = async ({ searchParams }: PageProps) => {
             <div className="hidden items-center gap-2 sm:flex">
               {hasPreviousPage ? (
                 <Link
-                  href={`/media/select?page=1${search ? `&search=${search}` : ""}&previousPage=${previousPage}${selectedParam ? `&selected=${selectedParam}` : ""}`}
+                  href={`/media/select?page=1${search ? `&search=${search}` : ""}&previousPage=${previousPage}${selectedParam ? `&selected=${selectedParam}` : ""}&multipleSelection=${multipleSelection}`}
                 >
                   <Button
                     variant="secondary"
@@ -194,7 +203,7 @@ const Page = async ({ searchParams }: PageProps) => {
               )}
               {hasPreviousPage ? (
                 <Link
-                  href={`/media/select?page=${meta.currentPage - 1}${search ? `&search=${search}` : ""}&previousPage=${previousPage}${selectedParam ? `&selected=${selectedParam}` : ""}`}
+                  href={`/media/select?page=${meta.currentPage - 1}${search ? `&search=${search}` : ""}&previousPage=${previousPage}${selectedParam ? `&selected=${selectedParam}` : ""}&multipleSelection=${multipleSelection}`}
                 >
                   <Button
                     variant="secondary"
@@ -217,7 +226,7 @@ const Page = async ({ searchParams }: PageProps) => {
               </span>
               {hasNextPage ? (
                 <Link
-                  href={`/media/select?page=${meta.currentPage + 1}${search ? `&search=${search}` : ""}&previousPage=${previousPage}${selectedParam ? `&selected=${selectedParam}` : ""}`}
+                  href={`/media/select?page=${meta.currentPage + 1}${search ? `&search=${search}` : ""}&previousPage=${previousPage}${selectedParam ? `&selected=${selectedParam}` : ""}&multipleSelection=${multipleSelection}`}
                 >
                   <Button
                     variant="secondary"
@@ -237,7 +246,7 @@ const Page = async ({ searchParams }: PageProps) => {
               )}
               {hasNextPage ? (
                 <Link
-                  href={`/media/select?page=${meta.totalPages}${search ? `&search=${search}` : ""}&previousPage=${previousPage}${selectedParam ? `&selected=${selectedParam}` : ""}`}
+                  href={`/media/select?page=${meta.totalPages}${search ? `&search=${search}` : ""}&previousPage=${previousPage}${selectedParam ? `&selected=${selectedParam}` : ""}&multipleSelection=${multipleSelection}`}
                 >
                   <Button
                     variant="secondary"
@@ -260,7 +269,7 @@ const Page = async ({ searchParams }: PageProps) => {
             <div className="flex items-center gap-2 sm:hidden">
               {hasPreviousPage ? (
                 <Link
-                  href={`/media/select?page=${meta.currentPage - 1}${search ? `&search=${search}` : ""}&previousPage=${previousPage}${selectedParam ? `&selected=${selectedParam}` : ""}`}
+                  href={`/media/select?page=${meta.currentPage - 1}${search ? `&search=${search}` : ""}&previousPage=${previousPage}${selectedParam ? `&selected=${selectedParam}` : ""}&multipleSelection=${multipleSelection}`}
                 >
                   <Button
                     variant="secondary"
@@ -283,7 +292,7 @@ const Page = async ({ searchParams }: PageProps) => {
               </span>
               {hasNextPage ? (
                 <Link
-                  href={`/media/select?page=${meta.currentPage + 1}${search ? `&search=${search}` : ""}&previousPage=${previousPage}${selectedParam ? `&selected=${selectedParam}` : ""}`}
+                  href={`/media/select?page=${meta.currentPage + 1}${search ? `&search=${search}` : ""}&previousPage=${previousPage}${selectedParam ? `&selected=${selectedParam}` : ""}&multipleSelection=${multipleSelection}`}
                 >
                   <Button
                     variant="secondary"
