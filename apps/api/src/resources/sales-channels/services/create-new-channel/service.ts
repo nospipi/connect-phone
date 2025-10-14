@@ -14,7 +14,6 @@ export class CreateNewChannelService {
   constructor(
     @InjectRepository(SalesChannelEntity)
     private salesChannelsRepository: Repository<SalesChannelEntity>,
-    //@InjectRepository(Organization)
     private currentOrganizationService: CurrentOrganizationService
   ) {}
 
@@ -33,15 +32,13 @@ export class CreateNewChannelService {
       organizationId: organization?.id,
     });
 
-    //return this.salesChannelsRepository.save(salesChannel);
-
     const result = await this.salesChannelsRepository
       .createQueryBuilder()
       .insert()
       .into(SalesChannelEntity)
-      .values(salesChannel) // ← Circular refs are automatically ignored!
+      .values(salesChannel)
       .execute();
 
-    return result.raw[0]; // Return the inserted row
+    return result.raw[0];
   }
 }

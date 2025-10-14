@@ -122,9 +122,7 @@ async function seed() {
           description: faker.datatype.boolean()
             ? faker.company.catchPhrase()
             : null,
-          logoUrl: faker.datatype.boolean()
-            ? 'https://picsum.photos/400/400'
-            : null,
+          logoId: null,
           organizationId: org.id,
         });
       }

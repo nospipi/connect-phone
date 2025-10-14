@@ -13,6 +13,8 @@ import {
   createCurrentOrganizationServiceProvider,
 } from '../../../../test/factories';
 
+//----------------------------------------------------------------------
+
 describe('CreateNewChannelService', () => {
   let service: CreateNewChannelService;
   let salesChannelsRepository: jest.Mocked<Repository<SalesChannelEntity>>;
@@ -143,4 +145,3 @@ describe('CreateNewChannelService', () => {
     });
   });
 });
-// apps/api/src/resources/sales-channels/services/create-new-channel/service.spec.ts

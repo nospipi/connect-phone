@@ -1,5 +1,4 @@
-// apps/cms/app/(backend)/server_actions/createNewSalesChannel.ts
-
+// apps/cms/app/(backend)/server_actions/sales-channels/createNewSalesChannel.ts
 "use server"
 
 import { AxiosError } from "axios"
@@ -14,13 +13,11 @@ export const createNewSalesChannel = async (
   formData: FormData,
 ): Promise<void> => {
   try {
-    // Extract form data
     const name = formData.get("name") as string
     const description = formData.get("description") as string
-    const logoUrl = formData.get("logoUrl") as string
+    const logoId = formData.get("logoId") as string
     const isActive = formData.get("isActive") as string
 
-    // Validate required fields
     if (!name) {
       throw new Error("Name is required")
     }
@@ -28,18 +25,17 @@ export const createNewSalesChannel = async (
     console.log("Creating new sales channel:", {
       name,
       description: description || undefined,
-      logoUrl: logoUrl || undefined,
+      logoId: logoId === "" ? null : logoId ? parseInt(logoId, 10) : undefined,
+      isActive: Boolean(isActive),
     })
 
     const api = createApiClient()
     const response = await api.post("/sales-channels/new", {
       name,
       description: description || undefined,
-      logoUrl: logoUrl || undefined,
+      logoId: logoId === "" ? null : logoId ? parseInt(logoId, 10) : undefined,
       isActive: Boolean(isActive),
     })
-
-    //console.log("Response from API:", response.data)
 
     if (response.status !== 200 && response.status !== 201) {
       throw new Error("Failed to create sales channel")
@@ -47,7 +43,6 @@ export const createNewSalesChannel = async (
 
     console.log("Sales channel created successfully:", response.data)
 
-    // Revalidate the sales channels page after creating a new one
     revalidatePath("/sales-channels")
   } catch (error: unknown) {
     const messageFallback = (error as Error).message ?? "An error occurred"

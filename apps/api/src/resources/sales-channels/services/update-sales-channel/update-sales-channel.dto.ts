@@ -1,6 +1,8 @@
 // apps/api/src/resources/sales-channels/services/update-sales-channel/update-sales-channel.dto.ts
-import { IsString, IsOptional, IsUrl, IsBoolean } from 'class-validator';
+import { IsString, IsOptional, IsBoolean, IsNumber } from 'class-validator';
 import { ISalesChannel } from '@connect-phone/shared-types';
+
+//----------------------------------------------------------------------
 
 type UpdateSalesChannel = Omit<
   ISalesChannel,
@@ -8,14 +10,15 @@ type UpdateSalesChannel = Omit<
   | 'name'
   | 'organizationId'
   | 'organization'
-  | 'logoUrl'
+  | 'logo'
+  | 'logoId'
   | 'description'
   | 'isActive'
 > & {
   id?: number;
   name?: string;
   description?: string;
-  logoUrl?: string;
+  logoId?: number | null;
   isActive?: boolean;
 };
 
@@ -31,10 +34,9 @@ export class UpdateSalesChannelDto implements UpdateSalesChannel {
   @IsString({ message: 'Description must be a string' })
   description?: string;
 
-  @IsString()
+  @IsNumber()
   @IsOptional()
-  @IsUrl()
-  logoUrl?: string;
+  logoId?: number | null;
 
   @IsBoolean()
   @IsOptional()

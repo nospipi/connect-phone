@@ -3,6 +3,8 @@
 import { ISalesChannel } from '@connect-phone/shared-types';
 import { createMockOrganization } from './organization.factory';
 
+//----------------------------------------------------------------------
+
 export function createMockSalesChannel(
   overrides?: Partial<ISalesChannel>
 ): ISalesChannel {
@@ -10,7 +12,8 @@ export function createMockSalesChannel(
     id: 1,
     name: 'Test Sales Channel',
     description: 'Test Description',
-    logoUrl: null,
+    logoId: null,
+    logo: null,
     organizationId: 1,
     organization: createMockOrganization(),
     isActive: true,

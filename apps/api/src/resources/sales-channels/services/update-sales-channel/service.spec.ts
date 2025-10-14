@@ -197,15 +197,15 @@ describe('UpdateSalesChannelService', () => {
       expect(savedChannel.isActive).toBe(true);
     });
 
-    it('should handle logoUrl updates', async () => {
+    it('should handle logoId updates', async () => {
       const updateDto = {
         id: 1,
-        logoUrl: 'https://example.com/new-logo.png',
+        logoId: 5,
       } as unknown as UpdateSalesChannelDto;
 
       const updatedChannel = {
         ...mockSalesChannel,
-        logoUrl: 'https://example.com/new-logo.png',
+        logoId: 5,
       };
 
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
@@ -220,7 +220,7 @@ describe('UpdateSalesChannelService', () => {
 
       const result = await service.updateSalesChannel(updateDto);
 
-      expect(result.logoUrl).toBe('https://example.com/new-logo.png');
+      expect(result.logoId).toBe(5);
     });
 
     it('should handle isActive toggle', async () => {
@@ -304,5 +304,3 @@ describe('UpdateSalesChannelService', () => {
     });
   });
 });
-
-// apps/api/src/resources/sales-channels/services/update-sales-channel/service.spec.ts

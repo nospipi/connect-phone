@@ -201,7 +201,8 @@ describe('DeleteSalesChannelService', () => {
         id: 5,
         name: 'Detailed Channel',
         description: 'Detailed description',
-        logoUrl: 'https://example.com/logo.png',
+        logoId: 5,
+        logo: null,
         isActive: false,
       });
 
@@ -221,7 +222,8 @@ describe('DeleteSalesChannelService', () => {
         id: 5,
         name: 'Detailed Channel',
         description: 'Detailed description',
-        logoUrl: 'https://example.com/logo.png',
+        logoId: 5,
+        logo: null,
         organizationId: 1,
         isActive: false,
         organization: mockOrganization,
@@ -275,4 +277,3 @@ describe('DeleteSalesChannelService', () => {
     });
   });
 });
-// apps/api/src/resources/sales-channels/services/delete-sales-channel/service.spec.ts

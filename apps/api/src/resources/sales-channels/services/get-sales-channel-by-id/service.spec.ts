@@ -186,7 +186,8 @@ describe('GetSalesChannelByIdService', () => {
         id: 2,
         name: 'Different Channel',
         description: 'Different description',
-        logoUrl: 'https://example.com/logo.png',
+        logoId: 5,
+        logo: null,
         isActive: false,
       });
 
@@ -202,8 +203,8 @@ describe('GetSalesChannelByIdService', () => {
       expect(result).toEqual(differentSalesChannel);
       expect(result.name).toBe('Different Channel');
       expect(result.isActive).toBe(false);
-      expect(result.logoUrl).toBe('https://example.com/logo.png');
+      expect(result.logoId).toBe(5);
+      expect(result.logo).toBe(null);
     });
   });
 });
-// apps/api/src/resources/sales-channels/services/get-sales-channel-by-id/service.spec.ts

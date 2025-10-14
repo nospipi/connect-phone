@@ -1,25 +1,43 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/sales-channels/create-new/page.tsx
 import { createNewSalesChannel } from "@/app/(backend)/server_actions/sales-channels/createNewSalesChannel"
 import { getUserLoggedInOrganization } from "@/app/(backend)/server_actions/users/getUserLoggedInOrganization"
-import CreateSalesChannelLogoUpload from "./CreateSalesChannelLogoUpload"
+import { getMediaById } from "@/app/(backend)/server_actions/media/getMediaById"
+import LogoSection from "./LogoSection.client"
 import { RiArrowLeftLine, RiAddLine } from "@remixicon/react"
 import Link from "next/link"
 
 //----------------------------------------------------------------------
 
-const Page = async ({
-  //params,
-  searchParams,
-}: {
-  //params: Promise<{ partner_id: string; page: string }>
+interface PageProps {
   searchParams: Promise<{ [key: string]: string | undefined }>
-}) => {
-  const { logoUrl = "" } = await searchParams
+}
+
+const Page = async ({ searchParams }: PageProps) => {
+  const searchParamsData = await searchParams
   const loggedInOrganization = await getUserLoggedInOrganization()
+
+  const name = searchParamsData.name || ""
+  const description = searchParamsData.description || ""
+  const isActive = searchParamsData.isActive === "on"
+
+  let logoId: number | null = null
+  if (searchParamsData.logoId === "") {
+    logoId = null
+  } else if (searchParamsData.logoId) {
+    logoId = parseInt(searchParamsData.logoId, 10)
+  }
+
+  let selectedLogo = null
+  if (logoId) {
+    try {
+      selectedLogo = await getMediaById(logoId)
+    } catch (error) {
+      console.error("Failed to fetch logo media:", error)
+    }
+  }
 
   return (
     <div className="flex h-full flex-col overflow-hidden">
-      {/* Header */}
       <div className="flex items-center gap-4 border-b border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950">
         <Link
           href="/sales-channels"
@@ -39,7 +57,6 @@ const Page = async ({
         </div>
       </div>
 
-      {/* Form */}
       <div className="flex-1 overflow-hidden py-4">
         <div className="flex h-full w-full justify-center overflow-auto px-4">
           <div className="w-full max-w-3xl">
@@ -47,21 +64,22 @@ const Page = async ({
               action={createNewSalesChannel}
               className="flex flex-col gap-6"
             >
-              {/* Channel Name */}
+              <input type="hidden" name="logoId" value={logoId || ""} />
+
               <div>
                 <label
                   htmlFor="name"
                   className="block text-sm font-medium text-gray-700 dark:text-gray-300"
                 >
-                  Channel Name
+                  Channel Name *
                 </label>
                 <input
+                  defaultValue={name}
                   autoFocus
                   id="name"
                   name="name"
                   type="text"
                   placeholder="e.g., Online Store, Retail Outlet, Mobile App"
-                  //defaultValue={prefilledName}
                   className="mt-2 block w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
                   required
                 />
@@ -70,7 +88,6 @@ const Page = async ({
                 </p>
               </div>
 
-              {/* Description */}
               <div>
                 <label
                   htmlFor="description"
@@ -79,11 +96,11 @@ const Page = async ({
                   Description
                 </label>
                 <textarea
+                  defaultValue={description}
                   id="description"
                   name="description"
                   rows={3}
                   placeholder="Describe this sales channel and its purpose..."
-                  //defaultValue={prefilledDescription}
                   className="mt-2 block w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
                 />
                 <p className="mt-2 text-xs text-gray-500">
@@ -91,26 +108,16 @@ const Page = async ({
                 </p>
               </div>
 
-              {/* Logo Upload */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   Channel Logo
                 </label>
-                <div className="mt-2">
-                  <CreateSalesChannelLogoUpload
-                    currentLogoUrl={logoUrl}
-                    organizationId={loggedInOrganization?.id.toString() || ""}
-                  />
-                </div>
+                <LogoSection selectedLogo={selectedLogo} logoId={logoId} />
                 <p className="mt-2 text-xs text-gray-500">
-                  Optional: Upload a logo to represent this sales channel
+                  Optional: Select a logo to represent this sales channel
                 </p>
               </div>
 
-              {/* Hidden input for logo URL to be submitted with the form */}
-              <input type="hidden" name="logoUrl" value={logoUrl} />
-
-              {/* Active Status Toggle */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   Status
@@ -130,7 +137,7 @@ const Page = async ({
                       <input
                         type="checkbox"
                         name="isActive"
-                        defaultChecked={false}
+                        defaultChecked={isActive}
                         className="peer sr-only"
                       />
                       <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-indigo-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 dark:border-gray-600 dark:bg-gray-700 dark:peer-focus:ring-indigo-800"></div>
@@ -143,7 +150,6 @@ const Page = async ({
                 </p>
               </div>
 
-              {/* Form Actions */}
               <div className="flex flex-col gap-3 border-t border-gray-200 pt-6 sm:flex-row sm:justify-end dark:border-gray-800">
                 <Link
                   href="/sales-channels"
@@ -161,7 +167,6 @@ const Page = async ({
               </div>
             </form>
 
-            {/* Help Section */}
             <div className="mt-6 rounded-lg bg-blue-50 p-4 dark:bg-blue-900/20">
               <h3 className="text-sm font-medium text-blue-900 dark:text-blue-100">
                 What are sales channels?

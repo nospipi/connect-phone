@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { SalesChannelEntity } from '@/database/entities/sales-channel.entity';
 import { OrganizationEntity } from '@/database/entities/organization.entity';
 import { UserEntity } from '@/database/entities/user.entity';
+import { MediaEntity } from '@/database/entities/media.entity';
 
 // controllers
 import { FindAllByOrgPaginatedController } from './services/find-all-by-org-paginated/controller';
@@ -27,6 +28,7 @@ import { DeleteSalesChannelService } from './services/delete-sales-channel/servi
       SalesChannelEntity,
       OrganizationEntity,
       UserEntity,
+      MediaEntity,
     ]),
   ],
   controllers: [

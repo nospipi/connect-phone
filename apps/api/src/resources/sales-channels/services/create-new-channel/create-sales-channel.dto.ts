@@ -3,23 +3,26 @@ import {
   IsString,
   IsOptional,
   IsNotEmpty,
-  IsUrl,
   IsBoolean,
+  IsNumber,
 } from 'class-validator';
 import { ISalesChannel } from '@connect-phone/shared-types';
 import { Sanitize } from '@/common/decorators/sanitize.decorator';
+
 //----------------------------------------------------------------------------
+
 type CreateSalesChannel = Omit<
   ISalesChannel,
   | 'id'
   | 'organizationId'
   | 'organization'
-  | 'logoUrl'
+  | 'logo'
+  | 'logoId'
   | 'description'
   | 'isActive'
 > & {
   description?: string;
-  logoUrl?: string;
+  logoId?: number | null;
   isActive?: boolean;
 };
 
@@ -34,11 +37,9 @@ export class CreateSalesChannelDto implements CreateSalesChannel {
   @Sanitize()
   description?: string;
 
-  @IsString()
+  @IsNumber()
   @IsOptional()
-  @IsUrl()
-  @Sanitize()
-  logoUrl?: string;
+  logoId?: number | null;
 
   @IsBoolean()
   @IsOptional()

@@ -61,8 +61,8 @@ export class UpdateSalesChannelService {
     if (updateSalesChannelDto.description !== undefined) {
       salesChannel.description = updateSalesChannelDto.description || null;
     }
-    if (updateSalesChannelDto.logoUrl !== undefined) {
-      salesChannel.logoUrl = updateSalesChannelDto.logoUrl;
+    if (updateSalesChannelDto.logoId !== undefined) {
+      salesChannel.logoId = updateSalesChannelDto.logoId;
     }
     if (updateSalesChannelDto.isActive !== undefined) {
       salesChannel.isActive = updateSalesChannelDto.isActive;
