@@ -16,7 +16,8 @@ export interface IOrganization {
   createdAt: string;
   name: string;
   slug: string;
-  logoUrl: string | null;
+  logoId: number | null;
+  logo: IMedia | null;
   salesChannels: ISalesChannel[];
   userOrganizations: IUserOrganization[];
   auditLogs: IAuditLog[];

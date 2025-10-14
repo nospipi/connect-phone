@@ -15,6 +15,8 @@ interface PageProps {
     previousPage?: string
     selected?: string
     multipleSelection?: string
+    targetField?: string
+    [key: string]: string | undefined
   }>
 }
 
@@ -25,6 +27,23 @@ const Page = async ({ searchParams }: PageProps) => {
   const previousPage = params.previousPage || "/media"
   const selectedParam = params.selected || ""
   const multipleSelection = params.multipleSelection === "true"
+  const targetField = params.targetField || "mediaIds"
+
+  // Extract all other form data (excluding media select specific params)
+  const formData: Record<string, string> = {}
+  const excludedParams = [
+    "page",
+    "search",
+    "previousPage",
+    "selected",
+    "multipleSelection",
+    "targetField",
+  ]
+  Object.entries(params).forEach(([key, value]) => {
+    if (!excludedParams.includes(key) && value !== undefined) {
+      formData[key] = value
+    }
+  })
 
   const selectedIds = selectedParam
     ? selectedParam.split(",").map(Number).filter(Boolean)
@@ -39,28 +58,66 @@ const Page = async ({ searchParams }: PageProps) => {
   const hasPreviousPage = meta.currentPage > 1
   const hasNextPage = meta.currentPage < meta.totalPages
 
-  const buildUrl = (newSelectedIds: number[]) => {
+  const buildBaseParams = () => {
     const urlParams = new URLSearchParams()
+    urlParams.set("previousPage", previousPage)
+    urlParams.set("targetField", targetField)
+    urlParams.set("multipleSelection", String(multipleSelection))
+    // Add all form data
+    Object.entries(formData).forEach(([key, value]) => {
+      urlParams.set(key, value)
+    })
+    return urlParams
+  }
+
+  const buildUrl = (newSelectedIds: number[]) => {
+    const urlParams = buildBaseParams()
     urlParams.set("page", page)
     if (search) urlParams.set("search", search)
-    urlParams.set("previousPage", previousPage)
-    urlParams.set("multipleSelection", String(multipleSelection))
-    // Always include selected param, even if empty
     urlParams.set("selected", newSelectedIds.join(","))
     return `/media/select?${urlParams.toString()}`
   }
 
   const buildConfirmUrl = () => {
+    const urlParams = new URLSearchParams()
+    // Add all form data back
+    Object.entries(formData).forEach(([key, value]) => {
+      urlParams.set(key, value)
+    })
+    // Set the target field with selected media IDs
+    urlParams.set(targetField, selectedIds.join(","))
+
     const separator = previousPage.includes("?") ? "&" : "?"
-    return `${previousPage}${separator}mediaIds=${selectedIds.join(",")}`
+    return `${previousPage}${separator}${urlParams.toString()}`
   }
 
   const buildClearUrl = () => {
-    const urlParams = new URLSearchParams()
+    const urlParams = buildBaseParams()
     urlParams.set("page", page)
     if (search) urlParams.set("search", search)
-    urlParams.set("previousPage", previousPage)
-    urlParams.set("multipleSelection", String(multipleSelection))
+    return `/media/select?${urlParams.toString()}`
+  }
+
+  const buildBackUrl = () => {
+    const urlParams = new URLSearchParams()
+    // Add all form data back
+    Object.entries(formData).forEach(([key, value]) => {
+      urlParams.set(key, value)
+    })
+
+    if (Object.keys(formData).length === 0) {
+      return previousPage
+    }
+
+    const separator = previousPage.includes("?") ? "&" : "?"
+    return `${previousPage}${separator}${urlParams.toString()}`
+  }
+
+  const buildPaginationUrl = (targetPage: number | string) => {
+    const urlParams = buildBaseParams()
+    urlParams.set("page", String(targetPage))
+    if (search) urlParams.set("search", search)
+    if (selectedParam) urlParams.set("selected", selectedParam)
     return `/media/select?${urlParams.toString()}`
   }
 
@@ -68,7 +125,7 @@ const Page = async ({ searchParams }: PageProps) => {
     <div className="flex h-full flex-col overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100/50 dark:from-gray-950 dark:to-gray-900/50">
       <div className="flex items-center gap-4 border-b border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950">
         <Link
-          href={previousPage}
+          href={buildBackUrl()}
           className="flex h-full items-center justify-center px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-900 dark:hover:text-gray-300"
         >
           <RiArrowLeftLine className="h-4 w-4" />
@@ -144,15 +201,15 @@ const Page = async ({ searchParams }: PageProps) => {
           ) : (
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8">
               {items.map((media) => {
-                const isSelected = selectedIds.includes(media.id) // check if this media is currently selected
+                const isSelected = selectedIds.includes(media.id)
 
                 const newSelectedIds = multipleSelection
                   ? isSelected
-                    ? selectedIds.filter((id) => id !== media.id) // remove from selection if already selected
-                    : [...selectedIds, media.id] // add to selection if not selected
+                    ? selectedIds.filter((id) => id !== media.id)
+                    : [...selectedIds, media.id]
                   : isSelected
-                    ? [] // unselect if already selected (single selection mode)
-                    : [media.id] // select this item (single selection mode)
+                    ? []
+                    : [media.id]
 
                 return (
                   <MediaItemButton
@@ -184,9 +241,7 @@ const Page = async ({ searchParams }: PageProps) => {
 
             <div className="hidden items-center gap-2 sm:flex">
               {hasPreviousPage ? (
-                <Link
-                  href={`/media/select?page=1${search ? `&search=${search}` : ""}&previousPage=${previousPage}${selectedParam ? `&selected=${selectedParam}` : ""}&multipleSelection=${multipleSelection}`}
-                >
+                <Link href={buildPaginationUrl(1)}>
                   <Button
                     variant="secondary"
                     className="border-gray-300 bg-gray-50 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-gray-700/50 dark:bg-gray-800/50 dark:text-gray-300 dark:hover:border-gray-600/50 dark:hover:bg-gray-700/50"
@@ -204,9 +259,7 @@ const Page = async ({ searchParams }: PageProps) => {
                 </Button>
               )}
               {hasPreviousPage ? (
-                <Link
-                  href={`/media/select?page=${meta.currentPage - 1}${search ? `&search=${search}` : ""}&previousPage=${previousPage}${selectedParam ? `&selected=${selectedParam}` : ""}&multipleSelection=${multipleSelection}`}
-                >
+                <Link href={buildPaginationUrl(meta.currentPage - 1)}>
                   <Button
                     variant="secondary"
                     className="border-gray-300 bg-gray-50 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-gray-700/50 dark:bg-gray-800/50 dark:text-gray-300 dark:hover:border-gray-600/50 dark:hover:bg-gray-700/50"
@@ -227,9 +280,7 @@ const Page = async ({ searchParams }: PageProps) => {
                 Page {meta.currentPage} of {meta.totalPages}
               </span>
               {hasNextPage ? (
-                <Link
-                  href={`/media/select?page=${meta.currentPage + 1}${search ? `&search=${search}` : ""}&previousPage=${previousPage}${selectedParam ? `&selected=${selectedParam}` : ""}&multipleSelection=${multipleSelection}`}
-                >
+                <Link href={buildPaginationUrl(meta.currentPage + 1)}>
                   <Button
                     variant="secondary"
                     className="border-gray-300 bg-gray-50 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-gray-700/50 dark:bg-gray-800/50 dark:text-gray-300 dark:hover:border-gray-600/50 dark:hover:bg-gray-700/50"
@@ -247,9 +298,7 @@ const Page = async ({ searchParams }: PageProps) => {
                 </Button>
               )}
               {hasNextPage ? (
-                <Link
-                  href={`/media/select?page=${meta.totalPages}${search ? `&search=${search}` : ""}&previousPage=${previousPage}${selectedParam ? `&selected=${selectedParam}` : ""}&multipleSelection=${multipleSelection}`}
-                >
+                <Link href={buildPaginationUrl(meta.totalPages)}>
                   <Button
                     variant="secondary"
                     className="border-gray-300 bg-gray-50 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-gray-700/50 dark:bg-gray-800/50 dark:text-gray-300 dark:hover:border-gray-600/50 dark:hover:bg-gray-700/50"
@@ -270,9 +319,7 @@ const Page = async ({ searchParams }: PageProps) => {
 
             <div className="flex items-center gap-2 sm:hidden">
               {hasPreviousPage ? (
-                <Link
-                  href={`/media/select?page=${meta.currentPage - 1}${search ? `&search=${search}` : ""}&previousPage=${previousPage}${selectedParam ? `&selected=${selectedParam}` : ""}&multipleSelection=${multipleSelection}`}
-                >
+                <Link href={buildPaginationUrl(meta.currentPage - 1)}>
                   <Button
                     variant="secondary"
                     className="border-gray-300 bg-gray-50 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-gray-700/50 dark:bg-gray-800/50 dark:text-gray-300 dark:hover:border-gray-600/50 dark:hover:bg-gray-700/50"
@@ -293,9 +340,7 @@ const Page = async ({ searchParams }: PageProps) => {
                 {meta.currentPage}/{meta.totalPages}
               </span>
               {hasNextPage ? (
-                <Link
-                  href={`/media/select?page=${meta.currentPage + 1}${search ? `&search=${search}` : ""}&previousPage=${previousPage}${selectedParam ? `&selected=${selectedParam}` : ""}&multipleSelection=${multipleSelection}`}
-                >
+                <Link href={buildPaginationUrl(meta.currentPage + 1)}>
                   <Button
                     variant="secondary"
                     className="border-gray-300 bg-gray-50 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-gray-700/50 dark:bg-gray-800/50 dark:text-gray-300 dark:hover:border-gray-600/50 dark:hover:bg-gray-700/50"

@@ -13,6 +13,8 @@ import {
 } from '../../../../test/factories';
 import { Currency } from '@connect-phone/shared-types';
 
+//----------------------------------------------------------------------
+
 describe('UpdateOrganizationService', () => {
   let service: UpdateOrganizationService;
   let organizationRepository: jest.Mocked<Repository<OrganizationEntity>>;
@@ -73,13 +75,13 @@ describe('UpdateOrganizationService', () => {
       expect(result.name).toBe('Updated Organization');
     });
 
-    it('should update organization logoUrl', async () => {
+    it('should update organization logoId', async () => {
       const updateDto: UpdateOrganizationDto = {
-        logoUrl: 'https://example.com/new-logo.png',
+        logoId: 5,
       };
 
       const updatedOrganization = createMockOrganization({
-        logoUrl: 'https://example.com/new-logo.png',
+        logoId: 5,
       });
 
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
@@ -91,7 +93,7 @@ describe('UpdateOrganizationService', () => {
 
       const result = await service.updateOrganization(updateDto);
 
-      expect(result.logoUrl).toBe('https://example.com/new-logo.png');
+      expect(result.logoId).toBe(5);
     });
 
     it('should update organization mainCurrency', async () => {
@@ -115,15 +117,15 @@ describe('UpdateOrganizationService', () => {
       expect(result.mainCurrency).toBe(Currency.EUR);
     });
 
-    it('should update both name and logoUrl', async () => {
+    it('should update both name and logoId', async () => {
       const updateDto: UpdateOrganizationDto = {
         name: 'Updated Organization',
-        logoUrl: 'https://example.com/new-logo.png',
+        logoId: 5,
       };
 
       const updatedOrganization = createMockOrganization({
         name: 'Updated Organization',
-        logoUrl: 'https://example.com/new-logo.png',
+        logoId: 5,
       });
 
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
@@ -136,19 +138,19 @@ describe('UpdateOrganizationService', () => {
       const result = await service.updateOrganization(updateDto);
 
       expect(result.name).toBe('Updated Organization');
-      expect(result.logoUrl).toBe('https://example.com/new-logo.png');
+      expect(result.logoId).toBe(5);
     });
 
-    it('should update name, logoUrl, and mainCurrency', async () => {
+    it('should update name, logoId, and mainCurrency', async () => {
       const updateDto: UpdateOrganizationDto = {
         name: 'Updated Organization',
-        logoUrl: 'https://example.com/new-logo.png',
+        logoId: 5,
         mainCurrency: Currency.GBP,
       };
 
       const updatedOrganization = createMockOrganization({
         name: 'Updated Organization',
-        logoUrl: 'https://example.com/new-logo.png',
+        logoId: 5,
         mainCurrency: Currency.GBP,
       });
 
@@ -162,7 +164,7 @@ describe('UpdateOrganizationService', () => {
       const result = await service.updateOrganization(updateDto);
 
       expect(result.name).toBe('Updated Organization');
-      expect(result.logoUrl).toBe('https://example.com/new-logo.png');
+      expect(result.logoId).toBe(5);
       expect(result.mainCurrency).toBe(Currency.GBP);
     });
 

@@ -11,6 +11,8 @@ import { UpdateOrganizationDto } from './update-organization.dto';
 import { IOrganization } from '@connect-phone/shared-types';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 
+//----------------------------------------------------------------------
+
 @Injectable()
 export class UpdateOrganizationService {
   constructor(
@@ -32,8 +34,8 @@ export class UpdateOrganizationService {
     if (updateOrganizationDto.name !== undefined) {
       organization.name = updateOrganizationDto.name;
     }
-    if (updateOrganizationDto.logoUrl !== undefined) {
-      organization.logoUrl = updateOrganizationDto.logoUrl;
+    if (updateOrganizationDto.logoId !== undefined) {
+      organization.logoId = updateOrganizationDto.logoId;
     }
     if (updateOrganizationDto.mainCurrency !== undefined) {
       organization.mainCurrency = updateOrganizationDto.mainCurrency;

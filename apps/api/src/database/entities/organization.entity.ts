@@ -5,6 +5,8 @@ import {
   Column,
   PrimaryGeneratedColumn,
   OneToMany,
+  ManyToOne,
+  JoinColumn,
   CreateDateColumn,
 } from 'typeorm';
 import {
@@ -42,8 +44,12 @@ export class OrganizationEntity implements IOrganization {
   @Column({ unique: true, type: 'varchar', length: 255 })
   slug: string;
 
-  @Column({ type: 'varchar', length: 500, nullable: true })
-  logoUrl: string | null;
+  @Column({ nullable: true })
+  logoId: number | null;
+
+  @ManyToOne(() => MediaEntity, { nullable: true })
+  @JoinColumn({ name: 'logoId' })
+  logo: MediaEntity | null;
 
   @Column({
     type: 'enum',

@@ -1,10 +1,13 @@
 // apps/api/src/resources/organizations/services/update-organization/update-organization.dto.ts
-import { IsString, IsOptional, IsUrl, IsEnum } from 'class-validator';
+import { IsString, IsOptional, IsNumber } from 'class-validator';
 import { IOrganization, Currency } from '@connect-phone/shared-types';
 import { Sanitize } from '@/common/decorators/sanitize.decorator';
+import { IsEnum } from 'class-validator';
+
+//----------------------------------------------------------------------
 
 type UpdateOrganization = Partial<
-  Pick<IOrganization, 'name' | 'logoUrl' | 'mainCurrency'>
+  Pick<IOrganization, 'name' | 'logoId' | 'mainCurrency'>
 > & {
   id?: number;
 };
@@ -18,11 +21,9 @@ export class UpdateOrganizationDto implements UpdateOrganization {
   @Sanitize()
   name?: string;
 
-  @IsString()
+  @IsNumber()
   @IsOptional()
-  @IsUrl()
-  @Sanitize()
-  logoUrl?: string;
+  logoId?: number | null;
 
   @IsEnum(Currency)
   @IsOptional()

@@ -1,4 +1,4 @@
-// apps/cms/app/(backend)/server_actions/updateOrganization.ts
+// apps/cms/app/(backend)/server_actions/organizations/updateOrganization.ts
 "use server"
 
 import { AxiosError } from "axios"
@@ -12,12 +12,12 @@ import { createApiClient } from "../api-client"
 export const updateOrganization = async (formData: FormData): Promise<void> => {
   try {
     const name = formData.get("name") as string
-    const logoUrl = formData.get("logoUrl") as string
+    const logoId = formData.get("logoId") as string
     const mainCurrency = formData.get("mainCurrency") as string
 
     const payload = {
       name: name || undefined,
-      logoUrl: logoUrl === "" ? null : logoUrl || undefined,
+      logoId: logoId === "" ? null : logoId ? parseInt(logoId, 10) : undefined,
       mainCurrency: mainCurrency || undefined,
     }
 

@@ -18,6 +18,8 @@ import { UserInvitationEntity } from '../../entities/user-invitation.entity';
 import { faker } from '@faker-js/faker';
 import { generateCountries } from '../factories/countries.factory';
 
+//----------------------------------------------------------------------
+
 async function seed() {
   try {
     await AppDataSource.initialize();
@@ -38,9 +40,7 @@ async function seed() {
         return {
           name,
           slug: faker.helpers.slugify(name).toLowerCase(),
-          logoUrl: faker.datatype.boolean()
-            ? 'https://picsum.photos/400/400'
-            : null,
+          logoId: null,
         };
       }
     );

@@ -1,10 +1,12 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/organization/details/page.tsx
-import Link from "next/link"
 import { getCurrentOrganization } from "@/app/(backend)/server_actions/organizations/getCurrentOrganization"
+import { getMediaById } from "@/app/(backend)/server_actions/media/getMediaById"
 import { redirect } from "next/navigation"
 import { updateOrganization } from "@/app/(backend)/server_actions/organizations/updateOrganization"
-import UpdateOrganizationLogoUpload from "./UpdateOrganizationLogoUpload.client"
 import { Currency } from "@connect-phone/shared-types"
+import LogoSection from "./LogoSection.client"
+
+//----------------------------------------------------------------------
 
 async function refreshPageAction() {
   "use server"
@@ -16,17 +18,35 @@ const CURRENCIES = Object.values(Currency).map((currency) => ({
   label: currency,
 }))
 
-const Page = async ({
-  searchParams,
-}: {
+interface PageProps {
   searchParams: Promise<{ [key: string]: string | undefined }>
-}) => {
-  const { logoUrl } = await searchParams
+}
+
+const Page = async ({ searchParams }: PageProps) => {
+  const params = await searchParams
   const organizationData = await getCurrentOrganization()
 
-  let currentLogoUrl = logoUrl || organizationData?.logoUrl || ""
-  if (logoUrl === "clear") {
-    currentLogoUrl = ""
+  const name = params.name || organizationData?.name || ""
+  const mainCurrency =
+    params.mainCurrency || organizationData?.mainCurrency || Currency.USD
+
+  // Handle logoId: empty string means removed, otherwise use param or saved value
+  let logoId: number | null = null
+  if (params.logoId === "") {
+    logoId = null
+  } else if (params.logoId) {
+    logoId = parseInt(params.logoId, 10)
+  } else {
+    logoId = organizationData?.logoId || null
+  }
+
+  let selectedLogo = null
+  if (logoId) {
+    try {
+      selectedLogo = await getMediaById(logoId)
+    } catch (error) {
+      console.error("Failed to fetch logo media:", error)
+    }
   }
 
   return (
@@ -40,8 +60,7 @@ const Page = async ({
           <div className="flex h-full w-full max-w-3xl flex-col gap-10 px-3 pb-2">
             <div className="flex flex-1 flex-col gap-6 px-1">
               <input type="hidden" name="id" value={organizationData?.id} />
-
-              <input type="hidden" name="logoUrl" value={currentLogoUrl} />
+              <input type="hidden" name="logoId" value={logoId || ""} />
 
               <div>
                 <label
@@ -51,7 +70,7 @@ const Page = async ({
                   Organization Name *
                 </label>
                 <input
-                  defaultValue={organizationData?.name}
+                  defaultValue={name}
                   autoFocus
                   id="name"
                   name="name"
@@ -73,7 +92,7 @@ const Page = async ({
                   Main Currency *
                 </label>
                 <select
-                  defaultValue={organizationData?.mainCurrency || Currency.USD}
+                  defaultValue={mainCurrency}
                   id="mainCurrency"
                   name="mainCurrency"
                   className="mt-2 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
@@ -94,14 +113,9 @@ const Page = async ({
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                   Organization Logo
                 </label>
-                <div className="mt-2">
-                  <UpdateOrganizationLogoUpload
-                    currentLogoUrl={currentLogoUrl}
-                    organizationId={organizationData?.id.toString()}
-                  />
-                </div>
+                <LogoSection selectedLogo={selectedLogo} logoId={logoId} />
                 <p className="mt-2 text-xs text-gray-500">
-                  Optional: Upload a logo to represent your organization
+                  Optional: Select a logo to represent your organization
                 </p>
               </div>
             </div>
