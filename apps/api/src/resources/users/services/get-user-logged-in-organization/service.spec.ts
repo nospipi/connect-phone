@@ -99,7 +99,7 @@ describe('GetUserLoggedInOrganizationService', () => {
         id: 2,
         name: 'Full Organization',
         slug: 'full-org',
-        logoUrl: 'https://example.com/logo.png',
+        logoId: 1,
         createdAt: '2024-01-02T00:00:00Z',
       });
 
@@ -118,12 +118,17 @@ describe('GetUserLoggedInOrganizationService', () => {
         id: 2,
         name: 'Full Organization',
         slug: 'full-org',
-        logoUrl: 'https://example.com/logo.png',
+        logoId: 1,
+        logo: null,
         createdAt: '2024-01-02T00:00:00Z',
+        mainCurrency: 'USD',
         salesChannels: [],
         userOrganizations: [],
         auditLogs: [],
         countries: [],
+        prices: [],
+        dateRanges: [],
+        media: [],
       });
     });
   });

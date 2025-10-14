@@ -31,7 +31,7 @@ describe('GetAllOrganizationsOfUserService', () => {
     id: 2,
     name: 'Organization 2',
     slug: 'org-2',
-    logoUrl: 'https://example.com/logo.png',
+    logoId: 1,
     createdAt: '2024-01-02T00:00:00Z',
   });
   const mockUserOrganizations = [
@@ -171,7 +171,7 @@ describe('GetAllOrganizationsOfUserService', () => {
         id: 3,
         name: 'Full Props Org',
         slug: 'full-props',
-        logoUrl: 'https://example.com/full.png',
+        logoId: 1,
         createdAt: '2024-01-03T00:00:00Z',
       });
 
@@ -192,12 +192,17 @@ describe('GetAllOrganizationsOfUserService', () => {
         id: 3,
         name: 'Full Props Org',
         slug: 'full-props',
-        logoUrl: 'https://example.com/full.png',
+        logoId: 1,
+        logo: null,
         createdAt: '2024-01-03T00:00:00Z',
+        mainCurrency: 'USD',
         salesChannels: [],
         userOrganizations: [],
         auditLogs: [],
         countries: [],
+        prices: [],
+        dateRanges: [],
+        media: [],
         role: UserOrganizationRole.OPERATOR,
       });
     });
