@@ -45,9 +45,8 @@ const Page = async ({ searchParams }: PageProps) => {
     if (search) urlParams.set("search", search)
     urlParams.set("previousPage", previousPage)
     urlParams.set("multipleSelection", String(multipleSelection))
-    if (newSelectedIds.length > 0) {
-      urlParams.set("selected", newSelectedIds.join(","))
-    }
+    // Always include selected param, even if empty
+    urlParams.set("selected", newSelectedIds.join(","))
     return `/media/select?${urlParams.toString()}`
   }
 
@@ -150,7 +149,9 @@ const Page = async ({ searchParams }: PageProps) => {
                   ? isSelected
                     ? selectedIds.filter((id) => id !== media.id)
                     : [...selectedIds, media.id]
-                  : [media.id]
+                  : isSelected
+                    ? []
+                    : [media.id]
 
                 return (
                   <MediaItemButton
