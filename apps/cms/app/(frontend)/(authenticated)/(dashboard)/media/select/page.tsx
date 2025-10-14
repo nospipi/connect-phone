@@ -144,14 +144,15 @@ const Page = async ({ searchParams }: PageProps) => {
           ) : (
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8">
               {items.map((media) => {
-                const isSelected = selectedIds.includes(media.id)
+                const isSelected = selectedIds.includes(media.id) // check if this media is currently selected
+
                 const newSelectedIds = multipleSelection
                   ? isSelected
-                    ? selectedIds.filter((id) => id !== media.id)
-                    : [...selectedIds, media.id]
+                    ? selectedIds.filter((id) => id !== media.id) // remove from selection if already selected
+                    : [...selectedIds, media.id] // add to selection if not selected
                   : isSelected
-                    ? []
-                    : [media.id]
+                    ? [] // unselect if already selected (single selection mode)
+                    : [media.id] // select this item (single selection mode)
 
                 return (
                   <MediaItemButton
