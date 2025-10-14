@@ -73,10 +73,10 @@ export const OrganizationsDropdownDesktop = ({
               focusInput,
             )}
           >
-            {currentOrg?.logoUrl ? (
+            {currentOrg?.logo?.url ? (
               <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded">
                 <Image
-                  src={currentOrg.logoUrl}
+                  src={currentOrg.logo.url}
                   alt={`${currentOrg.name} logo`}
                   width={32}
                   height={32}
@@ -129,10 +129,10 @@ export const OrganizationsDropdownDesktop = ({
                   className={isSelected ? "bg-gray-50 dark:bg-gray-800" : ""}
                 >
                   <div className="flex w-full items-center gap-x-2.5">
-                    {org.logoUrl ? (
+                    {org.logo?.url ? (
                       <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded">
                         <Image
-                          src={org.logoUrl}
+                          src={org.logo.url}
                           alt={`${org.name} logo`}
                           width={32}
                           height={32}
@@ -209,10 +209,10 @@ export const OrganizationsDropdownMobile = ({
       >
         <DropdownMenuTrigger asChild>
           <button className="flex items-center gap-x-2 rounded-md p-2 hover:bg-gray-100 focus:outline-none hover:dark:bg-gray-900">
-            {currentOrg?.logoUrl ? (
+            {currentOrg?.logo?.url ? (
               <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded">
                 <Image
-                  src={currentOrg.logoUrl}
+                  src={currentOrg.logo.url}
                   alt={`${currentOrg.name} logo`}
                   width={32}
                   height={32}
@@ -267,10 +267,10 @@ export const OrganizationsDropdownMobile = ({
                   className={isSelected ? "bg-gray-50 dark:bg-gray-800" : ""}
                 >
                   <div className="flex w-full items-center gap-x-2.5">
-                    {org.logoUrl ? (
+                    {org.logo?.url ? (
                       <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded">
                         <Image
-                          src={org.logoUrl}
+                          src={org.logo.url}
                           alt={`${org.name} logo`}
                           width={32}
                           height={32}

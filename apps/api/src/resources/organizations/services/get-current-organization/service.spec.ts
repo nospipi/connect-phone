@@ -10,6 +10,8 @@ import {
   createCurrentDbUserServiceProvider,
 } from '../../../../test/factories';
 
+//----------------------------------------------------------------------
+
 describe('GetCurrentOrganizationService', () => {
   let service: GetCurrentOrganizationService;
   let organizationRepository: jest.Mocked<any>;
@@ -51,7 +53,7 @@ describe('GetCurrentOrganizationService', () => {
   });
 
   describe('getCurrentOrganization', () => {
-    it('should return current organization', async () => {
+    it('should return current organization with logo relation', async () => {
       currentDbUserService.getCurrentDbUser.mockResolvedValue(mockUser);
       organizationRepository.findOne.mockResolvedValue(mockOrganization);
 
@@ -60,6 +62,7 @@ describe('GetCurrentOrganizationService', () => {
       expect(currentDbUserService.getCurrentDbUser).toHaveBeenCalledTimes(1);
       expect(organizationRepository.findOne).toHaveBeenCalledWith({
         where: { id: 1 },
+        relations: ['logo'],
       });
       expect(result).toEqual(mockOrganization);
     });

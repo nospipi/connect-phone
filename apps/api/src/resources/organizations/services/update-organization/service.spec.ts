@@ -30,6 +30,7 @@ describe('UpdateOrganizationService', () => {
           provide: getRepositoryToken(OrganizationEntity),
           useValue: {
             save: jest.fn(),
+            findOne: jest.fn(),
           },
         },
         createCurrentOrganizationServiceProvider(),
@@ -50,7 +51,7 @@ describe('UpdateOrganizationService', () => {
   });
 
   describe('updateOrganization', () => {
-    it('should update organization name', async () => {
+    it('should update organization name and return with logo relation', async () => {
       const updateDto: UpdateOrganizationDto = {
         name: 'Updated Organization',
       };
@@ -63,6 +64,9 @@ describe('UpdateOrganizationService', () => {
         mockOrganization
       );
       organizationRepository.save.mockResolvedValue(
+        updatedOrganization as OrganizationEntity
+      );
+      organizationRepository.findOne.mockResolvedValue(
         updatedOrganization as OrganizationEntity
       );
 
@@ -72,10 +76,14 @@ describe('UpdateOrganizationService', () => {
         currentOrganizationService.getCurrentOrganization
       ).toHaveBeenCalledTimes(1);
       expect(organizationRepository.save).toHaveBeenCalled();
+      expect(organizationRepository.findOne).toHaveBeenCalledWith({
+        where: { id: updatedOrganization.id },
+        relations: ['logo'],
+      });
       expect(result.name).toBe('Updated Organization');
     });
 
-    it('should update organization logoId', async () => {
+    it('should update organization logoId and return with logo relation', async () => {
       const updateDto: UpdateOrganizationDto = {
         logoId: 5,
       };
@@ -90,13 +98,20 @@ describe('UpdateOrganizationService', () => {
       organizationRepository.save.mockResolvedValue(
         updatedOrganization as OrganizationEntity
       );
+      organizationRepository.findOne.mockResolvedValue(
+        updatedOrganization as OrganizationEntity
+      );
 
       const result = await service.updateOrganization(updateDto);
 
+      expect(organizationRepository.findOne).toHaveBeenCalledWith({
+        where: { id: updatedOrganization.id },
+        relations: ['logo'],
+      });
       expect(result.logoId).toBe(5);
     });
 
-    it('should update organization mainCurrency', async () => {
+    it('should update organization mainCurrency and return with logo relation', async () => {
       const updateDto: UpdateOrganizationDto = {
         mainCurrency: Currency.EUR,
       };
@@ -111,13 +126,20 @@ describe('UpdateOrganizationService', () => {
       organizationRepository.save.mockResolvedValue(
         updatedOrganization as OrganizationEntity
       );
+      organizationRepository.findOne.mockResolvedValue(
+        updatedOrganization as OrganizationEntity
+      );
 
       const result = await service.updateOrganization(updateDto);
 
+      expect(organizationRepository.findOne).toHaveBeenCalledWith({
+        where: { id: updatedOrganization.id },
+        relations: ['logo'],
+      });
       expect(result.mainCurrency).toBe(Currency.EUR);
     });
 
-    it('should update both name and logoId', async () => {
+    it('should update both name and logoId and return with logo relation', async () => {
       const updateDto: UpdateOrganizationDto = {
         name: 'Updated Organization',
         logoId: 5,
@@ -134,14 +156,21 @@ describe('UpdateOrganizationService', () => {
       organizationRepository.save.mockResolvedValue(
         updatedOrganization as OrganizationEntity
       );
+      organizationRepository.findOne.mockResolvedValue(
+        updatedOrganization as OrganizationEntity
+      );
 
       const result = await service.updateOrganization(updateDto);
 
+      expect(organizationRepository.findOne).toHaveBeenCalledWith({
+        where: { id: updatedOrganization.id },
+        relations: ['logo'],
+      });
       expect(result.name).toBe('Updated Organization');
       expect(result.logoId).toBe(5);
     });
 
-    it('should update name, logoId, and mainCurrency', async () => {
+    it('should update name, logoId, and mainCurrency and return with logo relation', async () => {
       const updateDto: UpdateOrganizationDto = {
         name: 'Updated Organization',
         logoId: 5,
@@ -160,9 +189,16 @@ describe('UpdateOrganizationService', () => {
       organizationRepository.save.mockResolvedValue(
         updatedOrganization as OrganizationEntity
       );
+      organizationRepository.findOne.mockResolvedValue(
+        updatedOrganization as OrganizationEntity
+      );
 
       const result = await service.updateOrganization(updateDto);
 
+      expect(organizationRepository.findOne).toHaveBeenCalledWith({
+        where: { id: updatedOrganization.id },
+        relations: ['logo'],
+      });
       expect(result.name).toBe('Updated Organization');
       expect(result.logoId).toBe(5);
       expect(result.mainCurrency).toBe(Currency.GBP);
@@ -180,6 +216,7 @@ describe('UpdateOrganizationService', () => {
       );
 
       expect(organizationRepository.save).not.toHaveBeenCalled();
+      expect(organizationRepository.findOne).not.toHaveBeenCalled();
     });
 
     it('should handle database errors', async () => {

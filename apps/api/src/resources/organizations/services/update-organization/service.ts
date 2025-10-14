@@ -41,6 +41,14 @@ export class UpdateOrganizationService {
       organization.mainCurrency = updateOrganizationDto.mainCurrency;
     }
 
-    return this.organizationRepository.save(organization);
+    const savedOrganization =
+      await this.organizationRepository.save(organization);
+
+    const updatedOrganization = await this.organizationRepository.findOne({
+      where: { id: savedOrganization.id },
+      relations: ['logo'],
+    });
+
+    return updatedOrganization!;
   }
 }

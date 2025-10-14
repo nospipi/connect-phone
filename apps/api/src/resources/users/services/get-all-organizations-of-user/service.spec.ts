@@ -86,7 +86,7 @@ describe('GetAllOrganizationsOfUserService', () => {
   });
 
   describe('getAllOrganizationsOfCurrentUser', () => {
-    it('should return organizations with roles for current user', async () => {
+    it('should return organizations with roles and logo relation for current user', async () => {
       currentDbUserService.getCurrentDbUser.mockResolvedValue(mockUser);
       userOrgRepository.find.mockResolvedValue(mockUserOrganizations);
 
@@ -95,7 +95,7 @@ describe('GetAllOrganizationsOfUserService', () => {
       expect(currentDbUserService.getCurrentDbUser).toHaveBeenCalledTimes(1);
       expect(userOrgRepository.find).toHaveBeenCalledWith({
         where: { userId: 1 },
-        relations: ['organization'],
+        relations: ['organization', 'organization.logo'],
       });
 
       expect(result).toHaveLength(2);
@@ -129,7 +129,7 @@ describe('GetAllOrganizationsOfUserService', () => {
       expect(currentDbUserService.getCurrentDbUser).toHaveBeenCalledTimes(1);
       expect(userOrgRepository.find).toHaveBeenCalledWith({
         where: { userId: 1 },
-        relations: ['organization'],
+        relations: ['organization', 'organization.logo'],
       });
       expect(result).toEqual([]);
       expect(result).toHaveLength(0);
@@ -148,7 +148,7 @@ describe('GetAllOrganizationsOfUserService', () => {
       expect(currentDbUserService.getCurrentDbUser).toHaveBeenCalledTimes(1);
       expect(userOrgRepository.find).toHaveBeenCalledWith({
         where: { userId: 1 },
-        relations: ['organization'],
+        relations: ['organization', 'organization.logo'],
       });
     });
 
@@ -208,5 +208,3 @@ describe('GetAllOrganizationsOfUserService', () => {
     });
   });
 });
-
-// apps/api/src/resources/users/services/get-all-organizations-of-user/service.spec.ts

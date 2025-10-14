@@ -6,6 +6,8 @@ import { OrganizationEntity } from '../../../../database/entities/organization.e
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
 import { IOrganization } from '@connect-phone/shared-types';
 
+//----------------------------------------------------------------------
+
 @Injectable()
 export class GetCurrentOrganizationService {
   constructor(
@@ -27,6 +29,7 @@ export class GetCurrentOrganizationService {
     try {
       const organization = await this.organizationRepository.findOne({
         where: { id: user.loggedOrganizationId },
+        relations: ['logo'],
       });
 
       return organization;

@@ -37,7 +37,7 @@ export class GetAllOrganizationsOfUserService {
     // Fetch UserOrganization entries for the user with organization relation
     const userOrganizations = await this.userOrgRepository.find({
       where: { userId: user.id },
-      relations: ['organization'],
+      relations: ['organization', 'organization.logo'],
     });
 
     if (!userOrganizations || userOrganizations.length === 0) {

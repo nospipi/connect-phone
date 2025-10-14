@@ -1,4 +1,4 @@
-// src/common/core/current-db-user.service.ts
+// apps/api/src/common/core/current-db-user.service.ts
 import { Injectable, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { Inject } from '@nestjs/common';
@@ -48,6 +48,7 @@ export class CurrentDbUserService {
         where: { email },
         relations: [
           'loggedOrganization',
+          'loggedOrganization.logo',
           'userOrganizations',
           'userOrganizations.organization',
         ],

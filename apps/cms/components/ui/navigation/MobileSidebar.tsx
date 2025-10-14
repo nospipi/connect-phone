@@ -131,10 +131,10 @@ export default function MobileSidebar({
         <DrawerContent className="sm:max-w-lg">
           <DrawerHeader>
             <DrawerTitle className="flex items-center gap-x-2.5">
-              {loggedInOrganization?.logoUrl ? (
+              {loggedInOrganization?.logo?.url ? (
                 <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded">
                   <Image
-                    src={loggedInOrganization.logoUrl}
+                    src={loggedInOrganization.logo.url}
                     alt={`${loggedInOrganization.name} logo`}
                     width={32}
                     height={32}

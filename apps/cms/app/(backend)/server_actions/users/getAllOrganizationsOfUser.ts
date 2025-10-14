@@ -20,6 +20,8 @@ export const getAllOrganizationsOfUser = async (): Promise<
       throw new Error("Failed to fetch user organizations")
     }
 
+    console.log("User organizations response data:", response.data)
+
     return response.data || []
   } catch (error: unknown) {
     const messageFallback = (error as Error).message ?? "An error occurred"
