@@ -1,15 +1,10 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/media/select/page.tsx
-import {
-  RiArrowLeftLine,
-  RiCheckLine,
-  RiImageLine,
-  RiCloseLine,
-} from "@remixicon/react"
+import { RiArrowLeftLine, RiImageLine, RiCloseLine } from "@remixicon/react"
 import Link from "next/link"
-import Image from "next/image"
 import { getAllMediaPaginated } from "@/app/(backend)/server_actions/media/getAllMediaPaginated"
 import SearchForm from "./SearchForm"
 import { Button } from "@/components/common/Button"
+import MediaItemButton from "./MediaItemButton.client"
 
 //----------------------------------------------------------------------
 
@@ -41,7 +36,6 @@ const Page = async ({ searchParams }: PageProps) => {
   const hasPreviousPage = meta.currentPage > 1
   const hasNextPage = meta.currentPage < meta.totalPages
 
-  // Build URL helper
   const buildUrl = (newSelectedIds: number[]) => {
     const urlParams = new URLSearchParams()
     urlParams.set("page", page)
@@ -53,13 +47,11 @@ const Page = async ({ searchParams }: PageProps) => {
     return `/media/select?${urlParams.toString()}`
   }
 
-  // Build confirmation URL
   const buildConfirmUrl = () => {
     const separator = previousPage.includes("?") ? "&" : "?"
     return `${previousPage}${separator}mediaIds=${selectedIds.join(",")}`
   }
 
-  // Build clear selection URL
   const buildClearUrl = () => {
     const urlParams = new URLSearchParams()
     urlParams.set("page", page)
@@ -70,7 +62,6 @@ const Page = async ({ searchParams }: PageProps) => {
 
   return (
     <div className="flex h-full flex-col overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100/50 dark:from-gray-950 dark:to-gray-900/50">
-      {/* Header */}
       <div className="flex items-center gap-4 border-b border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950">
         <Link
           href={previousPage}
@@ -90,7 +81,6 @@ const Page = async ({ searchParams }: PageProps) => {
         </div>
       </div>
 
-      {/* Search */}
       <div className="border-b border-gray-200/80 bg-white/50 p-3 backdrop-blur-sm dark:border-gray-800/80 dark:bg-gray-950/50">
         <div className="flex flex-wrap items-center gap-4">
           <div className="min-w-[300px] flex-1">
@@ -127,7 +117,6 @@ const Page = async ({ searchParams }: PageProps) => {
         </div>
       </div>
 
-      {/* Content */}
       <div className="flex flex-1 overflow-hidden py-2">
         <div className="flex-1 overflow-auto px-3 py-1">
           {items.length === 0 ? (
@@ -155,67 +144,12 @@ const Page = async ({ searchParams }: PageProps) => {
                   : [...selectedIds, media.id]
 
                 return (
-                  <Link
+                  <MediaItemButton
                     key={media.id}
-                    href={buildUrl(newSelectedIds)}
-                    className="group relative"
-                  >
-                    {/* Card Container */}
-                    <div
-                      className={`relative aspect-square overflow-hidden rounded-xl transition-all duration-300 ${
-                        isSelected
-                          ? "ring-2 ring-indigo-500 ring-offset-2 ring-offset-gray-50 dark:ring-offset-gray-950"
-                          : "ring-1 ring-gray-200/50 hover:ring-gray-300 dark:ring-gray-800/50 dark:hover:ring-gray-700"
-                      }`}
-                    >
-                      {/* Image */}
-                      <div className="relative h-full w-full overflow-hidden rounded-lg bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900">
-                        <Image
-                          src={media.url}
-                          alt={media.description || "Media"}
-                          fill
-                          className="object-cover p-2"
-                          style={{
-                            borderRadius: 17,
-                          }}
-                        />
-                      </div>
-
-                      {/* Gradient Overlays */}
-                      <div className="absolute inset-2 rounded-lg bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                      <div
-                        className={`absolute inset-2 rounded-lg bg-gradient-to-br from-indigo-500/20 to-purple-500/20 transition-opacity duration-300 ${
-                          isSelected ? "opacity-100" : "opacity-0"
-                        }`}
-                      />
-
-                      {/* Selection Indicator */}
-                      <div className="absolute right-3 top-3">
-                        <div
-                          className={`flex h-7 w-7 items-center justify-center rounded-full backdrop-blur-md transition-all duration-300 ${
-                            isSelected
-                              ? "scale-100 bg-indigo-600 shadow-lg shadow-indigo-500/50"
-                              : "scale-90 bg-white/20 opacity-0 group-hover:scale-100 group-hover:opacity-100"
-                          }`}
-                        >
-                          <RiCheckLine
-                            className={`h-4 w-4 transition-all ${
-                              isSelected
-                                ? "scale-100 text-white"
-                                : "scale-75 text-white"
-                            }`}
-                          />
-                        </div>
-                      </div>
-
-                      {/* Description */}
-                      <div className="absolute bottom-2 left-2 right-2 translate-y-full rounded-lg bg-gradient-to-t from-black/90 to-transparent p-3 transition-transform duration-300 group-hover:translate-y-0">
-                        <p className="truncate text-xs font-medium text-white">
-                          {media.description || "No description given"}
-                        </p>
-                      </div>
-                    </div>
-                  </Link>
+                    media={media}
+                    isSelected={isSelected}
+                    newUrl={buildUrl(newSelectedIds)}
+                  />
                 )
               })}
             </div>
@@ -223,7 +157,6 @@ const Page = async ({ searchParams }: PageProps) => {
         </div>
       </div>
 
-      {/* Pagination */}
       {meta.totalPages > 1 && (
         <div className="border-t border-gray-200/80 bg-white/80 p-4 backdrop-blur-xl dark:border-gray-800/80 dark:bg-gray-950/80">
           <div className="flex items-center justify-center sm:justify-between">
@@ -238,7 +171,6 @@ const Page = async ({ searchParams }: PageProps) => {
               </span>
             </div>
 
-            {/* Desktop pagination */}
             <div className="hidden items-center gap-2 sm:flex">
               {hasPreviousPage ? (
                 <Link
@@ -325,7 +257,6 @@ const Page = async ({ searchParams }: PageProps) => {
               )}
             </div>
 
-            {/* Mobile pagination */}
             <div className="flex items-center gap-2 sm:hidden">
               {hasPreviousPage ? (
                 <Link
