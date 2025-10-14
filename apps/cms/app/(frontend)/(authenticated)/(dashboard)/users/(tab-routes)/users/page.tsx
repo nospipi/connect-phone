@@ -50,18 +50,6 @@ const Page = async ({
     role: role,
   })
 
-  //console.log("Users Response:", usersResponse.items)
-
-  //   cms:dev: Users Response: [
-  // cms:dev:   {
-  // cms:dev:     id: 1015,
-  // cms:dev:     createdAt: '2025-09-19T11:26:12.642Z',
-  // cms:dev:     email: 'Jocelyn_Sauer@example.com',
-  // cms:dev:     firstName: 'Jocelyn',
-  // cms:dev:     lastName: 'Sauer',
-  // cms:dev:     loggedOrganizationId: null
-  // cms:dev:   },
-
   const items = usersResponse?.items || []
   const meta = usersResponse?.meta
   const hasPreviousPage = meta?.currentPage > 1
@@ -69,9 +57,9 @@ const Page = async ({
   const hasActiveFilters = search !== "" || role !== "all"
 
   return (
-    <div className="flex h-full flex-col gap-2 overflow-hidden py-4 pl-5">
+    <div className="flex h-full flex-col gap-2 overflow-hidden">
       {/* Filters Bar */}
-      <div className="my-2 flex flex-col gap-3 pr-2 sm:flex-row sm:items-center sm:justify-between">
+      <div className="my-2 flex flex-col gap-3 px-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-1 flex-col gap-3 sm:flex-row sm:items-center">
           <form
             method="GET"
@@ -156,7 +144,7 @@ const Page = async ({
       {/* Users List */}
       {items.length > 0 && (
         <div className="flex-1 overflow-hidden">
-          <div className="h-full divide-y divide-gray-200 overflow-auto pr-5 dark:divide-slate-800/30">
+          <div className="h-full divide-y divide-gray-200 overflow-auto px-3 dark:divide-slate-800/30">
             {items.map((userOrganization: any, index: number) => {
               const user = userOrganization.user
               const role = userOrganization.role
@@ -215,7 +203,7 @@ const Page = async ({
 
       {/* Pagination */}
       {meta && meta.totalPages > 1 && (
-        <div className="border-t border-gray-200 pr-5 pt-4 dark:border-slate-800/50">
+        <div className="border-t border-gray-200 p-5 dark:border-slate-800/50">
           <div className="flex items-center justify-center sm:justify-between">
             <div className="hidden items-center gap-4 text-sm text-gray-500 sm:flex dark:text-slate-500">
               <span>

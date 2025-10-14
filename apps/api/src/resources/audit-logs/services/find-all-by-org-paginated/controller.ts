@@ -27,7 +27,7 @@ export class FindAllByOrgPaginatedController {
   @Get('paginated')
   async findAllByOrganizationPaginated(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
-    @Query('limit', new DefaultValuePipe(100), ParseIntPipe) limit: number
+    @Query('limit', new DefaultValuePipe(50), ParseIntPipe) limit: number
   ): Promise<Pagination<IAuditLog>> {
     return this.findAllByOrgPaginatedService.findAllByOrganizationPaginated(
       page,

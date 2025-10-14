@@ -1,6 +1,7 @@
 import TabNavigationWrapper from "./TabNavigationWrapper.client"
 import { getAllInvitationsOfOrganizationPaginated } from "@/app/(backend)/server_actions/user-invitations/getAllInvitationsOfOrganizationPaginated"
-
+import { Button } from "@/components/common/Button"
+import Link from "next/link"
 //-------------------------------------------------------------------
 
 const Layout = async ({
@@ -14,17 +15,24 @@ const Layout = async ({
     role: "all",
   })
   const meta = invitationsResponse?.meta
-  //console.log("invitationsResponse", invitationsResponse)
 
   return (
-    <div className="relative flex h-full flex-col">
-      <div className="pl-5 pt-4">
+    <div className="flex h-full flex-col gap-2">
+      <div className="flex flex-col gap-2 pl-5 pr-3 pt-4">
         <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-50">
           Users
         </h1>
-        <TabNavigationWrapper invitationsCount={meta?.totalItems ?? 0} />
+
+        <div className="flex items-center justify-between">
+          <TabNavigationWrapper invitationsCount={meta?.totalItems ?? 0} />
+          <Link href="/users/invite-user">
+            <Button variant="primary" className="mb-4">
+              Invite User
+            </Button>
+          </Link>
+        </div>
       </div>
-      {children}
+      <div className="flex-1 overflow-hidden">{children}</div>
     </div>
   )
 }

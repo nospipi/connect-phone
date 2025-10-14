@@ -1,4 +1,4 @@
-import { createUserInvitation } from "@/app/(backend)/server_actions/createUserInvitation"
+import { createUserInvitation } from "@/app/(backend)/server_actions/user-invitations/createUserInvitation"
 import { RiArrowLeftLine, RiMailSendLine } from "@remixicon/react"
 import Link from "next/link"
 import { UserOrganizationRole } from "@connect-phone/shared-types"

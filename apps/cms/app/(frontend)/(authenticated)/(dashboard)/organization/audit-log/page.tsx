@@ -1,3 +1,5 @@
+// apps/cms/app/(frontend)/(authenticated)/(dashboard)/organization/audit-log/page.tsx
+
 import { getAllAuditLogsOfOrganizationPaginated } from "@/app/(backend)/server_actions/audit-logs/getAllAuditLogsOfOrganizationPaginated"
 import { IAuditLog } from "@connect-phone/shared-types"
 import { Button } from "@/components/common/Button"
@@ -48,7 +50,7 @@ const Page = async ({
       {/* Audit Logs List */}
       {auditLogs.length > 0 && (
         <div className="flex-1 overflow-hidden">
-          <div className="h-full divide-y divide-slate-800/30 overflow-auto pr-5">
+          <div className="h-full divide-y divide-slate-800/30 overflow-auto px-3">
             <div className="relative">
               {/* Main content */}
               <div className="relative space-y-0">
@@ -63,7 +65,7 @@ const Page = async ({
 
       {/* Pagination */}
       {meta && meta.totalPages > 1 && (
-        <div className="border-t border-slate-800/50 pr-5 pt-4">
+        <div className="border-t border-slate-800/50 p-5">
           <div className="flex items-center justify-center sm:justify-between">
             <div className="hidden items-center gap-4 text-sm text-slate-500 sm:flex">
               <span>
