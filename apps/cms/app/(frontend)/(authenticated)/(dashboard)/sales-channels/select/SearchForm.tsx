@@ -27,7 +27,7 @@ export default function SearchForm({
     urlParams.set("targetField", targetField)
     urlParams.set("multipleSelection", String(multipleSelection))
     urlParams.set("page", "1")
-    if (selectedParam) urlParams.set("selected", selectedParam)
+    if (selectedParam) urlParams.set("salesChannelIds", selectedParam)
     Object.entries(formData).forEach(([key, value]) => {
       urlParams.set(key, value)
     })
@@ -46,7 +46,7 @@ export default function SearchForm({
           value={String(multipleSelection)}
         />
         {selectedParam && (
-          <input type="hidden" name="selected" value={selectedParam} />
+          <input type="hidden" name="salesChannelIds" value={selectedParam} />
         )}
 
         {Object.entries(formData).map(([key, value]) => (

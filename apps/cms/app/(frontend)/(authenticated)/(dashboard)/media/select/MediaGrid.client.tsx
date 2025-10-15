@@ -40,7 +40,7 @@ export default function MediaGrid({
     })
     urlParams.set("page", page)
     if (search) urlParams.set("search", search)
-    urlParams.set("selected", newSelectedIds.join(","))
+    urlParams.set("mediaIds", newSelectedIds.join(","))
     return `/media/select?${urlParams.toString()}`
   }
 

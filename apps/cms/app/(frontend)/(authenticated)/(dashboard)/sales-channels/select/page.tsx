@@ -13,7 +13,7 @@ interface PageProps {
     page?: string
     search?: string
     previousPage?: string
-    selected?: string
+    salesChannelIds?: string
     multipleSelection?: string
     targetField?: string
     [key: string]: string | undefined
@@ -25,7 +25,7 @@ const Page = async ({ searchParams }: PageProps) => {
   const page = params.page || "1"
   const search = params.search || ""
   const previousPage = params.previousPage || "/sales-channels"
-  const selectedParam = params.selected || ""
+  const selectedParam = params.salesChannelIds || ""
   const multipleSelection = params.multipleSelection === "true"
   const targetField = params.targetField || "salesChannelIds"
 
@@ -34,7 +34,7 @@ const Page = async ({ searchParams }: PageProps) => {
     "page",
     "search",
     "previousPage",
-    "selected",
+    "salesChannelIds",
     "multipleSelection",
     "targetField",
   ]
@@ -86,7 +86,11 @@ const Page = async ({ searchParams }: PageProps) => {
       urlParams.set(key, value)
     })
 
-    if (Object.keys(formData).length === 0) {
+    if (selectedParam) {
+      urlParams.set(targetField, selectedParam)
+    }
+
+    if (urlParams.toString() === "") {
       return previousPage
     }
 
@@ -104,7 +108,7 @@ const Page = async ({ searchParams }: PageProps) => {
     })
     urlParams.set("page", String(targetPage))
     if (search) urlParams.set("search", search)
-    if (selectedParam) urlParams.set("selected", selectedParam)
+    if (selectedParam) urlParams.set("salesChannelIds", selectedParam)
     return `/sales-channels/select?${urlParams.toString()}`
   }
 

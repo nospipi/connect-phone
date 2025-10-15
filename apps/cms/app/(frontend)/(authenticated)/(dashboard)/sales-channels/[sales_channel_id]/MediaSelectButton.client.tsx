@@ -35,7 +35,7 @@ export default function MediaSelectButton({
     urlParams.set("multipleSelection", String(multipleSelection))
 
     if (currentLogoId) {
-      urlParams.set("selected", currentLogoId.toString())
+      urlParams.set("mediaIds", currentLogoId.toString())
     }
 
     formData.forEach((value, key) => {

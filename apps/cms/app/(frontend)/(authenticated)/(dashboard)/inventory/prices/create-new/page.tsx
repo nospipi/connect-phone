@@ -8,6 +8,8 @@ import { RiArrowLeftLine, RiAddLine, RiCloseLine } from "@remixicon/react"
 import { Currency } from "@connect-phone/shared-types"
 import { Badge } from "@/components/common/Badge"
 import DateBasedCheckbox from "./DateBasedCheckbox.client"
+import SalesChannelSelectButton from "./SalesChannelSelectButton.client"
+import DateRangeSelectButton from "./DateRangeSelectButton.client"
 
 //------------------------------------------------------------
 
@@ -70,36 +72,6 @@ const Page = async ({
     return `/inventory/prices/create-new?${urlParams.toString()}`
   }
 
-  const buildSelectUrl = (targetField: "salesChannelIds" | "dateRangeIds") => {
-    const urlParams = new URLSearchParams()
-    urlParams.set("previousPage", "/inventory/prices/create-new")
-    urlParams.set("targetField", targetField)
-    urlParams.set("multipleSelection", "true")
-
-    if (targetField === "salesChannelIds" && salesChannelIds) {
-      urlParams.set("selected", salesChannelIds)
-    } else if (targetField === "dateRangeIds" && dateRangeIds) {
-      urlParams.set("selected", dateRangeIds)
-    }
-
-    if (name) urlParams.set("name", encodeURIComponent(name))
-    if (amount) urlParams.set("amount", amount)
-    if (currency) urlParams.set("currency", currency)
-    if (isDateBased) urlParams.set("isDateBased", "true")
-    if (targetField === "salesChannelIds" && dateRangeIds) {
-      urlParams.set("dateRangeIds", dateRangeIds)
-    } else if (targetField === "dateRangeIds" && salesChannelIds) {
-      urlParams.set("salesChannelIds", salesChannelIds)
-    }
-
-    const basePath =
-      targetField === "salesChannelIds"
-        ? "/sales-channels/select"
-        : "/inventory/calendar/select"
-
-    return `${basePath}?${urlParams.toString()}`
-  }
-
   return (
     <div className="flex h-full flex-col overflow-hidden">
       {/* Header */}
@@ -127,6 +99,22 @@ const Page = async ({
         <div className="flex h-full w-full justify-center overflow-auto px-4">
           <div className="w-full max-w-3xl">
             <form action={createPrice} className="flex flex-col gap-6">
+              <input
+                type="hidden"
+                name="salesChannelIds"
+                value={JSON.stringify(selectedSalesChannelIds)}
+              />
+              <input
+                type="hidden"
+                name="isDateBased"
+                value={isDateBased ? "true" : "false"}
+              />
+              <input
+                type="hidden"
+                name="dateRangeIds"
+                value={JSON.stringify(selectedDateRangeIds)}
+              />
+
               <div>
                 <label
                   htmlFor="name"
@@ -207,21 +195,6 @@ const Page = async ({
                 <label className="block text-sm font-medium text-gray-700 dark:text-slate-300">
                   Sales Channels <span className="text-red-500">*</span>
                 </label>
-                <input
-                  type="hidden"
-                  name="salesChannelIds"
-                  value={JSON.stringify(selectedSalesChannelIds)}
-                />
-                <input
-                  type="hidden"
-                  name="isDateBased"
-                  value={isDateBased ? "true" : "false"}
-                />
-                <input
-                  type="hidden"
-                  name="dateRangeIds"
-                  value={JSON.stringify(selectedDateRangeIds)}
-                />
 
                 {selectedSalesChannels.length > 0 && (
                   <div className="mt-2 flex flex-wrap gap-2">
@@ -242,14 +215,9 @@ const Page = async ({
                   </div>
                 )}
 
-                <Link
-                  href={buildSelectUrl("salesChannelIds")}
-                  className="mt-2 flex items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-300 dark:hover:bg-slate-800/50"
-                >
-                  {selectedSalesChannels.length > 0
-                    ? "Manage sales channels"
-                    : "Select sales channels"}
-                </Link>
+                <div className="mt-2">
+                  <SalesChannelSelectButton />
+                </div>
                 <p className="mt-2 text-xs text-gray-500 dark:text-slate-500">
                   Choose which sales channels this price applies to
                 </p>
@@ -280,14 +248,9 @@ const Page = async ({
                     </div>
                   )}
 
-                  <Link
-                    href={buildSelectUrl("dateRangeIds")}
-                    className="mt-2 flex items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-300 dark:hover:bg-slate-800/50"
-                  >
-                    {selectedDateRanges.length > 0
-                      ? "Manage date ranges"
-                      : "Select date ranges"}
-                  </Link>
+                  <div className="mt-2">
+                    <DateRangeSelectButton />
+                  </div>
                   <p className="mt-2 text-xs text-gray-500 dark:text-slate-500">
                     Choose specific date ranges for this price
                   </p>

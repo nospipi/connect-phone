@@ -1,7 +1,7 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/prices/create-new/DateBasedCheckbox.client.tsx
 "use client"
 
-import { useRouter, useSearchParams } from "next/navigation"
+import { useRouter } from "next/navigation"
 
 //------------------------------------------------------------
 
@@ -13,12 +13,46 @@ export default function DateBasedCheckbox({
   isChecked,
 }: DateBasedCheckboxProps) {
   const router = useRouter()
-  const searchParams = useSearchParams()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const params = new URLSearchParams(searchParams.toString())
-    params.set("isDateBased", e.target.checked ? "true" : "false")
-    router.push(`/inventory/prices/create-new?${params.toString()}`)
+    const form = document.querySelector("form") as HTMLFormElement
+    if (!form) return
+
+    const formData = new FormData(form)
+    const urlParams = new URLSearchParams()
+
+    // Preserve all form values
+    formData.forEach((value, key) => {
+      if (
+        key !== "isDateBased" &&
+        key !== "salesChannelIds" &&
+        key !== "dateRangeIds"
+      ) {
+        urlParams.set(key, value.toString())
+      }
+    })
+
+    // Set the new checkbox value
+    urlParams.set("isDateBased", e.target.checked ? "true" : "false")
+
+    // Preserve selections
+    const salesChannelIds = formData.get("salesChannelIds")
+    if (salesChannelIds) {
+      const ids = JSON.parse(salesChannelIds.toString())
+      if (ids.length > 0) {
+        urlParams.set("salesChannelIds", ids.join(","))
+      }
+    }
+
+    const dateRangeIds = formData.get("dateRangeIds")
+    if (dateRangeIds) {
+      const ids = JSON.parse(dateRangeIds.toString())
+      if (ids.length > 0) {
+        urlParams.set("dateRangeIds", ids.join(","))
+      }
+    }
+
+    router.push(`/inventory/prices/create-new?${urlParams.toString()}`)
   }
 
   return (

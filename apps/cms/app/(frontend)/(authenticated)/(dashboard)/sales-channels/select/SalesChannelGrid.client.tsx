@@ -40,7 +40,7 @@ export default function SalesChannelGrid({
     })
     urlParams.set("page", page)
     if (search) urlParams.set("search", search)
-    urlParams.set("selected", newSelectedIds.join(","))
+    urlParams.set("salesChannelIds", newSelectedIds.join(","))
     return `/sales-channels/select?${urlParams.toString()}`
   }
 

@@ -40,7 +40,7 @@ export default function DateRangeGrid({
     })
     urlParams.set("page", page)
     if (search) urlParams.set("search", search)
-    urlParams.set("selected", newSelectedIds.join(","))
+    urlParams.set("dateRangeIds", newSelectedIds.join(","))
     return `/inventory/calendar/select?${urlParams.toString()}`
   }
 

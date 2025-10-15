@@ -54,5 +54,5 @@ export const createPrice = async (formData: FormData): Promise<void> => {
     throw new Error(errorMessage)
   }
 
-  redirect("/prices")
+  redirect("/inventory/prices")
 }
