@@ -22,17 +22,17 @@ const SalesChannelItem = ({ channel }: SalesChannelItemProps) => {
                 {/* Logo or Fallback Icon */}
                 <div className="flex-shrink-0">
                   {channel.logo?.url ? (
-                    <div className="h-11 w-11 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-900">
+                    <div className="h-11 w-11 overflow-hidden rounded-full bg-slate-300 dark:bg-slate-700">
                       <Image
                         src={channel.logo.url}
                         alt={`${channel.name} logo`}
                         width={40}
                         height={40}
-                        className="h-full w-full object-cover"
+                        className="h-full w-full object-scale-down p-1"
                       />
                     </div>
                   ) : (
-                    <div className="flex h-11 w-11 items-center justify-center rounded-full bg-slate-200 dark:bg-slate-900">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-full bg-slate-300 dark:bg-slate-800">
                       <ImageOff
                         className="text-gray-400 dark:text-gray-500"
                         size={16}
