@@ -123,30 +123,58 @@ const Page = async ({ searchParams }: PageProps) => {
 
   return (
     <div className="flex h-full flex-col overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100/50 dark:from-gray-950 dark:to-gray-900/50">
-      <div className="flex items-center gap-4 border-b border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950">
+      <div className="flex border-b border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950">
         <Link
           href={buildBackUrl()}
-          className="flex h-full items-center justify-center px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-900 dark:hover:text-gray-300"
+          className="flex items-center justify-center px-4 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-900 dark:hover:text-gray-300"
         >
           <RiArrowLeftLine className="h-4 w-4" />
         </Link>
-        <div className="flex items-center gap-4 py-4">
-          <div>
-            <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-50">
-              Select Media
-            </h1>
-            <p className="text-sm text-gray-500">
-              {multipleSelection
-                ? "Choose images from your library"
-                : "Choose one image from your library"}
-            </p>
+
+        <div className="flex flex-1 flex-col">
+          <div className="flex items-center justify-between gap-4">
+            <div className="py-4 pl-4">
+              <h1 className="whitespace-nowrap text-lg font-semibold text-gray-900 dark:text-gray-50">
+                Select Media
+              </h1>
+              <p className="whitespace-nowrap text-sm text-gray-500">
+                {multipleSelection
+                  ? "Choose images from your library"
+                  : "Choose one image from your library"}
+              </p>
+            </div>
+
+            {selectedIds.length > 0 && (
+              <div className="mr-4 whitespace-nowrap rounded-full bg-indigo-50 px-3 py-1 dark:bg-indigo-900/30">
+                <span className="text-sm font-medium text-indigo-700 dark:text-indigo-300">
+                  {selectedIds.length} selected
+                </span>
+              </div>
+            )}
           </div>
+
+          {selectedIds.length > 0 && (
+            <div className="flex items-center justify-end gap-2 pb-4 pr-4">
+              <Link
+                href={buildClearUrl()}
+                className="relative inline-flex items-center gap-2 overflow-hidden whitespace-nowrap rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+              >
+                <RiCloseLine className="h-4 w-4" />
+                <span className="relative">Clear Selection</span>
+              </Link>
+              <Link
+                href={buildConfirmUrl()}
+                className="relative overflow-hidden whitespace-nowrap rounded-lg bg-gradient-to-r from-indigo-600 to-indigo-700 px-6 py-2.5 text-sm font-medium text-white shadow-lg shadow-indigo-500/25"
+              >
+                <span className="relative">Confirm Selection</span>
+              </Link>
+            </div>
+          )}
         </div>
       </div>
 
       <div className="border-b border-gray-200/80 bg-white/50 p-3 backdrop-blur-sm dark:border-gray-800/80 dark:bg-gray-950/50">
         <div className="flex flex-wrap items-center gap-4">
-          {/* Type '{ currentSearch: string; currentPage: string; previousPage: string; selectedParam: string; }' is missing the following properties from type 'SearchFormProps': multipleSelection, targetField, formDatats(2739) */}
           <div className="min-w-[300px] flex-1">
             <SearchForm
               currentSearch={search}
@@ -157,29 +185,6 @@ const Page = async ({ searchParams }: PageProps) => {
               formData={formData}
             />
           </div>
-
-          {selectedIds.length > 0 && (
-            <>
-              <div className="rounded-full bg-indigo-50 px-3 py-1 dark:bg-indigo-900/30">
-                <span className="text-sm font-medium text-indigo-700 dark:text-indigo-300">
-                  {selectedIds.length} selected
-                </span>
-              </div>
-              <Link
-                href={buildClearUrl()}
-                className="relative inline-flex items-center gap-2 overflow-hidden rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
-              >
-                <RiCloseLine className="h-4 w-4" />
-                <span className="relative">Clear Selection</span>
-              </Link>
-              <Link
-                href={buildConfirmUrl()}
-                className="relative overflow-hidden rounded-lg bg-gradient-to-r from-indigo-600 to-indigo-700 px-6 py-2.5 text-sm font-medium text-white shadow-lg shadow-indigo-500/25"
-              >
-                <span className="relative">Confirm Selection</span>
-              </Link>
-            </>
-          )}
         </div>
       </div>
 
