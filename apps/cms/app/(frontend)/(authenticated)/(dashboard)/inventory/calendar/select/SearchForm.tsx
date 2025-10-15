@@ -1,4 +1,4 @@
-// apps/cms/app/(frontend)/(authenticated)/(dashboard)/media/select/SearchForm.tsx
+// apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/calendar/select/SearchForm.tsx
 import { RiSearchLine, RiCloseLine } from "@remixicon/react"
 import Link from "next/link"
 
@@ -31,12 +31,12 @@ export default function SearchForm({
     Object.entries(formData).forEach(([key, value]) => {
       urlParams.set(key, value)
     })
-    return `/media/select?${urlParams.toString()}`
+    return `/inventory/calendar/select?${urlParams.toString()}`
   }
 
   return (
     <div className="flex w-full items-center gap-2">
-      <form method="GET" action="/media/select" className="flex-1">
+      <form method="GET" action="/inventory/calendar/select" className="flex-1">
         <input type="hidden" name="page" value="1" />
         <input type="hidden" name="previousPage" value={previousPage} />
         <input type="hidden" name="targetField" value={targetField} />
@@ -59,7 +59,7 @@ export default function SearchForm({
             type="text"
             name="search"
             defaultValue={currentSearch}
-            placeholder="Search by description..."
+            placeholder="Search by name..."
             className="w-full rounded-xl border border-gray-200/50 bg-white/80 py-3 pl-12 pr-4 text-sm text-gray-900 placeholder-gray-400 shadow-sm backdrop-blur-sm transition-all focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 dark:border-gray-800/50 dark:bg-gray-900/80 dark:text-white dark:placeholder-gray-500"
           />
         </div>

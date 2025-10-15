@@ -2,8 +2,6 @@
 import {
   IAuditLog,
   ISalesChannel,
-  IUser,
-  IOrganization,
   IUserOrganization,
   IUserInvitation,
   IDateRange,

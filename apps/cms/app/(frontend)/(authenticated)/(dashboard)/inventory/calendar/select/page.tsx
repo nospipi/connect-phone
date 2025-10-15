@@ -1,10 +1,10 @@
-// apps/cms/app/(frontend)/(authenticated)/(dashboard)/media/select/page.tsx
-import { RiArrowLeftLine, RiImageLine, RiCloseLine } from "@remixicon/react"
+// apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/calendar/select/page.tsx
+import { RiArrowLeftLine, RiCalendarLine, RiCloseLine } from "@remixicon/react"
 import Link from "next/link"
-import { getAllMediaPaginated } from "@/app/(backend)/server_actions/media/getAllMediaPaginated"
+import { getAllDateRangesPaginated } from "@/app/(backend)/server_actions/date-ranges/getAllDateRangesPaginated"
 import SearchForm from "./SearchForm"
 import { Button } from "@/components/common/Button"
-import MediaGrid from "./MediaGrid.client"
+import DateRangeGrid from "./DateRangeGrid.client"
 
 //----------------------------------------------------------------------
 
@@ -24,10 +24,10 @@ const Page = async ({ searchParams }: PageProps) => {
   const params = await searchParams
   const page = params.page || "1"
   const search = params.search || ""
-  const previousPage = params.previousPage || "/media"
+  const previousPage = params.previousPage || "/inventory/calendar"
   const selectedParam = params.selected || ""
   const multipleSelection = params.multipleSelection === "true"
-  const targetField = params.targetField || "mediaIds"
+  const targetField = params.targetField || "dateRangeIds"
 
   const formData: Record<string, string> = {}
   const excludedParams = [
@@ -48,12 +48,12 @@ const Page = async ({ searchParams }: PageProps) => {
     ? selectedParam.split(",").map(Number).filter(Boolean)
     : []
 
-  const mediaData = await getAllMediaPaginated({
+  const dateRangeData = await getAllDateRangesPaginated({
     page,
     search,
   })
 
-  const { items, meta } = mediaData
+  const { items, meta } = dateRangeData
   const hasPreviousPage = meta.currentPage > 1
   const hasNextPage = meta.currentPage < meta.totalPages
 
@@ -78,7 +78,7 @@ const Page = async ({ searchParams }: PageProps) => {
     })
     urlParams.set("page", page)
     if (search) urlParams.set("search", search)
-    return `/media/select?${urlParams.toString()}`
+    return `/inventory/calendar/select?${urlParams.toString()}`
   }
 
   const buildBackUrl = () => {
@@ -106,7 +106,7 @@ const Page = async ({ searchParams }: PageProps) => {
     urlParams.set("page", String(targetPage))
     if (search) urlParams.set("search", search)
     if (selectedParam) urlParams.set("selected", selectedParam)
-    return `/media/select?${urlParams.toString()}`
+    return `/inventory/calendar/select?${urlParams.toString()}`
   }
 
   return (
@@ -123,12 +123,12 @@ const Page = async ({ searchParams }: PageProps) => {
           <div className="flex items-center justify-between gap-4">
             <div className="py-4 pl-4">
               <h1 className="whitespace-nowrap text-lg font-semibold text-gray-900 dark:text-gray-50">
-                Select Media
+                Select Date Range
               </h1>
               <p className="whitespace-nowrap text-sm text-gray-500">
                 {multipleSelection
-                  ? "Choose images from your library"
-                  : "Choose one image from your library"}
+                  ? "Choose date ranges from your calendar"
+                  : "Choose one date range from your calendar"}
               </p>
             </div>
 
@@ -179,21 +179,21 @@ const Page = async ({ searchParams }: PageProps) => {
           {items.length === 0 ? (
             <div className="flex h-full flex-col items-center justify-center gap-6">
               <div className="rounded-2xl bg-gradient-to-br from-gray-100 to-gray-200/50 p-8 dark:from-gray-800/50 dark:to-gray-900/50">
-                <RiImageLine className="h-20 w-20 text-gray-400 dark:text-gray-600" />
+                <RiCalendarLine className="h-20 w-20 text-gray-400 dark:text-gray-600" />
               </div>
               <div className="text-center">
                 <p className="text-lg font-medium text-gray-700 dark:text-gray-300">
-                  No media found
+                  No date ranges found
                 </p>
                 <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                   {search
                     ? "Try adjusting your search"
-                    : "Upload some images to get started"}
+                    : "Create a date range to get started"}
                 </p>
               </div>
             </div>
           ) : (
-            <MediaGrid
+            <DateRangeGrid
               items={items}
               selectedIds={selectedIds}
               multipleSelection={multipleSelection}
