@@ -13,29 +13,36 @@ interface MediaItemButtonProps {
   media: IMedia
   isSelected: boolean
   newUrl: string
+  isAnyLoading: boolean
+  onLoadingChange: (loading: boolean) => void
 }
 
 export default function MediaItemButton({
   media,
   isSelected,
   newUrl,
+  isAnyLoading,
+  onLoadingChange,
 }: MediaItemButtonProps) {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     setIsLoading(false)
-  }, [isSelected])
+    onLoadingChange(false)
+  }, [isSelected, onLoadingChange])
 
   const handleClick = () => {
+    if (isAnyLoading) return
     setIsLoading(true)
+    onLoadingChange(true)
     router.push(newUrl)
   }
 
   return (
     <button
       onClick={handleClick}
-      disabled={isLoading}
+      disabled={isAnyLoading}
       className="group relative w-full disabled:cursor-wait"
     >
       <div

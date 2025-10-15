@@ -4,7 +4,7 @@ import Link from "next/link"
 import { getAllMediaPaginated } from "@/app/(backend)/server_actions/media/getAllMediaPaginated"
 import SearchForm from "./SearchForm"
 import { Button } from "@/components/common/Button"
-import MediaItemButton from "./MediaItemButton.client"
+import MediaGrid from "./MediaGrid.client"
 
 //----------------------------------------------------------------------
 
@@ -58,26 +58,6 @@ const Page = async ({ searchParams }: PageProps) => {
   const hasPreviousPage = meta.currentPage > 1
   const hasNextPage = meta.currentPage < meta.totalPages
 
-  const buildBaseParams = () => {
-    const urlParams = new URLSearchParams()
-    urlParams.set("previousPage", previousPage)
-    urlParams.set("targetField", targetField)
-    urlParams.set("multipleSelection", String(multipleSelection))
-    // Add all form data
-    Object.entries(formData).forEach(([key, value]) => {
-      urlParams.set(key, value)
-    })
-    return urlParams
-  }
-
-  const buildUrl = (newSelectedIds: number[]) => {
-    const urlParams = buildBaseParams()
-    urlParams.set("page", page)
-    if (search) urlParams.set("search", search)
-    urlParams.set("selected", newSelectedIds.join(","))
-    return `/media/select?${urlParams.toString()}`
-  }
-
   const buildConfirmUrl = () => {
     const urlParams = new URLSearchParams()
     // Add all form data back
@@ -92,7 +72,13 @@ const Page = async ({ searchParams }: PageProps) => {
   }
 
   const buildClearUrl = () => {
-    const urlParams = buildBaseParams()
+    const urlParams = new URLSearchParams()
+    urlParams.set("previousPage", previousPage)
+    urlParams.set("targetField", targetField)
+    urlParams.set("multipleSelection", String(multipleSelection))
+    Object.entries(formData).forEach(([key, value]) => {
+      urlParams.set(key, value)
+    })
     urlParams.set("page", page)
     if (search) urlParams.set("search", search)
     return `/media/select?${urlParams.toString()}`
@@ -114,7 +100,13 @@ const Page = async ({ searchParams }: PageProps) => {
   }
 
   const buildPaginationUrl = (targetPage: number | string) => {
-    const urlParams = buildBaseParams()
+    const urlParams = new URLSearchParams()
+    urlParams.set("previousPage", previousPage)
+    urlParams.set("targetField", targetField)
+    urlParams.set("multipleSelection", String(multipleSelection))
+    Object.entries(formData).forEach(([key, value]) => {
+      urlParams.set(key, value)
+    })
     urlParams.set("page", String(targetPage))
     if (search) urlParams.set("search", search)
     if (selectedParam) urlParams.set("selected", selectedParam)
@@ -207,28 +199,16 @@ const Page = async ({ searchParams }: PageProps) => {
               </div>
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8">
-              {items.map((media) => {
-                const isSelected = selectedIds.includes(media.id)
-
-                const newSelectedIds = multipleSelection
-                  ? isSelected
-                    ? selectedIds.filter((id) => id !== media.id)
-                    : [...selectedIds, media.id]
-                  : isSelected
-                    ? []
-                    : [media.id]
-
-                return (
-                  <MediaItemButton
-                    key={media.id}
-                    media={media}
-                    isSelected={isSelected}
-                    newUrl={buildUrl(newSelectedIds)}
-                  />
-                )
-              })}
-            </div>
+            <MediaGrid
+              items={items}
+              selectedIds={selectedIds}
+              multipleSelection={multipleSelection}
+              page={page}
+              search={search}
+              previousPage={previousPage}
+              targetField={targetField}
+              formData={formData}
+            />
           )}
         </div>
       </div>
