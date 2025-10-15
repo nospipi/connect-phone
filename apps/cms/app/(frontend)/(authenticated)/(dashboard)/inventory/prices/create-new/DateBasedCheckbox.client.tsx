@@ -1,42 +1,23 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/prices/create-new/DateBasedCheckbox.client.tsx
 "use client"
 
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 
 //------------------------------------------------------------
 
 interface DateBasedCheckboxProps {
   isChecked: boolean
-  salesChannelIds?: string
-  dateRangeIds?: string
 }
 
 export default function DateBasedCheckbox({
   isChecked,
-  salesChannelIds,
-  dateRangeIds,
 }: DateBasedCheckboxProps) {
   const router = useRouter()
+  const searchParams = useSearchParams()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const form = e.target.form
-    if (!form) return
-
-    const formData = new FormData(form)
-    const params = new URLSearchParams()
-
-    const name = formData.get("name") as string
-    const amount = formData.get("amount") as string
-    const currency = formData.get("currency") as string
-
-    if (name) params.set("name", name)
-    if (amount) params.set("amount", amount)
-    if (currency) params.set("currency", currency)
-    if (salesChannelIds) params.set("salesChannelIds", salesChannelIds)
-    if (dateRangeIds) params.set("dateRangeIds", dateRangeIds)
-
+    const params = new URLSearchParams(searchParams.toString())
     params.set("isDateBased", e.target.checked ? "true" : "false")
-
     router.push(`/inventory/prices/create-new?${params.toString()}`)
   }
 

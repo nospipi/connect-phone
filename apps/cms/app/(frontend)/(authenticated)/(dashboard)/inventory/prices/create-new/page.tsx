@@ -16,8 +16,13 @@ const Page = async ({
 }: {
   searchParams: Promise<{ [key: string]: string | undefined }>
 }) => {
-  const { salesChannelIds, dateRangeIds, isDateBased, name, amount, currency } =
-    await searchParams
+  const params = await searchParams
+  const salesChannelIds = params.salesChannelIds || ""
+  const dateRangeIds = params.dateRangeIds || ""
+  const isDateBased = params.isDateBased === "true"
+  const name = params.name || ""
+  const amount = params.amount || ""
+  const currency = params.currency || Currency.EUR
 
   const selectedSalesChannelIds = salesChannelIds
     ? salesChannelIds.split(",").map(Number).filter(Boolean)
@@ -26,8 +31,6 @@ const Page = async ({
   const selectedDateRangeIds = dateRangeIds
     ? dateRangeIds.split(",").map(Number).filter(Boolean)
     : []
-
-  const isDateBasedChecked = isDateBased === "true"
 
   const selectedSalesChannels = await Promise.all(
     selectedSalesChannelIds.map((id) => getSalesChannelById(id)),
@@ -41,27 +44,60 @@ const Page = async ({
     field: "salesChannelIds" | "dateRangeIds",
     idToRemove: number,
   ) => {
-    const params = new URLSearchParams()
+    const urlParams = new URLSearchParams()
+
     if (field === "salesChannelIds") {
       const remaining = selectedSalesChannelIds.filter(
         (id) => id !== idToRemove,
       )
       if (remaining.length > 0) {
-        params.set("salesChannelIds", remaining.join(","))
+        urlParams.set("salesChannelIds", remaining.join(","))
       }
-      if (dateRangeIds) params.set("dateRangeIds", dateRangeIds)
+      if (dateRangeIds) urlParams.set("dateRangeIds", dateRangeIds)
     } else {
       const remaining = selectedDateRangeIds.filter((id) => id !== idToRemove)
       if (remaining.length > 0) {
-        params.set("dateRangeIds", remaining.join(","))
+        urlParams.set("dateRangeIds", remaining.join(","))
       }
-      if (salesChannelIds) params.set("salesChannelIds", salesChannelIds)
+      if (salesChannelIds) urlParams.set("salesChannelIds", salesChannelIds)
     }
-    if (isDateBased) params.set("isDateBased", isDateBased)
-    if (name) params.set("name", name)
-    if (amount) params.set("amount", amount)
-    if (currency) params.set("currency", currency)
-    return `/inventory/prices/create-new?${params.toString()}`
+
+    if (isDateBased) urlParams.set("isDateBased", "true")
+    if (name) urlParams.set("name", name)
+    if (amount) urlParams.set("amount", amount)
+    if (currency) urlParams.set("currency", currency)
+
+    return `/inventory/prices/create-new?${urlParams.toString()}`
+  }
+
+  const buildSelectUrl = (targetField: "salesChannelIds" | "dateRangeIds") => {
+    const urlParams = new URLSearchParams()
+    urlParams.set("previousPage", "/inventory/prices/create-new")
+    urlParams.set("targetField", targetField)
+    urlParams.set("multipleSelection", "true")
+
+    if (targetField === "salesChannelIds" && salesChannelIds) {
+      urlParams.set("selected", salesChannelIds)
+    } else if (targetField === "dateRangeIds" && dateRangeIds) {
+      urlParams.set("selected", dateRangeIds)
+    }
+
+    if (name) urlParams.set("name", encodeURIComponent(name))
+    if (amount) urlParams.set("amount", amount)
+    if (currency) urlParams.set("currency", currency)
+    if (isDateBased) urlParams.set("isDateBased", "true")
+    if (targetField === "salesChannelIds" && dateRangeIds) {
+      urlParams.set("dateRangeIds", dateRangeIds)
+    } else if (targetField === "dateRangeIds" && salesChannelIds) {
+      urlParams.set("salesChannelIds", salesChannelIds)
+    }
+
+    const basePath =
+      targetField === "salesChannelIds"
+        ? "/sales-channels/select"
+        : "/inventory/calendar/select"
+
+    return `${basePath}?${urlParams.toString()}`
   }
 
   return (
@@ -144,7 +180,7 @@ const Page = async ({
                   id="currency"
                   name="currency"
                   required
-                  defaultValue={currency || Currency.EUR}
+                  defaultValue={currency}
                   className="mt-2 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm outline-none focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200 dark:focus:border-slate-700/50"
                 >
                   {Object.values(Currency).map((curr) => (
@@ -157,11 +193,7 @@ const Page = async ({
 
               <div>
                 <label className="flex items-center gap-2">
-                  <DateBasedCheckbox
-                    isChecked={isDateBasedChecked}
-                    salesChannelIds={salesChannelIds}
-                    dateRangeIds={dateRangeIds}
-                  />
+                  <DateBasedCheckbox isChecked={isDateBased} />
                   <span className="text-sm font-medium text-gray-700 dark:text-slate-300">
                     Date-based pricing
                   </span>
@@ -183,7 +215,7 @@ const Page = async ({
                 <input
                   type="hidden"
                   name="isDateBased"
-                  value={isDateBasedChecked ? "true" : "false"}
+                  value={isDateBased ? "true" : "false"}
                 />
                 <input
                   type="hidden"
@@ -211,7 +243,7 @@ const Page = async ({
                 )}
 
                 <Link
-                  href={`/sales-channels/select?previousPage=/inventory/prices/create-new&targetField=salesChannelIds&multipleSelection=true${salesChannelIds ? `&salesChannelIds=${salesChannelIds}` : ""}${isDateBased ? `&isDateBased=${isDateBased}` : ""}${dateRangeIds ? `&dateRangeIds=${dateRangeIds}` : ""}${name ? `&name=${encodeURIComponent(name)}` : ""}${amount ? `&amount=${amount}` : ""}${currency ? `&currency=${currency}` : ""}`}
+                  href={buildSelectUrl("salesChannelIds")}
                   className="mt-2 flex items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-300 dark:hover:bg-slate-800/50"
                 >
                   {selectedSalesChannels.length > 0
@@ -223,7 +255,7 @@ const Page = async ({
                 </p>
               </div>
 
-              {isDateBasedChecked && (
+              {isDateBased && (
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-slate-300">
                     Date Ranges <span className="text-red-500">*</span>
@@ -249,7 +281,7 @@ const Page = async ({
                   )}
 
                   <Link
-                    href={`/inventory/calendar/select?previousPage=/inventory/prices/create-new&targetField=dateRangeIds&multipleSelection=true${salesChannelIds ? `&salesChannelIds=${salesChannelIds}` : ""}${isDateBased ? `&isDateBased=${isDateBased}` : ""}${dateRangeIds ? `&dateRangeIds=${dateRangeIds}` : ""}${name ? `&name=${encodeURIComponent(name)}` : ""}${amount ? `&amount=${amount}` : ""}${currency ? `&currency=${currency}` : ""}`}
+                    href={buildSelectUrl("dateRangeIds")}
                     className="mt-2 flex items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-300 dark:hover:bg-slate-800/50"
                   >
                     {selectedDateRanges.length > 0
