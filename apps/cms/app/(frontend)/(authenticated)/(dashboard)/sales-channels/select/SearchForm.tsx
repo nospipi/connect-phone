@@ -1,6 +1,7 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/sales-channels/select/SearchForm.tsx
 import { RiSearchLine, RiCloseLine } from "@remixicon/react"
 import Link from "next/link"
+import ClearSearchButton from "./ClearSearchButton.client"
 
 //----------------------------------------------------------------------
 
@@ -60,21 +61,12 @@ export default function SearchForm({
             name="search"
             defaultValue={currentSearch}
             placeholder="Search by name..."
-            className="w-full rounded-xl border border-gray-200/50 bg-white/80 py-3 pl-12 pr-4 text-sm text-gray-900 placeholder-gray-400 shadow-sm backdrop-blur-sm transition-all focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 dark:border-gray-800/50 dark:bg-gray-900/80 dark:text-white dark:placeholder-gray-500"
+            className="w-full border border-gray-200/50 bg-white/80 py-3 pl-12 pr-4 text-sm text-gray-900 placeholder-gray-400 shadow-sm backdrop-blur-sm transition-all focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 dark:border-gray-800/50 dark:bg-gray-900/80 dark:text-white dark:placeholder-gray-500"
           />
         </div>
       </form>
 
-      {currentSearch && (
-        <Link href={buildClearUrl()}>
-          <button
-            type="button"
-            className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl border border-red-200 bg-red-50 text-red-600 shadow-sm transition-colors hover:border-red-300 hover:bg-red-100 dark:border-red-800/50 dark:bg-red-900/20 dark:text-red-400 dark:hover:border-red-700/50 dark:hover:bg-red-800/30"
-          >
-            <RiCloseLine className="h-5 w-5" />
-          </button>
-        </Link>
-      )}
+      {currentSearch && <ClearSearchButton clearUrl={buildClearUrl()} />}
     </div>
   )
 }

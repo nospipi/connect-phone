@@ -5,6 +5,8 @@ import { getAllSalesChannelsOfOrganizationPaginated } from "@/app/(backend)/serv
 import SearchForm from "./SearchForm"
 import { Button } from "@/components/common/Button"
 import SalesChannelGrid from "./SalesChannelGrid.client"
+import ConfirmSelectionButton from "./ConfirmSelectionButton.client"
+import ClearSelectionButton from "./ClearSelectionButton.client"
 
 //----------------------------------------------------------------------
 
@@ -146,19 +148,8 @@ const Page = async ({ searchParams }: PageProps) => {
 
           {selectedIds.length > 0 && (
             <div className="flex items-center justify-end gap-2 pb-4 pr-4">
-              <Link
-                href={buildClearUrl()}
-                className="relative inline-flex items-center gap-2 overflow-hidden whitespace-nowrap rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
-              >
-                <RiCloseLine className="h-4 w-4" />
-                <span className="relative">Clear Selection</span>
-              </Link>
-              <Link
-                href={buildConfirmUrl()}
-                className="relative overflow-hidden whitespace-nowrap rounded-lg bg-gradient-to-r from-indigo-600 to-indigo-700 px-6 py-2.5 text-sm font-medium text-white shadow-lg shadow-indigo-500/25"
-              >
-                <span className="relative">Confirm Selection</span>
-              </Link>
+              <ClearSelectionButton clearUrl={buildClearUrl()} />
+              <ConfirmSelectionButton confirmUrl={buildConfirmUrl()} />
             </div>
           )}
         </div>
