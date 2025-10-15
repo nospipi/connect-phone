@@ -1,0 +1,73 @@
+// apps/cms/app/(frontend)/(authenticated)/(dashboard)/sales-channels/select/SalesChannelGrid.client.tsx
+"use client"
+
+import { useState } from "react"
+import { ISalesChannel } from "@connect-phone/shared-types"
+import SalesChannelItemButton from "./SalesChannelItemButton.client"
+
+//------------------------------------------------------------
+
+interface SalesChannelGridProps {
+  items: ISalesChannel[]
+  selectedIds: number[]
+  multipleSelection: boolean
+  page: string
+  search: string
+  previousPage: string
+  targetField: string
+  formData: Record<string, string>
+}
+
+export default function SalesChannelGrid({
+  items,
+  selectedIds,
+  multipleSelection,
+  page,
+  search,
+  previousPage,
+  targetField,
+  formData,
+}: SalesChannelGridProps) {
+  const [isAnyLoading, setIsAnyLoading] = useState(false)
+
+  const buildUrl = (newSelectedIds: number[]) => {
+    const urlParams = new URLSearchParams()
+    urlParams.set("previousPage", previousPage)
+    urlParams.set("targetField", targetField)
+    urlParams.set("multipleSelection", String(multipleSelection))
+    Object.entries(formData).forEach(([key, value]) => {
+      urlParams.set(key, value)
+    })
+    urlParams.set("page", page)
+    if (search) urlParams.set("search", search)
+    urlParams.set("selected", newSelectedIds.join(","))
+    return `/sales-channels/select?${urlParams.toString()}`
+  }
+
+  return (
+    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      {items.map((salesChannel) => {
+        const isSelected = selectedIds.includes(salesChannel.id)
+
+        const newSelectedIds = multipleSelection
+          ? isSelected
+            ? selectedIds.filter((id) => id !== salesChannel.id)
+            : [...selectedIds, salesChannel.id]
+          : isSelected
+            ? []
+            : [salesChannel.id]
+
+        return (
+          <SalesChannelItemButton
+            key={salesChannel.id}
+            salesChannel={salesChannel}
+            isSelected={isSelected}
+            newUrl={buildUrl(newSelectedIds)}
+            isAnyLoading={isAnyLoading}
+            onLoadingChange={setIsAnyLoading}
+          />
+        )
+      })}
+    </div>
+  )
+}

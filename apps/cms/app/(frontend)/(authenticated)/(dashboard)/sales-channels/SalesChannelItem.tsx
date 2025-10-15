@@ -18,7 +18,7 @@ const SalesChannelItem = ({ channel }: SalesChannelItemProps) => {
         <div className="flex items-center justify-between gap-4">
           <div className="min-w-0 flex-1">
             <div className="flex items-start justify-between">
-              <div className="flex items-start gap-3">
+              <div className="flex min-w-0 items-start gap-3">
                 {/* Logo or Fallback Icon */}
                 <div className="flex-shrink-0">
                   {channel.logo?.url ? (
@@ -43,8 +43,13 @@ const SalesChannelItem = ({ channel }: SalesChannelItemProps) => {
 
                 {/* Text Content */}
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-medium text-gray-900 group-hover:text-gray-700 dark:text-gray-50 dark:group-hover:text-gray-100">
-                    {channel.name}
+                  <p className="flex min-w-0 items-center gap-1">
+                    <span className="flex-shrink-0 text-sm font-medium text-gray-500 dark:text-slate-500">
+                      #{channel.id}
+                    </span>
+                    <span className="min-w-0 flex-1 truncate text-sm font-medium text-gray-900 group-hover:text-gray-700 dark:text-gray-50 dark:group-hover:text-gray-100">
+                      {channel.name}
+                    </span>
                   </p>
                   <p className="mt-1 truncate text-sm text-gray-600 group-hover:text-gray-500 dark:text-gray-400 dark:group-hover:text-gray-300">
                     {channel.description || "No description provided"}

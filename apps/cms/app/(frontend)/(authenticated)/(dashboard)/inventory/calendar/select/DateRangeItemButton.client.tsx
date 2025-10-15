@@ -66,15 +66,15 @@ export default function DateRangeItemButton({
       <div
         className={`relative overflow-hidden rounded-xl border bg-white p-5 transition-all duration-300 dark:bg-gray-900 ${
           isSelected
-            ? "border-indigo-500 shadow-lg shadow-indigo-500/20 ring-2 ring-indigo-500 ring-offset-2 ring-offset-gray-50 dark:border-indigo-400 dark:shadow-indigo-400/20 dark:ring-indigo-400 dark:ring-offset-gray-950"
+            ? "border-gray-200 shadow-lg shadow-indigo-500/20 ring-2 ring-indigo-500 ring-offset-2 ring-offset-gray-50 dark:border-gray-800 dark:shadow-indigo-400/20 dark:ring-indigo-400 dark:ring-offset-gray-950"
             : "border-gray-200 shadow-sm hover:border-gray-300 hover:shadow-md dark:border-gray-800 dark:hover:border-gray-700"
         }`}
       >
-        <div className="flex items-start justify-between gap-3">
-          <div className="flex-1 space-y-3">
-            <div className="flex items-center gap-2">
+        <div className="flex min-w-0 items-start justify-between gap-3">
+          <div className="min-w-0 flex-1 space-y-3">
+            <div className="flex min-w-0 items-center gap-2">
               <div
-                className={`flex h-9 w-9 items-center justify-center rounded-lg transition-colors ${
+                className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg transition-colors ${
                   isSelected
                     ? "bg-indigo-100 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400"
                     : "bg-gray-100 text-gray-600 group-hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:group-hover:bg-gray-700"
@@ -83,17 +83,19 @@ export default function DateRangeItemButton({
                 <RiCalendarLine className="h-5 w-5" />
               </div>
               <div className="min-w-0 flex-1">
-                <h3
-                  className={`truncate text-base font-semibold ${
-                    isSelected
-                      ? "text-gray-900 dark:text-white"
-                      : "text-gray-900 group-hover:text-gray-900 dark:text-gray-100 dark:group-hover:text-white"
-                  }`}
-                >
-                  <span className="font-semibold text-gray-500 dark:text-slate-500">
+                <h3 className="flex min-w-0 items-center gap-2">
+                  <span className="flex-shrink-0 text-base font-semibold text-gray-500 dark:text-slate-500">
                     #{dateRange.id}
-                  </span>{" "}
-                  {dateRange.name}
+                  </span>
+                  <span
+                    className={`min-w-0 flex-1 truncate text-base font-semibold ${
+                      isSelected
+                        ? "text-gray-900 dark:text-white"
+                        : "text-gray-900 group-hover:text-gray-900 dark:text-gray-100 dark:group-hover:text-white"
+                    }`}
+                  >
+                    {dateRange.name}
+                  </span>
                 </h3>
               </div>
             </div>
