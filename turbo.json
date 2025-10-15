@@ -19,6 +19,9 @@
     "api#dev-clean": {
       "dependsOn": ["clean"]
     },
+    "api#start": {
+      "dependsOn": []
+    },
     "api#dev": {
       "dependsOn": []
     }

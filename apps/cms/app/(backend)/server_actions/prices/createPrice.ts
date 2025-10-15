@@ -43,7 +43,7 @@ export const createPrice = async (formData: FormData): Promise<void> => {
 
     console.log("Price created successfully:", response.data)
 
-    revalidatePath("/prices")
+    revalidatePath("/inventory/prices")
   } catch (error: unknown) {
     const messageFallback = (error as Error).message ?? "An error occurred"
     const errorMessage =
