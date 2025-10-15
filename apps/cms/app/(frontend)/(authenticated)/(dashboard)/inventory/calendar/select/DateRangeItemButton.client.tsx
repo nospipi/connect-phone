@@ -82,15 +82,20 @@ export default function DateRangeItemButton({
               >
                 <RiCalendarLine className="h-5 w-5" />
               </div>
-              <h3
-                className={`truncate text-base font-semibold ${
-                  isSelected
-                    ? "text-gray-900 dark:text-white"
-                    : "text-gray-900 group-hover:text-gray-900 dark:text-gray-100 dark:group-hover:text-white"
-                }`}
-              >
-                {dateRange.name}
-              </h3>
+              <div className="min-w-0 flex-1">
+                <h3
+                  className={`truncate text-base font-semibold ${
+                    isSelected
+                      ? "text-gray-900 dark:text-white"
+                      : "text-gray-900 group-hover:text-gray-900 dark:text-gray-100 dark:group-hover:text-white"
+                  }`}
+                >
+                  <span className="font-semibold text-gray-500 dark:text-slate-500">
+                    #{dateRange.id}
+                  </span>{" "}
+                  {dateRange.name}
+                </h3>
+              </div>
             </div>
 
             <div className="space-y-2">

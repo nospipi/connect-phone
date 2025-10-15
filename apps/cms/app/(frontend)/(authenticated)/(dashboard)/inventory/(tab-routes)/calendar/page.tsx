@@ -205,6 +205,9 @@ const Page = async ({
                                     <div className="flex items-start justify-between">
                                       <div className="min-w-0 flex-1">
                                         <p className="truncate text-base font-medium text-gray-900 group-hover:text-gray-700 dark:text-slate-200 dark:group-hover:text-slate-100">
+                                          <span className="font-semibold text-gray-500 dark:text-slate-500">
+                                            #{dateRange.id}
+                                          </span>{" "}
                                           {dateRange.name}
                                         </p>
                                         <p className="mt-1 truncate text-sm text-gray-600 group-hover:text-gray-500 dark:text-slate-400 dark:group-hover:text-slate-300">

@@ -116,6 +116,9 @@ const Page = async ({
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-2">
                             <p className="truncate text-base font-medium text-gray-900 group-hover:text-gray-700 dark:text-slate-200 dark:group-hover:text-slate-100">
+                              <span className="font-semibold text-gray-500 dark:text-slate-500">
+                                #{price.id}
+                              </span>{" "}
                               {price.name}
                             </p>
                             {price.isDateBased && (
