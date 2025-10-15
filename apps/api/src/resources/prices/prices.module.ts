@@ -4,12 +4,16 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PriceEntity } from '@/database/entities/price.entity';
 import { DateRangeEntity } from '@/database/entities/date-range.entity';
 import { SalesChannelEntity } from '@/database/entities/sales-channel.entity';
-
-// controllers
-import { CreatePriceController } from '../prices/services/create-price/controller';
-
-// services
-import { CreatePriceService } from '../prices/services/create-price/service';
+import { CreatePriceController } from './services/create-price/controller';
+import { CreatePriceService } from './services/create-price/service';
+import { DeletePriceController } from './services/delete-price/controller';
+import { DeletePriceService } from './services/delete-price/service';
+import { GetAllByOrgPaginatedController } from './services/get-all-by-org-paginated/controller';
+import { GetAllByOrgPaginatedService } from './services/get-all-by-org-paginated/service';
+import { GetPriceByIdController } from './services/get-price-by-id/controller';
+import { GetPriceByIdService } from './services/get-price-by-id/service';
+import { UpdatePriceController } from './services/update-price/controller';
+import { UpdatePriceService } from './services/update-price/service';
 
 //----------------------------------------------------------------------
 
@@ -21,7 +25,19 @@ import { CreatePriceService } from '../prices/services/create-price/service';
       SalesChannelEntity,
     ]),
   ],
-  controllers: [CreatePriceController],
-  providers: [CreatePriceService],
+  controllers: [
+    CreatePriceController,
+    DeletePriceController,
+    GetAllByOrgPaginatedController,
+    GetPriceByIdController,
+    UpdatePriceController,
+  ],
+  providers: [
+    CreatePriceService,
+    DeletePriceService,
+    GetAllByOrgPaginatedService,
+    GetPriceByIdService,
+    UpdatePriceService,
+  ],
 })
 export class PricesModule {}
