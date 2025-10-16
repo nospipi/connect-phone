@@ -4,14 +4,13 @@ import { createPrice } from "@/app/(backend)/server_actions/prices/createPrice"
 import { getSalesChannelById } from "@/app/(backend)/server_actions/sales-channels/getSalesChannelById"
 import { getDateRangeById } from "@/app/(backend)/server_actions/date-ranges/getDateRangeById"
 import Link from "next/link"
-import { RiArrowLeftLine, RiCloseLine } from "@remixicon/react"
+import { RiArrowLeftLine, RiCloseLine, RiAddLine } from "@remixicon/react"
 import { Currency } from "@connect-phone/shared-types"
 import { Badge } from "@/components/common/Badge"
+import { PendingOverlay } from "@/components/common/PendingOverlay"
 import DateBasedCheckbox from "./DateBasedCheckbox.client"
 import SalesChannelSelectButton from "./SalesChannelSelectButton.client"
 import DateRangeSelectButton from "./DateRangeSelectButton.client"
-import CancelButton from "./CancelButton.client"
-import CreatePriceButton from "./CreatePriceButton.client"
 
 //------------------------------------------------------------
 
@@ -260,8 +259,24 @@ const Page = async ({
               )}
 
               <div className="flex flex-col gap-3 border-t border-gray-200 pt-6 sm:flex-row sm:justify-end dark:border-gray-800">
-                <CancelButton />
-                <CreatePriceButton />
+                <PendingOverlay mode="navigation" href="/inventory/prices">
+                  <button
+                    type="button"
+                    className="inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+                  >
+                    Cancel
+                  </button>
+                </PendingOverlay>
+
+                <PendingOverlay mode="form">
+                  <button
+                    type="submit"
+                    className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                  >
+                    <RiAddLine className="mr-2 h-4 w-4" />
+                    <span>Create Price</span>
+                  </button>
+                </PendingOverlay>
               </div>
             </form>
 

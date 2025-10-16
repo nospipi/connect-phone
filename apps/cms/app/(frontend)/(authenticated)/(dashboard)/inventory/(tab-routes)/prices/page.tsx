@@ -35,7 +35,7 @@ const Page = async ({
             method="GET"
             className="flex flex-1 flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
           >
-            <div className="relative flex-1 sm:max-w-xs">
+            <div className="relative flex-1">
               <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                 <RiSearchLine className="h-4 w-4 text-gray-500 dark:text-slate-500" />
               </div>
@@ -45,7 +45,7 @@ const Page = async ({
                 name="search"
                 placeholder="Search prices..."
                 defaultValue={search}
-                className="block w-full rounded-md border border-gray-300 bg-white py-2 pl-10 pr-3 text-sm text-gray-900 placeholder-gray-500 outline-none focus:border-blue-500 focus:outline-none focus:ring-0 focus:ring-transparent dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200 dark:placeholder-slate-500 dark:focus:border-slate-700/50"
+                className="block w-full border border-gray-300 bg-white py-2 pl-10 pr-3 text-sm text-gray-900 placeholder-gray-500 outline-none focus:border-blue-500 focus:outline-none focus:ring-0 focus:ring-transparent dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200 dark:placeholder-slate-500 dark:focus:border-slate-700/50"
               />
             </div>
 

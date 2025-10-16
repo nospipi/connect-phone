@@ -1,10 +1,11 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/media/select/page.tsx
+
 import { RiArrowLeftLine, RiImageLine, RiCloseLine } from "@remixicon/react"
 import Link from "next/link"
 import { getAllMediaPaginated } from "@/app/(backend)/server_actions/media/getAllMediaPaginated"
 import SearchForm from "./SearchForm"
-import { Button } from "@/components/common/Button"
 import MediaGrid from "./MediaGrid.client"
+import { Pagination } from "@/components/common/pagination/Pagination"
 
 //----------------------------------------------------------------------
 
@@ -54,8 +55,6 @@ const Page = async ({ searchParams }: PageProps) => {
   })
 
   const { items, meta } = mediaData
-  const hasPreviousPage = meta.currentPage > 1
-  const hasNextPage = meta.currentPage < meta.totalPages
 
   const buildConfirmUrl = () => {
     const urlParams = new URLSearchParams()
@@ -99,19 +98,14 @@ const Page = async ({ searchParams }: PageProps) => {
     return `${previousPage}${separator}${urlParams.toString()}`
   }
 
-  const buildPaginationUrl = (targetPage: number | string) => {
-    const urlParams = new URLSearchParams()
-    urlParams.set("previousPage", previousPage)
-    urlParams.set("targetField", targetField)
-    urlParams.set("multipleSelection", String(multipleSelection))
-    Object.entries(formData).forEach(([key, value]) => {
-      urlParams.set(key, value)
-    })
-    urlParams.set("page", String(targetPage))
-    if (search) urlParams.set("search", search)
-    if (selectedParam) urlParams.set("mediaIds", selectedParam)
-    return `/media/select?${urlParams.toString()}`
+  const paginationParams: Record<string, string> = {
+    previousPage,
+    targetField,
+    multipleSelection: String(multipleSelection),
+    ...formData,
   }
+  if (search) paginationParams.search = search
+  if (selectedParam) paginationParams.mediaIds = selectedParam
 
   return (
     <div className="flex h-full flex-col overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100/50 dark:from-gray-950 dark:to-gray-900/50">
@@ -211,142 +205,12 @@ const Page = async ({ searchParams }: PageProps) => {
         </div>
       </div>
 
-      {meta.totalPages > 1 && (
-        <div className="border-t border-gray-200/80 bg-white/80 p-4 backdrop-blur-xl dark:border-gray-800/80 dark:bg-gray-950/80">
-          <div className="flex items-center justify-center sm:justify-between">
-            <div className="hidden items-center gap-4 text-sm text-gray-500 sm:flex dark:text-gray-400">
-              <span>
-                Showing {(meta.currentPage - 1) * meta.itemsPerPage + 1} to{" "}
-                {Math.min(
-                  meta.currentPage * meta.itemsPerPage,
-                  meta.totalItems,
-                )}{" "}
-                of {meta.totalItems} items
-              </span>
-            </div>
-
-            <div className="hidden items-center gap-2 sm:flex">
-              {hasPreviousPage ? (
-                <Link href={buildPaginationUrl(1)}>
-                  <Button
-                    variant="secondary"
-                    className="border-gray-300 bg-gray-50 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-gray-700/50 dark:bg-gray-800/50 dark:text-gray-300 dark:hover:border-gray-600/50 dark:hover:bg-gray-700/50"
-                  >
-                    First
-                  </Button>
-                </Link>
-              ) : (
-                <Button
-                  variant="secondary"
-                  disabled
-                  className="border-gray-200/50 bg-gray-100 text-sm text-gray-400 dark:border-gray-800/50 dark:bg-gray-900 dark:text-gray-600"
-                >
-                  First
-                </Button>
-              )}
-              {hasPreviousPage ? (
-                <Link href={buildPaginationUrl(meta.currentPage - 1)}>
-                  <Button
-                    variant="secondary"
-                    className="border-gray-300 bg-gray-50 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-gray-700/50 dark:bg-gray-800/50 dark:text-gray-300 dark:hover:border-gray-600/50 dark:hover:bg-gray-700/50"
-                  >
-                    Previous
-                  </Button>
-                </Link>
-              ) : (
-                <Button
-                  variant="secondary"
-                  disabled
-                  className="border-gray-200/50 bg-gray-100 text-sm text-gray-400 dark:border-gray-800/50 dark:bg-gray-900 dark:text-gray-600"
-                >
-                  Previous
-                </Button>
-              )}
-              <span className="px-3 text-sm text-gray-600 dark:text-gray-400">
-                Page {meta.currentPage} of {meta.totalPages}
-              </span>
-              {hasNextPage ? (
-                <Link href={buildPaginationUrl(meta.currentPage + 1)}>
-                  <Button
-                    variant="secondary"
-                    className="border-gray-300 bg-gray-50 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-gray-700/50 dark:bg-gray-800/50 dark:text-gray-300 dark:hover:border-gray-600/50 dark:hover:bg-gray-700/50"
-                  >
-                    Next
-                  </Button>
-                </Link>
-              ) : (
-                <Button
-                  variant="secondary"
-                  disabled
-                  className="border-gray-200/50 bg-gray-100 text-sm text-gray-400 dark:border-gray-800/50 dark:bg-gray-900 dark:text-gray-600"
-                >
-                  Next
-                </Button>
-              )}
-              {hasNextPage ? (
-                <Link href={buildPaginationUrl(meta.totalPages)}>
-                  <Button
-                    variant="secondary"
-                    className="border-gray-300 bg-gray-50 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-gray-700/50 dark:bg-gray-800/50 dark:text-gray-300 dark:hover:border-gray-600/50 dark:hover:bg-gray-700/50"
-                  >
-                    Last
-                  </Button>
-                </Link>
-              ) : (
-                <Button
-                  variant="secondary"
-                  disabled
-                  className="border-gray-200/50 bg-gray-100 text-sm text-gray-400 dark:border-gray-800/50 dark:bg-gray-900 dark:text-gray-600"
-                >
-                  Last
-                </Button>
-              )}
-            </div>
-
-            <div className="flex items-center gap-2 sm:hidden">
-              {hasPreviousPage ? (
-                <Link href={buildPaginationUrl(meta.currentPage - 1)}>
-                  <Button
-                    variant="secondary"
-                    className="border-gray-300 bg-gray-50 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-gray-700/50 dark:bg-gray-800/50 dark:text-gray-300 dark:hover:border-gray-600/50 dark:hover:bg-gray-700/50"
-                  >
-                    Previous
-                  </Button>
-                </Link>
-              ) : (
-                <Button
-                  variant="secondary"
-                  disabled
-                  className="border-gray-200/50 bg-gray-100 text-sm text-gray-400 dark:border-gray-800/50 dark:bg-gray-900 dark:text-gray-600"
-                >
-                  Previous
-                </Button>
-              )}
-              <span className="px-3 text-sm text-gray-600 dark:text-gray-400">
-                {meta.currentPage}/{meta.totalPages}
-              </span>
-              {hasNextPage ? (
-                <Link href={buildPaginationUrl(meta.currentPage + 1)}>
-                  <Button
-                    variant="secondary"
-                    className="border-gray-300 bg-gray-50 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-gray-700/50 dark:bg-gray-800/50 dark:text-gray-300 dark:hover:border-gray-600/50 dark:hover:bg-gray-700/50"
-                  >
-                    Next
-                  </Button>
-                </Link>
-              ) : (
-                <Button
-                  variant="secondary"
-                  disabled
-                  className="border-gray-200/50 bg-gray-100 text-sm text-gray-400 dark:border-gray-800/50 dark:bg-gray-900 dark:text-gray-600"
-                >
-                  Next
-                </Button>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
+      <Pagination
+        meta={meta}
+        searchParams={paginationParams}
+        itemLabel="media"
+        basePath="/media/select"
+      />
     </div>
   )
 }

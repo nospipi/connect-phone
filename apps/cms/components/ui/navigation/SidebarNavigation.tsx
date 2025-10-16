@@ -125,7 +125,7 @@ export function SidebarNavigation() {
                   isActive(item.href)
                     ? "text-indigo-600 dark:text-indigo-400"
                     : "text-gray-700 hover:text-gray-900 dark:text-gray-400 hover:dark:text-gray-50",
-                  "relative flex items-center gap-x-2.5 overflow-hidden rounded-md px-2 py-1.5 text-sm font-medium transition hover:bg-gray-100 hover:dark:bg-gray-900",
+                  "relative flex items-center gap-x-2.5 overflow-hidden px-2 py-1.5 text-sm font-medium transition hover:bg-gray-100 hover:dark:bg-gray-900",
                   focusRing,
                 )}
               >
@@ -138,30 +138,6 @@ export function SidebarNavigation() {
             </li>
           ))}
         </ul>
-        {/* <div>
-          <span className="text-xs font-medium leading-6 text-gray-500">
-            Settings
-          </span>
-          <ul aria-label="shortcuts" role="list" className="space-y-0.5">
-            {shortcuts.map((item) => (
-              <li key={item.name}>
-                <Link
-                  href={item.href}
-                  className={cx(
-                    pathname === item.href || pathname?.startsWith(item.href)
-                      ? "text-indigo-600 dark:text-indigo-400"
-                      : "text-gray-700 hover:text-gray-900 dark:text-gray-400 hover:dark:text-gray-50",
-                    "flex items-center gap-x-2.5 rounded-md px-2 py-1.5 text-sm font-medium transition hover:bg-gray-100 hover:dark:bg-gray-900",
-                    focusRing,
-                  )}
-                >
-                  <item.icon className="size-4 shrink-0" aria-hidden="true" />
-                  {item.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div> */}
       </nav>
       <style jsx>{`
         @keyframes shimmer {

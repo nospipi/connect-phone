@@ -6,13 +6,17 @@ import Link from "next/link"
 import { RiImageLine, RiSearchLine, RiAddLine } from "@remixicon/react"
 import MediaItemDrawer from "./MediaItemDrawer"
 import MediaItem from "./MediaItemButton.client"
+import { Pagination } from "@/components/common/pagination/Pagination"
+
+//------------------------------------------------------------
 
 const Page = async ({
   searchParams,
 }: {
   searchParams: Promise<{ [key: string]: string | undefined }>
 }) => {
-  const { page = "1", search = "" } = await searchParams
+  const params = await searchParams
+  const { page = "1", search = "" } = params
 
   const mediaData = await getAllMediaPaginated({
     page,
@@ -20,8 +24,6 @@ const Page = async ({
   })
 
   const { items, meta } = mediaData
-  const hasPreviousPage = meta.currentPage > 1
-  const hasNextPage = meta.currentPage < meta.totalPages
   const hasActiveFilters = search !== ""
 
   return (
@@ -44,7 +46,7 @@ const Page = async ({
           method="GET"
           className="flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
         >
-          <div className="relative flex-1 sm:max-w-xs">
+          <div className="relative flex-1">
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
               <RiSearchLine className="h-4 w-4 text-gray-500 dark:text-slate-500" />
             </div>
@@ -54,7 +56,7 @@ const Page = async ({
               name="search"
               placeholder="Search by description..."
               defaultValue={search}
-              className="block w-full rounded-md border border-gray-300 bg-white py-2 pl-10 pr-3 text-sm text-gray-900 placeholder-gray-500 outline-none focus:border-blue-500 focus:outline-none focus:ring-0 dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200 dark:placeholder-slate-500 dark:focus:border-slate-700/50"
+              className="block w-full border border-gray-300 bg-white py-2 pl-10 pr-3 text-sm text-gray-900 placeholder-gray-500 outline-none focus:border-blue-500 focus:outline-none focus:ring-0 dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200 dark:placeholder-slate-500 dark:focus:border-slate-700/50"
             />
           </div>
 
@@ -111,95 +113,7 @@ const Page = async ({
       </div>
 
       {/* PAGINATION */}
-      {meta && meta.totalPages > 1 && (
-        <div className="border-t border-gray-200 p-5 dark:border-slate-800/50">
-          <div className="flex items-center justify-center sm:justify-between">
-            {/* Desktop */}
-            <div className="hidden items-center gap-4 text-sm text-gray-500 sm:flex dark:text-slate-500">
-              <span>
-                Showing {(meta.currentPage - 1) * meta.itemsPerPage + 1} to{" "}
-                {Math.min(
-                  meta.currentPage * meta.itemsPerPage,
-                  meta.totalItems,
-                )}{" "}
-                of {meta.totalItems} items
-              </span>
-            </div>
-
-            <div className="hidden items-center gap-2 sm:flex">
-              {[
-                { label: "First", page: 1, enabled: hasPreviousPage },
-                {
-                  label: "Previous",
-                  page: meta.currentPage - 1,
-                  enabled: hasPreviousPage,
-                },
-                {
-                  label: "Next",
-                  page: meta.currentPage + 1,
-                  enabled: hasNextPage,
-                },
-                { label: "Last", page: meta.totalPages, enabled: hasNextPage },
-              ].map(({ label, page, enabled }) =>
-                enabled ? (
-                  <Link
-                    key={label}
-                    href={`?page=${page}${search ? `&search=${search}` : ""}`}
-                  >
-                    <Button
-                      variant="secondary"
-                      className="border-gray-300 bg-gray-50 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-slate-700/50 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:border-slate-600/50 dark:hover:bg-slate-700/50"
-                    >
-                      {label}
-                    </Button>
-                  </Link>
-                ) : (
-                  <Button
-                    key={label}
-                    variant="secondary"
-                    disabled
-                    className="border-gray-200 bg-gray-100 text-sm text-gray-400 dark:border-slate-800/50 dark:bg-slate-900/50 dark:text-slate-600"
-                  >
-                    {label}
-                  </Button>
-                ),
-              )}
-              <span className="px-3 text-sm text-gray-600 dark:text-slate-400">
-                Page {meta.currentPage} of {meta.totalPages}
-              </span>
-            </div>
-
-            {/* Mobile */}
-            <div className="flex items-center gap-2 sm:hidden">
-              {hasPreviousPage ? (
-                <Link
-                  href={`?page=${meta.currentPage - 1}${search ? `&search=${search}` : ""}`}
-                >
-                  <Button variant="secondary">Previous</Button>
-                </Link>
-              ) : (
-                <Button variant="secondary" disabled>
-                  Previous
-                </Button>
-              )}
-              <span className="px-3 text-sm text-gray-600 dark:text-slate-400">
-                {meta.currentPage}/{meta.totalPages}
-              </span>
-              {hasNextPage ? (
-                <Link
-                  href={`?page=${meta.currentPage + 1}${search ? `&search=${search}` : ""}`}
-                >
-                  <Button variant="secondary">Next</Button>
-                </Link>
-              ) : (
-                <Button variant="secondary" disabled>
-                  Next
-                </Button>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
+      <Pagination meta={meta} searchParams={params} itemLabel="media items" />
     </div>
   )
 }
