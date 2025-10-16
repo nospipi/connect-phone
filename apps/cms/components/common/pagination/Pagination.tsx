@@ -63,7 +63,7 @@ export function Pagination({
                 variant="secondary"
                 className="border-gray-300 bg-gray-50 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-slate-700/50 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:border-slate-600/50 dark:hover:bg-slate-700/50"
               >
-                <DotsLoading />
+                First
               </Button>
             </Link>
           ) : (
@@ -72,7 +72,7 @@ export function Pagination({
               disabled
               className="border-gray-200 bg-gray-100 text-sm text-gray-400 dark:border-slate-800/50 dark:bg-slate-900/50 dark:text-slate-600"
             >
-              <DotsLoading />
+              First
             </Button>
           )}
           {hasPreviousPage ? (
