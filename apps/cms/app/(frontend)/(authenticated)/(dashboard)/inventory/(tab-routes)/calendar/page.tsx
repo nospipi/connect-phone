@@ -6,6 +6,7 @@ import Link from "next/link"
 import { RiAddLine, RiCalendarEventLine } from "@remixicon/react"
 import { IDateRange } from "@connect-phone/shared-types"
 import { format } from "date-fns"
+import { Pagination } from "@/components/common/pagination/Pagination"
 
 //------------------------------------------------------------
 
@@ -54,7 +55,8 @@ const Page = async ({
 }: {
   searchParams: Promise<{ [key: string]: string | undefined }>
 }) => {
-  const { page = "1", date, search } = await searchParams
+  const params = await searchParams
+  const { page = "1", search = "", date } = params
 
   const paginationParams: {
     page: string | number
@@ -263,157 +265,7 @@ const Page = async ({
         </div>
       )}
 
-      {/* Pagination */}
-      {meta && meta.totalPages > 1 && (
-        <div className="border-t border-gray-200 p-5 dark:border-slate-800/50">
-          <div className="flex items-center justify-center sm:justify-between">
-            <div className="hidden items-center gap-4 text-sm text-gray-500 sm:flex dark:text-slate-500">
-              <span>
-                Showing {(meta.currentPage - 1) * meta.itemsPerPage + 1} to{" "}
-                {Math.min(
-                  meta.currentPage * meta.itemsPerPage,
-                  meta.totalItems,
-                )}{" "}
-                of {meta.totalItems} date ranges
-              </span>
-            </div>
-
-            {/* Desktop pagination */}
-            <div className="hidden items-center gap-2 sm:flex">
-              {hasPreviousPage ? (
-                <Link
-                  href={`?page=1${date && date !== "undefined" ? `&date=${date}` : ""}${search && search !== "undefined" ? `&search=${search}` : ""}`}
-                >
-                  <Button
-                    variant="secondary"
-                    className="border-gray-300 bg-gray-50 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-slate-700/50 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:border-slate-600/50 dark:hover:bg-slate-700/50"
-                  >
-                    First
-                  </Button>
-                </Link>
-              ) : (
-                <Button
-                  variant="secondary"
-                  disabled
-                  className="border-gray-200 bg-gray-100 text-sm text-gray-400 dark:border-slate-800/50 dark:bg-slate-900/50 dark:text-slate-600"
-                >
-                  First
-                </Button>
-              )}
-              {hasPreviousPage ? (
-                <Link
-                  href={`?page=${meta.currentPage - 1}${date && date !== "undefined" ? `&date=${date}` : ""}${search && search !== "undefined" ? `&search=${search}` : ""}`}
-                >
-                  <Button
-                    variant="secondary"
-                    className="border-gray-300 bg-gray-50 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-slate-700/50 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:border-slate-600/50 dark:hover:bg-slate-700/50"
-                  >
-                    Previous
-                  </Button>
-                </Link>
-              ) : (
-                <Button
-                  variant="secondary"
-                  disabled
-                  className="border-gray-200 bg-gray-100 text-sm text-gray-400 dark:border-slate-800/50 dark:bg-slate-900/50 dark:text-slate-600"
-                >
-                  Previous
-                </Button>
-              )}
-              <span className="px-3 text-sm text-gray-600 dark:text-slate-400">
-                Page {meta.currentPage} of {meta.totalPages}
-              </span>
-              {hasNextPage ? (
-                <Link
-                  href={`?page=${meta.currentPage + 1}${date && date !== "undefined" ? `&date=${date}` : ""}${search && search !== "undefined" ? `&search=${search}` : ""}`}
-                >
-                  <Button
-                    variant="secondary"
-                    className="border-gray-300 bg-gray-50 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-slate-700/50 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:border-slate-600/50 dark:hover:bg-slate-700/50"
-                  >
-                    Next
-                  </Button>
-                </Link>
-              ) : (
-                <Button
-                  variant="secondary"
-                  disabled
-                  className="border-gray-200 bg-gray-100 text-sm text-gray-400 dark:border-slate-800/50 dark:bg-slate-900/50 dark:text-slate-600"
-                >
-                  Next
-                </Button>
-              )}
-              {hasNextPage ? (
-                <Link
-                  href={`?page=${meta.totalPages}${date && date !== "undefined" ? `&date=${date}` : ""}${search && search !== "undefined" ? `&search=${search}` : ""}`}
-                >
-                  <Button
-                    variant="secondary"
-                    className="border-gray-300 bg-gray-50 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-slate-700/50 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:border-slate-600/50 dark:hover:bg-slate-700/50"
-                  >
-                    Last
-                  </Button>
-                </Link>
-              ) : (
-                <Button
-                  variant="secondary"
-                  disabled
-                  className="border-gray-200 bg-gray-100 text-sm text-gray-400 dark:border-slate-800/50 dark:bg-slate-900/50 dark:text-slate-600"
-                >
-                  Last
-                </Button>
-              )}
-            </div>
-
-            {/* Mobile pagination */}
-            <div className="flex items-center gap-2 sm:hidden">
-              {hasPreviousPage ? (
-                <Link
-                  href={`?page=${meta.currentPage - 1}${date && date !== "undefined" ? `&date=${date}` : ""}${search && search !== "undefined" ? `&search=${search}` : ""}`}
-                >
-                  <Button
-                    variant="secondary"
-                    className="border-gray-300 bg-gray-50 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-slate-700/50 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:border-slate-600/50 dark:hover:bg-slate-700/50"
-                  >
-                    Previous
-                  </Button>
-                </Link>
-              ) : (
-                <Button
-                  variant="secondary"
-                  disabled
-                  className="border-gray-200 bg-gray-100 text-sm text-gray-400 dark:border-slate-800/50 dark:bg-slate-900/50 dark:text-slate-600"
-                >
-                  Previous
-                </Button>
-              )}
-              <span className="px-3 text-sm text-gray-600 dark:text-slate-400">
-                {meta.currentPage}/{meta.totalPages}
-              </span>
-              {hasNextPage ? (
-                <Link
-                  href={`?page=${meta.currentPage + 1}${date && date !== "undefined" ? `&date=${date}` : ""}${search && search !== "undefined" ? `&search=${search}` : ""}`}
-                >
-                  <Button
-                    variant="secondary"
-                    className="border-gray-300 bg-gray-50 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-slate-700/50 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:border-slate-600/50 dark:hover:bg-slate-700/50"
-                  >
-                    Next
-                  </Button>
-                </Link>
-              ) : (
-                <Button
-                  variant="secondary"
-                  disabled
-                  className="border-gray-200 bg-gray-100 text-sm text-gray-400 dark:border-slate-800/50 dark:bg-slate-900/50 dark:text-slate-600"
-                >
-                  Next
-                </Button>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
+      <Pagination meta={meta} searchParams={params} itemLabel="date ranges" />
     </div>
   )
 }
