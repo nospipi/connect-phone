@@ -1,4 +1,4 @@
-// app/components/DotsLoading.tsx
+// app/components/common/DotsLoading.tsx
 
 export default function DotsLoading() {
   return (

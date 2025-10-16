@@ -1,7 +1,7 @@
 // apps/cms/components/common/Pagination.tsx
 import Link from "next/link"
 import { Button } from "@/components/common/Button"
-import LoadingBorder from "../LoadingBorder"
+import DotsLoading from "../DotsLoading"
 
 //------------------------------------------------------------
 
@@ -63,19 +63,17 @@ export function Pagination({
                 variant="secondary"
                 className="border-gray-300 bg-gray-50 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-slate-700/50 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:border-slate-600/50 dark:hover:bg-slate-700/50"
               >
-                <LoadingBorder isLoading={true}>First</LoadingBorder>
+                <DotsLoading />
               </Button>
             </Link>
           ) : (
-            <LoadingBorder isLoading={true}>
-              <Button
-                variant="secondary"
-                disabled
-                className="border-gray-200 bg-gray-100 text-sm text-gray-400 dark:border-slate-800/50 dark:bg-slate-900/50 dark:text-slate-600"
-              >
-                First
-              </Button>
-            </LoadingBorder>
+            <Button
+              variant="secondary"
+              disabled
+              className="border-gray-200 bg-gray-100 text-sm text-gray-400 dark:border-slate-800/50 dark:bg-slate-900/50 dark:text-slate-600"
+            >
+              <DotsLoading />
+            </Button>
           )}
           {hasPreviousPage ? (
             <Link href={buildUrl(meta.currentPage - 1)}>
