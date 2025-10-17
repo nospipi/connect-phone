@@ -1,18 +1,11 @@
-// apps/cms/app/(frontend)/(authenticated)/(dashboard)/countries/(tab-routes)/countries/page.tsx
-import { Button } from "@/components/common/Button"
+// apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/(tab-routes)/countries/page.tsx
 import Link from "next/link"
 import Image from "next/image"
 import { RiSearchLine, RiMapPinLine } from "@remixicon/react"
 import { getAllCountriesOfOrg } from "@/app/(backend)/server_actions/countries/getAllCountriesOfOrg"
 import { CountryRegion } from "@connect-phone/shared-types"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/common/Select"
 import { Badge } from "@/components/common/Badge"
+import { PendingOverlay } from "@/components/common/PendingOverlay"
 
 //------------------------------------------------------------
 
@@ -39,11 +32,11 @@ const Page = async ({
       <div className="my-2 flex flex-col gap-3 px-5 pr-2 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-1 flex-col gap-3 sm:flex-row sm:items-center">
           <form
-            method="GET"
+            id="filter-form"
             className="flex flex-1 flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
           >
-            <div className="flex flex-1 flex-col gap-3 sm:max-w-lg sm:flex-row sm:items-center">
-              <div className="relative flex-1 sm:max-w-xs">
+            <div className="flex flex-1 flex-col gap-3 sm:flex-row sm:items-center">
+              <div className="relative flex-1">
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                   <RiSearchLine className="h-4 w-4 text-gray-500 dark:text-slate-500" />
                 </div>
@@ -53,47 +46,44 @@ const Page = async ({
                   name="search"
                   placeholder="Search countries..."
                   defaultValue={search}
-                  className="block w-full rounded-md border border-gray-300 bg-white py-2 pl-10 pr-3 text-sm text-gray-900 placeholder-gray-500 outline-none focus:border-blue-500 focus:outline-none focus:ring-0 focus:ring-transparent dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200 dark:placeholder-slate-500 dark:focus:border-slate-700/50"
+                  className="block w-full border border-gray-300 bg-white py-2 pl-10 pr-3 text-sm text-gray-900 placeholder-gray-500 outline-none focus:border-blue-500 focus:outline-none focus:ring-0 focus:ring-transparent dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200 dark:placeholder-slate-500 dark:focus:border-slate-700/50"
                 />
               </div>
 
-              {/* Region Filter */}
-              <div className="w-full sm:w-auto">
-                <Select name="region" defaultValue={region}>
-                  <SelectTrigger className="border-gray-300 bg-white text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200 dark:focus:border-slate-600 dark:focus:ring-slate-600">
-                    <SelectValue placeholder="Filter by region" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {REGION_OPTIONS.map((regionOption) => (
-                      <SelectItem
-                        key={regionOption.value}
-                        value={regionOption.value}
-                      >
-                        {regionOption.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+              <div className="flex-1">
+                <select
+                  name="region"
+                  defaultValue={region}
+                  className="block w-full border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none focus:border-blue-500 focus:outline-none focus:ring-0 focus:ring-transparent dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200 dark:focus:border-slate-700/50"
+                >
+                  {REGION_OPTIONS.map((regionOption) => (
+                    <option key={regionOption.value} value={regionOption.value}>
+                      {regionOption.label}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
 
             <div className="flex items-center justify-end gap-2 sm:justify-start">
-              <Button
-                type="submit"
-                variant="secondary"
-                className="border-gray-300 bg-gray-50 px-4 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-slate-700/50 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:border-slate-600/50 dark:hover:bg-slate-700/50"
-              >
-                Apply
-              </Button>
+              <PendingOverlay mode="form-navigation" formId="filter-form">
+                <button
+                  type="submit"
+                  form="filter-form"
+                  className="border border-gray-300 bg-gray-50 px-4 py-2 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-slate-700/50 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:border-slate-600/50 dark:hover:bg-slate-700/50"
+                >
+                  Apply
+                </button>
+              </PendingOverlay>
               {hasActiveFilters && (
-                <Link href="/inventory/countries">
-                  <Button
-                    variant="secondary"
-                    className="border-red-300 bg-red-50 px-4 text-sm text-red-700 hover:border-red-400 hover:bg-red-100 dark:border-red-700/50 dark:bg-red-900/20 dark:text-red-400 dark:hover:border-red-600/50 dark:hover:bg-red-800/30"
+                <PendingOverlay mode="navigation" href="/inventory/countries">
+                  <button
+                    type="button"
+                    className="border border-red-300 bg-red-50 px-4 py-2 text-sm text-red-700 hover:border-red-400 hover:bg-red-100 dark:border-red-700/50 dark:bg-red-900/20 dark:text-red-400 dark:hover:border-red-600/50 dark:hover:bg-red-800/30"
                   >
                     Clear
-                  </Button>
-                </Link>
+                  </button>
+                </PendingOverlay>
               )}
             </div>
           </form>
@@ -163,7 +153,6 @@ const Page = async ({
                             </p>
                           </div>
 
-                          {/* Region Badge */}
                           <div className="ml-4 flex-shrink-0">
                             <Badge variant="neutral">
                               {country.region?.charAt(0).toUpperCase() +
