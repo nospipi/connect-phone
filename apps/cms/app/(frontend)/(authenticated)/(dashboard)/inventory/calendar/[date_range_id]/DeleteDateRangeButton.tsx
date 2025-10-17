@@ -3,6 +3,7 @@
 import { RiDeleteBin6Line } from "@remixicon/react"
 import { deleteDateRangeById } from "@/app/(backend)/server_actions/date-ranges/deleteDateRangeById"
 import { IDateRange } from "@connect-phone/shared-types"
+import { PendingOverlay } from "@/components/common/PendingOverlay"
 
 //----------------------------------------------------------------------
 
@@ -17,7 +18,7 @@ const DeleteDateRangeButton = ({ dateRange }: { dateRange: IDateRange }) => {
 
       <label
         htmlFor={`delete-date-range-${dateRange.id}`}
-        className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full text-gray-400 transition-all duration-200 hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-900/20 dark:hover:text-red-400"
+        className="flex h-8 w-8 cursor-pointer items-center justify-center text-gray-400 transition-all duration-200 hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-900/20 dark:hover:text-red-400"
       >
         <RiDeleteBin6Line className="h-4 w-4" />
       </label>
@@ -37,7 +38,7 @@ const DeleteDateRangeButton = ({ dateRange }: { dateRange: IDateRange }) => {
             </div>
             <label
               htmlFor={`delete-date-range-${dateRange.id}`}
-              className="cursor-pointer rounded-full p-2 transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+              className="cursor-pointer p-2 transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-800"
             >
               <svg
                 className="h-5 w-5 text-gray-600 dark:text-gray-400"
@@ -70,18 +71,20 @@ const DeleteDateRangeButton = ({ dateRange }: { dateRange: IDateRange }) => {
           <div className="flex items-center justify-end gap-3">
             <label
               htmlFor={`delete-date-range-${dateRange.id}`}
-              className="cursor-pointer rounded-md bg-gray-200 px-4 py-2 text-gray-700 transition-colors duration-200 hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
+              className="cursor-pointer bg-gray-200 px-4 py-2 text-gray-700 transition-colors duration-200 hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
             >
               Cancel
             </label>
             <form action={deleteDateRangeById}>
               <input type="hidden" name="dateRangeId" value={dateRange.id} />
-              <button
-                type="submit"
-                className="rounded-md bg-red-600 px-4 py-2 text-white transition-colors duration-200 hover:bg-red-700"
-              >
-                Delete Date Range
-              </button>
+              <PendingOverlay mode="form">
+                <button
+                  type="submit"
+                  className="bg-red-600 px-4 py-2 text-white transition-colors duration-200 hover:bg-red-700"
+                >
+                  Delete Date Range
+                </button>
+              </PendingOverlay>
             </form>
           </div>
         </div>

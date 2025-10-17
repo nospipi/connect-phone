@@ -4,6 +4,7 @@ import { deleteMediaById } from "@/app/(backend)/server_actions/media/deleteMedi
 import Image from "next/image"
 import { RiExternalLinkLine } from "@remixicon/react"
 import { IMedia } from "@connect-phone/shared-types"
+import { PendingOverlay } from "@/components/common/PendingOverlay"
 
 //------------------------------------------------------------
 
@@ -35,7 +36,7 @@ const MediaItemDrawer = ({ media }: MediaItemDrawerProps) => {
             </div>
             <label
               htmlFor={`media-drawer-${media.id}`}
-              className="cursor-pointer rounded-full p-2 transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+              className="cursor-pointer p-2 transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-800"
             >
               <svg
                 className="h-5 w-5 text-gray-600 dark:text-gray-400"
@@ -99,27 +100,31 @@ const MediaItemDrawer = ({ media }: MediaItemDrawerProps) => {
               <div className="flex items-center justify-end gap-3 border-t border-gray-200 pt-4 dark:border-gray-800">
                 <label
                   htmlFor={`media-drawer-${media.id}`}
-                  className="cursor-pointer rounded-md bg-gray-200 px-4 py-2 text-gray-700 transition-colors duration-200 hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
+                  className="cursor-pointer bg-gray-200 px-4 py-2 text-gray-700 transition-colors duration-200 hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
                 >
                   Cancel
                 </label>
-                <button
-                  type="submit"
-                  className="rounded-md bg-indigo-600 px-4 py-2 text-white transition-colors duration-200 hover:bg-indigo-700"
-                >
-                  Update Media
-                </button>
+                <PendingOverlay mode="form">
+                  <button
+                    type="submit"
+                    className="bg-indigo-600 px-4 py-2 text-white transition-colors duration-200 hover:bg-indigo-700"
+                  >
+                    Update Media
+                  </button>
+                </PendingOverlay>
               </div>
             </form>
 
-            <form action={deleteMediaById}>
+            <form action={deleteMediaById} className="inline-block">
               <input type="hidden" name="mediaId" value={media.id} />
-              <button
-                type="submit"
-                className="rounded-md bg-red-600 px-4 py-2 text-white transition-colors duration-200 hover:bg-red-700"
-              >
-                Delete Media
-              </button>
+              <PendingOverlay mode="form">
+                <button
+                  type="submit"
+                  className="bg-red-600 px-4 py-2 text-white transition-colors duration-200 hover:bg-red-700"
+                >
+                  Delete Media
+                </button>
+              </PendingOverlay>
             </form>
           </div>
         </div>
