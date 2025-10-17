@@ -32,7 +32,7 @@ export const updateMedia = async (formData: FormData): Promise<void> => {
       throw new Error("Failed to update media")
     }
 
-    revalidatePath("/inventory/media")
+    revalidatePath("/media")
   } catch (error: unknown) {
     const messageFallback = (error as Error).message ?? "An error occurred"
     const errorMessage =
@@ -42,6 +42,4 @@ export const updateMedia = async (formData: FormData): Promise<void> => {
     console.error("Failed to update media:", errorMessage)
     throw new Error(errorMessage)
   }
-
-  redirect("/media")
 }

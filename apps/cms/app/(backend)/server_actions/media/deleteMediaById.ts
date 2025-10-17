@@ -3,7 +3,6 @@
 
 import { AxiosError } from "axios"
 import { revalidatePath } from "next/cache"
-import { redirect } from "next/navigation"
 import { ErrorResponse } from "../types"
 import { createApiClient } from "../api-client"
 
@@ -21,9 +20,7 @@ export const deleteMediaById = async (formData: FormData): Promise<void> => {
       throw new Error("Failed to delete media")
     }
 
-    console.log("Media deleted successfully:", response.data)
-
-    revalidatePath("/inventory/media")
+    revalidatePath("/media")
   } catch (error: unknown) {
     const messageFallback = (error as Error).message ?? "An error occurred"
     const errorMessage =
@@ -32,7 +29,5 @@ export const deleteMediaById = async (formData: FormData): Promise<void> => {
 
     console.error("Failed to delete media:", errorMessage)
     throw new Error(errorMessage)
-  } finally {
-    redirect("/media")
   }
 }

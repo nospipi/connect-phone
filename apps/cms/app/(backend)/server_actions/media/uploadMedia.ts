@@ -37,8 +37,6 @@ export const uploadMedia = async (formData: FormData): Promise<IMedia> => {
       throw new Error("Failed to upload media")
     }
 
-    console.log("Media uploaded successfully:", response.data)
-
     return response.data
   } catch (error: unknown) {
     const messageFallback = (error as Error).message ?? "An error occurred"

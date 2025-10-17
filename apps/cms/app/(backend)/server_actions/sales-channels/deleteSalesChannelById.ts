@@ -35,7 +35,7 @@ export const deleteSalesChannelById = async (
 
     console.error("Failed to delete sales channel:", errorMessage)
     throw new Error(errorMessage)
-  } finally {
-    redirect("/sales-channels")
   }
+
+  redirect("/sales-channels")
 }

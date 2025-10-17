@@ -34,7 +34,6 @@ export const deleteDateRangeById = async (
 
     console.error("Failed to delete date range:", errorMessage)
     throw new Error(errorMessage)
-  } finally {
-    redirect("/inventory/calendar")
   }
+  redirect("/inventory/calendar")
 }

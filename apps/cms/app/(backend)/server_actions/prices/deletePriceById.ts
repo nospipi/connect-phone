@@ -32,7 +32,7 @@ export const deletePriceById = async (formData: FormData): Promise<void> => {
 
     console.error("Failed to delete price:", errorMessage)
     throw new Error(errorMessage)
-  } finally {
-    redirect("/inventory/prices")
   }
+
+  redirect("/inventory/prices")
 }

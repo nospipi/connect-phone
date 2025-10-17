@@ -36,7 +36,7 @@ export const updateUser = async (formData: FormData): Promise<void> => {
 
     console.error("Failed to update user:", errorMessage)
     throw new Error(errorMessage)
-  } finally {
-    redirect("/users/users")
   }
+
+  redirect("/users/users")
 }
