@@ -1,9 +1,14 @@
-import { RiArrowLeftLine, RiDeleteBin6Line } from "@remixicon/react"
+// apps/cms/app/(frontend)/(authenticated)/(dashboard)/users/[user_id]/page.tsx
+
+import { RiArrowLeftLine } from "@remixicon/react"
 import Link from "next/link"
 import { UserOrganizationRole } from "@connect-phone/shared-types"
 import { getUserById } from "@/app/(backend)/server_actions/users/getUserById"
 import { updateUser } from "@/app/(backend)/server_actions/users/updateUser"
 import DeleteUserButton from "./DeleteUserButton"
+import { PendingOverlay } from "@/components/common/PendingOverlay"
+
+//------------------------------------------------------------
 
 const USER_ROLES = [
   ...Object.values(UserOrganizationRole).map((role) => ({
@@ -12,15 +17,12 @@ const USER_ROLES = [
   })),
 ] as const
 
-//----------------------------------------------------------------------
-
 const Page = async ({ params }: { params: Promise<{ user_id: string }> }) => {
   const { user_id } = await params
   const userData = await getUserById(Number(user_id))
 
   return (
     <div className="relative flex h-full flex-col overflow-hidden">
-      {/* Header */}
       <div className="flex items-center gap-4 border-b border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950">
         <Link
           href="/users/users"
@@ -34,21 +36,18 @@ const Page = async ({ params }: { params: Promise<{ user_id: string }> }) => {
               Edit User
             </h1>
             <p className="text-sm text-gray-500">
-              Update the user&#39;s information
+              Update the user&apos;s information
             </p>
           </div>
         </div>
       </div>
 
-      {/* Form */}
       <div className="flex-1 overflow-hidden py-4">
         <div className="flex h-full w-full justify-center overflow-auto px-4">
           <div className="flex w-full max-w-3xl flex-col gap-10">
             <form action={updateUser} className="flex flex-1 flex-col gap-6">
-              {/* Hidden ID Field */}
               <input type="hidden" name="id" value={userData.id} />
 
-              {/* First Name and Last Name */}
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
                   <label
@@ -64,7 +63,7 @@ const Page = async ({ params }: { params: Promise<{ user_id: string }> }) => {
                     name="firstName"
                     type="text"
                     placeholder="e.g., John"
-                    className="mt-2 block w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+                    className="mt-2 block w-full border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm outline-none focus:border-indigo-500 focus:outline-none focus:ring-0 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
                     required
                   />
                 </div>
@@ -81,13 +80,12 @@ const Page = async ({ params }: { params: Promise<{ user_id: string }> }) => {
                     name="lastName"
                     type="text"
                     placeholder="e.g., Doe"
-                    className="mt-2 block w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+                    className="mt-2 block w-full border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm outline-none focus:border-indigo-500 focus:outline-none focus:ring-0 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
                     required
                   />
                 </div>
               </div>
 
-              {/* Email */}
               <div>
                 <label
                   htmlFor="email"
@@ -101,15 +99,14 @@ const Page = async ({ params }: { params: Promise<{ user_id: string }> }) => {
                   name="email"
                   type="email"
                   placeholder="e.g., user@example.com"
-                  className="mt-2 block w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+                  className="mt-2 block w-full border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm outline-none focus:border-indigo-500 focus:outline-none focus:ring-0 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
                   required
                 />
                 <p className="mt-2 text-xs text-gray-500">
-                  Update the user&#39;s email address
+                  Update the user&apos;s email address
                 </p>
               </div>
 
-              {/* Role */}
               <div>
                 <label
                   htmlFor="role"
@@ -121,7 +118,7 @@ const Page = async ({ params }: { params: Promise<{ user_id: string }> }) => {
                   defaultValue={userData.role}
                   id="role"
                   name="role"
-                  className="mt-2 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                  className="mt-2 block w-full border border-gray-300 bg-white px-3 py-2 shadow-sm outline-none focus:border-indigo-500 focus:outline-none focus:ring-0 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                   required
                 >
                   {USER_ROLES.map((roleOption) => (
@@ -132,25 +129,28 @@ const Page = async ({ params }: { params: Promise<{ user_id: string }> }) => {
                 </select>
 
                 <p className="mt-2 text-xs text-gray-500">
-                  Update the user&#39;s role
+                  Update the user&apos;s role
                 </p>
               </div>
 
-              {/* Form Actions */}
               <div className="flex flex-row justify-end gap-3 border-t border-gray-200 pt-6 dark:border-gray-800">
                 <div className="flex gap-3">
-                  <Link
-                    href="/users/users"
-                    className="inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
-                  >
-                    Cancel
-                  </Link>
-                  <button
-                    type="submit"
-                    className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                  >
-                    Update User
-                  </button>
+                  <PendingOverlay mode="navigation" href="/users/users">
+                    <button
+                      type="button"
+                      className="inline-flex items-center justify-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+                    >
+                      Cancel
+                    </button>
+                  </PendingOverlay>
+                  <PendingOverlay mode="form">
+                    <button
+                      type="submit"
+                      className="inline-flex items-center justify-center border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700"
+                    >
+                      Update User
+                    </button>
+                  </PendingOverlay>
                 </div>
               </div>
             </form>

@@ -5,6 +5,7 @@ import { updateDateRange } from "@/app/(backend)/server_actions/date-ranges/upda
 import Link from "next/link"
 import { RiArrowLeftLine } from "@remixicon/react"
 import DeleteDateRangeButton from "./DeleteDateRangeButton"
+import { PendingOverlay } from "@/components/common/PendingOverlay"
 
 //------------------------------------------------------------
 
@@ -18,7 +19,6 @@ const Page = async ({
 
   return (
     <div className="relative flex h-full flex-col overflow-hidden">
-      {/* Header */}
       <div className="flex items-center gap-4 border-b border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950">
         <Link
           href="/inventory/calendar"
@@ -38,7 +38,6 @@ const Page = async ({
         </div>
       </div>
 
-      {/* Form */}
       <div className="flex-1 overflow-hidden py-4">
         <div className="flex h-full w-full justify-center overflow-auto px-4">
           <div className="flex w-full max-w-3xl flex-col gap-10">
@@ -63,7 +62,7 @@ const Page = async ({
                   required
                   defaultValue={dateRangeData.name}
                   placeholder="e.g., Q1 2025, Summer Season, Holiday Period"
-                  className="mt-2 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 shadow-sm outline-none focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200 dark:placeholder-slate-500 dark:focus:border-slate-700/50"
+                  className="mt-2 block w-full border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 shadow-sm outline-none focus:border-indigo-500 focus:outline-none focus:ring-0 dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200 dark:placeholder-slate-500 dark:focus:border-slate-700/50"
                 />
                 <p className="mt-2 text-xs text-gray-500 dark:text-slate-500">
                   Choose a descriptive name for your date range
@@ -83,7 +82,7 @@ const Page = async ({
                   name="startDate"
                   required
                   defaultValue={dateRangeData.startDate}
-                  className="mt-2 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm outline-none focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200 dark:focus:border-slate-700/50"
+                  className="mt-2 block w-full border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm outline-none focus:border-indigo-500 focus:outline-none focus:ring-0 dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200 dark:focus:border-slate-700/50"
                 />
               </div>
 
@@ -100,23 +99,27 @@ const Page = async ({
                   name="endDate"
                   required
                   defaultValue={dateRangeData.endDate}
-                  className="mt-2 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm outline-none focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200 dark:focus:border-slate-700/50"
+                  className="mt-2 block w-full border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm outline-none focus:border-indigo-500 focus:outline-none focus:ring-0 dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200 dark:focus:border-slate-700/50"
                 />
               </div>
 
               <div className="flex flex-col gap-3 border-t border-gray-200 pt-6 sm:flex-row sm:justify-end dark:border-gray-800">
-                <Link
-                  href="/inventory/calendar"
-                  className="inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
-                >
-                  Cancel
-                </Link>
-                <button
-                  type="submit"
-                  className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                >
-                  Update Date Range
-                </button>
+                <PendingOverlay mode="navigation" href="/inventory/calendar">
+                  <button
+                    type="button"
+                    className="inline-flex items-center justify-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+                  >
+                    Cancel
+                  </button>
+                </PendingOverlay>
+                <PendingOverlay mode="form">
+                  <button
+                    type="submit"
+                    className="inline-flex items-center justify-center border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700"
+                  >
+                    Update Date Range
+                  </button>
+                </PendingOverlay>
               </div>
             </form>
 

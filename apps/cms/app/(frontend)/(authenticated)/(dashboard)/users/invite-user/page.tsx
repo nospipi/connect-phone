@@ -1,7 +1,10 @@
+// apps/cms/app/(frontend)/(authenticated)/(dashboard)/users/invite-user/page.tsx
+
 import { createUserInvitation } from "@/app/(backend)/server_actions/user-invitations/createUserInvitation"
 import { RiArrowLeftLine, RiMailSendLine } from "@remixicon/react"
 import Link from "next/link"
 import { UserOrganizationRole } from "@connect-phone/shared-types"
+import { PendingOverlay } from "@/components/common/PendingOverlay"
 
 //------------------------------------------------------------
 
@@ -15,7 +18,6 @@ const USER_ROLES = [
 const Page = async () => {
   return (
     <div className="flex h-full flex-col overflow-hidden">
-      {/* Header */}
       <div className="flex items-center gap-4 border-b border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950">
         <Link
           href="/users/invitations"
@@ -35,12 +37,10 @@ const Page = async () => {
         </div>
       </div>
 
-      {/* Form */}
       <div className="flex-1 overflow-hidden py-4">
         <div className="flex h-full w-full justify-center overflow-auto px-4">
           <div className="w-full max-w-3xl">
             <form action={createUserInvitation} className="flex flex-col gap-6">
-              {/* Email */}
               <div>
                 <label
                   htmlFor="email"
@@ -54,7 +54,7 @@ const Page = async () => {
                   name="email"
                   type="email"
                   placeholder="e.g., user@example.com"
-                  className="mt-2 block w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+                  className="mt-2 block w-full border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm outline-none focus:border-indigo-500 focus:outline-none focus:ring-0 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
                   required
                 />
                 <p className="mt-2 text-xs text-gray-500">
@@ -62,7 +62,6 @@ const Page = async () => {
                 </p>
               </div>
 
-              {/* Role */}
               <div>
                 <label
                   htmlFor="role"
@@ -73,7 +72,7 @@ const Page = async () => {
                 <select
                   id="role"
                   name="role"
-                  className="mt-2 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                  className="mt-2 block w-full border border-gray-300 bg-white px-3 py-2 shadow-sm outline-none focus:border-indigo-500 focus:outline-none focus:ring-0 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
                   required
                 >
                   {USER_ROLES.map((roleOption) => (
@@ -88,26 +87,28 @@ const Page = async () => {
                 </p>
               </div>
 
-              {/* Form Actions */}
               <div className="flex flex-col gap-3 border-t border-gray-200 pt-6 sm:flex-row sm:justify-end dark:border-gray-800">
-                <Link
-                  href="/users/invitations"
-                  className="inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
-                >
-                  Cancel
-                </Link>
-                <button
-                  type="submit"
-                  className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                >
-                  <RiMailSendLine className="mr-2 h-4 w-4" />
-                  Send Invitation
-                </button>
+                <PendingOverlay mode="navigation" href="/users/invitations">
+                  <button
+                    type="button"
+                    className="inline-flex items-center justify-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+                  >
+                    Cancel
+                  </button>
+                </PendingOverlay>
+                <PendingOverlay mode="form">
+                  <button
+                    type="submit"
+                    className="inline-flex items-center justify-center border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700"
+                  >
+                    <RiMailSendLine className="mr-2 h-4 w-4" />
+                    Send Invitation
+                  </button>
+                </PendingOverlay>
               </div>
             </form>
 
-            {/* Help Section */}
-            <div className="mt-6 rounded-lg bg-blue-50 p-4 dark:bg-blue-900/20">
+            <div className="mt-6 bg-blue-50 p-4 dark:bg-blue-900/20">
               <h3 className="text-sm font-medium text-blue-900 dark:text-blue-100">
                 What happens when I invite a user?
               </h3>

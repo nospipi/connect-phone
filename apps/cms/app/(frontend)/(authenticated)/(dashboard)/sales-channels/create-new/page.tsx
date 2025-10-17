@@ -1,12 +1,14 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/sales-channels/create-new/page.tsx
+
 import { createNewSalesChannel } from "@/app/(backend)/server_actions/sales-channels/createNewSalesChannel"
 import { getUserLoggedInOrganization } from "@/app/(backend)/server_actions/users/getUserLoggedInOrganization"
 import { getMediaById } from "@/app/(backend)/server_actions/media/getMediaById"
 import LogoSection from "./LogoSection.client"
 import { RiArrowLeftLine, RiAddLine } from "@remixicon/react"
 import Link from "next/link"
+import { PendingOverlay } from "@/components/common/PendingOverlay"
 
-//----------------------------------------------------------------------
+//------------------------------------------------------------
 
 interface PageProps {
   searchParams: Promise<{ [key: string]: string | undefined }>
@@ -80,7 +82,7 @@ const Page = async ({ searchParams }: PageProps) => {
                   name="name"
                   type="text"
                   placeholder="e.g., Online Store, Retail Outlet, Mobile App"
-                  className="mt-2 block w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+                  className="mt-2 block w-full border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm outline-none focus:border-indigo-500 focus:outline-none focus:ring-0 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
                   required
                 />
                 <p className="mt-2 text-xs text-gray-500">
@@ -101,7 +103,7 @@ const Page = async ({ searchParams }: PageProps) => {
                   name="description"
                   rows={3}
                   placeholder="Describe this sales channel and its purpose..."
-                  className="mt-2 block w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+                  className="mt-2 block w-full border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm outline-none focus:border-indigo-500 focus:outline-none focus:ring-0 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
                 />
                 <p className="mt-2 text-xs text-gray-500">
                   Optional: Provide additional details about this channel
@@ -123,7 +125,7 @@ const Page = async ({ searchParams }: PageProps) => {
                   Status
                 </label>
                 <div className="mt-2">
-                  <div className="flex items-center justify-between rounded-lg border border-gray-300 p-4 dark:border-gray-600 dark:bg-gray-800">
+                  <div className="flex items-center justify-between border border-gray-300 p-4 dark:border-gray-600 dark:bg-gray-800">
                     <div>
                       <h3 className="text-sm font-medium text-gray-900 dark:text-gray-50">
                         Active Channel
@@ -140,7 +142,7 @@ const Page = async ({ searchParams }: PageProps) => {
                         defaultChecked={isActive}
                         className="peer sr-only"
                       />
-                      <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-indigo-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 dark:border-gray-600 dark:bg-gray-700 dark:peer-focus:ring-indigo-800"></div>
+                      <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-indigo-600 peer-checked:after:translate-x-full peer-checked:after:border-white dark:border-gray-600 dark:bg-gray-700"></div>
                     </label>
                   </div>
                 </div>
@@ -151,23 +153,27 @@ const Page = async ({ searchParams }: PageProps) => {
               </div>
 
               <div className="flex flex-col gap-3 border-t border-gray-200 pt-6 sm:flex-row sm:justify-end dark:border-gray-800">
-                <Link
-                  href="/sales-channels"
-                  className="inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
-                >
-                  Cancel
-                </Link>
-                <button
-                  type="submit"
-                  className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                >
-                  <RiAddLine className="mr-2 h-4 w-4" />
-                  Create Sales Channel
-                </button>
+                <PendingOverlay mode="navigation" href="/sales-channels">
+                  <button
+                    type="button"
+                    className="inline-flex items-center justify-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+                  >
+                    Cancel
+                  </button>
+                </PendingOverlay>
+                <PendingOverlay mode="form">
+                  <button
+                    type="submit"
+                    className="inline-flex items-center justify-center border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700"
+                  >
+                    <RiAddLine className="mr-2 h-4 w-4" />
+                    Create Sales Channel
+                  </button>
+                </PendingOverlay>
               </div>
             </form>
 
-            <div className="mt-6 rounded-lg bg-blue-50 p-4 dark:bg-blue-900/20">
+            <div className="mt-6 bg-blue-50 p-4 dark:bg-blue-900/20">
               <h3 className="text-sm font-medium text-blue-900 dark:text-blue-100">
                 What are sales channels?
               </h3>
