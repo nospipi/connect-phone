@@ -1,5 +1,4 @@
-// server_actions/getAllSalesChannelsOfOrganizationPaginated.ts
-
+// apps/cms/app/(backend)/server_actions/sales-channels/getAllSalesChannelsOfOrganizationPaginated.ts
 "use server"
 
 import { AxiosError } from "axios"
@@ -10,16 +9,32 @@ import { createApiClient } from "../api-client"
 
 interface PaginationParams {
   page?: string | number
+  search?: string
 }
 
 export const getAllSalesChannelsOfOrganizationPaginated = async ({
   page = 1,
+  search = "",
 }: PaginationParams): Promise<PaginatedSalesChannelsResponse> => {
   try {
-    console.log("Fetching sales channels for organization ID:", "page:", page)
+    console.log(
+      "Fetching sales channels for organization ID:",
+      "page:",
+      page,
+      "search:",
+      search,
+    )
 
     const api = createApiClient()
-    const response = await api.get(`/sales-channels/paginated?page=${page}`)
+    const params = new URLSearchParams()
+    params.append("page", String(page))
+    if (search) {
+      params.append("search", search)
+    }
+
+    const response = await api.get(
+      `/sales-channels/paginated?${params.toString()}`,
+    )
 
     if (response.status !== 200) {
       throw new Error("Failed to fetch sales channels")

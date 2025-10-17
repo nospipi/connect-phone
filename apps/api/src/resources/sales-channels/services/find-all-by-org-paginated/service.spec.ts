@@ -14,7 +14,7 @@ import {
   createCurrentOrganizationServiceProvider,
 } from '../../../../test/factories';
 
-//-----------------------------------------
+//----------------------------------------------------------------------
 
 jest.mock('nestjs-typeorm-paginate', () => ({
   paginate: jest.fn(),
@@ -73,7 +73,7 @@ describe('FindAllByOrgPaginatedService', () => {
       );
       mockPaginate.mockResolvedValue(mockPaginationResult);
 
-      const result = await service.findAllByOrganizationPaginated(1, 10);
+      const result = await service.findAllByOrganizationPaginated(1, 10, '');
 
       expect(
         currentOrganizationService.getCurrentOrganization
@@ -120,6 +120,7 @@ describe('FindAllByOrgPaginatedService', () => {
         limit: 10,
         route: '/sales-channels/paginated',
       });
+      expect(mockQueryBuilder.andWhere).not.toHaveBeenCalled();
     });
 
     it('should validate limit bounds (minimum 1)', async () => {
@@ -128,7 +129,7 @@ describe('FindAllByOrgPaginatedService', () => {
       );
       mockPaginate.mockResolvedValue(mockPaginationResult);
 
-      await service.findAllByOrganizationPaginated(1, 0);
+      await service.findAllByOrganizationPaginated(1, 0, '');
 
       expect(mockPaginate).toHaveBeenCalledWith(mockQueryBuilder, {
         page: 1,
@@ -143,7 +144,7 @@ describe('FindAllByOrgPaginatedService', () => {
       );
       mockPaginate.mockResolvedValue(mockPaginationResult);
 
-      await service.findAllByOrganizationPaginated(1, 150);
+      await service.findAllByOrganizationPaginated(1, 150, '');
 
       expect(mockPaginate).toHaveBeenCalledWith(mockQueryBuilder, {
         page: 1,
@@ -151,6 +152,66 @@ describe('FindAllByOrgPaginatedService', () => {
         route: '/sales-channels/paginated',
       });
     });
+
+    it('should add search functionality when search term provided', async () => {
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
+      mockPaginate.mockResolvedValue(mockPaginationResult);
+
+      await service.findAllByOrganizationPaginated(1, 10, 'Online Store');
+
+      expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
+        'salesChannel.name ILIKE :search',
+        { search: '%Online Store%' }
+      );
+    });
+
+    it('should trim search term and handle spaces', async () => {
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
+      mockPaginate.mockResolvedValue(mockPaginationResult);
+
+      await service.findAllByOrganizationPaginated(1, 10, '  Retail  ');
+
+      expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
+        'salesChannel.name ILIKE :search',
+        { search: '%Retail%' }
+      );
+    });
+
+    it('should not add search when search term is empty or whitespace', async () => {
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
+      mockPaginate.mockResolvedValue(mockPaginationResult);
+
+      await service.findAllByOrganizationPaginated(1, 10, '   ');
+
+      expect(mockQueryBuilder.andWhere).not.toHaveBeenCalledWith(
+        expect.stringContaining('ILIKE'),
+        expect.any(Object)
+      );
+    });
+
+    it('should handle different page and limit values with search', async () => {
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
+      mockPaginate.mockResolvedValue(mockPaginationResult);
+
+      await service.findAllByOrganizationPaginated(3, 25, 'Mobile');
+
+      expect(mockPaginate).toHaveBeenCalledWith(mockQueryBuilder, {
+        page: 3,
+        limit: 25,
+        route: '/sales-channels/paginated',
+      });
+      expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
+        'salesChannel.name ILIKE :search',
+        { search: '%Mobile%' }
+      );
+    });
   });
 });
-// apps/api/src/resources/sales-channels/services/find-all-by-org-paginated/service.spec.ts

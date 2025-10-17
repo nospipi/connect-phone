@@ -7,6 +7,7 @@ import { Pagination } from "@/components/common/pagination/Pagination"
 import { Button } from "@/components/common/Button"
 import Link from "next/link"
 import { RiNodeTree } from "@remixicon/react"
+import { PendingOverlay } from "@/components/common/PendingOverlay"
 
 //------------------------------------------------------------
 
@@ -16,14 +17,21 @@ const Page = async ({
   searchParams: Promise<{ [key: string]: string | undefined }>
 }) => {
   const params = await searchParams
-  const { page = "1", search = "", role = "all" } = params
+  const { page = "1", search = "" } = params
 
   const salesChannelsResponse =
     await getAllSalesChannelsOfOrganizationPaginated({
       page: page,
+      search: search,
     })
   const items: ISalesChannel[] = salesChannelsResponse?.items || []
   const meta = salesChannelsResponse?.meta
+
+  const buildClearSearchUrl = () => {
+    const urlParams = new URLSearchParams()
+    urlParams.set("page", "1")
+    return `/sales-channels?${urlParams.toString()}`
+  }
 
   return (
     <div className="relative flex h-full flex-col gap-3 pt-5">
@@ -46,6 +54,38 @@ const Page = async ({
             </Button>
           </Link>
         </div>
+
+        {/* SEARCH BAR */}
+        <div className="flex items-center gap-2">
+          <form id="search-form" className="flex flex-1 items-center gap-2">
+            <input
+              type="text"
+              name="search"
+              defaultValue={search}
+              placeholder="Search sales channels..."
+              className="flex-1 border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-500 outline-none focus:border-blue-500 focus:outline-none focus:ring-0 dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200 dark:placeholder-slate-500 dark:focus:border-slate-700/50"
+            />
+            <PendingOverlay mode="form-navigation" formId="search-form">
+              <button
+                type="submit"
+                form="search-form"
+                className="border border-gray-300 bg-gray-50 px-4 py-2 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 focus:outline-none dark:border-slate-700/50 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:border-slate-600/50 dark:hover:bg-slate-700/50"
+              >
+                Search
+              </button>
+            </PendingOverlay>
+            {search && (
+              <PendingOverlay mode="navigation" href={buildClearSearchUrl()}>
+                <button
+                  type="button"
+                  className="border border-red-300 bg-red-50 px-4 py-2 text-sm text-red-700 hover:border-red-400 hover:bg-red-100 focus:outline-none dark:border-red-700/50 dark:bg-red-900/20 dark:text-red-400 dark:hover:border-red-600/50 dark:hover:bg-red-800/30"
+                >
+                  Clear
+                </button>
+              </PendingOverlay>
+            )}
+          </form>
+        </div>
       </div>
 
       {/* CONTENT AREA */}
@@ -60,7 +100,9 @@ const Page = async ({
                 No sales channels found
               </h3>
               <p className="text-sm text-gray-500 dark:text-slate-500">
-                Get started by creating your first sales channel
+                {search
+                  ? "Try adjusting your search"
+                  : "Get started by creating your first sales channel"}
               </p>
             </div>
           </div>
