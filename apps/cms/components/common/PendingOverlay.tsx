@@ -3,13 +3,13 @@
 "use client"
 
 import { useFormStatus } from "react-dom"
-import { useTransition } from "react"
+import { useTransition, FormEvent } from "react"
 import { useRouter } from "next/navigation"
 import DotsLoading from "./DotsLoading"
 
 //------------------------------------------------------------
 
-type PendingMode = "form" | "navigation" | "custom"
+type PendingMode = "form" | "navigation" | "custom" | "form-navigation"
 
 interface PendingOverlayProps {
   mode: PendingMode
@@ -18,6 +18,7 @@ interface PendingOverlayProps {
   onClick?: () => void
   className?: string
   isPending?: boolean
+  formId?: string
 }
 
 function FormPendingWrapper({
@@ -75,6 +76,60 @@ function NavigationPendingWrapper({
   )
 }
 
+function FormNavigationWrapper({
+  children,
+  className = "",
+  formId,
+}: {
+  children: React.ReactNode
+  className?: string
+  formId?: string
+}) {
+  const router = useRouter()
+  const [isPending, startTransition] = useTransition()
+
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+
+    const form = formId
+      ? (document.getElementById(formId) as HTMLFormElement)
+      : null
+
+    if (!form) {
+      console.error("Form not found")
+      return
+    }
+
+    const formData = new FormData(form)
+    const params = new URLSearchParams()
+
+    formData.forEach((value, key) => {
+      if (value) {
+        params.set(key, value.toString())
+      }
+    })
+
+    const currentPath = window.location.pathname
+    const queryString = params.toString()
+    const url = queryString ? `${currentPath}?${queryString}` : currentPath
+
+    startTransition(() => {
+      router.push(url)
+    })
+  }
+
+  return (
+    <div onClick={handleClick} className={`relative ${className}`}>
+      {children}
+      {isPending && (
+        <div className="absolute inset-0 flex items-center justify-center bg-white dark:bg-slate-900">
+          <DotsLoading />
+        </div>
+      )}
+    </div>
+  )
+}
+
 function CustomPendingWrapper({
   children,
   onClick,
@@ -117,6 +172,7 @@ export function PendingOverlay({
   onClick,
   className = "",
   isPending,
+  formId,
 }: PendingOverlayProps) {
   if (mode === "form") {
     return (
@@ -132,6 +188,14 @@ export function PendingOverlay({
       <NavigationPendingWrapper href={href} className={className}>
         {children}
       </NavigationPendingWrapper>
+    )
+  }
+
+  if (mode === "form-navigation") {
+    return (
+      <FormNavigationWrapper className={className} formId={formId}>
+        {children}
+      </FormNavigationWrapper>
     )
   }
 

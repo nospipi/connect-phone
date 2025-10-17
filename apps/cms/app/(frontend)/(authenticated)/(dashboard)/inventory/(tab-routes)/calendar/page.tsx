@@ -1,7 +1,7 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/(tab-routes)/calendar/page.tsx
 
 import { getAllDateRangesPaginated } from "@/app/(backend)/server_actions/date-ranges/getAllDateRangesPaginated"
-import { Button } from "@/components/common/Button"
+import { PendingOverlay } from "@/components/common/PendingOverlay"
 import Link from "next/link"
 import { RiAddLine, RiCalendarEventLine } from "@remixicon/react"
 import { IDateRange } from "@connect-phone/shared-types"
@@ -94,47 +94,49 @@ const Page = async ({
       <div className="my-2 flex flex-col gap-3 px-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-1 flex-col gap-3 sm:flex-row sm:items-center">
           <form
-            method="GET"
+            id="filter-form"
             className="flex flex-1 flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
           >
-            <div className="flex flex-1 flex-col gap-3 sm:max-w-2xl sm:flex-row sm:items-center">
-              <div className="w-full sm:max-w-xs">
+            <div className="flex flex-1 flex-col gap-3 sm:flex-row sm:items-center">
+              <div className="flex-1">
                 <input
                   type="text"
                   name="search"
                   defaultValue={search && search !== "undefined" ? search : ""}
                   placeholder="Search by name..."
-                  className="block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-500 outline-none focus:border-blue-500 focus:outline-none focus:ring-0 focus:ring-transparent dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200 dark:placeholder-slate-500 dark:focus:border-slate-700/50"
+                  className="dateRangeIds block w-full border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-500 outline-none focus:border-blue-500 focus:outline-none focus:ring-0 focus:ring-transparent dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200 dark:placeholder-slate-500 dark:focus:border-slate-700/50"
                 />
               </div>
-              <div className="w-full sm:max-w-xs">
+              <div className="flex-1">
                 <input
                   type="date"
                   name="date"
                   defaultValue={date && date !== "undefined" ? date : ""}
                   placeholder="Filter by date"
-                  className="block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-500 outline-none focus:border-blue-500 focus:outline-none focus:ring-0 focus:ring-transparent dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200 dark:placeholder-slate-500 dark:focus:border-slate-700/50"
+                  className="dateRangeIds block w-full border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-500 outline-none focus:border-blue-500 focus:outline-none focus:ring-0 focus:ring-transparent dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200 dark:placeholder-slate-500 dark:focus:border-slate-700/50"
                 />
               </div>
             </div>
 
             <div className="flex items-center justify-end gap-2 sm:justify-start">
-              <Button
-                type="submit"
-                variant="secondary"
-                className="border-gray-300 bg-gray-50 px-4 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-slate-700/50 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:border-slate-600/50 dark:hover:bg-slate-700/50"
-              >
-                Apply
-              </Button>
+              <PendingOverlay mode="form-navigation" formId="filter-form">
+                <button
+                  type="submit"
+                  form="filter-form"
+                  className="border border-gray-300 bg-gray-50 px-4 py-2 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-slate-700/50 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:border-slate-600/50 dark:hover:bg-slate-700/50"
+                >
+                  Apply
+                </button>
+              </PendingOverlay>
               {hasActiveFilters && (
-                <Link href="/inventory/calendar">
-                  <Button
-                    variant="secondary"
-                    className="border-red-300 bg-red-50 px-4 text-sm text-red-700 hover:border-red-400 hover:bg-red-100 dark:border-red-700/50 dark:bg-red-900/20 dark:text-red-400 dark:hover:border-red-600/50 dark:hover:bg-red-800/30"
+                <PendingOverlay mode="navigation" href="/inventory/calendar">
+                  <button
+                    type="button"
+                    className="border border-red-300 bg-red-50 px-4 py-2 text-sm text-red-700 hover:border-red-400 hover:bg-red-100 dark:border-red-700/50 dark:bg-red-900/20 dark:text-red-400 dark:hover:border-red-600/50 dark:hover:bg-red-800/30"
                   >
                     Clear
-                  </Button>
-                </Link>
+                  </button>
+                </PendingOverlay>
               )}
             </div>
           </form>
@@ -142,10 +144,10 @@ const Page = async ({
       </div>
       <div className="px-3">
         <Link href="/inventory/calendar/create-new">
-          <Button variant="primary" className="mb-4 gap-2">
+          <button className="mb-4 flex items-center gap-2 bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600">
             <RiAddLine />
             <span>Create Date Range</span>
-          </Button>
+          </button>
         </Link>
       </div>
 
