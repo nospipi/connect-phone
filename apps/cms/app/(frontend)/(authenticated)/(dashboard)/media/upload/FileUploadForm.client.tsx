@@ -11,11 +11,11 @@ import {
   RiCheckLine,
   RiAlertLine,
 } from "@remixicon/react"
-import Link from "next/link"
 import Image from "next/image"
 import { uploadMedia } from "@/app/(backend)/server_actions/media/uploadMedia"
+import { PendingOverlay } from "@/components/common/PendingOverlay"
 
-//----------------------------------------------------------------------
+//------------------------------------------------------------
 
 interface FilePreview {
   file: File
@@ -137,7 +137,7 @@ export default function FileUploadForm() {
   return (
     <div className="relative">
       {uploadSuccess?.show && (
-        <div className="mb-6 rounded-lg border border-green-200 bg-green-50 p-4 dark:border-green-800 dark:bg-green-900/20">
+        <div className="mb-6 border border-green-200 bg-green-50 p-4 dark:border-green-800 dark:bg-green-900/20">
           <div className="flex items-start gap-3">
             <div className="flex-shrink-0">
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-100 dark:bg-green-800/50">
@@ -164,7 +164,7 @@ export default function FileUploadForm() {
       )}
 
       {uploadError && (
-        <div className="mb-6 rounded-lg border border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-900/20">
+        <div className="mb-6 border border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-900/20">
           <div className="flex items-start gap-3">
             <div className="flex-shrink-0">
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-red-100 dark:bg-red-800/50">
@@ -241,7 +241,7 @@ export default function FileUploadForm() {
               {files.map((filePreview, index) => (
                 <div
                   key={index}
-                  className={`rounded-lg border bg-white p-4 dark:bg-gray-800 ${
+                  className={`border bg-white p-4 dark:bg-gray-800 ${
                     filePreview.error
                       ? "border-red-300 dark:border-red-700"
                       : "border-gray-200 dark:border-gray-700"
@@ -307,7 +307,7 @@ export default function FileUploadForm() {
           </div>
         )}
 
-        <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800/50">
+        <div className="border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800/50">
           <label className="flex cursor-pointer items-start gap-3">
             <input
               type="checkbox"
@@ -325,29 +325,33 @@ export default function FileUploadForm() {
         </div>
 
         <div className="flex flex-col gap-3 border-t border-gray-200 pt-6 sm:flex-row sm:justify-end dark:border-gray-800">
-          <Link
-            href="/media"
-            className="inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
-          >
-            Cancel
-          </Link>
-          <button
-            type="submit"
-            disabled={
-              isUploading || files.length === 0 || files.every((f) => f.error)
-            }
-            className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            <RiUploadLine className="mr-2 h-4 w-4" />
-            {isUploading
-              ? "Uploading..."
-              : `Upload ${validFilesCount} ${validFilesCount === 1 ? "Image" : "Images"}`}
-          </button>
+          <PendingOverlay mode="navigation" href="/media">
+            <button
+              type="button"
+              className="inline-flex items-center justify-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+            >
+              Cancel
+            </button>
+          </PendingOverlay>
+          <PendingOverlay mode="form">
+            <button
+              type="submit"
+              disabled={
+                isUploading || files.length === 0 || files.every((f) => f.error)
+              }
+              className="inline-flex items-center justify-center border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              <RiUploadLine className="mr-2 h-4 w-4" />
+              {isUploading
+                ? "Uploading..."
+                : `Upload ${validFilesCount} ${validFilesCount === 1 ? "Image" : "Images"}`}
+            </button>
+          </PendingOverlay>
         </div>
       </form>
 
       {isUploading && (
-        <div className="absolute inset-0 z-50 flex flex-col items-center justify-center rounded-lg bg-black/60 backdrop-blur-sm">
+        <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm">
           <RiLoader4Line className="mb-4 h-10 w-10 animate-spin text-white" />
           <p className="mb-1 text-lg font-semibold text-white">
             Uploading your files...
