@@ -142,14 +142,6 @@ const Page = async ({
           </form>
         </div>
       </div>
-      <div className="px-3">
-        <Link href="/inventory/calendar/create-new">
-          <button className="mb-4 flex items-center gap-2 bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600">
-            <RiAddLine />
-            <span>Create Date Range</span>
-          </button>
-        </Link>
-      </div>
 
       {items.length === 0 && (
         <div className="flex flex-1 items-center justify-center">

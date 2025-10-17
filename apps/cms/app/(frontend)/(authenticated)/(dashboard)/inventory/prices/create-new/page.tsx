@@ -131,7 +131,7 @@ const Page = async ({
                   required
                   defaultValue={name}
                   placeholder="e.g., Standard Rate, Premium Package, Weekend Special"
-                  className="mt-2 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 shadow-sm outline-none focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200 dark:placeholder-slate-500 dark:focus:border-slate-700/50"
+                  className="mt-2 block w-full border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 shadow-sm outline-none focus:border-indigo-500 focus:outline-none focus:ring-0 dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200 dark:placeholder-slate-500 dark:focus:border-slate-700/50"
                 />
                 <p className="mt-2 text-xs text-gray-500 dark:text-slate-500">
                   Choose a descriptive name for your price
@@ -154,7 +154,7 @@ const Page = async ({
                   min="0"
                   defaultValue={amount}
                   placeholder="0.00"
-                  className="mt-2 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 shadow-sm outline-none focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200 dark:placeholder-slate-500 dark:focus:border-slate-700/50"
+                  className="mt-2 block w-full border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 shadow-sm outline-none focus:border-indigo-500 focus:outline-none focus:ring-0 dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200 dark:placeholder-slate-500 dark:focus:border-slate-700/50"
                 />
               </div>
 
@@ -170,7 +170,7 @@ const Page = async ({
                   name="currency"
                   required
                   defaultValue={currency}
-                  className="mt-2 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm outline-none focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200 dark:focus:border-slate-700/50"
+                  className="mt-2 block w-full border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm outline-none focus:border-indigo-500 focus:outline-none focus:ring-0 dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200 dark:focus:border-slate-700/50"
                 >
                   {Object.values(Currency).map((curr) => (
                     <option key={curr} value={curr}>
@@ -262,7 +262,7 @@ const Page = async ({
                 <PendingOverlay mode="navigation" href="/inventory/prices">
                   <button
                     type="button"
-                    className="inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition-all hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+                    className="inline-flex items-center justify-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
                   >
                     Cancel
                   </button>
@@ -271,7 +271,7 @@ const Page = async ({
                 <PendingOverlay mode="form">
                   <button
                     type="submit"
-                    className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    className="inline-flex items-center justify-center border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none"
                   >
                     <RiAddLine className="mr-2 h-4 w-4" />
                     <span>Create Price</span>
@@ -281,7 +281,7 @@ const Page = async ({
             </form>
 
             {/* Help Section */}
-            <div className="mt-6 rounded-lg bg-blue-50 p-4 dark:bg-blue-900/20">
+            <div className="mt-6 bg-blue-50 p-4 dark:bg-blue-900/20">
               <h3 className="text-sm font-medium text-blue-900 dark:text-blue-100">
                 About Prices
               </h3>

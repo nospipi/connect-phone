@@ -1,12 +1,12 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/(tab-routes)/prices/page.tsx
 
 import { getAllPricesPaginated } from "@/app/(backend)/server_actions/prices/getAllPricesPaginated"
-import { Button } from "@/components/common/Button"
-import Link from "next/link"
 import { RiSearchLine, RiCoinsLine, RiAddLine } from "@remixicon/react"
 import { IPrice } from "@connect-phone/shared-types"
 import { Badge } from "@/components/common/Badge"
 import { Pagination } from "@/components/common/pagination/Pagination"
+import { PendingOverlay } from "@/components/common/PendingOverlay"
+import Link from "next/link"
 
 //------------------------------------------------------------
 
@@ -32,7 +32,7 @@ const Page = async ({
       <div className="my-2 flex flex-col gap-3 px-5 pr-2 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-1 flex-col gap-3 sm:flex-row sm:items-center">
           <form
-            method="GET"
+            id="filter-form"
             className="flex flex-1 flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
           >
             <div className="relative flex-1">
@@ -50,35 +50,28 @@ const Page = async ({
             </div>
 
             <div className="flex items-center justify-end gap-2 sm:justify-start">
-              <Button
-                type="submit"
-                variant="secondary"
-                className="border-gray-300 bg-gray-50 px-4 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-slate-700/50 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:border-slate-600/50 dark:hover:bg-slate-700/50"
-              >
-                Apply
-              </Button>
+              <PendingOverlay mode="form-navigation" formId="filter-form">
+                <button
+                  type="submit"
+                  form="filter-form"
+                  className="border border-gray-300 bg-gray-50 px-4 py-2 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-slate-700/50 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:border-slate-600/50 dark:hover:bg-slate-700/50"
+                >
+                  Apply
+                </button>
+              </PendingOverlay>
               {hasActiveFilters && (
-                <Link href="/inventory/prices">
-                  <Button
-                    variant="secondary"
-                    className="border-red-300 bg-red-50 px-4 text-sm text-red-700 hover:border-red-400 hover:bg-red-100 dark:border-red-700/50 dark:bg-red-900/20 dark:text-red-400 dark:hover:border-red-600/50 dark:hover:bg-red-800/30"
+                <PendingOverlay mode="navigation" href="/inventory/prices">
+                  <button
+                    type="button"
+                    className="border border-red-300 bg-red-50 px-4 py-2 text-sm text-red-700 hover:border-red-400 hover:bg-red-100 dark:border-red-700/50 dark:bg-red-900/20 dark:text-red-400 dark:hover:border-red-600/50 dark:hover:bg-red-800/30"
                   >
                     Clear
-                  </Button>
-                </Link>
+                  </button>
+                </PendingOverlay>
               )}
             </div>
           </form>
         </div>
-      </div>
-
-      <div className="px-5">
-        <Link href="/inventory/prices/create-new">
-          <Button variant="primary" className="mb-4 gap-2">
-            <RiAddLine />
-            <span>Create Price</span>
-          </Button>
-        </Link>
       </div>
 
       {items.length === 0 && (
