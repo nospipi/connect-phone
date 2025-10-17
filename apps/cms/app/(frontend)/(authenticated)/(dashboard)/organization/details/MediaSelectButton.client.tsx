@@ -3,6 +3,8 @@
 
 import { useRouter } from "next/navigation"
 import { RiImageLine } from "@remixicon/react"
+import { PendingOverlay } from "@/components/common/PendingOverlay"
+import { useState, useTransition } from "react"
 
 //----------------------------------------------------------------------
 
@@ -20,6 +22,7 @@ export default function MediaSelectButton({
   currentLogoId,
 }: MediaSelectButtonProps) {
   const router = useRouter()
+  const [isPending, startTransition] = useTransition()
 
   const handleClick = () => {
     const form = document.querySelector("form") as HTMLFormElement
@@ -32,7 +35,6 @@ export default function MediaSelectButton({
     urlParams.set("targetField", targetField)
     urlParams.set("multipleSelection", String(multipleSelection))
 
-    // Pass current selection
     if (currentLogoId) {
       urlParams.set("mediaIds", currentLogoId.toString())
     }
@@ -43,17 +45,20 @@ export default function MediaSelectButton({
       }
     })
 
-    router.push(`/media/select?${urlParams.toString()}`)
+    startTransition(() => {
+      router.push(`/media/select?${urlParams.toString()}`)
+    })
   }
 
   return (
-    <button
-      type="button"
-      onClick={handleClick}
-      className="inline-flex items-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
-    >
-      <RiImageLine className="h-4 w-4" />
-      {currentLogoId ? "Change" : "Select Logo"}
-    </button>
+    <PendingOverlay mode="custom" onClick={handleClick} isPending={isPending}>
+      <button
+        type="button"
+        className="inline-flex items-center gap-2 border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+      >
+        <RiImageLine className="h-4 w-4" />
+        {currentLogoId ? "Change" : "Select Logo"}
+      </button>
+    </PendingOverlay>
   )
 }
