@@ -1,11 +1,11 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/calendar/select/page.tsx
 
-import { RiArrowLeftLine, RiCalendarLine, RiCloseLine } from "@remixicon/react"
+import { RiArrowLeftLine, RiCalendarLine } from "@remixicon/react"
 import Link from "next/link"
 import { getAllDateRangesPaginated } from "@/app/(backend)/server_actions/date-ranges/getAllDateRangesPaginated"
-import SearchForm from "./SearchForm"
 import DateRangeGrid from "./DateRangeGrid.client"
 import { Pagination } from "@/components/common/pagination/Pagination"
+import { PendingOverlay } from "@/components/common/PendingOverlay"
 
 //----------------------------------------------------------------------
 
@@ -80,6 +80,18 @@ const Page = async ({ searchParams }: PageProps) => {
     return `/inventory/calendar/select?${urlParams.toString()}`
   }
 
+  const buildClearSearchUrl = () => {
+    const urlParams = new URLSearchParams()
+    urlParams.set("previousPage", previousPage)
+    urlParams.set("targetField", targetField)
+    urlParams.set("multipleSelection", String(multipleSelection))
+    Object.entries(formData).forEach(([key, value]) => {
+      urlParams.set(key, value)
+    })
+    if (selectedParam) urlParams.set("dateRangeIds", selectedParam)
+    return `/inventory/calendar/select?${urlParams.toString()}`
+  }
+
   const buildBackUrl = () => {
     const urlParams = new URLSearchParams()
     Object.entries(formData).forEach(([key, value]) => {
@@ -141,34 +153,70 @@ const Page = async ({ searchParams }: PageProps) => {
 
           {selectedIds.length > 0 && (
             <div className="flex items-center justify-end gap-2 pb-4 pr-4">
-              <Link
-                href={buildClearUrl()}
-                className="relative inline-flex items-center gap-2 overflow-hidden whitespace-nowrap rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
-              >
-                <RiCloseLine className="h-4 w-4" />
-                <span className="relative">Clear Selection</span>
-              </Link>
-              <Link
-                href={buildConfirmUrl()}
-                className="relative overflow-hidden whitespace-nowrap rounded-lg bg-gradient-to-r from-indigo-600 to-indigo-700 px-6 py-2.5 text-sm font-medium text-white shadow-lg shadow-indigo-500/25"
-              >
-                <span className="relative">Confirm Selection</span>
-              </Link>
+              <PendingOverlay mode="navigation" href={buildClearUrl()}>
+                <button
+                  type="button"
+                  className="border border-red-300 bg-red-50 px-4 py-2 text-sm text-red-700 hover:border-red-400 hover:bg-red-100 dark:border-red-700/50 dark:bg-red-900/20 dark:text-red-400 dark:hover:border-red-600/50 dark:hover:bg-red-800/30"
+                >
+                  Clear Selection
+                </button>
+              </PendingOverlay>
+              <PendingOverlay mode="navigation" href={buildConfirmUrl()}>
+                <button
+                  type="button"
+                  className="border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700"
+                >
+                  Confirm Selection
+                </button>
+              </PendingOverlay>
             </div>
           )}
         </div>
       </div>
 
-      <div className="border-b border-gray-200/80 bg-white/50 p-3 backdrop-blur-sm dark:border-gray-800/80 dark:bg-gray-950/50">
+      <div className="bg-white/50 p-3 backdrop-blur-sm dark:bg-gray-950/50">
         <div className="flex items-center gap-4">
-          <SearchForm
-            currentSearch={search}
-            previousPage={previousPage}
-            selectedParam={selectedParam}
-            multipleSelection={multipleSelection}
-            targetField={targetField}
-            formData={formData}
-          />
+          <form id="search-form" className="flex flex-1 items-center gap-2">
+            <input type="hidden" name="previousPage" value={previousPage} />
+            <input type="hidden" name="targetField" value={targetField} />
+            <input
+              type="hidden"
+              name="multipleSelection"
+              value={String(multipleSelection)}
+            />
+            {Object.entries(formData).map(([key, value]) => (
+              <input key={key} type="hidden" name={key} value={value} />
+            ))}
+            {selectedParam && (
+              <input type="hidden" name="dateRangeIds" value={selectedParam} />
+            )}
+            <input
+              type="text"
+              name="search"
+              defaultValue={search}
+              placeholder="Search by name..."
+              className="flex-1 border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-500 outline-none focus:border-blue-500 dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200 dark:placeholder-slate-500 dark:focus:border-slate-700/50"
+            />
+            <PendingOverlay mode="form-navigation" formId="search-form">
+              <button
+                type="submit"
+                form="search-form"
+                className="border border-gray-300 bg-gray-50 px-4 py-2 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-slate-700/50 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:border-slate-600/50 dark:hover:bg-slate-700/50"
+              >
+                Search
+              </button>
+            </PendingOverlay>
+            {search && (
+              <PendingOverlay mode="navigation" href={buildClearSearchUrl()}>
+                <button
+                  type="button"
+                  className="border border-red-300 bg-red-50 px-4 py-2 text-sm text-red-700 hover:border-red-400 hover:bg-red-100 dark:border-red-700/50 dark:bg-red-900/20 dark:text-red-400 dark:hover:border-red-600/50 dark:hover:bg-red-800/30"
+                >
+                  Clear
+                </button>
+              </PendingOverlay>
+            )}
+          </form>
         </div>
       </div>
 
