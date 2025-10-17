@@ -48,6 +48,10 @@ export default function UpdateCountryFlagUpload({
   const isDefaultUrl = currentFlagUrl === defaultFlagUrl
 
   useEffect(() => {
+    setFlagPreview(currentFlagUrl || null)
+  }, [currentFlagUrl])
+
+  useEffect(() => {
     if (currentFlagUrl) {
       setIsUploading(false)
       setUploadProgress(0)
