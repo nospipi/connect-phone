@@ -34,7 +34,6 @@ export const createDateRange = async (formData: FormData): Promise<void> => {
       throw new Error("Failed to create date range")
     }
 
-    console.log("Date range created successfully:", response.data)
 
     revalidatePath("/inventory/calendar")
   } catch (error: unknown) {
