@@ -1,3 +1,5 @@
+//apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/(tab-routes)/TabNavigationWrapper.client.tsx
+
 "use client"
 
 import {
