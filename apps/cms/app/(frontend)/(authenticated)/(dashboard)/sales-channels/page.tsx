@@ -36,15 +36,10 @@ const Page = async ({
       {/* HEADER */}
       <div className="flex flex-col gap-3 px-5">
         <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-lg font-semibold text-gray-900 sm:text-xl dark:text-gray-50">
-              Sales Channels
-            </h1>
-            <p className="mt-1 hidden text-sm text-gray-500 sm:flex">
-              Manage your organization&apos;s sales channels and distribution
-              networks
-            </p>
-          </div>
+          <h1 className="text-lg font-semibold text-gray-900 sm:text-xl dark:text-gray-50">
+            Sales Channels
+          </h1>
+
           <PendingOverlay mode="navigation" href="/sales-channels/create-new">
             <button className="flex items-center gap-2 bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600">
               <RiAddLine />
