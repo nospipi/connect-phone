@@ -1,4 +1,4 @@
-// apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/(tab-routes)/countries/[country_id]/UpdateCountryFlagUpload.tsx
+// apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/countries/[country_id]/UpdateCountryFlagUpload.client.tsx
 "use client"
 
 import { useState, useRef, useEffect } from "react"
@@ -13,6 +13,7 @@ import {
   RiExternalLinkLine,
   RiRefreshLine,
 } from "@remixicon/react"
+import { PendingOverlay } from "@/components/common/PendingOverlay"
 
 //----------------------------------------------------------------------
 
@@ -43,13 +44,9 @@ export default function UpdateCountryFlagUpload({
   const [isDragOver, setIsDragOver] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  // Get the default flag URL
   const defaultFlagUrl = `https://flagcdn.com/${requiredDimensions.width}x${requiredDimensions.height}/${countryCode.toLowerCase()}.webp`
-
-  // Check if current URL is already the default
   const isDefaultUrl = currentFlagUrl === defaultFlagUrl
 
-  // Clear uploading state when we have a currentFlagUrl from search params
   useEffect(() => {
     if (currentFlagUrl) {
       setIsUploading(false)
@@ -57,25 +54,20 @@ export default function UpdateCountryFlagUpload({
     }
   }, [currentFlagUrl])
 
-  // Handle file selection (both from input and drag-drop)
   const handleFileSelection = async (file: File) => {
-    // Validate file type
     if (!file.type.startsWith("image/")) {
       setUploadError("Please select an image file")
       return
     }
 
-    // Validate file size (1MB limit)
     if (file.size > 1 * 1024 * 1024) {
       setUploadError("File size must be less than 1MB")
       return
     }
 
-    // Check image dimensions
     try {
       const dimensions = await getImageDimensions(file)
 
-      // Validate exact dimensions
       if (
         dimensions.width !== requiredDimensions.width ||
         dimensions.height !== requiredDimensions.height
@@ -92,16 +84,13 @@ export default function UpdateCountryFlagUpload({
       return
     }
 
-    // Create a preview URL for the selected image
     const previewUrl = URL.createObjectURL(file)
     setFlagPreview(previewUrl)
     setUploadError(null)
 
-    // Automatically start upload
     await handleUpload(file)
   }
 
-  // Helper function to get image dimensions
   const getImageDimensions = (
     file: File,
   ): Promise<{ width: number; height: number }> => {
@@ -113,26 +102,24 @@ export default function UpdateCountryFlagUpload({
           width: img.naturalWidth,
           height: img.naturalHeight,
         })
-        URL.revokeObjectURL(img.src) // Clean up
+        URL.revokeObjectURL(img.src)
       }
 
       img.onerror = () => {
         reject(new Error("Failed to load image"))
-        URL.revokeObjectURL(img.src) // Clean up
+        URL.revokeObjectURL(img.src)
       }
 
       img.src = URL.createObjectURL(file)
     })
   }
 
-  // Handle file input change
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
     handleFileSelection(file)
   }
 
-  // Handle drag and drop events
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault()
     e.stopPropagation()
@@ -160,7 +147,6 @@ export default function UpdateCountryFlagUpload({
     if (files && files[0]) {
       handleFileSelection(files[0])
 
-      // Update the file input to match the dropped file
       if (fileInputRef.current) {
         const dt = new DataTransfer()
         dt.items.add(files[0])
@@ -169,7 +155,6 @@ export default function UpdateCountryFlagUpload({
     }
   }
 
-  // Handle flag upload
   const handleUpload = async (file?: File) => {
     const uploadFile = file || fileInputRef.current?.files?.[0]
 
@@ -183,11 +168,9 @@ export default function UpdateCountryFlagUpload({
       setUploadProgress(0)
       setUploadError(null)
 
-      // Generate a unique filename
       const timestamp = Date.now()
       const filename = `country-flags/${organizationId}/${flagType}/${timestamp}-${uploadFile.name.replace(/[^a-zA-Z0-9.-]/g, "-")}`
 
-      // Upload to Vercel Blob with progress tracking
       const newBlob: PutBlobResult = await upload(filename, uploadFile, {
         access: "public",
         handleUploadUrl: "/api/upload",
@@ -196,7 +179,6 @@ export default function UpdateCountryFlagUpload({
         },
       })
 
-      // Redirect back to the country edit form with the new flag URL
       const searchParams = new URLSearchParams(window.location.search)
       if (flagType === "avatar") {
         searchParams.set("flagAvatarUrl", newBlob.url)
@@ -214,7 +196,6 @@ export default function UpdateCountryFlagUpload({
     }
   }
 
-  // Clear the current flag
   const handleClearFlag = () => {
     setFlagPreview(null)
     if (fileInputRef.current) {
@@ -231,23 +212,18 @@ export default function UpdateCountryFlagUpload({
     router.push(`/inventory/countries/${countryId}?${searchParams.toString()}`)
   }
 
-  // Revert to default flag from flagcdn
-  const handleRevertToDefault = () => {
-    setFlagPreview(defaultFlagUrl)
-
+  const buildRevertUrl = () => {
     const searchParams = new URLSearchParams(window.location.search)
     if (flagType === "avatar") {
       searchParams.set("flagAvatarUrl", defaultFlagUrl)
     } else {
       searchParams.set("flagProductImageUrl", defaultFlagUrl)
     }
-
-    router.push(`/inventory/countries/${countryId}?${searchParams.toString()}`)
+    return `/inventory/countries/${countryId}?${searchParams.toString()}`
   }
 
   return (
     <div className="space-y-4">
-      {/* Droppable Flag Upload Area */}
       <div
         className={`relative border-2 border-dashed transition-all duration-200 ${
           isDragOver
@@ -264,9 +240,7 @@ export default function UpdateCountryFlagUpload({
       >
         <div className="flex items-center justify-center p-8">
           {flagPreview ? (
-            /* Flag Preview - Left aligned layout */
             <div className="flex w-full items-center gap-6">
-              {/* Flag on the left */}
               <div className="relative flex-shrink-0">
                 <div
                   className="relative overflow-hidden border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900"
@@ -276,7 +250,7 @@ export default function UpdateCountryFlagUpload({
                   }}
                 >
                   <NextImage
-                    src={flagPreview!} // guaranteed non-null here
+                    src={flagPreview!}
                     alt={`${countryCode} flag`}
                     fill
                     style={{ objectFit: "cover" }}
@@ -285,7 +259,6 @@ export default function UpdateCountryFlagUpload({
                 </div>
               </div>
 
-              {/* Text content on the right */}
               <div className="flex-1 text-left">
                 <p className="mt-1 text-sm text-gray-500">
                   Click anywhere to change or drag a new image here
@@ -302,7 +275,6 @@ export default function UpdateCountryFlagUpload({
                 </a>
               </div>
 
-              {/* Delete button - positioned at the far right */}
               <div className="flex-shrink-0">
                 <button
                   type="button"
@@ -310,7 +282,7 @@ export default function UpdateCountryFlagUpload({
                     e.stopPropagation()
                     handleClearFlag()
                   }}
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-red-300 bg-red-50 text-red-600 shadow-sm hover:bg-red-100 hover:text-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:border-red-700 dark:bg-red-900/50 dark:text-red-400 dark:hover:bg-red-800/50 dark:hover:text-red-300"
+                  className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-red-300 bg-red-50 text-red-600 shadow-sm hover:bg-red-100 hover:text-red-700 dark:border-red-700 dark:bg-red-900/50 dark:text-red-400 dark:hover:bg-red-800/50 dark:hover:text-red-300"
                   title="Clear flag"
                 >
                   <RiDeleteBinLine className="h-4 w-4" />
@@ -318,7 +290,6 @@ export default function UpdateCountryFlagUpload({
               </div>
             </div>
           ) : (
-            /* Upload Prompt - Centered layout */
             <div className="text-center">
               <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700">
                 {isDragOver ? (
@@ -344,7 +315,6 @@ export default function UpdateCountryFlagUpload({
         </div>
       </div>
 
-      {/* Hidden file input */}
       <input
         type="file"
         ref={fileInputRef}
@@ -353,19 +323,18 @@ export default function UpdateCountryFlagUpload({
         className="hidden"
       />
 
-      {/* Revert to Default Button */}
       {!isDefaultUrl && (
-        <button
-          type="button"
-          onClick={handleRevertToDefault}
-          className="inline-flex w-full items-center justify-center gap-2 border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
-        >
-          <RiRefreshLine className="h-4 w-4" />
-          Revert to default flag
-        </button>
+        <PendingOverlay mode="navigation" href={buildRevertUrl()}>
+          <button
+            type="button"
+            className="inline-flex w-full items-center justify-center gap-2 border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+          >
+            <RiRefreshLine className="h-4 w-4" />
+            Revert to default flag
+          </button>
+        </PendingOverlay>
       )}
 
-      {/* Upload Progress */}
       {isUploading && (
         <div className="border border-blue-200 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-900/20">
           <div className="mb-2 flex items-center justify-between">
@@ -385,7 +354,6 @@ export default function UpdateCountryFlagUpload({
         </div>
       )}
 
-      {/* Upload Error */}
       {uploadError && (
         <div className="border border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-900/20">
           <p className="text-sm font-medium text-red-900 dark:text-red-100">
