@@ -1,12 +1,11 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/media/page.tsx
 
 import { getAllMediaPaginated } from "@/app/(backend)/server_actions/media/getAllMediaPaginated"
-import { Button } from "@/components/common/Button"
-import Link from "next/link"
 import { RiImageLine, RiSearchLine, RiAddLine } from "@remixicon/react"
 import MediaItemDrawer from "./MediaItemDrawer"
 import MediaItem from "./MediaItemButton.client"
 import { Pagination } from "@/components/common/pagination/Pagination"
+import { PendingOverlay } from "@/components/common/PendingOverlay"
 
 //------------------------------------------------------------
 
@@ -34,16 +33,16 @@ const Page = async ({
           <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-50">
             Media Library
           </h1>
-          <Link href="/media/upload">
-            <Button variant="primary" className="gap-2">
+          <PendingOverlay mode="navigation" href="/media/upload">
+            <button className="flex items-center gap-2 bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600">
               <RiAddLine />
               <span>Upload Media</span>
-            </Button>
-          </Link>
+            </button>
+          </PendingOverlay>
         </div>
 
         <form
-          method="GET"
+          id="search-form"
           className="flex w-full flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
         >
           <div className="relative flex-1">
@@ -61,22 +60,24 @@ const Page = async ({
           </div>
 
           <div className="flex items-center justify-end gap-2 sm:justify-start">
-            <Button
-              type="submit"
-              variant="secondary"
-              className="border-gray-300 bg-gray-50 px-4 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-slate-700/50 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:border-slate-600/50 dark:hover:bg-slate-700/50"
-            >
-              Apply
-            </Button>
+            <PendingOverlay mode="form-navigation" formId="search-form">
+              <button
+                type="submit"
+                form="search-form"
+                className="border border-gray-300 bg-gray-50 px-4 py-2 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-slate-700/50 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:border-slate-600/50 dark:hover:bg-slate-700/50"
+              >
+                Apply
+              </button>
+            </PendingOverlay>
             {hasActiveFilters && (
-              <Link href="/media">
-                <Button
-                  variant="secondary"
-                  className="border-red-300 bg-red-50 px-4 text-sm text-red-700 hover:border-red-400 hover:bg-red-100 dark:border-red-700/50 dark:bg-red-900/20 dark:text-red-400 dark:hover:border-red-600/50 dark:hover:bg-red-800/30"
+              <PendingOverlay mode="navigation" href="/media">
+                <button
+                  type="button"
+                  className="border border-red-300 bg-red-50 px-4 py-2 text-sm text-red-700 hover:border-red-400 hover:bg-red-100 dark:border-red-700/50 dark:bg-red-900/20 dark:text-red-400 dark:hover:border-red-600/50 dark:hover:bg-red-800/30"
                 >
                   Clear
-                </Button>
-              </Link>
+                </button>
+              </PendingOverlay>
             )}
           </div>
         </form>

@@ -4,8 +4,6 @@ import SalesChannelItem from "./SalesChannelItem"
 import { ISalesChannel } from "@connect-phone/shared-types"
 import { RiAddLine } from "@remixicon/react"
 import { Pagination } from "@/components/common/pagination/Pagination"
-import { Button } from "@/components/common/Button"
-import Link from "next/link"
 import { RiNodeTree } from "@remixicon/react"
 import { PendingOverlay } from "@/components/common/PendingOverlay"
 
@@ -47,12 +45,12 @@ const Page = async ({
               networks
             </p>
           </div>
-          <Link href="/sales-channels/create-new">
-            <Button variant="primary" className="gap-2">
+          <PendingOverlay mode="navigation" href="/sales-channels/create-new">
+            <button className="flex items-center gap-2 bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600">
               <RiAddLine />
               <span>Create New Channel</span>
-            </Button>
-          </Link>
+            </button>
+          </PendingOverlay>
         </div>
 
         {/* SEARCH BAR */}
