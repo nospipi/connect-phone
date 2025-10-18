@@ -26,6 +26,12 @@ export class UpdatePriceController {
     @Param('id', ParseIntPipe) id: number,
     @Body() updatePriceDto: UpdatePriceDto
   ): Promise<IPrice> {
+    console.log(
+      'UpdatePriceController: updatePrice called with id:',
+      id,
+      'and dto:',
+      updatePriceDto
+    );
     updatePriceDto.id = id;
     return this.updatePriceService.updatePrice(updatePriceDto);
   }

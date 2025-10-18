@@ -26,6 +26,27 @@ const Page = async ({
   const { items, meta } = pricesData
   const hasActiveFilters = search !== ""
 
+  const buildPriceUrl = (price: IPrice) => {
+    const urlParams = new URLSearchParams()
+
+    urlParams.set("name", price.name)
+    urlParams.set("amount", price.amount.toString())
+    urlParams.set("currency", price.currency)
+    urlParams.set("isDateBased", price.isDateBased.toString())
+
+    if (price.salesChannels && price.salesChannels.length > 0) {
+      const salesChannelIds = price.salesChannels.map((sc) => sc.id).join(",")
+      urlParams.set("salesChannelIds", salesChannelIds)
+    }
+
+    if (price.dateRanges && price.dateRanges.length > 0) {
+      const dateRangeIds = price.dateRanges.map((dr) => dr.id).join(",")
+      urlParams.set("dateRangeIds", dateRangeIds)
+    }
+
+    return `/inventory/prices/${price.id}?${urlParams.toString()}`
+  }
+
   return (
     <div className="flex h-full flex-col gap-2 overflow-hidden">
       {/* Filters Bar */}
@@ -99,7 +120,7 @@ const Page = async ({
             {items.map((price: IPrice) => (
               <Link
                 key={price.id}
-                href={`/inventory/prices/${price.id}`}
+                href={buildPriceUrl(price)}
                 className="block"
               >
                 <div className="duration-2000 group py-4 transition-all">

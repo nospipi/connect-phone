@@ -47,7 +47,7 @@ export const updatePrice = async (formData: FormData): Promise<void> => {
       throw new Error("Failed to update price")
     }
 
-    revalidatePath("/prices")
+    revalidatePath("/inventory/prices")
   } catch (error: unknown) {
     const messageFallback = (error as Error).message ?? "An error occurred"
     const errorMessage =
