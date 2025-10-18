@@ -12,8 +12,6 @@ export const getUserById = async (
   userId: number,
 ): Promise<IUserWithOrganizationRole> => {
   try {
-    console.log("Fetching user by ID:", userId)
-
     const api = createApiClient()
     const response = await api.get(`/users/${userId}`)
 

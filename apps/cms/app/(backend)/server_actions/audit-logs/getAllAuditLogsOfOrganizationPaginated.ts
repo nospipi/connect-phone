@@ -15,8 +15,6 @@ export const getAllAuditLogsOfOrganizationPaginated = async ({
   page = 1,
 }: PaginationParams): Promise<PaginatedAuditLogsResponse> => {
   try {
-    console.log("Fetching audit logs for organization ID:", "page:", page)
-
     const api = createApiClient()
     const response = await api.get(`/audit-logs/paginated?page=${page}`)
 

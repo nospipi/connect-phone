@@ -19,8 +19,6 @@ export const deleteUserById = async (formData: FormData): Promise<void> => {
       throw new Error("User ID is required")
     }
 
-    console.log("Deleting user with ID:", userId)
-
     const api = createApiClient()
     const response = await api.delete(`/users/${userId}`)
 

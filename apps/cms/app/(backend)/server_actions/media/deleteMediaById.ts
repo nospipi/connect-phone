@@ -11,7 +11,6 @@ import { createApiClient } from "../api-client"
 export const deleteMediaById = async (formData: FormData): Promise<void> => {
   try {
     const id = Number(formData.get("mediaId"))
-    console.log("Deleting media with ID:", id)
 
     const api = createApiClient()
     const response = await api.delete(`/media/${id}`)

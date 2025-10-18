@@ -32,16 +32,12 @@ export const createPrice = async (formData: FormData): Promise<void> => {
       dateRangeIds: dateRangeIds ? JSON.parse(dateRangeIds) : [],
     }
 
-    console.log("Creating new price:", payload)
-
     const api = createApiClient()
     const response = await api.post("/prices/new", payload)
 
     if (response.status !== 200 && response.status !== 201) {
       throw new Error("Failed to create price")
     }
-
-    console.log("Price created successfully:", response.data)
 
     revalidatePath("/inventory/prices")
   } catch (error: unknown) {

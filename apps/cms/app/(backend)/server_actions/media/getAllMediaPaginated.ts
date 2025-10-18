@@ -17,8 +17,6 @@ export const getAllMediaPaginated = async ({
   search,
 }: PaginationParams): Promise<PaginatedMediaResponse> => {
   try {
-    console.log("Fetching media:", "page:", page, "search:", search)
-
     const api = createApiClient()
     const params = new URLSearchParams()
     params.append("page", String(page))

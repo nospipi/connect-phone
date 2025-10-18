@@ -1,5 +1,4 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/users/(tab-routes)/users/page.tsx
-import { Button } from "@/components/common/Button"
 import { getAllUsersOfOrganizationPaginated } from "@/app/(backend)/server_actions/organizations/getAllUsersOfOrganizationPaginated"
 import Link from "next/link"
 import { Badge } from "@/components/common/Badge"

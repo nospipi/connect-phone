@@ -20,8 +20,6 @@ export const getAllUsersOfOrganizationPaginated = async ({
   role,
 }: PaginationParams): Promise<PaginatedUsersResponse> => {
   try {
-    console.log("Fetching users for organization:", "page:", page)
-
     const api = createApiClient()
     const response = await api.get(
       `/users/paginated?page=${page}&search=${search}&role=${role}`,

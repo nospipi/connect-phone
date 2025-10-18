@@ -25,11 +25,6 @@ export const updateCountry = async (formData: FormData): Promise<void> => {
       payload.flagProductImageUrl = flagProductImageUrl || null
     }
 
-    console.log("Updating country:", {
-      id,
-      ...payload,
-    })
-
     const api = createApiClient()
     const response = await api.put(`/countries/${id}`, payload)
 

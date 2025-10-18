@@ -17,8 +17,6 @@ export const uploadMedia = async (formData: FormData): Promise<IMedia> => {
       throw new Error("No file provided")
     }
 
-    console.log("Uploading media file:", file.name)
-
     const api = createApiClient()
 
     const uploadFormData = new FormData()

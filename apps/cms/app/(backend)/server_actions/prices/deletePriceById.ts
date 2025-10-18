@@ -12,7 +12,6 @@ import { createApiClient } from "../api-client"
 export const deletePriceById = async (formData: FormData): Promise<void> => {
   try {
     const id = Number(formData.get("priceId"))
-    console.log("Deleting price with ID:", id)
 
     const api = createApiClient()
     const response = await api.delete(`/prices/${id}`)
@@ -20,8 +19,6 @@ export const deletePriceById = async (formData: FormData): Promise<void> => {
     if (response.status !== 200) {
       throw new Error("Failed to delete price")
     }
-
-    console.log("Price deleted successfully:", response.data)
 
     revalidatePath("/prices")
   } catch (error: unknown) {

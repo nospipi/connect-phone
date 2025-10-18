@@ -11,7 +11,6 @@ import { createApiClient } from "../api-client"
 
 export const logoutUserFromOrganization = async (): Promise<void> => {
   try {
-    console.log("Logging user out of organization")
     const api = createApiClient()
     const response = await api.patch(`/users/log-out-organization`)
 

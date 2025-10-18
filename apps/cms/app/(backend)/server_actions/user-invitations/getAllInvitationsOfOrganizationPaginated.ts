@@ -19,8 +19,6 @@ export const getAllInvitationsOfOrganizationPaginated = cache(
     role,
   }: PaginationParams): Promise<PaginatedInvitationsResponse> => {
     try {
-      console.log("Fetching invitations for organization:", "page:", page)
-
       const api = createApiClient()
       const response = await api.get(
         `/invitations/paginated?page=${page}&search=${search}&role=${role}`,

@@ -17,12 +17,6 @@ export const createDateRange = async (formData: FormData): Promise<void> => {
       throw new Error("Name, start date and end date are required")
     }
 
-    console.log("Creating new date range:", {
-      name,
-      startDate,
-      endDate,
-    })
-
     const api = createApiClient()
     const response = await api.post("/date-ranges/new", {
       name,

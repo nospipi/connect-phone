@@ -12,8 +12,6 @@ export const getSalesChannelById = async (
   salesChannelId: number,
 ): Promise<ISalesChannel> => {
   try {
-    console.log("Fetching sales channel by ID:", salesChannelId)
-
     const api = createApiClient()
     const response = await api.get(`/sales-channels/${salesChannelId}`)
 

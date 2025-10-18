@@ -27,24 +27,15 @@ export const createUserInvitation = async (
       throw new Error("Role is required")
     }
 
-    console.log("Creating new user invitation:", {
-      email: email,
-      role: role,
-    })
-
     const api = createApiClient()
     const response = await api.post("/invitations/new", {
       email: email,
       role: role,
     })
 
-    //console.log("Response from API:", response.data)
-
     if (response.status !== 200 && response.status !== 201) {
       throw new Error("Failed to create user invitation")
     }
-
-    console.log("User invitation created successfully:", response.data)
 
     // Revalidate the user invitations page after creating a new one
     revalidatePath("/users/invitations")

@@ -17,14 +17,6 @@ export const getAllSalesChannelsOfOrganizationPaginated = async ({
   search = "",
 }: PaginationParams): Promise<PaginatedSalesChannelsResponse> => {
   try {
-    console.log(
-      "Fetching sales channels for organization ID:",
-      "page:",
-      page,
-      "search:",
-      search,
-    )
-
     const api = createApiClient()
     const params = new URLSearchParams()
     params.append("page", String(page))

@@ -19,15 +19,7 @@ export const getAllDateRangesPaginated = async ({
   search,
 }: PaginationParams): Promise<PaginatedDateRangesResponse> => {
   try {
-    console.log(
-      "Fetching date ranges:",
-      "page:",
-      page,
-      "date:",
-      date,
-      "search:",
-      search,
-    )
+
 
     const api = createApiClient()
     const params = new URLSearchParams()

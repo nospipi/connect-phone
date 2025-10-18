@@ -22,13 +22,6 @@ export const createNewSalesChannel = async (
       throw new Error("Name is required")
     }
 
-    console.log("Creating new sales channel:", {
-      name,
-      description: description || undefined,
-      logoId: logoId === "" ? null : logoId ? parseInt(logoId, 10) : undefined,
-      isActive: Boolean(isActive),
-    })
-
     const api = createApiClient()
     const response = await api.post("/sales-channels/new", {
       name,
@@ -40,8 +33,6 @@ export const createNewSalesChannel = async (
     if (response.status !== 200 && response.status !== 201) {
       throw new Error("Failed to create sales channel")
     }
-
-    console.log("Sales channel created successfully:", response.data)
 
     revalidatePath("/sales-channels")
   } catch (error: unknown) {

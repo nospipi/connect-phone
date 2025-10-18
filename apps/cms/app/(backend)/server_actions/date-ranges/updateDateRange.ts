@@ -26,19 +26,12 @@ export const updateDateRange = async (formData: FormData): Promise<void> => {
       payload.endDate = endDate
     }
 
-    console.log("Updating date range:", {
-      id,
-      ...payload,
-    })
-
     const api = createApiClient()
     const response = await api.put(`/date-ranges/${id}`, payload)
 
     if (response.status !== 200) {
       throw new Error("Failed to update date range")
     }
-
-    console.log("Date range updated successfully:", response.data)
 
     revalidatePath("/inventory/calendar")
   } catch (error: unknown) {

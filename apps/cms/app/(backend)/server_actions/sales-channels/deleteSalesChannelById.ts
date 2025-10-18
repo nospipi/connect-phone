@@ -14,7 +14,6 @@ export const deleteSalesChannelById = async (
 ): Promise<void> => {
   try {
     const id = Number(formData.get("salesChannelId"))
-    console.log("Deleting sales channel with ID:", id)
 
     const api = createApiClient()
     const response = await api.delete(`/sales-channels/${id}`)
@@ -22,8 +21,6 @@ export const deleteSalesChannelById = async (
     if (response.status !== 200) {
       throw new Error("Failed to delete sales channel")
     }
-
-    console.log("Sales channel deleted successfully:", response.data)
 
     // Revalidate the sales channels page after deletion
     revalidatePath("/sales-channels")

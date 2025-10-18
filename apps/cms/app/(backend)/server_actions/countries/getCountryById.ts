@@ -10,8 +10,6 @@ import { createApiClient } from "../api-client"
 
 export const getCountryById = async (countryId: number): Promise<ICountry> => {
   try {
-    console.log("Fetching country by ID:", countryId)
-
     const api = createApiClient()
     const response = await api.get(`/countries/${countryId}`)
 

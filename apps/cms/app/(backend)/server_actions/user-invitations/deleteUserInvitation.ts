@@ -20,18 +20,12 @@ export const deleteUserInvitation = async (
       throw new Error("Invitation ID is required")
     }
 
-    console.log("Deleting user invitation with ID:", invitationId)
-
     const api = createApiClient()
     const response = await api.delete(`/invitations/${invitationId}`)
-
-    //console.log("Response from API:", response.data)
 
     if (response.status !== 200 && response.status !== 204) {
       throw new Error("Failed to delete user invitation")
     }
-
-    console.log("User invitation deleted successfully:", response.data)
 
     // Revalidate the invitations page after deletion
     revalidatePath("/users/invitations")

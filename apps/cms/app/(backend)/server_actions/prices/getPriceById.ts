@@ -10,8 +10,6 @@ import { createApiClient } from "../api-client"
 
 export const getPriceById = async (priceId: number): Promise<IPrice> => {
   try {
-    console.log("Fetching price by ID:", priceId)
-
     const api = createApiClient()
     const response = await api.get(`/prices/${priceId}`)
 

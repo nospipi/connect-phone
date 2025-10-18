@@ -21,16 +21,12 @@ export const updateOrganization = async (formData: FormData): Promise<void> => {
       mainCurrency: mainCurrency || undefined,
     }
 
-    console.log("Updating organization:", payload)
-
     const api = createApiClient()
     const response = await api.put("/organizations/current", payload)
 
     if (response.status !== 200) {
       throw new Error("Failed to update organization")
     }
-
-    console.log("Organization updated successfully:", response.data)
 
     revalidatePath("/organization/details")
     revalidatePath("/")

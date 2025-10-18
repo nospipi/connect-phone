@@ -17,8 +17,6 @@ export const getAllPricesPaginated = async ({
   search,
 }: PaginationParams): Promise<PaginatedPricesResponse> => {
   try {
-    console.log("Fetching prices:", "page:", page, "search:", search)
-
     const api = createApiClient()
     const params = new URLSearchParams()
     params.append("page", String(page))

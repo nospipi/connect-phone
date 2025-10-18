@@ -20,11 +20,6 @@ export const updateMedia = async (formData: FormData): Promise<void> => {
       payload.description = description || null
     }
 
-    console.log("Updating media:", {
-      id,
-      ...payload,
-    })
-
     const api = createApiClient()
     const response = await api.put(`/media/${id}`, payload)
 

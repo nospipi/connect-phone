@@ -10,8 +10,6 @@ import { createApiClient } from "../api-client"
 
 export const getMediaById = async (mediaId: number): Promise<IMedia> => {
   try {
-    console.log("Fetching media by ID:", mediaId)
-
     const api = createApiClient()
     const response = await api.get(`/media/${mediaId}`)
 

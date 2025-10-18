@@ -12,8 +12,6 @@ export const getDateRangeById = async (
   dateRangeId: number,
 ): Promise<IDateRange> => {
   try {
-    console.log("Fetching date range by ID:", dateRangeId)
-
     const api = createApiClient()
     const response = await api.get(`/date-ranges/${dateRangeId}`)
 

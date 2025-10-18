@@ -28,11 +28,6 @@ export const updateSalesChannel = async (formData: FormData): Promise<void> => {
       isActive: Boolean(isActive),
     }
 
-    console.log("Updating sales channel:", {
-      id,
-      ...payload,
-    })
-
     const api = createApiClient()
     const response = await api.put(`/sales-channels/${id}`, payload)
 

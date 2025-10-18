@@ -14,7 +14,6 @@ export const deleteDateRangeById = async (
 ): Promise<void> => {
   try {
     const id = Number(formData.get("dateRangeId"))
-    console.log("Deleting date range with ID:", id)
 
     const api = createApiClient()
     const response = await api.delete(`/date-ranges/${id}`)
@@ -22,8 +21,6 @@ export const deleteDateRangeById = async (
     if (response.status !== 200) {
       throw new Error("Failed to delete date range")
     }
-
-    console.log("Date range deleted successfully:", response.data)
 
     revalidatePath("/inventory/date-ranges")
   } catch (error: unknown) {

@@ -1,12 +1,10 @@
-// apps/cms/app/(frontend)/(authenticated)/(dashboard)/users/(tab-routes)/users/page.tsx
-import { Button } from "@/components/common/Button"
-import { getAllUsersOfOrganizationPaginated } from "@/app/(backend)/server_actions/organizations/getAllUsersOfOrganizationPaginated"
-import Link from "next/link"
-import { Badge } from "@/components/common/Badge"
+// apps/cms/app/(frontend)/(authenticated)/(dashboard)/users/(tab-routes)/invitations/page.tsx
+import { getAllInvitationsOfOrganizationPaginated } from "@/app/(backend)/server_actions/user-invitations/getAllInvitationsOfOrganizationPaginated"
 import { RiUser2Fill } from "@remixicon/react"
 import { UserOrganizationRole } from "@connect-phone/shared-types"
 import { Pagination } from "@/components/common/pagination/Pagination"
 import { PendingOverlay } from "@/components/common/PendingOverlay"
+import InvitationItem from "./InvitationItem"
 
 //------------------------------------------------------------
 
@@ -18,20 +16,6 @@ const USER_ROLES = [
   })),
 ] as const
 
-const getInitials = (firstName: string, lastName: string): string => {
-  const first = firstName?.trim() || ""
-  const last = lastName?.trim() || ""
-
-  if (first && last) {
-    return (first[0] + last[0]).toUpperCase()
-  } else if (first) {
-    return first.substring(0, 2).toUpperCase()
-  } else if (last) {
-    return last.substring(0, 2).toUpperCase()
-  }
-  return "??"
-}
-
 const Page = async ({
   searchParams,
 }: {
@@ -40,20 +24,20 @@ const Page = async ({
   const params = await searchParams
   const { page = "1", search = "", role = "all" } = params
 
-  const usersResponse = await getAllUsersOfOrganizationPaginated({
+  const invitationsResponse = await getAllInvitationsOfOrganizationPaginated({
     page: page,
     search: search,
     role: role,
   })
 
-  const items = usersResponse?.items || []
-  const meta = usersResponse?.meta
+  const items = invitationsResponse?.items || []
+  const meta = invitationsResponse?.meta
   const hasActiveFilters = search !== "" || role !== "all"
 
   const buildClearSearchUrl = () => {
     const urlParams = new URLSearchParams()
     urlParams.set("page", "1")
-    return `/users/users?${urlParams.toString()}`
+    return `/users/invitations?${urlParams.toString()}`
   }
 
   return (
@@ -66,7 +50,7 @@ const Page = async ({
             type="text"
             name="search"
             defaultValue={search}
-            placeholder="Search users..."
+            placeholder="Search invitations..."
             className="min-w-[200px] flex-1 border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-500 outline-none focus:border-blue-500 focus:outline-none focus:ring-0 dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200 dark:placeholder-slate-500 dark:focus:border-slate-700/50"
           />
           <select
@@ -111,74 +95,26 @@ const Page = async ({
                 <RiUser2Fill className="h-8 w-8 text-gray-400 dark:text-slate-600" />
               </div>
               <h3 className="mb-2 text-lg font-medium text-gray-900 dark:text-slate-200">
-                No users found
+                No invitations found
               </h3>
               <p className="text-sm text-gray-500 dark:text-slate-500">
                 {hasActiveFilters
                   ? "Try adjusting your filters to see more results"
-                  : "Users will appear here when they join your organization"}
+                  : "Invitations will appear here when you invite users to your organization"}
               </p>
             </div>
           </div>
         ) : (
           <div className="divide-y divide-gray-200 px-5 dark:divide-slate-800/30">
-            {items.map((userOrganization: any, index: number) => {
-              const user = userOrganization.user
-              const role = userOrganization.role
-              const initials = getInitials(user.firstName, user.lastName)
-              const fullName =
-                `${user.firstName || ""} ${user.lastName || ""}`.trim() ||
-                user.email
-
-              return (
-                <Link
-                  key={user.id}
-                  href={`/users/${user.id}`}
-                  className="block"
-                >
-                  <div className="duration-2000 group py-4 transition-all">
-                    <div className="flex items-center space-x-4">
-                      <div className="flex-shrink-0">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-gray-200 to-gray-300 text-sm font-semibold text-gray-700 shadow-sm group-hover:from-gray-300 group-hover:to-gray-400 group-hover:text-gray-800 dark:from-slate-700/60 dark:to-slate-800/60 dark:text-slate-200 dark:group-hover:from-slate-600/60 dark:group-hover:to-slate-700/60 dark:group-hover:text-slate-100">
-                          {initials}
-                        </div>
-                      </div>
-
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-start justify-between">
-                          <div className="min-w-0 flex-1">
-                            <p className="truncate text-sm font-medium text-gray-900 group-hover:text-gray-700 dark:text-slate-200 dark:group-hover:text-slate-100">
-                              {fullName}
-                            </p>
-                            <p className="truncate text-sm text-gray-600 group-hover:text-gray-500 dark:text-slate-400 dark:group-hover:text-slate-300">
-                              {user.email}
-                            </p>
-                          </div>
-
-                          <div className="ml-4 flex-shrink-0">
-                            <Badge
-                              variant={
-                                role === UserOrganizationRole.ADMIN
-                                  ? "warning"
-                                  : "default"
-                              }
-                            >
-                              {role.charAt(0).toUpperCase() + role.slice(1)}
-                            </Badge>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              )
-            })}
+            {items.map((invitation: any) => (
+              <InvitationItem key={invitation.id} invitation={invitation} />
+            ))}
           </div>
         )}
       </div>
 
       {/* PAGINATION */}
-      <Pagination meta={meta} searchParams={params} itemLabel="users" />
+      <Pagination meta={meta} searchParams={params} itemLabel="invitations" />
     </div>
   )
 }

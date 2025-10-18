@@ -40,11 +40,6 @@ export const updatePrice = async (formData: FormData): Promise<void> => {
       payload.dateRangeIds = JSON.parse(dateRangeIds)
     }
 
-    console.log("Updating price:", {
-      id,
-      ...payload,
-    })
-
     const api = createApiClient()
     const response = await api.put(`/prices/${id}`, payload)
 
