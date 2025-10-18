@@ -44,6 +44,7 @@ export class UpdatePriceService {
         id: updatePriceDto.id,
         organizationId: organization.id,
       },
+      relations: ['dateRanges', 'salesChannels'],
     });
 
     if (!price) {
@@ -68,40 +69,44 @@ export class UpdatePriceService {
     await this.priceRepository.save(price);
 
     if (updatePriceDto.dateRangeIds !== undefined) {
+      const currentDateRanges = price.dateRanges || [];
+
       if (updatePriceDto.dateRangeIds.length > 0) {
-        const dateRanges = await this.dateRangeRepository.findByIds(
+        const newDateRanges = await this.dateRangeRepository.findByIds(
           updatePriceDto.dateRangeIds
         );
         await this.priceRepository
           .createQueryBuilder()
           .relation(PriceEntity, 'dateRanges')
           .of(price)
-          .addAndRemove(dateRanges, price.id);
+          .addAndRemove(newDateRanges, currentDateRanges);
       } else {
         await this.priceRepository
           .createQueryBuilder()
           .relation(PriceEntity, 'dateRanges')
           .of(price)
-          .remove(await this.dateRangeRepository.find());
+          .remove(currentDateRanges);
       }
     }
 
     if (updatePriceDto.salesChannelIds !== undefined) {
+      const currentSalesChannels = price.salesChannels || [];
+
       if (updatePriceDto.salesChannelIds.length > 0) {
-        const salesChannels = await this.salesChannelRepository.findByIds(
+        const newSalesChannels = await this.salesChannelRepository.findByIds(
           updatePriceDto.salesChannelIds
         );
         await this.priceRepository
           .createQueryBuilder()
           .relation(PriceEntity, 'salesChannels')
           .of(price)
-          .addAndRemove(salesChannels, price.id);
+          .addAndRemove(newSalesChannels, currentSalesChannels);
       } else {
         await this.priceRepository
           .createQueryBuilder()
           .relation(PriceEntity, 'salesChannels')
           .of(price)
-          .remove(await this.salesChannelRepository.find());
+          .remove(currentSalesChannels);
       }
     }
 
