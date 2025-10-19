@@ -1,14 +1,20 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/(tab-routes)/prices/page.tsx
 
 import { getAllPricesPaginated } from "@/app/(backend)/server_actions/prices/getAllPricesPaginated"
-import { RiSearchLine, RiCoinsLine, RiAddLine } from "@remixicon/react"
-import { IPrice, CURRENCIES } from "@connect-phone/shared-types"
+import { getDateRangeById } from "@/app/(backend)/server_actions/date-ranges/getDateRangeById"
+import { getSalesChannelById } from "@/app/(backend)/server_actions/sales-channels/getSalesChannelById"
+import { RiCoinsLine } from "@remixicon/react"
+import { IPrice, Currency, CURRENCIES } from "@connect-phone/shared-types"
 import { Badge } from "@/components/common/Badge"
 import { Pagination } from "@/components/common/pagination/Pagination"
-import { PendingOverlay } from "@/components/common/PendingOverlay"
 import Link from "next/link"
+import PricesFilters from "./PricesFilters.client"
 
 //------------------------------------------------------------
+
+const getCurrencyName = (currencyCode: string) => {
+  return CURRENCIES.find((c) => c.code === currencyCode)?.name || currencyCode
+}
 
 const Page = async ({
   searchParams,
@@ -16,15 +22,61 @@ const Page = async ({
   searchParams: Promise<{ [key: string]: string | undefined }>
 }) => {
   const params = await searchParams
-  const { page = "1", search = "" } = params
+  const {
+    page = "1",
+    search = "",
+    minAmount,
+    maxAmount,
+    currencies,
+    dateRangeIds,
+    salesChannelIds,
+  } = params
+
+  const currenciesArray = currencies
+    ? currencies.split(",").filter(Boolean)
+    : []
+  const dateRangeIdsArray = dateRangeIds
+    ? dateRangeIds.split(",").map(Number).filter(Boolean)
+    : []
+  const salesChannelIdsArray = salesChannelIds
+    ? salesChannelIds.split(",").map(Number).filter(Boolean)
+    : []
+
+  const selectedDateRanges = await Promise.all(
+    dateRangeIdsArray.map(async (id) => {
+      try {
+        return await getDateRangeById(id)
+      } catch (error) {
+        console.error(`Failed to fetch date range ${id}:`, error)
+        return null
+      }
+    }),
+  ).then((results) => results.filter((dr) => dr !== null))
+
+  const selectedSalesChannels = await Promise.all(
+    salesChannelIdsArray.map(async (id) => {
+      try {
+        return await getSalesChannelById(id)
+      } catch (error) {
+        console.error(`Failed to fetch sales channel ${id}:`, error)
+        return null
+      }
+    }),
+  ).then((results) => results.filter((sc) => sc !== null))
 
   const pricesData = await getAllPricesPaginated({
     page,
     search,
+    minAmount: minAmount ? Number(minAmount) : undefined,
+    maxAmount: maxAmount ? Number(maxAmount) : undefined,
+    currencies:
+      currenciesArray.length > 0 ? (currenciesArray as Currency[]) : undefined,
+    dateRangeIds: dateRangeIdsArray.length > 0 ? dateRangeIdsArray : undefined,
+    salesChannelIds:
+      salesChannelIdsArray.length > 0 ? salesChannelIdsArray : undefined,
   })
 
   const { items, meta } = pricesData
-  const hasActiveFilters = search !== ""
 
   const buildPriceUrl = (price: IPrice) => {
     const urlParams = new URLSearchParams()
@@ -47,57 +99,26 @@ const Page = async ({
     return `/inventory/prices/${price.id}?${urlParams.toString()}`
   }
 
-  const getCurrencyName = (currencyCode: string) => {
-    return CURRENCIES.find((c) => c.code === currencyCode)?.name || currencyCode
+  const currentFilters = {
+    search,
+    minAmount: minAmount || "",
+    maxAmount: maxAmount || "",
+    currencies: currenciesArray,
+    dateRanges: selectedDateRanges,
+    salesChannels: selectedSalesChannels,
   }
+
+  const hasActiveFilters =
+    search !== "" ||
+    minAmount !== undefined ||
+    maxAmount !== undefined ||
+    currenciesArray.length > 0 ||
+    dateRangeIdsArray.length > 0 ||
+    salesChannelIdsArray.length > 0
 
   return (
     <div className="flex h-full flex-col gap-2 overflow-hidden">
-      {/* Filters Bar */}
-      <div className="my-2 flex flex-col gap-3 px-5 pr-2 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex flex-1 flex-col gap-3 sm:flex-row sm:items-center">
-          <form
-            id="filter-form"
-            className="flex flex-1 flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
-          >
-            <div className="relative flex-1">
-              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                <RiSearchLine className="h-4 w-4 text-gray-500 dark:text-slate-500" />
-              </div>
-              <input
-                autoFocus
-                type="text"
-                name="search"
-                placeholder="Search prices..."
-                defaultValue={search}
-                className="block w-full border border-gray-300 bg-white py-2 pl-10 pr-3 text-sm text-gray-900 placeholder-gray-500 outline-none focus:border-blue-500 focus:outline-none focus:ring-0 focus:ring-transparent dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200 dark:placeholder-slate-500 dark:focus:border-slate-700/50"
-              />
-            </div>
-
-            <div className="flex items-center justify-end gap-2 sm:justify-start">
-              <PendingOverlay mode="form-navigation" formId="filter-form">
-                <button
-                  type="submit"
-                  form="filter-form"
-                  className="border border-gray-300 bg-gray-50 px-4 py-2 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-slate-700/50 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:border-slate-600/50 dark:hover:bg-slate-700/50"
-                >
-                  Apply
-                </button>
-              </PendingOverlay>
-              {hasActiveFilters && (
-                <PendingOverlay mode="navigation" href="/inventory/prices">
-                  <button
-                    type="button"
-                    className="border border-red-300 bg-red-50 px-4 py-2 text-sm text-red-700 hover:border-red-400 hover:bg-red-100 dark:border-red-700/50 dark:bg-red-900/20 dark:text-red-400 dark:hover:border-red-600/50 dark:hover:bg-red-800/30"
-                  >
-                    Clear
-                  </button>
-                </PendingOverlay>
-              )}
-            </div>
-          </form>
-        </div>
-      </div>
+      <PricesFilters currentFilters={currentFilters} />
 
       {items.length === 0 && (
         <div className="flex flex-1 items-center justify-center">
@@ -110,14 +131,13 @@ const Page = async ({
             </h3>
             <p className="text-sm text-gray-500 dark:text-slate-500">
               {hasActiveFilters
-                ? "Try adjusting your search to see more results"
+                ? "Try adjusting your filters to see more results"
                 : "Get started by creating your first price"}
             </p>
           </div>
         </div>
       )}
 
-      {/* Prices List */}
       {items.length > 0 && (
         <div className="flex-1 overflow-hidden">
           <div className="h-full divide-y divide-gray-200 overflow-auto px-5 dark:divide-slate-800/30">

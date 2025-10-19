@@ -7,6 +7,7 @@ import {
   Max,
   IsArray,
   IsEnum,
+  IsNumber,
 } from 'class-validator';
 import { Type, Transform } from 'class-transformer';
 import { Sanitize } from '@/common/decorators/sanitize.decorator';
@@ -38,13 +39,13 @@ export class SearchPricesDto {
 
   @IsOptional()
   @Type(() => Number)
-  @IsInt()
+  @IsNumber()
   @Min(0)
   minAmount?: number;
 
   @IsOptional()
   @Type(() => Number)
-  @IsInt()
+  @IsNumber()
   @Min(0)
   maxAmount?: number;
 
