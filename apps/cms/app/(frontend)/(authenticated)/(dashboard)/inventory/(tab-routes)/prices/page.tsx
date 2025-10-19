@@ -141,7 +141,7 @@ const Page = async ({
                               <Badge variant="neutral">Date-based</Badge>
                             )}
                           </div>
-                          <p className="mt-1 truncate text-sm font-semibold text-gray-900 group-hover:text-gray-700 dark:text-slate-300 dark:group-hover:text-slate-200">
+                          <p className="mt-1 truncate text-sm font-semibold text-yellow-700 group-hover:underline dark:text-yellow-500">
                             {new Intl.NumberFormat("en-US", {
                               style: "currency",
                               currency: price.currency,

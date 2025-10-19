@@ -12,7 +12,6 @@ import DateBasedCheckbox from "./DateBasedCheckbox.client"
 import SalesChannelSelectButton from "./SalesChannelSelectButton.client"
 import DateRangeSelectButton from "./DateRangeSelectButton.client"
 import DeletePriceButton from "./DeletePriceButton"
-import ResetButton from "./ResetButton.client"
 
 //------------------------------------------------------------
 
@@ -38,13 +37,21 @@ const Page = async ({
   const amount = urlParams.amount || price.amount.toString()
   const currency = (urlParams.currency || price.currency) as Currency
 
+  //   const selectedSalesChannelIds = salesChannelIds
+  //     ? salesChannelIds.split(",").map(Number).filter(Boolean)
+  //     : price.salesChannels.map((sc) => sc.id)
+
   const selectedSalesChannelIds = salesChannelIds
     ? salesChannelIds.split(",").map(Number).filter(Boolean)
-    : price.salesChannels.map((sc) => sc.id)
+    : []
+
+  //   const selectedDateRangeIds = dateRangeIds
+  //     ? dateRangeIds.split(",").map(Number).filter(Boolean)
+  //     : price.dateRanges?.map((dr) => dr.id) || []
 
   const selectedDateRangeIds = dateRangeIds
     ? dateRangeIds.split(",").map(Number).filter(Boolean)
-    : price.dateRanges?.map((dr) => dr.id) || []
+    : []
 
   const selectedSalesChannels = await Promise.all(
     selectedSalesChannelIds.map((id) => getSalesChannelById(id)),
@@ -84,27 +91,6 @@ const Page = async ({
     return `/inventory/prices/${price_id}?${newParams.toString()}`
   }
 
-  const buildInitialUrl = () => {
-    const resetParams = new URLSearchParams()
-
-    resetParams.set("name", price.name)
-    resetParams.set("amount", price.amount.toString())
-    resetParams.set("currency", price.currency)
-    resetParams.set("isDateBased", price.isDateBased.toString())
-
-    if (price.salesChannels && price.salesChannels.length > 0) {
-      const salesChannelIds = price.salesChannels.map((sc) => sc.id).join(",")
-      resetParams.set("salesChannelIds", salesChannelIds)
-    }
-
-    if (price.dateRanges && price.dateRanges.length > 0) {
-      const dateRangeIds = price.dateRanges.map((dr) => dr.id).join(",")
-      resetParams.set("dateRangeIds", dateRangeIds)
-    }
-
-    return `/inventory/prices/${price_id}?${resetParams.toString()}`
-  }
-
   const priceForDelete = {
     id: Number(price_id),
     name: name || "Price",
@@ -137,7 +123,7 @@ const Page = async ({
         <div className="flex h-full w-full justify-center overflow-auto px-4">
           <div className="flex w-full max-w-3xl flex-col gap-10">
             <form
-              //key={formKey}
+              key={formKey}
               action={updatePrice}
               className="flex flex-1 flex-col gap-6"
             >
@@ -310,14 +296,6 @@ const Page = async ({
                     className="inline-flex items-center justify-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
                   >
                     Cancel
-                  </button>
-                </PendingOverlay>
-                <PendingOverlay mode="navigation" href={buildInitialUrl()}>
-                  <button
-                    type="button"
-                    className="inline-flex items-center justify-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
-                  >
-                    Reset
                   </button>
                 </PendingOverlay>
                 <PendingOverlay mode="form">
