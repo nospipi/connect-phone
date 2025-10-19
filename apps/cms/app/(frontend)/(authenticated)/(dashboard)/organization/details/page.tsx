@@ -2,8 +2,9 @@
 import { getCurrentOrganization } from "@/app/(backend)/server_actions/organizations/getCurrentOrganization"
 import { getMediaById } from "@/app/(backend)/server_actions/media/getMediaById"
 import { redirect } from "next/navigation"
+import { revalidatePath } from "next/cache"
 import { updateOrganization } from "@/app/(backend)/server_actions/organizations/updateOrganization"
-import { Currency } from "@connect-phone/shared-types"
+import { CURRENCIES } from "@connect-phone/shared-types"
 import LogoSection from "./LogoSection.client"
 import { PendingOverlay } from "@/components/common/PendingOverlay"
 
@@ -11,13 +12,9 @@ import { PendingOverlay } from "@/components/common/PendingOverlay"
 
 async function refreshPageAction() {
   "use server"
+  //revalidatePath("/organization/details")
   redirect("/organization/details")
 }
-
-const CURRENCIES = Object.values(Currency).map((currency) => ({
-  value: currency,
-  label: currency,
-}))
 
 interface PageProps {
   searchParams: Promise<{ [key: string]: string | undefined }>
@@ -26,10 +23,11 @@ interface PageProps {
 const Page = async ({ searchParams }: PageProps) => {
   const params = await searchParams
   const organizationData = await getCurrentOrganization()
+  //console.log("Organization data fetched:", organizationData)
 
   const name = params.name || organizationData?.name || ""
   const mainCurrency =
-    params.mainCurrency || organizationData?.mainCurrency || Currency.USD
+    params.mainCurrency || organizationData?.mainCurrency || CURRENCIES[0].code
 
   let logoId: number | null = null
   if (params.logoId === "") {
@@ -99,8 +97,8 @@ const Page = async ({ searchParams }: PageProps) => {
                   required
                 >
                   {CURRENCIES.map((currency) => (
-                    <option key={currency.value} value={currency.value}>
-                      {currency.label}
+                    <option key={currency.code} value={currency.code}>
+                      {currency.code} - {currency.name}
                     </option>
                   ))}
                 </select>

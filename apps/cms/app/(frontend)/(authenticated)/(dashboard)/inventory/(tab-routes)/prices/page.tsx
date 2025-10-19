@@ -2,7 +2,7 @@
 
 import { getAllPricesPaginated } from "@/app/(backend)/server_actions/prices/getAllPricesPaginated"
 import { RiSearchLine, RiCoinsLine, RiAddLine } from "@remixicon/react"
-import { IPrice } from "@connect-phone/shared-types"
+import { IPrice, CURRENCIES } from "@connect-phone/shared-types"
 import { Badge } from "@/components/common/Badge"
 import { Pagination } from "@/components/common/pagination/Pagination"
 import { PendingOverlay } from "@/components/common/PendingOverlay"
@@ -45,6 +45,10 @@ const Page = async ({
     }
 
     return `/inventory/prices/${price.id}?${urlParams.toString()}`
+  }
+
+  const getCurrencyName = (currencyCode: string) => {
+    return CURRENCIES.find((c) => c.code === currencyCode)?.name || currencyCode
   }
 
   return (
@@ -141,12 +145,18 @@ const Page = async ({
                               <Badge variant="neutral">Date-based</Badge>
                             )}
                           </div>
-                          <p className="mt-1 truncate text-sm font-semibold text-yellow-700 group-hover:underline dark:text-yellow-500">
-                            {new Intl.NumberFormat("en-US", {
-                              style: "currency",
-                              currency: price.currency,
-                            }).format(price.amount)}
-                          </p>
+                          <div className="mt-1 flex items-baseline gap-1.5">
+                            <p className="truncate text-sm font-semibold text-yellow-700 group-hover:underline dark:text-yellow-500">
+                              {new Intl.NumberFormat("en-US", {
+                                style: "currency",
+                                currency: price.currency,
+                              }).format(price.amount)}
+                            </p>
+                            <p className="truncate text-xs text-gray-500 dark:text-slate-500">
+                              {price.currency} -{" "}
+                              {getCurrencyName(price.currency)}
+                            </p>
+                          </div>
                           {price.salesChannels &&
                             price.salesChannels.length > 0 && (
                               <p className="mt-0.5 truncate text-xs text-gray-500 dark:text-slate-500">

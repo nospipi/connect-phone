@@ -5,7 +5,7 @@ import { updatePrice } from "@/app/(backend)/server_actions/prices/updatePrice"
 import { getPriceById } from "@/app/(backend)/server_actions/prices/getPriceById"
 import Link from "next/link"
 import { RiArrowLeftLine, RiCloseLine } from "@remixicon/react"
-import { Currency } from "@connect-phone/shared-types"
+import { Currency, CURRENCIES } from "@connect-phone/shared-types"
 import { Badge } from "@/components/common/Badge"
 import { PendingOverlay } from "@/components/common/PendingOverlay"
 import DateBasedCheckbox from "./DateBasedCheckbox.client"
@@ -37,17 +37,9 @@ const Page = async ({
   const amount = urlParams.amount || price.amount.toString()
   const currency = (urlParams.currency || price.currency) as Currency
 
-  //   const selectedSalesChannelIds = salesChannelIds
-  //     ? salesChannelIds.split(",").map(Number).filter(Boolean)
-  //     : price.salesChannels.map((sc) => sc.id)
-
   const selectedSalesChannelIds = salesChannelIds
     ? salesChannelIds.split(",").map(Number).filter(Boolean)
     : []
-
-  //   const selectedDateRangeIds = dateRangeIds
-  //     ? dateRangeIds.split(",").map(Number).filter(Boolean)
-  //     : price.dateRanges?.map((dr) => dr.id) || []
 
   const selectedDateRangeIds = dateRangeIds
     ? dateRangeIds.split(",").map(Number).filter(Boolean)
@@ -200,9 +192,9 @@ const Page = async ({
                   defaultValue={currency}
                   className="mt-2 block w-full border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm outline-none focus:border-indigo-500 focus:outline-none focus:ring-0 dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200 dark:focus:border-slate-700/50"
                 >
-                  {Object.values(Currency).map((curr) => (
-                    <option key={curr} value={curr}>
-                      {curr}
+                  {CURRENCIES.map((curr) => (
+                    <option key={curr.code} value={curr.code}>
+                      {curr.code} - {curr.name}
                     </option>
                   ))}
                 </select>

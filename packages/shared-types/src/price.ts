@@ -19,6 +19,19 @@ export enum Currency {
   NZD = "NZD",
 }
 
+export const CURRENCIES = [
+  { code: Currency.USD, name: "US Dollar" },
+  { code: Currency.EUR, name: "Euro" },
+  { code: Currency.GBP, name: "British Pound" },
+  { code: Currency.JPY, name: "Japanese Yen" },
+  { code: Currency.AUD, name: "Australian Dollar" },
+  { code: Currency.CAD, name: "Canadian Dollar" },
+  { code: Currency.CHF, name: "Swiss Franc" },
+  { code: Currency.CNY, name: "Chinese Yuan" },
+  { code: Currency.HKD, name: "Hong Kong Dollar" },
+  { code: Currency.NZD, name: "New Zealand Dollar" },
+] as const;
+
 export interface IPrice {
   id: number;
   name: string;
