@@ -20,7 +20,6 @@ interface MultiSelectProps {
 }
 
 export default function MultiSelect({
-  fieldName,
   options,
   selectedValues,
   placeholder = "Select options...",
@@ -65,9 +64,9 @@ export default function MultiSelect({
     <div className="relative" ref={dropdownRef}>
       <div
         onClick={() => setIsOpen(!isOpen)}
-        className="flex min-h-[42px] cursor-pointer items-center justify-between border border-gray-300 bg-white px-3 py-2 text-sm transition-colors hover:border-gray-400 dark:border-slate-700/50 dark:bg-slate-900/50 dark:hover:border-slate-600/50"
+        className="flex h-[42px] cursor-pointer items-center justify-between gap-2 overflow-hidden border border-gray-300 bg-white px-3 py-2 text-sm transition-colors hover:border-gray-400 dark:border-slate-700/50 dark:bg-slate-900/50 dark:hover:border-slate-600/50"
       >
-        <div className="flex flex-1 flex-wrap items-center gap-1">
+        <div className="scrollbar-hide flex min-w-0 flex-1 items-center gap-1 overflow-x-auto">
           {selectedValues.length === 0 ? (
             <span className="text-gray-500 dark:text-slate-500">
               {placeholder}
@@ -76,7 +75,7 @@ export default function MultiSelect({
             getSelectedLabels().map((label, index) => (
               <span
                 key={index}
-                className="inline-flex items-center gap-1 bg-indigo-100 px-2 py-0.5 text-xs font-medium text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300"
+                className="inline-flex flex-shrink-0 items-center gap-1 bg-indigo-100 px-2 py-0.5 text-xs font-medium text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300"
               >
                 {label}
                 <button
