@@ -22,9 +22,7 @@ export class GetAllByOrgPaginatedController {
     @Query() searchPricesDto: SearchPricesDto
   ): Promise<Pagination<IPrice>> {
     return this.getAllByOrgPaginatedService.getAllPricesPaginated(
-      searchPricesDto.page || 1,
-      searchPricesDto.limit || 10,
-      searchPricesDto.search || ''
+      searchPricesDto
     );
   }
 }

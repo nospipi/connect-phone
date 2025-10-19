@@ -6,6 +6,8 @@ import { GetAllByOrgPaginatedService } from './service';
 import { PriceEntity } from '../../../../database/entities/price.entity';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 import { paginate } from 'nestjs-typeorm-paginate';
+import { Currency } from '@connect-phone/shared-types';
+import { SearchPricesDto } from './search-prices.dto';
 import {
   createMockOrganization,
   createMockPrice,
@@ -66,12 +68,18 @@ describe('GetAllByOrgPaginatedService', () => {
 
   describe('getAllPricesPaginated', () => {
     it('should return paginated prices for current organization', async () => {
+      const searchDto: SearchPricesDto = {
+        page: 1,
+        limit: 10,
+        search: '',
+      };
+
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
       mockPaginate.mockResolvedValue(mockPaginationResult);
 
-      const result = await service.getAllPricesPaginated(1, 10, '');
+      const result = await service.getAllPricesPaginated(searchDto);
 
       expect(
         currentOrganizationService.getCurrentOrganization
@@ -102,12 +110,18 @@ describe('GetAllByOrgPaginatedService', () => {
     });
 
     it('should add search functionality when search term provided', async () => {
+      const searchDto: SearchPricesDto = {
+        page: 1,
+        limit: 10,
+        search: 'High Season',
+      };
+
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
       mockPaginate.mockResolvedValue(mockPaginationResult);
 
-      await service.getAllPricesPaginated(1, 10, 'High Season');
+      await service.getAllPricesPaginated(searchDto);
 
       expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
         'price.name ILIKE :search',
@@ -116,18 +130,269 @@ describe('GetAllByOrgPaginatedService', () => {
     });
 
     it('should validate limit bounds', async () => {
+      const searchDto: SearchPricesDto = {
+        page: 1,
+        limit: 150,
+      };
+
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
       mockPaginate.mockResolvedValue(mockPaginationResult);
 
-      await service.getAllPricesPaginated(1, 150);
+      await service.getAllPricesPaginated(searchDto);
 
       expect(mockPaginate).toHaveBeenCalledWith(mockQueryBuilder, {
         page: 1,
         limit: 100,
         route: '/prices/paginated',
       });
+    });
+
+    it('should filter by minimum amount', async () => {
+      const searchDto: SearchPricesDto = {
+        page: 1,
+        limit: 10,
+        minAmount: 10,
+      };
+
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
+      mockPaginate.mockResolvedValue(mockPaginationResult);
+
+      await service.getAllPricesPaginated(searchDto);
+
+      expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
+        'price.amount >= :minAmount',
+        { minAmount: 10 }
+      );
+    });
+
+    it('should filter by maximum amount', async () => {
+      const searchDto: SearchPricesDto = {
+        page: 1,
+        limit: 10,
+        maxAmount: 50,
+      };
+
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
+      mockPaginate.mockResolvedValue(mockPaginationResult);
+
+      await service.getAllPricesPaginated(searchDto);
+
+      expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
+        'price.amount <= :maxAmount',
+        { maxAmount: 50 }
+      );
+    });
+
+    it('should filter by amount range', async () => {
+      const searchDto: SearchPricesDto = {
+        page: 1,
+        limit: 10,
+        minAmount: 10,
+        maxAmount: 50,
+      };
+
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
+      mockPaginate.mockResolvedValue(mockPaginationResult);
+
+      await service.getAllPricesPaginated(searchDto);
+
+      expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
+        'price.amount >= :minAmount',
+        { minAmount: 10 }
+      );
+      expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
+        'price.amount <= :maxAmount',
+        { maxAmount: 50 }
+      );
+    });
+
+    it('should filter by single currency', async () => {
+      const searchDto: SearchPricesDto = {
+        page: 1,
+        limit: 10,
+        currencies: [Currency.USD],
+      };
+
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
+      mockPaginate.mockResolvedValue(mockPaginationResult);
+
+      await service.getAllPricesPaginated(searchDto);
+
+      expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
+        'price.currency IN (:...currencies)',
+        { currencies: [Currency.USD] }
+      );
+    });
+
+    it('should filter by multiple currencies', async () => {
+      const searchDto: SearchPricesDto = {
+        page: 1,
+        limit: 10,
+        currencies: [Currency.USD, Currency.EUR, Currency.GBP],
+      };
+
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
+      mockPaginate.mockResolvedValue(mockPaginationResult);
+
+      await service.getAllPricesPaginated(searchDto);
+
+      expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
+        'price.currency IN (:...currencies)',
+        { currencies: [Currency.USD, Currency.EUR, Currency.GBP] }
+      );
+    });
+
+    it('should filter by single date range', async () => {
+      const searchDto: SearchPricesDto = {
+        page: 1,
+        limit: 10,
+        dateRangeIds: [1],
+      };
+
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
+      mockPaginate.mockResolvedValue(mockPaginationResult);
+
+      await service.getAllPricesPaginated(searchDto);
+
+      expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
+        'dateRanges.id IN (:...dateRangeIds)',
+        { dateRangeIds: [1] }
+      );
+    });
+
+    it('should filter by multiple date ranges', async () => {
+      const searchDto: SearchPricesDto = {
+        page: 1,
+        limit: 10,
+        dateRangeIds: [1, 2, 3],
+      };
+
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
+      mockPaginate.mockResolvedValue(mockPaginationResult);
+
+      await service.getAllPricesPaginated(searchDto);
+
+      expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
+        'dateRanges.id IN (:...dateRangeIds)',
+        { dateRangeIds: [1, 2, 3] }
+      );
+    });
+
+    it('should filter by single sales channel', async () => {
+      const searchDto: SearchPricesDto = {
+        page: 1,
+        limit: 10,
+        salesChannelIds: [1],
+      };
+
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
+      mockPaginate.mockResolvedValue(mockPaginationResult);
+
+      await service.getAllPricesPaginated(searchDto);
+
+      expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
+        'salesChannels.id IN (:...salesChannelIds)',
+        { salesChannelIds: [1] }
+      );
+    });
+
+    it('should filter by multiple sales channels', async () => {
+      const searchDto: SearchPricesDto = {
+        page: 1,
+        limit: 10,
+        salesChannelIds: [1, 2, 3],
+      };
+
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
+      mockPaginate.mockResolvedValue(mockPaginationResult);
+
+      await service.getAllPricesPaginated(searchDto);
+
+      expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
+        'salesChannels.id IN (:...salesChannelIds)',
+        { salesChannelIds: [1, 2, 3] }
+      );
+    });
+
+    it('should apply multiple filters simultaneously', async () => {
+      const searchDto: SearchPricesDto = {
+        page: 1,
+        limit: 10,
+        search: 'Season',
+        minAmount: 10,
+        maxAmount: 50,
+        currencies: [Currency.USD, Currency.EUR],
+        dateRangeIds: [1, 2],
+        salesChannelIds: [1],
+      };
+
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
+      mockPaginate.mockResolvedValue(mockPaginationResult);
+
+      await service.getAllPricesPaginated(searchDto);
+
+      expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
+        'price.name ILIKE :search',
+        { search: '%Season%' }
+      );
+      expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
+        'price.amount >= :minAmount',
+        { minAmount: 10 }
+      );
+      expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
+        'price.amount <= :maxAmount',
+        { maxAmount: 50 }
+      );
+      expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
+        'price.currency IN (:...currencies)',
+        { currencies: [Currency.USD, Currency.EUR] }
+      );
+      expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
+        'dateRanges.id IN (:...dateRangeIds)',
+        { dateRangeIds: [1, 2] }
+      );
+      expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
+        'salesChannels.id IN (:...salesChannelIds)',
+        { salesChannelIds: [1] }
+      );
+    });
+
+    it('should not apply filters when optional parameters are not provided', async () => {
+      const searchDto: SearchPricesDto = {
+        page: 1,
+        limit: 10,
+      };
+
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
+      mockPaginate.mockResolvedValue(mockPaginationResult);
+
+      await service.getAllPricesPaginated(searchDto);
+
+      expect(mockQueryBuilder.andWhere).not.toHaveBeenCalled();
     });
   });
 });

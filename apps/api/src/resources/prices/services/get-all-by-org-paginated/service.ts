@@ -10,6 +10,7 @@ import {
   IPaginationOptions,
 } from 'nestjs-typeorm-paginate';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
+import { SearchPricesDto } from './search-prices.dto';
 
 //----------------------------------------------------------------------
 
@@ -22,16 +23,14 @@ export class GetAllByOrgPaginatedService {
   ) {}
 
   async getAllPricesPaginated(
-    page: number = 1,
-    limit: number = 10,
-    search: string = ''
+    searchDto: SearchPricesDto
   ): Promise<Pagination<IPrice>> {
     const organization =
       await this.currentOrganizationService.getCurrentOrganization();
 
     const options: IPaginationOptions = {
-      page,
-      limit: Math.min(Math.max(limit, 1), 100),
+      page: searchDto.page || 1,
+      limit: Math.min(Math.max(searchDto.limit || 10, 1), 100),
       route: `/prices/paginated`,
     };
 
@@ -44,9 +43,39 @@ export class GetAllByOrgPaginatedService {
       })
       .orderBy('price.createdAt', 'DESC');
 
-    if (search && search.trim().length > 0) {
+    if (searchDto.search && searchDto.search.trim().length > 0) {
       queryBuilder.andWhere('price.name ILIKE :search', {
-        search: `%${search.trim()}%`,
+        search: `%${searchDto.search.trim()}%`,
+      });
+    }
+
+    if (searchDto.minAmount !== undefined) {
+      queryBuilder.andWhere('price.amount >= :minAmount', {
+        minAmount: searchDto.minAmount,
+      });
+    }
+
+    if (searchDto.maxAmount !== undefined) {
+      queryBuilder.andWhere('price.amount <= :maxAmount', {
+        maxAmount: searchDto.maxAmount,
+      });
+    }
+
+    if (searchDto.currencies && searchDto.currencies.length > 0) {
+      queryBuilder.andWhere('price.currency IN (:...currencies)', {
+        currencies: searchDto.currencies,
+      });
+    }
+
+    if (searchDto.dateRangeIds && searchDto.dateRangeIds.length > 0) {
+      queryBuilder.andWhere('dateRanges.id IN (:...dateRangeIds)', {
+        dateRangeIds: searchDto.dateRangeIds,
+      });
+    }
+
+    if (searchDto.salesChannelIds && searchDto.salesChannelIds.length > 0) {
+      queryBuilder.andWhere('salesChannels.id IN (:...salesChannelIds)', {
+        salesChannelIds: searchDto.salesChannelIds,
       });
     }
 
