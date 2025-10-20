@@ -1,4 +1,5 @@
-// apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/(tab-routes)/prices/PricesFilters.client.tsx
+// apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/prices/select/PricesFilters.client.tsx
+
 "use client"
 
 import { useState, useEffect } from "react"
@@ -111,7 +112,7 @@ export default function PricesFilters({ currentFilters }: PricesFiltersProps) {
     <>
       <input type="checkbox" id="more-filters-drawer" className="peer hidden" />
 
-      <div className="my-2 flex items-center gap-2 px-5">
+      <div className="flex flex-wrap items-center gap-2">
         <div className="relative min-w-[200px] flex-1">
           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
             <RiSearchLine className="h-4 w-4 text-gray-500 dark:text-slate-500" />
@@ -127,10 +128,10 @@ export default function PricesFilters({ currentFilters }: PricesFiltersProps) {
 
         <label
           htmlFor="more-filters-drawer"
-          className="relative flex cursor-pointer select-none items-center gap-2 border border-gray-300 bg-white px-4 py-2 text-sm text-gray-700 transition-all hover:border-gray-400 hover:bg-gray-50 dark:border-slate-700/50 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:border-slate-600/50 dark:hover:bg-slate-700/50"
+          className="relative flex flex-shrink-0 cursor-pointer select-none items-center gap-2 border border-gray-300 bg-white px-4 py-2 text-sm text-gray-700 transition-all hover:border-gray-400 hover:bg-gray-50 dark:border-slate-700/50 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:border-slate-600/50 dark:hover:bg-slate-700/50"
         >
-          <RiFilter3Line className="h-4 w-4" />
-          <span>More filters</span>
+          <RiFilter3Line className="h-4 w-4 flex-shrink-0" />
+          <span className="whitespace-nowrap">More filters</span>
           {hasAdvancedFilters && (
             <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-indigo-600 text-[10px] font-bold text-white dark:bg-indigo-500">
               !
@@ -141,7 +142,7 @@ export default function PricesFilters({ currentFilters }: PricesFiltersProps) {
         <PendingOverlay mode="navigation" href={buildApplyUrl()}>
           <button
             type="button"
-            className="border border-gray-300 bg-gray-50 px-4 py-2 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-slate-700/50 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:border-slate-600/50 dark:hover:bg-slate-700/50"
+            className="flex flex-shrink-0 items-center justify-center whitespace-nowrap border border-gray-300 bg-gray-50 px-4 py-2 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-slate-700/50 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:border-slate-600/50 dark:hover:bg-slate-700/50"
           >
             Apply
           </button>
@@ -151,7 +152,7 @@ export default function PricesFilters({ currentFilters }: PricesFiltersProps) {
           <PendingOverlay mode="navigation" href="/inventory/prices">
             <button
               type="button"
-              className="border border-red-300 bg-red-50 px-4 py-2 text-sm text-red-700 hover:border-red-400 hover:bg-red-100 dark:border-red-700/50 dark:bg-red-900/20 dark:text-red-400 dark:hover:border-red-600/50 dark:hover:bg-red-800/30"
+              className="flex flex-shrink-0 items-center justify-center whitespace-nowrap border border-red-300 bg-red-50 px-4 py-2 text-sm text-red-700 hover:border-red-400 hover:bg-red-100 dark:border-red-700/50 dark:bg-red-900/20 dark:text-red-400 dark:hover:border-red-600/50 dark:hover:bg-red-800/30"
             >
               Clear
             </button>
@@ -258,12 +259,6 @@ export default function PricesFilters({ currentFilters }: PricesFiltersProps) {
               <PendingOverlay mode="navigation" href={buildApplyUrl()}>
                 <button
                   type="button"
-                  // onClick={() => {
-                  //   const checkbox = document.getElementById(
-                  //     "more-filters-drawer",
-                  //   ) as HTMLInputElement
-                  //   if (checkbox) checkbox.checked = false
-                  // }}
                   className="border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700"
                 >
                   Apply Filters

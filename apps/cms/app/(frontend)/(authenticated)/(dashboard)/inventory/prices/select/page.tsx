@@ -1,10 +1,16 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/prices/select/page.tsx
+
 import { RiArrowLeftLine, RiCoinsLine } from "@remixicon/react"
 import Link from "next/link"
 import { getAllPricesPaginated } from "@/app/(backend)/server_actions/prices/getAllPricesPaginated"
+import { getDateRangeById } from "@/app/(backend)/server_actions/date-ranges/getDateRangeById"
+import { getSalesChannelById } from "@/app/(backend)/server_actions/sales-channels/getSalesChannelById"
+import { Currency } from "@connect-phone/shared-types"
 import PriceGrid from "./PriceGrid.client"
 import { Pagination } from "@/components/common/pagination/Pagination"
 import { PendingOverlay } from "@/components/common/PendingOverlay"
+import PricesFilters from "./PricesFilters.client"
+import SelectAllCheckbox from "./SelectAllCheckbox.client"
 
 //----------------------------------------------------------------------
 
@@ -16,6 +22,11 @@ interface PageProps {
     priceIds?: string
     multipleSelection?: string
     targetField?: string
+    minAmount?: string
+    maxAmount?: string
+    currencies?: string
+    dateRangeIds?: string
+    salesChannelIds?: string
     [key: string]: string | undefined
   }>
 }
@@ -28,6 +39,43 @@ const Page = async ({ searchParams }: PageProps) => {
   const selectedParam = params.priceIds || ""
   const multipleSelection = params.multipleSelection === "true"
   const targetField = params.targetField || "priceIds"
+  const minAmount = params.minAmount
+  const maxAmount = params.maxAmount
+  const currencies = params.currencies
+  const dateRangeIds = params.dateRangeIds
+  const salesChannelIds = params.salesChannelIds
+
+  const currenciesArray = currencies
+    ? currencies.split(",").filter(Boolean)
+    : []
+  const dateRangeIdsArray = dateRangeIds
+    ? dateRangeIds.split(",").map(Number).filter(Boolean)
+    : []
+  const salesChannelIdsArray = salesChannelIds
+    ? salesChannelIds.split(",").map(Number).filter(Boolean)
+    : []
+
+  const selectedDateRanges = await Promise.all(
+    dateRangeIdsArray.map(async (id) => {
+      try {
+        return await getDateRangeById(id)
+      } catch (error) {
+        console.error(`Failed to fetch date range ${id}:`, error)
+        return null
+      }
+    }),
+  ).then((results) => results.filter((dr) => dr !== null))
+
+  const selectedSalesChannels = await Promise.all(
+    salesChannelIdsArray.map(async (id) => {
+      try {
+        return await getSalesChannelById(id)
+      } catch (error) {
+        console.error(`Failed to fetch sales channel ${id}:`, error)
+        return null
+      }
+    }),
+  ).then((results) => results.filter((sc) => sc !== null))
 
   const formData: Record<string, string> = {}
   const excludedParams = [
@@ -51,9 +99,25 @@ const Page = async ({ searchParams }: PageProps) => {
   const pricesData = await getAllPricesPaginated({
     page,
     search,
+    minAmount: minAmount ? Number(minAmount) : undefined,
+    maxAmount: maxAmount ? Number(maxAmount) : undefined,
+    currencies:
+      currenciesArray.length > 0 ? (currenciesArray as Currency[]) : undefined,
+    dateRangeIds: dateRangeIdsArray.length > 0 ? dateRangeIdsArray : undefined,
+    salesChannelIds:
+      salesChannelIdsArray.length > 0 ? salesChannelIdsArray : undefined,
   })
 
   const { items, meta } = pricesData
+
+  const currentFilters = {
+    search,
+    minAmount: minAmount || "",
+    maxAmount: maxAmount || "",
+    currencies: currenciesArray,
+    dateRanges: selectedDateRanges,
+    salesChannels: selectedSalesChannels,
+  }
 
   const buildConfirmUrl = () => {
     const urlParams = new URLSearchParams()
@@ -76,18 +140,6 @@ const Page = async ({ searchParams }: PageProps) => {
     })
     urlParams.set("page", page)
     if (search) urlParams.set("search", search)
-    return `/inventory/prices/select?${urlParams.toString()}`
-  }
-
-  const buildClearSearchUrl = () => {
-    const urlParams = new URLSearchParams()
-    urlParams.set("previousPage", previousPage)
-    urlParams.set("targetField", targetField)
-    urlParams.set("multipleSelection", String(multipleSelection))
-    Object.entries(formData).forEach(([key, value]) => {
-      urlParams.set(key, value)
-    })
-    if (selectedParam) urlParams.set("priceIds", selectedParam)
     return `/inventory/prices/select?${urlParams.toString()}`
   }
 
@@ -119,7 +171,7 @@ const Page = async ({ searchParams }: PageProps) => {
   if (selectedParam) paginationParams.priceIds = selectedParam
 
   return (
-    <div className="flex h-full flex-col overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100/50 dark:from-gray-950 dark:to-gray-900/50">
+    <div className="relative flex h-full flex-col overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100/50 dark:from-gray-950 dark:to-gray-900/50">
       <div className="flex border-b border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950">
         <Link
           href={buildBackUrl()}
@@ -173,50 +225,19 @@ const Page = async ({ searchParams }: PageProps) => {
         </div>
       </div>
 
-      <div className="bg-white/50 p-3 backdrop-blur-sm dark:bg-gray-950/50">
-        <div className="flex items-center gap-4">
-          <form id="search-form" className="flex flex-1 items-center gap-2">
-            <input type="hidden" name="previousPage" value={previousPage} />
-            <input type="hidden" name="targetField" value={targetField} />
-            <input
-              type="hidden"
-              name="multipleSelection"
-              value={String(multipleSelection)}
-            />
-            {Object.entries(formData).map(([key, value]) => (
-              <input key={key} type="hidden" name={key} value={value} />
-            ))}
-            {selectedParam && (
-              <input type="hidden" name="priceIds" value={selectedParam} />
-            )}
-            <input
-              type="text"
-              name="search"
-              defaultValue={search}
-              placeholder="Search prices..."
-              className="flex-1 border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-500 outline-none focus:border-blue-500 dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200 dark:placeholder-slate-500 dark:focus:border-slate-700/50"
-            />
-            <PendingOverlay mode="form-navigation" formId="search-form">
-              <button
-                type="submit"
-                form="search-form"
-                className="border border-gray-300 bg-gray-50 px-4 py-2 text-sm text-gray-700 hover:border-gray-400 hover:bg-gray-100 dark:border-slate-700/50 dark:bg-slate-800/50 dark:text-slate-300 dark:hover:border-slate-600/50 dark:hover:bg-slate-700/50"
-              >
-                Search
-              </button>
-            </PendingOverlay>
-            {search && (
-              <PendingOverlay mode="navigation" href={buildClearSearchUrl()}>
-                <button
-                  type="button"
-                  className="border border-red-300 bg-red-50 px-4 py-2 text-sm text-red-700 hover:border-red-400 hover:bg-red-100 dark:border-red-700/50 dark:bg-red-900/20 dark:text-red-400 dark:hover:border-red-600/50 dark:hover:bg-red-800/30"
-                >
-                  Clear
-                </button>
-              </PendingOverlay>
-            )}
-          </form>
-        </div>
+      <div className="flex flex-col gap-2 px-2 pt-2">
+        <PricesFilters currentFilters={currentFilters} />
+
+        <SelectAllCheckbox
+          items={items}
+          selectedIds={selectedIds}
+          multipleSelection={multipleSelection}
+          page={page}
+          search={search}
+          previousPage={previousPage}
+          targetField={targetField}
+          formData={formData}
+        />
       </div>
 
       <div className="flex flex-1 overflow-hidden py-2">

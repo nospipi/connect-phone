@@ -80,7 +80,7 @@ export default function SelectAllCheckbox({
     <button
       onClick={handleClick}
       disabled={isLoading}
-      className="flex items-center gap-2 border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 transition-colors hover:border-gray-400 hover:bg-gray-50 disabled:cursor-wait disabled:opacity-60 dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-300 dark:hover:border-slate-600/50 dark:hover:bg-slate-800/50"
+      className="flex w-fit items-center gap-2 border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 transition-colors hover:border-gray-400 hover:bg-gray-50 disabled:cursor-wait disabled:opacity-60 dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-300 dark:hover:border-slate-600/50 dark:hover:bg-slate-800/50"
     >
       {isLoading ? (
         <RiLoader4Line className="h-4 w-4 animate-spin" />
