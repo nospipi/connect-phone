@@ -103,6 +103,8 @@ export default function PricesFilters({ currentFilters }: PricesFiltersProps) {
     minAmount,
     maxAmount,
     currencies,
+    dateRangeIds: dateRanges.map((dr) => dr.id).join(","),
+    salesChannelIds: salesChannels.map((sc) => sc.id).join(","),
   }
 
   return (

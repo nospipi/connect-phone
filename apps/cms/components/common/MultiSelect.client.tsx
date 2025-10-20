@@ -61,10 +61,10 @@ export default function MultiSelect({
   }
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative select-none" ref={dropdownRef}>
       <div
         onClick={() => setIsOpen(!isOpen)}
-        className="min-h-[42px] cursor-pointer border border-gray-300 bg-white px-3 py-2 text-sm transition-colors hover:border-gray-400 dark:border-slate-700/50 dark:bg-slate-900/50 dark:hover:border-slate-600/50"
+        className="flex min-h-[42px] cursor-pointer items-center justify-center border border-gray-300 bg-white px-3 py-2 text-sm transition-colors hover:border-gray-400 dark:border-slate-700/50 dark:bg-slate-900/50 dark:hover:border-slate-600/50"
       >
         <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
           {selectedValues.length === 0 ? (
@@ -95,21 +95,14 @@ export default function MultiSelect({
                   </button>
                 </span>
               ))}
-              <RiArrowDownSLine
-                className={`ml-auto h-5 w-5 flex-shrink-0 text-gray-400 transition-transform ${
-                  isOpen ? "rotate-180" : ""
-                }`}
-              />
             </>
           )}
-          {selectedValues.length === 0 && (
-            <RiArrowDownSLine
-              className={`ml-auto h-5 w-5 flex-shrink-0 text-gray-400 transition-transform ${
-                isOpen ? "rotate-180" : ""
-              }`}
-            />
-          )}
         </div>
+        <RiArrowDownSLine
+          className={`flex-shrink-0 text-gray-400 transition-transform ${
+            isOpen ? "rotate-z-[180deg]" : ""
+          }`}
+        />
       </div>
 
       {isOpen && (

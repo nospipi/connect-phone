@@ -17,6 +17,7 @@ interface SalesChannelSelectorProps {
     minAmount: string
     maxAmount: string
     currencies: string[]
+    dateRangeIds: string
   }
   onRemove: (id: number) => void
 }
@@ -44,6 +45,8 @@ export default function SalesChannelSelector({
       urlParams.set("maxAmount", currentFilters.maxAmount)
     if (currentFilters.currencies.length > 0)
       urlParams.set("currencies", currentFilters.currencies.join(","))
+    if (currentFilters.dateRangeIds)
+      urlParams.set("dateRangeIds", currentFilters.dateRangeIds)
 
     if (validSalesChannels.length > 0) {
       urlParams.set(

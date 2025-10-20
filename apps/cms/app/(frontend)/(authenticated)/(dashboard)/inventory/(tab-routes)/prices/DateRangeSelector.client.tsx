@@ -17,6 +17,7 @@ interface DateRangeSelectorProps {
     minAmount: string
     maxAmount: string
     currencies: string[]
+    salesChannelIds: string
   }
   onRemove: (id: number) => void
 }
@@ -44,6 +45,8 @@ export default function DateRangeSelector({
       urlParams.set("maxAmount", currentFilters.maxAmount)
     if (currentFilters.currencies.length > 0)
       urlParams.set("currencies", currentFilters.currencies.join(","))
+    if (currentFilters.salesChannelIds)
+      urlParams.set("salesChannelIds", currentFilters.salesChannelIds)
 
     if (validDateRanges.length > 0) {
       urlParams.set(

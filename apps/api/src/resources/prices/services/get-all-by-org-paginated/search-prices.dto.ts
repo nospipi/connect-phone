@@ -1,4 +1,5 @@
 // apps/api/src/resources/prices/services/get-all-by-org-paginated/search-prices.dto.ts
+
 import {
   IsString,
   IsOptional,
@@ -63,7 +64,6 @@ export class SearchPricesDto {
   @IsOptional()
   @IsArray()
   @IsInt({ each: true })
-  @Type(() => Number)
   @Transform(({ value }) => {
     if (typeof value === 'string') {
       return value.split(',').map((v) => parseInt(v.trim(), 10));
@@ -75,7 +75,6 @@ export class SearchPricesDto {
   @IsOptional()
   @IsArray()
   @IsInt({ each: true })
-  @Type(() => Number)
   @Transform(({ value }) => {
     if (typeof value === 'string') {
       return value.split(',').map((v) => parseInt(v.trim(), 10));
