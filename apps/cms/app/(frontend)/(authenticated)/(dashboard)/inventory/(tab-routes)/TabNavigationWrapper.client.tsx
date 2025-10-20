@@ -8,6 +8,10 @@ import {
   RiFlagLine,
   RiCoinsLine,
   RiCalendarEventLine,
+  RiShoppingBag3Line,
+  RiBox3Line,
+  RiPriceTag3Line,
+  RiDiscountPercentLine,
 } from "@remixicon/react"
 import {
   TabNavigation,
@@ -36,6 +40,11 @@ const TabNavigationWrapper = () => {
       name: "Products",
       href: "/inventory/products",
       icon: RiCoupon2Line,
+    },
+    {
+      name: "Offers",
+      href: "/inventory/offers",
+      icon: RiPriceTag3Line,
     },
     {
       name: "Prices",
