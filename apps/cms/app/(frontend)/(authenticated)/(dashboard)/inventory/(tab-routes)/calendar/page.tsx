@@ -206,7 +206,7 @@ const Page = async ({
                                           </span>{" "}
                                           {dateRange.name}
                                         </p>
-                                        <p className="mt-1 truncate text-sm text-gray-600 group-hover:text-gray-500 dark:text-slate-400 dark:group-hover:text-slate-300">
+                                        <p className="mt-1 truncate text-sm text-gray-600 group-hover:text-gray-500 group-hover:underline dark:text-slate-400 dark:group-hover:text-slate-300">
                                           {format(
                                             new Date(dateRange.startDate),
                                             "dd MMMM, yyyy",
