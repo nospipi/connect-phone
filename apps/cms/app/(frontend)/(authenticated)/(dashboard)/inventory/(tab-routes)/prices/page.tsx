@@ -1,5 +1,4 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/(tab-routes)/prices/page.tsx
-
 import { getAllPricesPaginated } from "@/app/(backend)/server_actions/prices/getAllPricesPaginated"
 import { getDateRangeById } from "@/app/(backend)/server_actions/date-ranges/getDateRangeById"
 import { getSalesChannelById } from "@/app/(backend)/server_actions/sales-channels/getSalesChannelById"
@@ -117,7 +116,7 @@ const Page = async ({
     salesChannelIdsArray.length > 0
 
   return (
-    <div className="flex h-full flex-col gap-2 overflow-hidden">
+    <div className="relative flex h-full flex-col gap-2 overflow-hidden">
       <PricesFilters currentFilters={currentFilters} />
 
       {items.length === 0 && (
