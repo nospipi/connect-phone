@@ -36,8 +36,6 @@ export class GetAllByOrgPaginatedService {
 
     const queryBuilder = this.priceRepository
       .createQueryBuilder('price')
-      .leftJoinAndSelect('price.dateRanges', 'dateRanges')
-      .leftJoinAndSelect('price.salesChannels', 'salesChannels')
       .where('price.organizationId = :organizationId', {
         organizationId: organization?.id,
       })
@@ -68,17 +66,47 @@ export class GetAllByOrgPaginatedService {
     }
 
     if (searchDto.dateRangeIds && searchDto.dateRangeIds.length > 0) {
-      queryBuilder.andWhere('dateRanges.id IN (:...dateRangeIds)', {
-        dateRangeIds: searchDto.dateRangeIds,
-      });
+      queryBuilder
+        .leftJoin('price.dateRanges', 'dateRanges')
+        .andWhere('dateRanges.id IN (:...dateRangeIds)', {
+          dateRangeIds: searchDto.dateRangeIds,
+        });
     }
 
     if (searchDto.salesChannelIds && searchDto.salesChannelIds.length > 0) {
-      queryBuilder.andWhere('salesChannels.id IN (:...salesChannelIds)', {
-        salesChannelIds: searchDto.salesChannelIds,
-      });
+      queryBuilder
+        .leftJoin('price.salesChannels', 'salesChannels')
+        .andWhere('salesChannels.id IN (:...salesChannelIds)', {
+          salesChannelIds: searchDto.salesChannelIds,
+        });
     }
 
-    return paginate<PriceEntity>(queryBuilder, options);
+    const paginationResult = await paginate<PriceEntity>(queryBuilder, options);
+
+    const priceIds = paginationResult.items.map((price) => price.id);
+
+    if (priceIds.length > 0) {
+      const pricesWithRelations = await this.priceRepository
+        .createQueryBuilder('price')
+        .leftJoinAndSelect('price.dateRanges', 'dateRanges')
+        .leftJoinAndSelect('price.salesChannels', 'salesChannels')
+        .whereInIds(priceIds)
+        .getMany();
+
+      const priceMap = new Map(
+        pricesWithRelations.map((price) => [price.id, price])
+      );
+
+      const itemsWithRelations = paginationResult.items.map(
+        (price) => priceMap.get(price.id) || price
+      );
+
+      return {
+        ...paginationResult,
+        items: itemsWithRelations,
+      };
+    }
+
+    return paginationResult;
   }
 }
