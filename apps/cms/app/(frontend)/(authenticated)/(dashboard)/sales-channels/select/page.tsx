@@ -5,6 +5,7 @@ import { getAllSalesChannelsOfOrganizationPaginated } from "@/app/(backend)/serv
 import SalesChannelGrid from "./SalesChannelGrid.client"
 import { Pagination } from "@/components/common/pagination/Pagination"
 import { PendingOverlay } from "@/components/common/PendingOverlay"
+import SelectAllCheckbox from "./SelectAllCheckbox.client"
 
 //----------------------------------------------------------------------
 
@@ -175,6 +176,17 @@ const Page = async ({ searchParams }: PageProps) => {
 
       <div className="bg-white/50 p-3 backdrop-blur-sm dark:bg-gray-950/50">
         <div className="flex items-center gap-4">
+          <SelectAllCheckbox
+            items={items}
+            selectedIds={selectedIds}
+            multipleSelection={multipleSelection}
+            page={page}
+            search={search}
+            previousPage={previousPage}
+            targetField={targetField}
+            formData={formData}
+          />
+
           <form id="search-form" className="flex flex-1 items-center gap-2">
             <input type="hidden" name="previousPage" value={previousPage} />
             <input type="hidden" name="targetField" value={targetField} />
