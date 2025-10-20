@@ -100,7 +100,7 @@ export default function MultiSelect({
         </div>
         <RiArrowDownSLine
           className={`flex-shrink-0 text-gray-400 transition-transform ${
-            isOpen ? "rotate-z-[180deg]" : ""
+            isOpen ? "-scale-y-100" : ""
           }`}
         />
       </div>
