@@ -36,15 +36,36 @@ export class RlsInitializationService implements OnModuleInit {
   }
 
   private async checkRlsEnabled(): Promise<boolean> {
-    const result = await this.dataSource.query(`
-      SELECT EXISTS (
-        SELECT 1 FROM pg_class
-        WHERE relname = 'sales_channels'
-        AND relrowsecurity = true
-      ) as rls_enabled;
-    `);
+    const tables = [
+      'users',
+      'organizations',
+      'user_organizations',
+      'sales_channels',
+      'countries',
+      'date_ranges',
+      'prices',
+      'media',
+      'offer_inclusions',
+      'offer_exclusions',
+      'esim_offers',
+      'user_invitations',
+      'audit_logs',
+    ];
 
-    return result[0]?.rls_enabled || false;
+    const result = await this.dataSource.query(
+      `
+      SELECT COUNT(*) as enabled_count
+      FROM pg_class
+      WHERE relname = ANY($1::text[])
+      AND relrowsecurity = true;
+    `,
+      [tables]
+    );
+
+    const enabledCount = parseInt(result[0]?.enabled_count || '0');
+
+    // RLS is considered fully configured if all main tables have it enabled
+    return enabledCount === tables.length;
   }
 
   private async enableRls(): Promise<void> {
