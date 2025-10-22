@@ -21,7 +21,7 @@ import {
   Currency,
   IOfferInclusion,
   IOfferExclusion,
-  IOffer,
+  IEsimOffer,
 } from '@connect-phone/shared-types';
 import { SalesChannelEntity } from './sales-channel.entity';
 import { UserOrganizationEntity } from './user-organization.entity';
@@ -32,7 +32,7 @@ import { DateRangeEntity } from './date-range.entity';
 import { MediaEntity } from './media.entity';
 import { OfferInclusionEntity } from './offer-inclusion.entity';
 import { OfferExclusionEntity } from './offer-exclusion.entity';
-import { OfferEntity } from './offer.entity';
+import { EsimOfferEntity } from './esim-offer.entity';
 
 //----------------------------------------------------------------------
 
@@ -100,6 +100,6 @@ export class OrganizationEntity implements IOrganization {
   )
   offerExclusions: IOfferExclusion[];
 
-  @OneToMany(() => OfferEntity, (offer) => offer.organization)
-  offers: IOffer[];
+  @OneToMany(() => EsimOfferEntity, (offer) => offer.organization)
+  offers: IEsimOffer[];
 }

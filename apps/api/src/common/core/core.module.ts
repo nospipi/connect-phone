@@ -13,7 +13,7 @@ import { SalesChannelEntity } from '@/database/entities/sales-channel.entity';
 import { AuditLogEntryEntity } from '@/database/entities/audit-log.entity';
 import { UserInvitationEntity } from '@/database/entities/user-invitation.entity';
 import { UserOrganizationEntity } from '@/database/entities/user-organization.entity';
-import { OfferEntity } from '@/database/entities/offer.entity';
+import { EsimOfferEntity } from '@/database/entities/esim-offer.entity';
 import { CountryEntity } from '@/database/entities/country.entity';
 import { PriceEntity } from '@/database/entities/price.entity';
 import { DateRangeEntity } from '@/database/entities/date-range.entity';
@@ -33,7 +33,7 @@ import { OfferExclusionEntity } from '@/database/entities/offer-exclusion.entity
       AuditLogEntryEntity,
       UserInvitationEntity,
       UserOrganizationEntity,
-      OfferEntity,
+      EsimOfferEntity,
       CountryEntity,
       PriceEntity,
       DateRangeEntity,

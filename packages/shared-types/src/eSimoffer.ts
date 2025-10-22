@@ -10,7 +10,7 @@ import { IPrice } from "./price";
 
 //----------------------------------------------------------------------
 
-export interface IOffer {
+export interface IEsimOffer {
   id: number;
   title: string;
   descriptionHtml: string;

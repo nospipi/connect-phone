@@ -12,7 +12,7 @@ import {
   JoinTable,
 } from 'typeorm';
 import {
-  IOffer,
+  IEsimOffer,
   IOrganization,
   IOfferInclusion,
   IOfferExclusion,
@@ -31,8 +31,8 @@ import { PriceEntity } from './price.entity';
 
 //----------------------------------------------------------------------
 
-@Entity({ name: 'offers' })
-export class OfferEntity implements IOffer {
+@Entity({ name: 'esim_offers' })
+export class EsimOfferEntity implements IEsimOffer {
   @PrimaryGeneratedColumn()
   id: number;
 

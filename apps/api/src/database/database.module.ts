@@ -15,7 +15,7 @@ import { DateRangeEntity } from './entities/date-range.entity';
 import { MediaEntity } from './entities/media.entity';
 import { OfferInclusionEntity } from './entities/offer-inclusion.entity';
 import { OfferExclusionEntity } from './entities/offer-exclusion.entity';
-import { OfferEntity } from './entities/offer.entity';
+import { EsimOfferEntity } from './entities/esim-offer.entity';
 import { AuditLogSubscriber } from './subscribers/audit-log.subscriber';
 import { UserInvitationSubscriber } from './subscribers/user-invitation.subscriber';
 
@@ -41,7 +41,7 @@ import { UserInvitationSubscriber } from './subscribers/user-invitation.subscrib
           MediaEntity,
           OfferInclusionEntity,
           OfferExclusionEntity,
-          OfferEntity,
+          EsimOfferEntity,
         ],
         subscribers: [AuditLogSubscriber, UserInvitationSubscriber],
         synchronize: process.env.NODE_ENV !== 'production',

@@ -10,7 +10,7 @@ import { IMedia } from "./media";
 import { Currency } from "./price";
 import { IOfferInclusion } from "./offerInclusion";
 import { IOfferExclusion } from "./offerExclusion";
-import { IOffer } from "./offer";
+import { IEsimOffer } from "./eSimoffer";
 
 //----------------------------------------------------------------------
 
@@ -31,5 +31,5 @@ export interface IOrganization {
   mainCurrency: Currency;
   offerInclusions: IOfferInclusion[];
   offerExclusions: IOfferExclusion[];
-  offers: IOffer[];
+  offers: IEsimOffer[];
 }
