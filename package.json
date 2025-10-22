@@ -52,7 +52,7 @@
   ],
   "dependencies": {
     "@changesets/cli": "^2.28.1",
-    "@clerk/nextjs": "^6.12.2",
+    "@clerk/nextjs": "^6.33.7",
     "@connect-phone/shared-types": "*",
     "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
@@ -64,8 +64,8 @@
     "@tanstack/react-query": "^5.66.9",
     "@tanstack/react-query-devtools": "^5.66.9",
     "@toolpad/core": "^0.12.0",
-    "@types/react": "^19.0.10",
-    "@types/react-dom": "^19.0.4",
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.2",
     "@vercel/blob": "^0.27.3",
     "axios": "^1.8.1",
     "date-fns": "^4.1.0",
@@ -75,9 +75,13 @@
     "lodash": "^4.17.21",
     "lottie-react": "^2.4.1",
     "lucide-react": "^0.544.0",
-    "next": "^15.2.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "next": "16.0.0",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
     "react-toastify": "^11.0.5"
+  },
+  "overrides": {
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.2"
   }
 }
