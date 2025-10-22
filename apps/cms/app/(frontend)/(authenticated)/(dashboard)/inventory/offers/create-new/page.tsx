@@ -5,6 +5,8 @@ import { getAllCountriesOfOrg } from "@/app/(backend)/server_actions/countries/g
 import { getSalesChannelById } from "@/app/(backend)/server_actions/sales-channels/getSalesChannelById"
 import { getPriceById } from "@/app/(backend)/server_actions/prices/getPriceById"
 import { getMediaById } from "@/app/(backend)/server_actions/media/getMediaById"
+import { getAllOfferInclusions } from "@/app/(backend)/server_actions/offer-inclusions/getAllOfferInclusions"
+import { getAllOfferExclusions } from "@/app/(backend)/server_actions/offer-exclusions/getAllOfferExclusions"
 import Link from "next/link"
 import { RiArrowLeftLine, RiCloseLine, RiAddLine } from "@remixicon/react"
 import { Badge } from "@/components/common/Badge"
@@ -38,30 +40,8 @@ const Page = async ({
   const salesChannelIds = params.salesChannelIds || ""
   const priceIds = params.priceIds || ""
 
-  // TODO: Replace with actual server actions when available
-  // const allInclusions = await getAllOfferInclusions()
-  // const allExclusions = await getAllOfferExclusions()
-
-  const allInclusions = [
-    { id: 1, body: "Unlimited calls within the country" },
-    { id: 2, body: "High-speed 5G data connectivity" },
-    { id: 3, body: "International SMS included" },
-    { id: 4, body: "Hotspot tethering enabled" },
-    { id: 5, body: "No hidden fees or charges" },
-    { id: 6, body: "24/7 customer support" },
-    { id: 7, body: "Easy activation process" },
-    { id: 8, body: "Compatible with all unlocked devices" },
-  ]
-
-  const allExclusions = [
-    { id: 1, body: "Does not include calls to premium numbers" },
-    { id: 2, body: "Roaming charges may apply outside coverage area" },
-    { id: 3, body: "Video streaming limited to SD quality" },
-    { id: 4, body: "Fair usage policy applies after data limit" },
-    { id: 5, body: "Not available for locked devices" },
-    { id: 6, body: "International calls not included" },
-    { id: 7, body: "Device must support eSIM technology" },
-  ]
+  const allInclusions = await getAllOfferInclusions()
+  const allExclusions = await getAllOfferExclusions()
 
   const selectedInclusionIds = inclusionIds
     ? inclusionIds.split(",").map(Number).filter(Boolean)

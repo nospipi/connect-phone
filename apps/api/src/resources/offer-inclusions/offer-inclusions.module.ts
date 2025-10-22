@@ -12,6 +12,8 @@ import { UpdateOfferInclusionController } from './services/update-offer-inclusio
 import { UpdateOfferInclusionService } from './services/update-offer-inclusion/service';
 import { GetOfferInclusionByIdController } from './services/get-offer-inclusion-by-id/controller';
 import { GetOfferInclusionByIdService } from './services/get-offer-inclusion-by-id/service';
+import { GetAllOfferInclusionsController } from './services/get-all/controller';
+import { GetAllOfferInclusionsService } from './services/get-all/service';
 
 //----------------------------------------------------------------------
 
@@ -21,6 +23,7 @@ import { GetOfferInclusionByIdService } from './services/get-offer-inclusion-by-
     CreateOfferInclusionController,
     DeleteOfferInclusionController,
     GetAllByOrgPaginatedController,
+    GetAllOfferInclusionsController,
     UpdateOfferInclusionController,
     GetOfferInclusionByIdController,
   ],
@@ -28,6 +31,7 @@ import { GetOfferInclusionByIdService } from './services/get-offer-inclusion-by-
     CreateOfferInclusionService,
     DeleteOfferInclusionService,
     GetAllByOrgPaginatedService,
+    GetAllOfferInclusionsService,
     UpdateOfferInclusionService,
     GetOfferInclusionByIdService,
   ],

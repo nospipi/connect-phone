@@ -12,6 +12,8 @@ import { UpdateOfferExclusionController } from './services/update-offer-exclusio
 import { UpdateOfferExclusionService } from './services/update-offer-exclusion/service';
 import { GetOfferExclusionByIdController } from './services/get-offer-exclusion-by-id/controller';
 import { GetOfferExclusionByIdService } from './services/get-offer-exclusion-by-id/service';
+import { GetAllOfferExclusionsController } from './services/get-all/controller';
+import { GetAllOfferExclusionsService } from './services/get-all/service';
 
 //----------------------------------------------------------------------
 
@@ -21,6 +23,7 @@ import { GetOfferExclusionByIdService } from './services/get-offer-exclusion-by-
     CreateOfferExclusionController,
     DeleteOfferExclusionController,
     GetAllByOrgPaginatedController,
+    GetAllOfferExclusionsController,
     UpdateOfferExclusionController,
     GetOfferExclusionByIdController,
   ],
@@ -28,6 +31,7 @@ import { GetOfferExclusionByIdService } from './services/get-offer-exclusion-by-
     CreateOfferExclusionService,
     DeleteOfferExclusionService,
     GetAllByOrgPaginatedService,
+    GetAllOfferExclusionsService,
     UpdateOfferExclusionService,
     GetOfferExclusionByIdService,
   ],
