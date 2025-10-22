@@ -44,7 +44,7 @@ export default function CountrySelectButton() {
     urlParams.set("targetField", "countryIds")
     urlParams.set("multipleSelection", "true")
 
-    const url = `/countries/select?${urlParams.toString()}`
+    const url = `/inventory/countries/select?${urlParams.toString()}`
 
     startTransition(() => {
       router.push(url)
