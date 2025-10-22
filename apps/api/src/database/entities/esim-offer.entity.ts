@@ -60,7 +60,7 @@ export class EsimOfferEntity implements IEsimOffer {
 
   @ManyToMany(() => OfferInclusionEntity, { onDelete: 'RESTRICT' })
   @JoinTable({
-    name: 'offer_offer_inclusions',
+    name: 'esim_offer_inclusions',
     joinColumn: { name: 'offerId', referencedColumnName: 'id' },
     inverseJoinColumn: {
       name: 'offerInclusionId',
@@ -71,7 +71,7 @@ export class EsimOfferEntity implements IEsimOffer {
 
   @ManyToMany(() => OfferExclusionEntity, { onDelete: 'RESTRICT' })
   @JoinTable({
-    name: 'offer_offer_exclusions',
+    name: 'esim_offer_exclusions',
     joinColumn: { name: 'offerId', referencedColumnName: 'id' },
     inverseJoinColumn: {
       name: 'offerExclusionId',
@@ -89,7 +89,7 @@ export class EsimOfferEntity implements IEsimOffer {
 
   @ManyToMany(() => MediaEntity, { onDelete: 'RESTRICT' })
   @JoinTable({
-    name: 'offer_images',
+    name: 'esim_offer_images',
     joinColumn: { name: 'offerId', referencedColumnName: 'id' },
     inverseJoinColumn: { name: 'mediaId', referencedColumnName: 'id' },
   })
@@ -97,7 +97,7 @@ export class EsimOfferEntity implements IEsimOffer {
 
   @ManyToMany(() => CountryEntity, { onDelete: 'RESTRICT' })
   @JoinTable({
-    name: 'offer_countries',
+    name: 'esim_offer_countries',
     joinColumn: { name: 'offerId', referencedColumnName: 'id' },
     inverseJoinColumn: { name: 'countryId', referencedColumnName: 'id' },
   })
@@ -105,7 +105,7 @@ export class EsimOfferEntity implements IEsimOffer {
 
   @ManyToMany(() => SalesChannelEntity, { onDelete: 'RESTRICT' })
   @JoinTable({
-    name: 'offer_sales_channels',
+    name: 'esim_offer_sales_channels',
     joinColumn: { name: 'offerId', referencedColumnName: 'id' },
     inverseJoinColumn: {
       name: 'salesChannelId',
@@ -116,7 +116,7 @@ export class EsimOfferEntity implements IEsimOffer {
 
   @ManyToMany(() => PriceEntity, { onDelete: 'RESTRICT' })
   @JoinTable({
-    name: 'offer_prices',
+    name: 'esim_offer_prices',
     joinColumn: { name: 'offerId', referencedColumnName: 'id' },
     inverseJoinColumn: { name: 'priceId', referencedColumnName: 'id' },
   })

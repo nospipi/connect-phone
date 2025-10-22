@@ -14,3 +14,4 @@ export * from './offer-exclusion.factory';
 export * from './query-builder.factory';
 export * from './pagination.factory';
 export * from './service-providers.factory';
+export * from './esim-offer.factory';
