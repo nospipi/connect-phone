@@ -9,6 +9,8 @@ import { IAuditLog } from "./auditLog";
 import { ICountry } from "./country";
 import { IPrice } from "./price";
 import { IDateRange } from "./dateRange";
+import { IOfferInclusion } from "./offerInclusion";
+import { IOfferExclusion } from "./offerExclusion";
 
 //----------------------------------------------------------------------
 
@@ -28,4 +30,6 @@ export interface IOrganizationWithUserRole {
   prices: IPrice[];
   dateRanges: IDateRange[];
   media: IMedia[];
+  offerInclusions: IOfferInclusion[];
+  offerExclusions: IOfferExclusion[];
 }

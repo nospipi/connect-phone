@@ -14,3 +14,5 @@ export * from "./price";
 export * from "./dateRange";
 export * from "./media";
 export * from "./uploadedFile";
+export * from "./offerInclusion";
+export * from "./offerExclusion";

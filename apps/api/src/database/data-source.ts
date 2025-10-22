@@ -10,6 +10,8 @@ import { CountryEntity } from './entities/country.entity';
 import { PriceEntity } from './entities/price.entity';
 import { DateRangeEntity } from './entities/date-range.entity';
 import { MediaEntity } from './entities/media.entity';
+import { OfferInclusionEntity } from './entities/offer-inclusion.entity';
+import { OfferExclusionEntity } from './entities/offer-exclusion.entity';
 import { AuditLogSubscriber } from './subscribers/audit-log.subscriber';
 import { UserInvitationSubscriber } from './subscribers/user-invitation.subscriber';
 import * as dotenv from 'dotenv';
@@ -31,6 +33,8 @@ export const AppDataSource = new DataSource({
     DateRangeEntity,
     PriceEntity,
     MediaEntity,
+    OfferInclusionEntity,
+    OfferExclusionEntity,
   ],
   subscribers: [AuditLogSubscriber, UserInvitationSubscriber],
   migrations: ['src/database/migrations/*.ts'],

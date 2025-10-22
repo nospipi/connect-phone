@@ -19,6 +19,8 @@ import {
   IDateRange,
   IMedia,
   Currency,
+  IOfferInclusion,
+  IOfferExclusion,
 } from '@connect-phone/shared-types';
 import { SalesChannelEntity } from './sales-channel.entity';
 import { UserOrganizationEntity } from './user-organization.entity';
@@ -27,6 +29,8 @@ import { CountryEntity } from './country.entity';
 import { PriceEntity } from './price.entity';
 import { DateRangeEntity } from './date-range.entity';
 import { MediaEntity } from './media.entity';
+import { OfferInclusionEntity } from './offer-inclusion.entity';
+import { OfferExclusionEntity } from './offer-exclusion.entity';
 
 //----------------------------------------------------------------------
 
@@ -81,4 +85,16 @@ export class OrganizationEntity implements IOrganization {
 
   @OneToMany(() => MediaEntity, (media) => media.organization)
   media: IMedia[];
+
+  @OneToMany(
+    () => OfferInclusionEntity,
+    (offerInclusion) => offerInclusion.organization
+  )
+  offerInclusions: IOfferInclusion[];
+
+  @OneToMany(
+    () => OfferExclusionEntity,
+    (offerExclusion) => offerExclusion.organization
+  )
+  offerExclusions: IOfferExclusion[];
 }

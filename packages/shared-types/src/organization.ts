@@ -8,6 +8,8 @@ import { IPrice } from "./price";
 import { IDateRange } from "./dateRange";
 import { IMedia } from "./media";
 import { Currency } from "./price";
+import { IOfferInclusion } from "./offerInclusion";
+import { IOfferExclusion } from "./offerExclusion";
 
 //----------------------------------------------------------------------
 
@@ -26,4 +28,6 @@ export interface IOrganization {
   dateRanges: IDateRange[];
   media: IMedia[];
   mainCurrency: Currency;
+  offerInclusions: IOfferInclusion[];
+  offerExclusions: IOfferExclusion[];
 }
