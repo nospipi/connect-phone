@@ -1,4 +1,5 @@
 // apps/api/src/app.module.ts
+
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -9,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { ClerkAuthGuard } from './common/guards/clerk-auth.guard';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { AuditContextInterceptor } from './common/interceptors/audit-context-interceptor';
+import { TransactionRlsInterceptor } from './common/interceptors/transaction-rls.interceptor';
 import { DatabaseModule } from './database/database.module';
 import { SalesChannelsModule } from './resources/sales-channels/sales-channels.module';
 import { UsersModule } from './resources/users/users.module';
@@ -25,7 +27,7 @@ import { OfferInclusionsModule } from './resources/offer-inclusions/offer-inclus
 import { OfferExclusionsModule } from './resources/offer-exclusions/offer-exclusions.module';
 import { EsimOffersModule } from './resources/esim-offers/esim-offers.module';
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------
 
 @Module({
   imports: [
@@ -60,6 +62,10 @@ import { EsimOffersModule } from './resources/esim-offers/esim-offers.module';
     {
       provide: APP_INTERCEPTOR,
       useClass: AuditContextInterceptor,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: TransactionRlsInterceptor,
     },
   ],
 })

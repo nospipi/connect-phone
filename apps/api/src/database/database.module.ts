@@ -18,8 +18,9 @@ import { OfferExclusionEntity } from './entities/offer-exclusion.entity';
 import { EsimOfferEntity } from './entities/esim-offer.entity';
 import { AuditLogSubscriber } from './subscribers/audit-log.subscriber';
 import { UserInvitationSubscriber } from './subscribers/user-invitation.subscriber';
+import { RlsInitializationService } from './services/rls-initialization.service';
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------
 
 @Module({
   imports: [
@@ -53,5 +54,7 @@ import { UserInvitationSubscriber } from './subscribers/user-invitation.subscrib
       inject: [ConfigService],
     }),
   ],
+  providers: [RlsInitializationService],
+  exports: [RlsInitializationService],
 })
 export class DatabaseModule {}
