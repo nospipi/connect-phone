@@ -203,6 +203,8 @@ describe('GetAllOrganizationsOfUserService', () => {
         prices: [],
         dateRanges: [],
         media: [],
+        offerInclusions: [],
+        offerExclusions: [],
         role: UserOrganizationRole.OPERATOR,
       });
     });

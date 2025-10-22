@@ -129,9 +129,9 @@ describe('GetUserLoggedInOrganizationService', () => {
         prices: [],
         dateRanges: [],
         media: [],
+        offerInclusions: [],
+        offerExclusions: [],
       });
     });
   });
 });
-
-// apps/api/src/resources/users/services/get-user-logged-in-organization/service.spec.ts
