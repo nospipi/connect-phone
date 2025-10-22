@@ -14,6 +14,12 @@ import { AuditLogEntryEntity } from '@/database/entities/audit-log.entity';
 import { UserInvitationEntity } from '@/database/entities/user-invitation.entity';
 import { UserOrganizationEntity } from '@/database/entities/user-organization.entity';
 import { OfferEntity } from '@/database/entities/offer.entity';
+import { CountryEntity } from '@/database/entities/country.entity';
+import { PriceEntity } from '@/database/entities/price.entity';
+import { DateRangeEntity } from '@/database/entities/date-range.entity';
+import { MediaEntity } from '@/database/entities/media.entity';
+import { OfferInclusionEntity } from '@/database/entities/offer-inclusion.entity';
+import { OfferExclusionEntity } from '@/database/entities/offer-exclusion.entity';
 
 //-----------------------------------------------------------------
 
@@ -28,6 +34,12 @@ import { OfferEntity } from '@/database/entities/offer.entity';
       UserInvitationEntity,
       UserOrganizationEntity,
       OfferEntity,
+      CountryEntity,
+      PriceEntity,
+      DateRangeEntity,
+      MediaEntity,
+      OfferInclusionEntity,
+      OfferExclusionEntity,
     ]),
   ],
   providers: [
