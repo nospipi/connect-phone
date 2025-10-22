@@ -1,19 +1,23 @@
-// apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/offers/create-new/ExclusionsDrawer.tsx
+// apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/offers/create-new/ManageExclusionsButton.client.tsx
+"use client"
 
 import { RiCloseLine, RiAddLine, RiDeleteBin6Line } from "@remixicon/react"
-import { getAllOfferExclusionsPaginated } from "@/app/(backend)/server_actions/offer-exclusions/getAllOfferExclusionsPaginated"
-import { createOfferExclusion } from "@/app/(backend)/server_actions/offer-exclusions/createOfferExclusion"
-import { deleteOfferExclusionById } from "@/app/(backend)/server_actions/offer-exclusions/deleteOfferExclusionById"
 import { PendingOverlay } from "@/components/common/PendingOverlay"
+import { IOfferExclusion } from "@connect-phone/shared-types"
 
 //------------------------------------------------------------
 
-const ManageExclusionsButton = async () => {
-  const { items: exclusions } = await getAllOfferExclusionsPaginated({
-    page: 1,
-    limit: 100,
-  })
+interface ManageExclusionsButtonProps {
+  exclusions: IOfferExclusion[]
+  createAction: (formData: FormData) => Promise<void>
+  deleteAction: (formData: FormData) => Promise<void>
+}
 
+export default function ManageExclusionsButton({
+  exclusions,
+  createAction,
+  deleteAction,
+}: ManageExclusionsButtonProps) {
   return (
     <>
       <input type="checkbox" id="exclusions-drawer" className="peer hidden" />
@@ -49,17 +53,23 @@ const ManageExclusionsButton = async () => {
               <label className="block text-sm font-medium text-gray-700 dark:text-slate-300">
                 Add New Exclusion
               </label>
-              <form action={createOfferExclusion} className="flex gap-2">
+              <form
+                action={createAction}
+                className="flex gap-2"
+                onClick={(e) => e.stopPropagation()}
+              >
                 <input
                   type="text"
                   name="body"
                   required
                   placeholder="Enter exclusion text..."
                   className="flex-1 border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-indigo-500 dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200 dark:placeholder-slate-500"
+                  onClick={(e) => e.stopPropagation()}
                 />
                 <PendingOverlay mode="form">
                   <button
                     type="submit"
+                    onClick={(e) => e.stopPropagation()}
                     className="flex items-center gap-2 border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
                   >
                     <RiAddLine className="h-4 w-4" />
@@ -89,7 +99,10 @@ const ManageExclusionsButton = async () => {
                           {exclusion.body}
                         </p>
                       </div>
-                      <form action={deleteOfferExclusionById}>
+                      <form
+                        action={deleteAction}
+                        onClick={(e) => e.stopPropagation()}
+                      >
                         <input
                           type="hidden"
                           name="offerExclusionId"
@@ -98,6 +111,7 @@ const ManageExclusionsButton = async () => {
                         <PendingOverlay mode="form">
                           <button
                             type="submit"
+                            onClick={(e) => e.stopPropagation()}
                             className="flex h-8 w-8 items-center justify-center text-gray-400 transition-colors hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-900/20 dark:hover:text-red-400"
                           >
                             <RiDeleteBin6Line className="h-4 w-4" />
@@ -124,5 +138,3 @@ const ManageExclusionsButton = async () => {
     </>
   )
 }
-
-export default ManageExclusionsButton

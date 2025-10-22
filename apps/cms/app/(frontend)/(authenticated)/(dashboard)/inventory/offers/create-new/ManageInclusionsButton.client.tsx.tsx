@@ -1,19 +1,23 @@
-// apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/offers/create-new/InclusionsDrawer.tsx
+// apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/offers/create-new/ManageInclusionsButton.client.tsx
+"use client"
 
 import { RiCloseLine, RiAddLine, RiDeleteBin6Line } from "@remixicon/react"
-import { getAllOfferInclusionsPaginated } from "@/app/(backend)/server_actions/offer-inclusions/getAllOfferInclusionsPaginated"
-import { createOfferInclusion } from "@/app/(backend)/server_actions/offer-inclusions/createOfferInclusion"
-import { deleteOfferInclusionById } from "@/app/(backend)/server_actions/offer-inclusions/deleteOfferInclusionById"
 import { PendingOverlay } from "@/components/common/PendingOverlay"
+import { IOfferInclusion } from "@connect-phone/shared-types"
 
 //------------------------------------------------------------
 
-const ManageInclusionsButton = async () => {
-  const { items: inclusions } = await getAllOfferInclusionsPaginated({
-    page: 1,
-    limit: 100,
-  })
+interface ManageInclusionsButtonProps {
+  inclusions: IOfferInclusion[]
+  createAction: (formData: FormData) => Promise<void>
+  deleteAction: (formData: FormData) => Promise<void>
+}
 
+export default function ManageInclusionsButton({
+  inclusions,
+  createAction,
+  deleteAction,
+}: ManageInclusionsButtonProps) {
   return (
     <>
       <input type="checkbox" id="inclusions-drawer" className="peer hidden" />
@@ -49,17 +53,23 @@ const ManageInclusionsButton = async () => {
               <label className="block text-sm font-medium text-gray-700 dark:text-slate-300">
                 Add New Inclusion
               </label>
-              <form action={createOfferInclusion} className="flex gap-2">
+              <form
+                action={createAction}
+                className="flex gap-2"
+                onClick={(e) => e.stopPropagation()}
+              >
                 <input
                   type="text"
                   name="body"
                   required
                   placeholder="Enter inclusion text..."
                   className="flex-1 border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 outline-none focus:border-indigo-500 dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200 dark:placeholder-slate-500"
+                  onClick={(e) => e.stopPropagation()}
                 />
                 <PendingOverlay mode="form">
                   <button
                     type="submit"
+                    onClick={(e) => e.stopPropagation()}
                     className="flex items-center gap-2 border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
                   >
                     <RiAddLine className="h-4 w-4" />
@@ -89,7 +99,10 @@ const ManageInclusionsButton = async () => {
                           {inclusion.body}
                         </p>
                       </div>
-                      <form action={deleteOfferInclusionById}>
+                      <form
+                        action={deleteAction}
+                        onClick={(e) => e.stopPropagation()}
+                      >
                         <input
                           type="hidden"
                           name="offerInclusionId"
@@ -98,6 +111,7 @@ const ManageInclusionsButton = async () => {
                         <PendingOverlay mode="form">
                           <button
                             type="submit"
+                            onClick={(e) => e.stopPropagation()}
                             className="flex h-8 w-8 items-center justify-center text-gray-400 transition-colors hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-900/20 dark:hover:text-red-400"
                           >
                             <RiDeleteBin6Line className="h-4 w-4" />
@@ -124,5 +138,3 @@ const ManageInclusionsButton = async () => {
     </>
   )
 }
-
-export default ManageInclusionsButton

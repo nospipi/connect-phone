@@ -19,8 +19,8 @@ import MainImageSelectButton from "./MainImageSelectButton.client"
 import ImagesSelectButton from "./ImagesSelectButton.client"
 import InclusionsMultiSelect from "./InclusionsMultiSelect.client"
 import ExclusionsMultiSelect from "./ExclusionsMultiSelect.client"
-import ManageInclusionsButton from "./ManageInclusionsButton"
-import ManageExclusionsButton from "./ManageExclusionsButton"
+import ManageInclusionsButton from "./ManageInclusionsButton.client.tsx"
+import ManageExclusionsButton from "./ManageExclusionsButton.client.tsx"
 
 //------------------------------------------------------------
 
