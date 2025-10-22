@@ -174,7 +174,7 @@ describe('GetOfferExclusionByIdService', () => {
         mockOrganization
       );
       offerExclusionRepository.findOne.mockResolvedValue(
-        offerExclusionWithRelations as any
+        offerExclusionWithRelations
       );
 
       const result = await service.getOfferExclusionById(1);

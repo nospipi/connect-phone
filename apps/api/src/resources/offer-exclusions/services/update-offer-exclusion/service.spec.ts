@@ -74,9 +74,7 @@ describe('UpdateOfferExclusionService', () => {
       offerExclusionRepository.findOne.mockResolvedValue(
         mockOfferExclusion as any
       );
-      offerExclusionRepository.save.mockResolvedValue(
-        updatedOfferExclusion as any
-      );
+      offerExclusionRepository.save.mockResolvedValue(updatedOfferExclusion);
 
       const result = await service.updateOfferExclusion(updateDto);
 
