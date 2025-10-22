@@ -8,7 +8,7 @@ import { OrganizationEntity } from '../../entities/organization.entity';
 import { generatePrices } from '../factories/price.factory';
 import { generateDateRanges } from '../factories/date-range.factory';
 
-async function seedPrices() {
+export async function seedPrices() {
   try {
     await AppDataSource.initialize();
     console.log('Database connected for seeding prices');

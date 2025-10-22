@@ -5,7 +5,7 @@ import { CountryEntity } from '../../entities/country.entity';
 import { OrganizationEntity } from '../../entities/organization.entity';
 import { generateCountries } from '../factories/countries.factory';
 
-async function seedCountries() {
+export async function seedCountries() {
   try {
     await AppDataSource.initialize();
     console.log('Database connected for seeding countries');
