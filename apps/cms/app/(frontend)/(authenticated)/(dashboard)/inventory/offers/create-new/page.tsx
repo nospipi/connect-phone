@@ -1,7 +1,7 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/offers/create-new/page.tsx
 
 import { createEsimOffer } from "@/app/(backend)/server_actions/esim-offers/createEsimOffer"
-import { getCountryById } from "@/app/(backend)/server_actions/countries/getCountryById"
+import { getAllCountriesOfOrg } from "@/app/(backend)/server_actions/countries/getAllCountriesOfOrg"
 import { getSalesChannelById } from "@/app/(backend)/server_actions/sales-channels/getSalesChannelById"
 import { getPriceById } from "@/app/(backend)/server_actions/prices/getPriceById"
 import { getMediaById } from "@/app/(backend)/server_actions/media/getMediaById"
@@ -87,8 +87,9 @@ const Page = async ({
     ? imageIds.split(",").map(Number).filter(Boolean)
     : []
 
-  const selectedCountries = await Promise.all(
-    selectedCountryIds.map((id) => getCountryById(id)),
+  const allCountries = await getAllCountriesOfOrg()
+  const selectedCountries = allCountries.filter((country) =>
+    selectedCountryIds.includes(country.id),
   )
 
   const selectedSalesChannels = await Promise.all(
