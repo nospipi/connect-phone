@@ -9,6 +9,8 @@ export * from './user-organization.factory';
 export * from './date-range.factory';
 export * from './price.factory';
 export * from './media.factory';
+export * from './offer-inclusion.factory';
+export * from './offer-exclusion.factory';
 export * from './query-builder.factory';
 export * from './pagination.factory';
 export * from './service-providers.factory';

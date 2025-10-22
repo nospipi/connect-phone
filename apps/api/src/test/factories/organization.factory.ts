@@ -1,5 +1,4 @@
 // apps/api/src/test/factories/organization.factory.ts
-
 import { IOrganization } from '@connect-phone/shared-types';
 
 //----------------------------------------------------------------------
@@ -22,6 +21,8 @@ export function createMockOrganization(
     dateRanges: [],
     media: [],
     mainCurrency: 'USD' as any,
+    offerInclusions: [],
+    offerExclusions: [],
     ...overrides,
   } as IOrganization;
 }
