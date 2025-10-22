@@ -22,8 +22,8 @@ export class GetAllByOrgPaginatedController {
     @Query() searchEsimOffersDto: SearchEsimOffersDto
   ): Promise<Pagination<IEsimOffer>> {
     return this.getAllByOrgPaginatedService.getAllEsimOffersPaginated(
-      searchEsimOffersDto.page || 1,
-      searchEsimOffersDto.limit || 10,
+      searchEsimOffersDto.page,
+      searchEsimOffersDto.limit,
       searchEsimOffersDto.search || ''
     );
   }

@@ -21,6 +21,9 @@ import { OrganizationsModule } from './resources/organizations/organizations.mod
 import { DateRangesModule } from './resources/date-ranges/date-ranges.module';
 import { PricesModule } from './resources/prices/prices.module';
 import { MediaModule } from './resources/media/media.module';
+import { OfferInclusionsModule } from './resources/offer-inclusions/offer-inclusions.module';
+import { OfferExclusionsModule } from './resources/offer-exclusions/offer-exclusions.module';
+import { EsimOffersModule } from './resources/esim-offers/esim-offers.module';
 
 //-----------------------------------------------------------------------------
 
@@ -42,6 +45,9 @@ import { MediaModule } from './resources/media/media.module';
     DateRangesModule,
     PricesModule,
     MediaModule,
+    EsimOffersModule,
+    OfferInclusionsModule,
+    OfferExclusionsModule,
   ],
   controllers: [AppController],
   providers: [

@@ -9,6 +9,7 @@ import {
   IPrice,
   IOfferInclusion,
   IOfferExclusion,
+  IEsimOffer,
 } from "@connect-phone/shared-types"
 
 //----------------------------------------------------------------------
@@ -72,3 +73,6 @@ export interface PaginatedOfferInclusionsResponse
 
 export interface PaginatedOfferExclusionsResponse
   extends PaginatedResponse<IOfferExclusion> {}
+
+export interface PaginatedEsimOffersResponse
+  extends PaginatedResponse<IEsimOffer> {}

@@ -18,6 +18,10 @@ const CreateButtonRenderer = () => {
     "/inventory/countries": undefined,
     "/inventory/packages": undefined,
     "/inventory/products": undefined,
+    "/inventory/offers": {
+      label: "Create Offer",
+      href: "/inventory/offers/create-new",
+    },
     "/inventory/prices": {
       label: "Create Price",
       href: "/inventory/prices/create-new",
