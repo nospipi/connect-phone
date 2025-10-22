@@ -7,6 +7,8 @@ import {
   IDateRange,
   IMedia,
   IPrice,
+  IOfferInclusion,
+  IOfferExclusion,
 } from "@connect-phone/shared-types"
 
 //----------------------------------------------------------------------
@@ -64,3 +66,9 @@ export interface PaginatedDateRangesResponse
 export interface PaginatedMediaResponse extends PaginatedResponse<IMedia> {}
 
 export interface PaginatedPricesResponse extends PaginatedResponse<IPrice> {}
+
+export interface PaginatedOfferInclusionsResponse
+  extends PaginatedResponse<IOfferInclusion> {}
+
+export interface PaginatedOfferExclusionsResponse
+  extends PaginatedResponse<IOfferExclusion> {}

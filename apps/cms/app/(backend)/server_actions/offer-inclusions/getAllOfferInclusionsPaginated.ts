@@ -1,0 +1,49 @@
+// apps/cms/app/(backend)/server_actions/offer-inclusions/getAllOfferInclusionsPaginated.ts
+"use server"
+
+import { AxiosError } from "axios"
+import { ErrorResponse, PaginatedOfferInclusionsResponse } from "../types"
+import { createApiClient } from "../api-client"
+
+//----------------------------------------------------------------------
+
+interface PaginationParams {
+  page?: string | number
+  limit?: string | number
+  search?: string
+}
+
+export const getAllOfferInclusionsPaginated = async ({
+  page = 1,
+  limit = 10,
+  search,
+}: PaginationParams): Promise<PaginatedOfferInclusionsResponse> => {
+  try {
+    const api = createApiClient()
+    const params = new URLSearchParams()
+    params.append("page", String(page))
+    params.append("limit", String(limit))
+
+    if (search) {
+      params.append("search", search)
+    }
+
+    const response = await api.get(
+      `/offer-inclusions/paginated?${params.toString()}`,
+    )
+
+    if (response.status !== 200) {
+      throw new Error("Failed to fetch offer inclusions")
+    }
+
+    return response.data
+  } catch (error: unknown) {
+    const messageFallback = (error as Error).message ?? "An error occurred"
+    const errorMessage =
+      (error as AxiosError<ErrorResponse>).response?.data.message ??
+      messageFallback
+
+    console.error("Failed to fetch offer inclusions:", errorMessage)
+    throw new Error(errorMessage)
+  }
+}
