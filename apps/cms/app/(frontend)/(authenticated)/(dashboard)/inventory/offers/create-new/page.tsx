@@ -1,8 +1,6 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/offers/create-new/page.tsx
 
 import { createEsimOffer } from "@/app/(backend)/server_actions/esim-offers/createEsimOffer"
-import { getAllOfferInclusionsPaginated } from "@/app/(backend)/server_actions/offer-inclusions/getAllOfferInclusionsPaginated"
-import { getAllOfferExclusionsPaginated } from "@/app/(backend)/server_actions/offer-exclusions/getAllOfferExclusionsPaginated"
 import { getCountryById } from "@/app/(backend)/server_actions/countries/getCountryById"
 import { getSalesChannelById } from "@/app/(backend)/server_actions/sales-channels/getSalesChannelById"
 import { getPriceById } from "@/app/(backend)/server_actions/prices/getPriceById"
@@ -11,7 +9,6 @@ import Link from "next/link"
 import { RiArrowLeftLine, RiCloseLine, RiAddLine } from "@remixicon/react"
 import { Badge } from "@/components/common/Badge"
 import { PendingOverlay } from "@/components/common/PendingOverlay"
-import MultiSelect from "@/components/common/MultiSelect.client"
 import CountrySelectButton from "./CountrySelectButton.client"
 import SalesChannelSelectButton from "./SalesChannelSelectButton.client"
 import PriceSelectButton from "./PriceSelectButton.client"
@@ -19,8 +16,6 @@ import MainImageSelectButton from "./MainImageSelectButton.client"
 import ImagesSelectButton from "./ImagesSelectButton.client"
 import InclusionsMultiSelect from "./InclusionsMultiSelect.client"
 import ExclusionsMultiSelect from "./ExclusionsMultiSelect.client"
-import ManageInclusionsButton from "./ManageInclusionsButton.client.tsx"
-import ManageExclusionsButton from "./ManageExclusionsButton.client.tsx"
 
 //------------------------------------------------------------
 
@@ -43,15 +38,30 @@ const Page = async ({
   const salesChannelIds = params.salesChannelIds || ""
   const priceIds = params.priceIds || ""
 
-  const { items: allInclusions } = await getAllOfferInclusionsPaginated({
-    page: 1,
-    limit: 100,
-  })
+  // TODO: Replace with actual server actions when available
+  // const allInclusions = await getAllOfferInclusions()
+  // const allExclusions = await getAllOfferExclusions()
 
-  const { items: allExclusions } = await getAllOfferExclusionsPaginated({
-    page: 1,
-    limit: 100,
-  })
+  const allInclusions = [
+    { id: 1, body: "Unlimited calls within the country" },
+    { id: 2, body: "High-speed 5G data connectivity" },
+    { id: 3, body: "International SMS included" },
+    { id: 4, body: "Hotspot tethering enabled" },
+    { id: 5, body: "No hidden fees or charges" },
+    { id: 6, body: "24/7 customer support" },
+    { id: 7, body: "Easy activation process" },
+    { id: 8, body: "Compatible with all unlocked devices" },
+  ]
+
+  const allExclusions = [
+    { id: 1, body: "Does not include calls to premium numbers" },
+    { id: 2, body: "Roaming charges may apply outside coverage area" },
+    { id: 3, body: "Video streaming limited to SD quality" },
+    { id: 4, body: "Fair usage policy applies after data limit" },
+    { id: 5, body: "Not available for locked devices" },
+    { id: 6, body: "International calls not included" },
+    { id: 7, body: "Device must support eSIM technology" },
+  ]
 
   const selectedInclusionIds = inclusionIds
     ? inclusionIds.split(",").map(Number).filter(Boolean)
@@ -161,7 +171,7 @@ const Page = async ({
   }
 
   return (
-    <div className="relative flex h-full flex-col overflow-hidden">
+    <div className="flex h-full flex-col overflow-hidden">
       <div className="flex items-center gap-4 border-b border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950">
         <Link
           href="/inventory/offers"
@@ -181,7 +191,7 @@ const Page = async ({
         </div>
       </div>
 
-      <div className="relative flex-1 overflow-hidden py-4">
+      <div className="flex-1 overflow-hidden py-4">
         <div className="flex h-full w-full justify-center overflow-auto px-4">
           <div className="w-full max-w-3xl">
             <form action={createEsimOffer} className="flex flex-col gap-6">
@@ -322,7 +332,6 @@ const Page = async ({
                     selectedValues={selectedInclusionIds.map(String)}
                   />
                 </div>
-                <ManageInclusionsButton />
               </div>
 
               <div>
@@ -335,7 +344,6 @@ const Page = async ({
                     selectedValues={selectedExclusionIds.map(String)}
                   />
                 </div>
-                <ManageExclusionsButton />
               </div>
 
               <div>
