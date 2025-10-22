@@ -15,6 +15,7 @@ export class IsUserLoggedInOrganizationController {
   @Get('logged-organization')
   async isLoggedIn(): Promise<{ loggedIn: boolean }> {
     const loggedIn = await this.isUserLoggedInOrganizationService.execute();
+    console.log(`User logged in organization status: ${loggedIn}`);
     return { loggedIn };
   }
 }
