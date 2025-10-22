@@ -11,6 +11,7 @@ import { IPrice } from "./price";
 import { IDateRange } from "./dateRange";
 import { IOfferInclusion } from "./offerInclusion";
 import { IOfferExclusion } from "./offerExclusion";
+import { IOffer } from "./offer";
 
 //----------------------------------------------------------------------
 
@@ -32,4 +33,5 @@ export interface IOrganizationWithUserRole {
   media: IMedia[];
   offerInclusions: IOfferInclusion[];
   offerExclusions: IOfferExclusion[];
+  offers: IOffer[];
 }

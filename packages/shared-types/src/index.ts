@@ -16,3 +16,4 @@ export * from "./media";
 export * from "./uploadedFile";
 export * from "./offerInclusion";
 export * from "./offerExclusion";
+export * from "./offer";
