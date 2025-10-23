@@ -4,6 +4,7 @@ export function createMockQueryBuilder() {
   return {
     createQueryBuilder: jest.fn().mockReturnThis(),
     leftJoinAndSelect: jest.fn().mockReturnThis(),
+    leftJoin: jest.fn().mockReturnThis(),
     where: jest.fn().mockReturnThis(),
     andWhere: jest.fn().mockReturnThis(),
     orderBy: jest.fn().mockReturnThis(),
@@ -11,5 +12,6 @@ export function createMockQueryBuilder() {
     into: jest.fn().mockReturnThis(),
     values: jest.fn().mockReturnThis(),
     execute: jest.fn(),
+    getMany: jest.fn().mockResolvedValue([]),
   };
 }

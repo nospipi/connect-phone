@@ -1,7 +1,8 @@
 // apps/api/src/resources/esim-offers/services/get-all-by-org-paginated/service.ts
+
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, In } from 'typeorm';
 import { EsimOfferEntity } from '../../../../database/entities/esim-offer.entity';
 import { IEsimOffer } from '@connect-phone/shared-types';
 import {
@@ -118,7 +119,7 @@ export class GetAllByOrgPaginatedService {
         .leftJoinAndSelect('esimOffer.countries', 'countries')
         .leftJoinAndSelect('esimOffer.salesChannels', 'salesChannels')
         .leftJoinAndSelect('esimOffer.prices', 'prices')
-        .whereInIds(offerIds)
+        .where('esimOffer.id IN (:...offerIds)', { offerIds })
         .getMany();
 
       const offerMap = new Map(
