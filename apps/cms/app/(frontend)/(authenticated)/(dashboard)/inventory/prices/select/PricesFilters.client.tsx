@@ -87,7 +87,7 @@ export default function PricesFilters({ currentFilters }: PricesFiltersProps) {
       )
     }
 
-    return `/inventory/prices?${urlParams.toString()}`
+    return `/inventory/prices/select?${urlParams.toString()}`
   }
 
   const handleRemoveDateRange = (id: number) => {
