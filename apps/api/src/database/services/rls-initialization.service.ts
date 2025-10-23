@@ -1,6 +1,6 @@
 // apps/api/src/database/services/rls-initialization.service.ts
 
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Injectable, OnModuleInit, Logger } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 
@@ -8,6 +8,7 @@ import { DataSource } from 'typeorm';
 
 @Injectable()
 export class RlsInitializationService implements OnModuleInit {
+  private readonly logger = new Logger(RlsInitializationService.name);
   constructor(@InjectDataSource() private dataSource: DataSource) {}
 
   async onModuleInit() {
@@ -16,22 +17,22 @@ export class RlsInitializationService implements OnModuleInit {
 
   private async initializeRls(): Promise<void> {
     try {
-      console.log('🔐 Checking RLS configuration...');
+      this.logger.debug('🔐 Checking RLS configuration...');
 
       const isRlsEnabled = await this.checkRlsEnabled();
 
       if (!isRlsEnabled) {
-        console.log(
+        this.logger.log(
           '🔧 RLS not configured. Enabling RLS and creating policies...'
         );
         await this.enableRls();
         await this.createPolicies();
-        console.log('✅ RLS enabled and policies created successfully!');
+        this.logger.log('✅ RLS enabled and policies created successfully!');
       } else {
-        console.log('✅ RLS already configured and enabled');
+        this.logger.log('✅ RLS already configured and enabled');
       }
     } catch (error) {
-      console.error('❌ Error initializing RLS:', error);
+      this.logger.error('❌ Error initializing RLS:', error);
     }
   }
 
