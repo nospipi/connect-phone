@@ -57,24 +57,19 @@ export default function OfferListItem({ offer }: OfferListItemProps) {
               </div>
 
               <div className="mt-2 flex items-center gap-4">
-                <div className="flex items-baseline gap-1.5">
-                  <span className="text-xl font-bold text-indigo-600 dark:text-indigo-400">
-                    {offer.isUnlimitedData ? "∞" : offer.dataInGb}
+                <div className="flex items-baseline gap-1">
+                  <span className="text-md font-bold text-indigo-600 dark:text-indigo-400">
+                    {offer.isUnlimitedData ? "Unlimited Data" : offer.dataInGb}
                   </span>
                   {!offer.isUnlimitedData && (
                     <span className="text-sm font-medium text-gray-500 dark:text-slate-500">
                       GB
                     </span>
                   )}
-                  {offer.isUnlimitedData && (
-                    <span className="text-sm font-medium text-gray-500 dark:text-slate-500">
-                      Unlimited
-                    </span>
-                  )}
                 </div>
                 <div className="h-4 w-px bg-gray-200 dark:bg-slate-700" />
-                <div className="flex items-baseline gap-1.5">
-                  <span className="text-xl font-bold text-gray-700 dark:text-slate-300">
+                <div className="flex items-baseline gap-1">
+                  <span className="text-md font-bold text-gray-700 dark:text-slate-300">
                     {offer.durationInDays}
                   </span>
                   <span className="text-sm font-medium text-gray-500 dark:text-slate-500">
@@ -86,10 +81,7 @@ export default function OfferListItem({ offer }: OfferListItemProps) {
 
             <div className="space-y-2.5">
               {offer.countries && offer.countries.length > 0 && (
-                <div className="flex items-start gap-3">
-                  <span className="mt-0.5 flex-shrink-0 text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-slate-600">
-                    Countries
-                  </span>
+                <div className="flex items-start gap-3" title="Countries">
                   <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
                     {displayCountries.map((country) => (
                       <div
@@ -123,10 +115,7 @@ export default function OfferListItem({ offer }: OfferListItemProps) {
               )}
 
               {offer.salesChannels && offer.salesChannels.length > 0 && (
-                <div className="flex items-start gap-3">
-                  <span className="mt-0.5 flex-shrink-0 text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-slate-600">
-                    Channels
-                  </span>
+                <div className="flex items-start gap-3" title="Sales Channels">
                   <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
                     {displaySalesChannels.map((channel) => (
                       <span
@@ -149,10 +138,7 @@ export default function OfferListItem({ offer }: OfferListItemProps) {
               )}
 
               {offer.prices && offer.prices.length > 0 && (
-                <div className="flex items-start gap-3">
-                  <span className="mt-0.5 flex-shrink-0 text-xs font-semibold uppercase tracking-wide text-gray-400 dark:text-slate-600">
-                    Prices
-                  </span>
+                <div className="flex items-start gap-3" title="Prices">
                   <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
                     {displayPrices.map((price) => (
                       <span
