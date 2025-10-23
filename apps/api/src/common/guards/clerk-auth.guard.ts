@@ -1,10 +1,10 @@
-import { type ExecutionContext, Injectable } from '@nestjs/common';
+import { type ExecutionContext, Injectable, Scope } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 import { IS_PUBLIC_KEY } from '../../common/decorators/public.decorator';
 import { Request } from 'express';
 
-@Injectable()
+@Injectable({ scope: Scope.REQUEST })
 export class ClerkAuthGuard extends AuthGuard('clerk') {
   constructor(private reflector: Reflector) {
     super();

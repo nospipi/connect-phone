@@ -4,6 +4,7 @@ import {
   CanActivate,
   ExecutionContext,
   UnauthorizedException,
+  Scope,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { CurrentDbUserService } from '../core/current-db-user.service';
@@ -24,7 +25,7 @@ import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
  * - Automatically skipped for @Public() routes
  */
 
-@Injectable()
+@Injectable({ scope: Scope.REQUEST })
 export class DbUserGuard implements CanActivate {
   constructor(
     private readonly reflector: Reflector,

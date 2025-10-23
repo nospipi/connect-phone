@@ -5,6 +5,7 @@ import {
   ExecutionContext,
   UnauthorizedException,
   NotFoundException,
+  Scope,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { CurrentOrganizationService } from '../core/current-organization.service';
@@ -22,7 +23,7 @@ import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
  * The service just provides current data (no errors)
  */
 
-@Injectable()
+@Injectable({ scope: Scope.REQUEST })
 export class OrganizationGuard implements CanActivate {
   constructor(
     private readonly reflector: Reflector,

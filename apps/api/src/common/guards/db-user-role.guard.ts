@@ -5,6 +5,7 @@ import {
   ExecutionContext,
   ForbiddenException,
   Type,
+  Scope,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { CurrentDbUserRoleService } from '../core/current-db-user-role.service';
@@ -30,7 +31,7 @@ type ValidRoleString = keyof typeof UserOrganizationRole;
 export function DbUserRoleGuard(
   ...allowedRoles: ValidRoleString[]
 ): Type<CanActivate> {
-  @Injectable()
+  @Injectable({ scope: Scope.REQUEST })
   class RoleGuard implements CanActivate {
     constructor(
       private readonly reflector: Reflector,
