@@ -41,7 +41,7 @@ export class GetAllByOrgPaginatedService {
       .where('dateRange.organizationId = :organizationId', {
         organizationId: organization?.id,
       })
-      .orderBy('dateRange.startDate', 'DESC');
+      .orderBy('dateRange.id', 'DESC');
 
     if (search && search.trim().length > 0) {
       queryBuilder.andWhere('dateRange.name ILIKE :search', {

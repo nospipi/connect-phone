@@ -39,7 +39,7 @@ export class GetAllByOrgPaginatedService {
       .where('price.organizationId = :organizationId', {
         organizationId: organization?.id,
       })
-      .orderBy('price.createdAt', 'DESC');
+      .orderBy('price.id', 'DESC');
 
     if (searchDto.search && searchDto.search.trim().length > 0) {
       queryBuilder.andWhere('price.name ILIKE :search', {

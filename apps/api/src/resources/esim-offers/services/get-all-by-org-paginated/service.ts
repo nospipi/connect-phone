@@ -40,7 +40,7 @@ export class GetAllByOrgPaginatedService {
       .where('esimOffer.organizationId = :organizationId', {
         organizationId: organization?.id,
       })
-      .orderBy('esimOffer.createdAt', 'DESC');
+      .orderBy('esimOffer.id', 'DESC');
 
     if (searchDto.search && searchDto.search.trim().length > 0) {
       queryBuilder.andWhere(
