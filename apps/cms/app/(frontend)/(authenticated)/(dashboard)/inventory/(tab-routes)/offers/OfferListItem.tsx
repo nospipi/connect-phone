@@ -1,4 +1,5 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/(tab-routes)/offers/OfferListItem.tsx
+
 import { IEsimOffer } from "@connect-phone/shared-types"
 import Image from "next/image"
 import Link from "next/link"
@@ -26,8 +27,46 @@ export default function OfferListItem({ offer }: OfferListItemProps) {
     .join(", ")
   const remainingPricesTitle = remainingPrices.map((p) => p.name).join(", ")
 
+  const buildEditUrl = () => {
+    const urlParams = new URLSearchParams()
+
+    if (offer.inclusions && offer.inclusions.length > 0) {
+      urlParams.set("inclusionIds", offer.inclusions.map((i) => i.id).join(","))
+    }
+
+    if (offer.exclusions && offer.exclusions.length > 0) {
+      urlParams.set("exclusionIds", offer.exclusions.map((e) => e.id).join(","))
+    }
+
+    if (offer.mainImageId) {
+      urlParams.set("mainImageId", offer.mainImageId.toString())
+    }
+
+    if (offer.images && offer.images.length > 0) {
+      urlParams.set("imageIds", offer.images.map((img) => img.id).join(","))
+    }
+
+    if (offer.countries && offer.countries.length > 0) {
+      urlParams.set("countryIds", offer.countries.map((c) => c.id).join(","))
+    }
+
+    if (offer.salesChannels && offer.salesChannels.length > 0) {
+      urlParams.set(
+        "salesChannelIds",
+        offer.salesChannels.map((sc) => sc.id).join(","),
+      )
+    }
+
+    if (offer.prices && offer.prices.length > 0) {
+      urlParams.set("priceIds", offer.prices.map((p) => p.id).join(","))
+    }
+
+    const queryString = urlParams.toString()
+    return `/inventory/offers/${offer.id}${queryString ? `?${queryString}` : ""}`
+  }
+
   return (
-    <Link href={`/inventory/offers/${offer.id}`} className="group block">
+    <Link href={buildEditUrl()} className="group block">
       <div className="py-5">
         <div className="flex gap-5">
           <div className="relative w-40 flex-shrink-0 self-stretch overflow-hidden rounded-lg border border-gray-200 bg-gradient-to-br from-gray-50 to-gray-100 dark:border-slate-700/50 dark:from-slate-800/50 dark:to-slate-900/50">
