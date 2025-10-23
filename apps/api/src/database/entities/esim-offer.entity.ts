@@ -1,4 +1,4 @@
-// apps/api/src/database/entities/offer.entity.ts
+// apps/api/src/database/entities/esim-offer.entity.ts
 
 import {
   Entity,
@@ -48,8 +48,11 @@ export class EsimOfferEntity implements IEsimOffer {
   @Column({ type: 'int' })
   durationInDays: number;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2 })
-  dataInGb: number;
+  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
+  dataInGb: number | null;
+
+  @Column({ type: 'boolean', default: false })
+  isUnlimitedData: boolean;
 
   @Column()
   organizationId: number;

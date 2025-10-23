@@ -25,13 +25,17 @@ export async function seedEsimOffers(
     for (let i = 0; i < offerCount; i++) {
       const title = faker.commerce.productName();
       const description = faker.commerce.productDescription();
+      const isUnlimitedData = faker.datatype.boolean();
 
       offers.push({
         title,
         descriptionHtml: `<p>${description}</p>`,
         descriptionText: description,
         durationInDays: faker.helpers.arrayElement([7, 14, 30, 60, 90]),
-        dataInGb: faker.number.float({ min: 1, max: 50 }),
+        dataInGb: isUnlimitedData
+          ? null
+          : faker.number.float({ min: 1, max: 50 }),
+        isUnlimitedData,
         organizationId: org.id,
         mainImageId: null,
       });

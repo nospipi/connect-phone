@@ -1,4 +1,5 @@
 // apps/api/src/resources/esim-offers/services/update-esim-offer/service.ts
+
 import {
   Injectable,
   NotFoundException,
@@ -60,7 +61,16 @@ export class UpdateEsimOfferService {
     if (updateEsimOfferDto.durationInDays !== undefined) {
       esimOffer.durationInDays = updateEsimOfferDto.durationInDays;
     }
-    if (updateEsimOfferDto.dataInGb !== undefined) {
+    if (updateEsimOfferDto.isUnlimitedData !== undefined) {
+      esimOffer.isUnlimitedData = updateEsimOfferDto.isUnlimitedData;
+      if (updateEsimOfferDto.isUnlimitedData) {
+        esimOffer.dataInGb = null;
+      }
+    }
+    if (
+      updateEsimOfferDto.dataInGb !== undefined &&
+      !esimOffer.isUnlimitedData
+    ) {
       esimOffer.dataInGb = updateEsimOfferDto.dataInGb;
     }
     if (updateEsimOfferDto.mainImageId !== undefined) {

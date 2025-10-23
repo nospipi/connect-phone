@@ -1,4 +1,5 @@
 // apps/api/src/resources/esim-offers/services/create-esim-offer/service.ts
+
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -28,7 +29,10 @@ export class CreateEsimOfferService {
       descriptionHtml: createEsimOfferDto.descriptionHtml,
       descriptionText: createEsimOfferDto.descriptionText,
       durationInDays: createEsimOfferDto.durationInDays,
-      dataInGb: createEsimOfferDto.dataInGb,
+      dataInGb: createEsimOfferDto.isUnlimitedData
+        ? null
+        : createEsimOfferDto.dataInGb,
+      isUnlimitedData: createEsimOfferDto.isUnlimitedData,
       organizationId: organization?.id,
       mainImageId: createEsimOfferDto.mainImageId || null,
       inclusions:

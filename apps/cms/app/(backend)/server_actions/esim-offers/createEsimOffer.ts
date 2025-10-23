@@ -16,6 +16,7 @@ export const createEsimOffer = async (formData: FormData): Promise<void> => {
     const descriptionText = formData.get("descriptionText") as string
     const durationInDays = formData.get("durationInDays") as string
     const dataInGb = formData.get("dataInGb") as string
+    const isUnlimitedData = formData.get("isUnlimitedData") as string
     const inclusionIds = formData.get("inclusionIds") as string
     const exclusionIds = formData.get("exclusionIds") as string
     const mainImageId = formData.get("mainImageId") as string
@@ -24,14 +25,14 @@ export const createEsimOffer = async (formData: FormData): Promise<void> => {
     const salesChannelIds = formData.get("salesChannelIds") as string
     const priceIds = formData.get("priceIds") as string
 
-    if (
-      !title ||
-      !descriptionHtml ||
-      !descriptionText ||
-      !durationInDays ||
-      !dataInGb
-    ) {
-      throw new Error("Title, description, duration and data are required")
+    if (!title || !descriptionHtml || !descriptionText || !durationInDays) {
+      throw new Error("Title, description, and duration are required")
+    }
+
+    const isUnlimited = isUnlimitedData === "true"
+
+    if (!isUnlimited && !dataInGb) {
+      throw new Error("Data amount is required when not unlimited")
     }
 
     const payload = {
@@ -39,7 +40,8 @@ export const createEsimOffer = async (formData: FormData): Promise<void> => {
       descriptionHtml,
       descriptionText,
       durationInDays: parseInt(durationInDays, 10),
-      dataInGb: parseFloat(dataInGb),
+      dataInGb: isUnlimited ? null : parseFloat(dataInGb),
+      isUnlimitedData: isUnlimited,
       inclusionIds: inclusionIds ? JSON.parse(inclusionIds) : [],
       exclusionIds: exclusionIds ? JSON.parse(exclusionIds) : [],
       mainImageId: mainImageId ? parseInt(mainImageId, 10) : null,

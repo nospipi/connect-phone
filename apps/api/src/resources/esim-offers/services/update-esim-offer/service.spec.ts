@@ -1,4 +1,5 @@
 // apps/api/src/resources/esim-offers/services/update-esim-offer/service.spec.ts
+
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -57,11 +58,13 @@ describe('UpdateEsimOfferService', () => {
         id: 1,
         title: 'Updated Title',
         dataInGb: 10,
+        isUnlimitedData: true,
       };
 
       const updatedEsimOffer = createMockEsimOffer({
         title: 'Updated Title',
         dataInGb: 10,
+        isUnlimitedData: true,
       });
 
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
@@ -80,6 +83,7 @@ describe('UpdateEsimOfferService', () => {
       });
       expect(result.title).toBe('Updated Title');
       expect(result.dataInGb).toBe(10);
+      expect(result.isUnlimitedData).toBe(true);
     });
 
     it('should throw NotFoundException when id is not provided', async () => {

@@ -32,6 +32,7 @@ const Page = async ({
   const descriptionText = params.descriptionText || ""
   const durationInDays = params.durationInDays || ""
   const dataInGb = params.dataInGb || ""
+  const isUnlimitedData = params.isUnlimitedData === "true"
   const inclusionIds = params.inclusionIds || ""
   const exclusionIds = params.exclusionIds || ""
   const mainImageId = params.mainImageId || ""
@@ -136,6 +137,7 @@ const Page = async ({
     if (descriptionText) urlParams.set("descriptionText", descriptionText)
     if (durationInDays) urlParams.set("durationInDays", durationInDays)
     if (dataInGb) urlParams.set("dataInGb", dataInGb)
+    if (isUnlimitedData) urlParams.set("isUnlimitedData", "true")
     if (inclusionIds) urlParams.set("inclusionIds", inclusionIds)
     if (exclusionIds) urlParams.set("exclusionIds", exclusionIds)
 
@@ -284,23 +286,47 @@ const Page = async ({
               </div>
 
               <div>
+                <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-slate-300">
+                  <input
+                    type="checkbox"
+                    name="isUnlimitedData"
+                    value="true"
+                    defaultChecked={isUnlimitedData}
+                    id="isUnlimitedData"
+                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 dark:border-slate-700/50 dark:bg-slate-900/50"
+                  />
+                  <span>Unlimited Data</span>
+                </label>
+                <p className="mt-1 text-xs text-gray-500 dark:text-slate-400">
+                  Check this if the offer includes unlimited data
+                </p>
+              </div>
+
+              <div>
                 <label
                   htmlFor="dataInGb"
                   className="block text-sm font-medium text-gray-700 dark:text-slate-300"
                 >
-                  Data (GB) <span className="text-red-500">*</span>
+                  Data (GB){" "}
+                  {!isUnlimitedData && <span className="text-red-500">*</span>}
                 </label>
                 <input
                   type="number"
                   id="dataInGb"
                   name="dataInGb"
-                  required
+                  required={!isUnlimitedData}
                   step="0.01"
                   min="0"
                   defaultValue={dataInGb}
                   placeholder="e.g., 5, 10, 50"
-                  className="mt-2 block w-full border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 shadow-sm outline-none focus:border-indigo-500 focus:outline-none focus:ring-0 dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200 dark:placeholder-slate-500 dark:focus:border-slate-700/50"
+                  disabled={isUnlimitedData}
+                  className="mt-2 block w-full border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 shadow-sm outline-none focus:border-indigo-500 focus:outline-none focus:ring-0 disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500 dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200 dark:placeholder-slate-500 dark:focus:border-slate-700/50 dark:disabled:bg-slate-800/50"
                 />
+                {isUnlimitedData && (
+                  <p className="mt-1 text-xs text-gray-500 dark:text-slate-400">
+                    Data amount is not required for unlimited data plans
+                  </p>
+                )}
               </div>
 
               <div>

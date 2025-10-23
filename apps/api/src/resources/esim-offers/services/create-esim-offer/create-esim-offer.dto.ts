@@ -1,15 +1,19 @@
 // apps/api/src/resources/esim-offers/services/create-esim-offer/create-esim-offer.dto.ts
+
 import {
   IsString,
   IsNotEmpty,
   IsNumber,
   IsArray,
   IsOptional,
+  IsBoolean,
   Min,
+  ValidateIf,
 } from 'class-validator';
 import { IEsimOffer } from '@connect-phone/shared-types';
 import { Sanitize } from '@/common/decorators/sanitize.decorator';
 import { Type } from 'class-transformer';
+import { IsDataRequiredIfNotUnlimited } from '@/common/validators/is-data-required-if-not-unlimited.validator';
 
 //----------------------------------------------------------------------
 
@@ -20,6 +24,7 @@ type CreateEsimOffer = Pick<
   | 'descriptionText'
   | 'durationInDays'
   | 'dataInGb'
+  | 'isUnlimitedData'
 > & {
   inclusionIds?: number[];
   exclusionIds?: number[];
@@ -51,10 +56,16 @@ export class CreateEsimOfferDto implements CreateEsimOffer {
   @Type(() => Number)
   durationInDays: number;
 
+  @ValidateIf((o) => o.isUnlimitedData !== true)
   @IsNumber()
   @Min(0)
   @Type(() => Number)
-  dataInGb: number;
+  @IsDataRequiredIfNotUnlimited()
+  dataInGb: number | null;
+
+  @IsBoolean()
+  @Type(() => Boolean)
+  isUnlimitedData: boolean;
 
   @IsOptional()
   @IsArray()

@@ -1,5 +1,14 @@
 // apps/api/src/resources/esim-offers/services/update-esim-offer/update-esim-offer.dto.ts
-import { IsString, IsOptional, IsNumber, IsArray, Min } from 'class-validator';
+
+import {
+  IsString,
+  IsOptional,
+  IsNumber,
+  IsArray,
+  IsBoolean,
+  Min,
+  ValidateIf,
+} from 'class-validator';
 import { IEsimOffer } from '@connect-phone/shared-types';
 import { Sanitize } from '@/common/decorators/sanitize.decorator';
 import { Type } from 'class-transformer';
@@ -14,6 +23,7 @@ type UpdateEsimOffer = Partial<
     | 'descriptionText'
     | 'durationInDays'
     | 'dataInGb'
+    | 'isUnlimitedData'
   >
 > & {
   id?: number;
@@ -51,11 +61,17 @@ export class UpdateEsimOfferDto implements UpdateEsimOffer {
   @Type(() => Number)
   durationInDays?: number;
 
-  @IsNumber()
   @IsOptional()
+  @ValidateIf((o) => o.isUnlimitedData !== true)
+  @IsNumber()
   @Min(0)
   @Type(() => Number)
-  dataInGb?: number;
+  dataInGb?: number | null;
+
+  @IsBoolean()
+  @IsOptional()
+  @Type(() => Boolean)
+  isUnlimitedData?: boolean;
 
   @IsOptional()
   @IsArray()

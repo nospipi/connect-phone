@@ -1,4 +1,5 @@
 // apps/api/src/resources/esim-offers/services/create-esim-offer/service.spec.ts
+
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -28,6 +29,7 @@ describe('CreateEsimOfferService', () => {
     descriptionText: 'Perfect for your Greek vacation',
     durationInDays: 30,
     dataInGb: 5,
+    isUnlimitedData: false,
     inclusionIds: [1, 2],
     exclusionIds: [1],
     mainImageId: 1,
@@ -84,6 +86,7 @@ describe('CreateEsimOfferService', () => {
         descriptionText: 'Perfect for your Greek vacation',
         durationInDays: 30,
         dataInGb: 5,
+        isUnlimitedData: false,
         organizationId: 31,
         mainImageId: 1,
         inclusions: [{ id: 1 }, { id: 2 }],
@@ -118,6 +121,7 @@ describe('CreateEsimOfferService', () => {
         descriptionText: 'Basic',
         durationInDays: 7,
         dataInGb: 1,
+        isUnlimitedData: false,
       };
 
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
@@ -134,6 +138,7 @@ describe('CreateEsimOfferService', () => {
         descriptionText: 'Basic',
         durationInDays: 7,
         dataInGb: 1,
+        isUnlimitedData: false,
         organizationId: 31,
         mainImageId: null,
         inclusions: [],
@@ -166,6 +171,7 @@ describe('CreateEsimOfferService', () => {
       dto.descriptionText = 'Great for travel';
       dto.durationInDays = 30;
       dto.dataInGb = 5;
+      dto.isUnlimitedData = false;
 
       const errors = await validate(dto);
       expect(errors.length).toBe(0);
@@ -178,6 +184,7 @@ describe('CreateEsimOfferService', () => {
       dto.descriptionText = 'Test';
       dto.durationInDays = 30;
       dto.dataInGb = 5;
+      dto.isUnlimitedData = false;
 
       const errors = await validate(dto);
       expect(errors.length).toBeGreaterThan(0);
@@ -191,6 +198,7 @@ describe('CreateEsimOfferService', () => {
       dto.descriptionText = 'Test';
       dto.durationInDays = 0;
       dto.dataInGb = 5;
+      dto.isUnlimitedData = false;
 
       const errors = await validate(dto);
       expect(errors.length).toBeGreaterThan(0);

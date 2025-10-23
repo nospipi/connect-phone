@@ -1,4 +1,4 @@
-// packages/shared-types/src/offer.ts
+// packages/shared-types/src/eSimoffer.ts
 
 import { IOrganization } from "./organization";
 import { IOfferInclusion } from "./offerInclusion";
@@ -16,7 +16,8 @@ export interface IEsimOffer {
   descriptionHtml: string;
   descriptionText: string;
   durationInDays: number;
-  dataInGb: number;
+  dataInGb: number | null;
+  isUnlimitedData: boolean;
   organizationId: number;
   organization: IOrganization;
   inclusions: IOfferInclusion[];
