@@ -51,6 +51,37 @@ export class GetAllByOrgPaginatedService {
       );
     }
 
-    return paginate<EsimOfferEntity>(queryBuilder, options);
+    const paginationResult = await paginate<EsimOfferEntity>(
+      queryBuilder,
+      options
+    );
+
+    const offerIds = paginationResult.items.map((offer) => offer.id);
+
+    if (offerIds.length > 0) {
+      const offersWithRelations = await this.esimOfferRepository
+        .createQueryBuilder('esimOffer')
+        .leftJoinAndSelect('esimOffer.mainImage', 'mainImage')
+        .leftJoinAndSelect('esimOffer.countries', 'countries')
+        .leftJoinAndSelect('esimOffer.salesChannels', 'salesChannels')
+        .leftJoinAndSelect('esimOffer.prices', 'prices')
+        .whereInIds(offerIds)
+        .getMany();
+
+      const offerMap = new Map(
+        offersWithRelations.map((offer) => [offer.id, offer])
+      );
+
+      const itemsWithRelations = paginationResult.items.map(
+        (offer) => offerMap.get(offer.id) || offer
+      );
+
+      return {
+        ...paginationResult,
+        items: itemsWithRelations,
+      };
+    }
+
+    return paginationResult;
   }
 }

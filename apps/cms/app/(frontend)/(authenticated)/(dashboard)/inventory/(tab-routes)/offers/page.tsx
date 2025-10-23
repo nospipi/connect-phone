@@ -1,10 +1,9 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/(tab-routes)/offers/page.tsx
 import { getAllEsimOffersPaginated } from "@/app/(backend)/server_actions/esim-offers/getAllEsimOffersPaginated"
 import { RiSmartphoneLine } from "@remixicon/react"
-import { IEsimOffer } from "@connect-phone/shared-types"
 import { Pagination } from "@/components/common/pagination/Pagination"
-import Link from "next/link"
 import { PendingOverlay } from "@/components/common/PendingOverlay"
+import OfferListItem from "./OfferListItem"
 
 //------------------------------------------------------------
 
@@ -84,42 +83,8 @@ const Page = async ({
       {items.length > 0 && (
         <div className="flex-1 overflow-hidden">
           <div className="h-full divide-y divide-gray-200 overflow-auto px-5 dark:divide-slate-800/30">
-            {items.map((offer: IEsimOffer) => (
-              <Link
-                key={offer.id}
-                href={`/inventory/offers/${offer.id}`}
-                className="block"
-              >
-                <div className="duration-2000 group py-4 transition-all">
-                  <div className="flex items-center justify-between gap-4">
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-start justify-between">
-                        <div className="min-w-0 flex-1">
-                          <div className="flex min-w-0 items-center gap-2">
-                            <span className="flex-shrink-0 text-base font-medium text-gray-500 dark:text-slate-500">
-                              #{offer.id}
-                            </span>
-                            <p className="min-w-0 flex-1 truncate text-base font-medium text-gray-900 group-hover:text-gray-700 dark:text-slate-200 dark:group-hover:text-slate-100">
-                              {offer.title}
-                            </p>
-                          </div>
-                          <p className="mt-1 truncate text-sm text-gray-600 group-hover:underline dark:text-slate-400">
-                            {offer.dataInGb} GB • {offer.durationInDays} days
-                          </p>
-                          {offer.countries && offer.countries.length > 0 && (
-                            <p className="mt-0.5 truncate text-xs text-gray-500 dark:text-slate-500">
-                              {offer.countries.length}{" "}
-                              {offer.countries.length === 1
-                                ? "country"
-                                : "countries"}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Link>
+            {items.map((offer) => (
+              <OfferListItem key={offer.id} offer={offer} />
             ))}
           </div>
         </div>
