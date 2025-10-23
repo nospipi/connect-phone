@@ -1,4 +1,5 @@
 // apps/api/src/resources/esim-offers/services/get-all-by-org-paginated/service.spec.ts
+
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -6,6 +7,7 @@ import { GetAllByOrgPaginatedService } from './service';
 import { EsimOfferEntity } from '../../../../database/entities/esim-offer.entity';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 import { paginate } from 'nestjs-typeorm-paginate';
+import { SearchEsimOffersDto } from './search-esim-offers.dto';
 import {
   createMockOrganization,
   createMockEsimOffer,
@@ -71,7 +73,13 @@ describe('GetAllByOrgPaginatedService', () => {
       );
       mockPaginate.mockResolvedValue(mockPaginationResult);
 
-      const result = await service.getAllEsimOffersPaginated(1, 10, '');
+      const searchDto: SearchEsimOffersDto = {
+        page: 1,
+        limit: 10,
+        search: '',
+      };
+
+      const result = await service.getAllEsimOffersPaginated(searchDto);
 
       expect(
         currentOrganizationService.getCurrentOrganization
@@ -101,7 +109,9 @@ describe('GetAllByOrgPaginatedService', () => {
       );
       mockPaginate.mockResolvedValue(mockPaginationResult);
 
-      await service.getAllEsimOffersPaginated();
+      const searchDto: SearchEsimOffersDto = {};
+
+      await service.getAllEsimOffersPaginated(searchDto);
 
       expect(mockPaginate).toHaveBeenCalledWith(mockQueryBuilder, {
         page: 1,
@@ -117,7 +127,12 @@ describe('GetAllByOrgPaginatedService', () => {
       );
       mockPaginate.mockResolvedValue(mockPaginationResult);
 
-      await service.getAllEsimOffersPaginated(1, 150);
+      const searchDto: SearchEsimOffersDto = {
+        page: 1,
+        limit: 150,
+      };
+
+      await service.getAllEsimOffersPaginated(searchDto);
 
       expect(mockPaginate).toHaveBeenCalledWith(mockQueryBuilder, {
         page: 1,
@@ -132,7 +147,13 @@ describe('GetAllByOrgPaginatedService', () => {
       );
       mockPaginate.mockResolvedValue(mockPaginationResult);
 
-      await service.getAllEsimOffersPaginated(1, 10, 'Greece vacation');
+      const searchDto: SearchEsimOffersDto = {
+        page: 1,
+        limit: 10,
+        search: 'Greece vacation',
+      };
+
+      await service.getAllEsimOffersPaginated(searchDto);
 
       expect(mockQueryBuilder.andWhere).toHaveBeenCalledWith(
         '(esimOffer.title ILIKE :search OR esimOffer.descriptionText ILIKE :search)',
@@ -146,7 +167,13 @@ describe('GetAllByOrgPaginatedService', () => {
       );
       mockPaginate.mockResolvedValue(mockPaginationResult);
 
-      await service.getAllEsimOffersPaginated(1, 10, '   ');
+      const searchDto: SearchEsimOffersDto = {
+        page: 1,
+        limit: 10,
+        search: '   ',
+      };
+
+      await service.getAllEsimOffersPaginated(searchDto);
 
       expect(mockQueryBuilder.andWhere).not.toHaveBeenCalled();
     });
