@@ -11,12 +11,28 @@ interface PaginationParams {
   page?: string | number
   limit?: string | number
   search?: string
+  minDataInGb?: string | number
+  maxDataInGb?: string | number
+  isUnlimitedData?: boolean
+  minDurationInDays?: string | number
+  maxDurationInDays?: string | number
+  countryIds?: number[]
+  salesChannelIds?: number[]
+  priceIds?: number[]
 }
 
 export const getAllEsimOffersPaginated = async ({
   page = 1,
   limit = 10,
   search,
+  minDataInGb,
+  maxDataInGb,
+  isUnlimitedData,
+  minDurationInDays,
+  maxDurationInDays,
+  countryIds,
+  salesChannelIds,
+  priceIds,
 }: PaginationParams): Promise<PaginatedEsimOffersResponse> => {
   try {
     const api = createApiClient()
@@ -26,6 +42,38 @@ export const getAllEsimOffersPaginated = async ({
 
     if (search) {
       params.append("search", search)
+    }
+
+    if (minDataInGb !== undefined) {
+      params.append("minDataInGb", String(minDataInGb))
+    }
+
+    if (maxDataInGb !== undefined) {
+      params.append("maxDataInGb", String(maxDataInGb))
+    }
+
+    if (isUnlimitedData !== undefined) {
+      params.append("isUnlimitedData", String(isUnlimitedData))
+    }
+
+    if (minDurationInDays !== undefined) {
+      params.append("minDurationInDays", String(minDurationInDays))
+    }
+
+    if (maxDurationInDays !== undefined) {
+      params.append("maxDurationInDays", String(maxDurationInDays))
+    }
+
+    if (countryIds && countryIds.length > 0) {
+      params.append("countryIds", countryIds.join(","))
+    }
+
+    if (salesChannelIds && salesChannelIds.length > 0) {
+      params.append("salesChannelIds", salesChannelIds.join(","))
+    }
+
+    if (priceIds && priceIds.length > 0) {
+      params.append("priceIds", priceIds.join(","))
     }
 
     const response = await api.get(

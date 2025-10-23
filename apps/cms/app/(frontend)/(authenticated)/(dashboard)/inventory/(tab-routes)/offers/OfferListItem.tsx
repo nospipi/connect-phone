@@ -30,7 +30,7 @@ export default function OfferListItem({ offer }: OfferListItemProps) {
     <Link href={`/inventory/offers/${offer.id}`} className="group block">
       <div className="py-5">
         <div className="flex gap-5">
-          <div className="relative h-32 w-32 flex-shrink-0 overflow-hidden rounded-lg border border-gray-200 bg-gradient-to-br from-gray-50 to-gray-100 dark:border-slate-700/50 dark:from-slate-800/50 dark:to-slate-900/50">
+          <div className="relative w-40 flex-shrink-0 self-stretch overflow-hidden rounded-lg border border-gray-200 bg-gradient-to-br from-gray-50 to-gray-100 dark:border-slate-700/50 dark:from-slate-800/50 dark:to-slate-900/50">
             {offer.mainImage ? (
               <Image
                 src={offer.mainImage.url}

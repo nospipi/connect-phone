@@ -10,6 +10,7 @@ import {
   IPaginationOptions,
 } from 'nestjs-typeorm-paginate';
 import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
+import { SearchEsimOffersDto } from './search-esim-offers.dto';
 
 //----------------------------------------------------------------------
 
@@ -22,16 +23,14 @@ export class GetAllByOrgPaginatedService {
   ) {}
 
   async getAllEsimOffersPaginated(
-    page: number = 1,
-    limit: number = 10,
-    search: string = ''
+    searchDto: SearchEsimOffersDto
   ): Promise<Pagination<IEsimOffer>> {
     const organization =
       await this.currentOrganizationService.getCurrentOrganization();
 
     const options: IPaginationOptions = {
-      page,
-      limit: Math.min(Math.max(limit, 1), 100),
+      page: searchDto.page || 1,
+      limit: Math.min(Math.max(searchDto.limit || 10, 1), 100),
       route: `/esim-offers/paginated`,
     };
 
@@ -42,13 +41,67 @@ export class GetAllByOrgPaginatedService {
       })
       .orderBy('esimOffer.createdAt', 'DESC');
 
-    if (search && search.trim().length > 0) {
+    if (searchDto.search && searchDto.search.trim().length > 0) {
       queryBuilder.andWhere(
         '(esimOffer.title ILIKE :search OR esimOffer.descriptionText ILIKE :search)',
         {
-          search: `%${search.trim()}%`,
+          search: `%${searchDto.search.trim()}%`,
         }
       );
+    }
+
+    if (searchDto.isUnlimitedData !== undefined) {
+      queryBuilder.andWhere('esimOffer.isUnlimitedData = :isUnlimitedData', {
+        isUnlimitedData: searchDto.isUnlimitedData,
+      });
+    }
+
+    if (searchDto.minDataInGb !== undefined) {
+      queryBuilder.andWhere('esimOffer.dataInGb >= :minDataInGb', {
+        minDataInGb: searchDto.minDataInGb,
+      });
+    }
+
+    if (searchDto.maxDataInGb !== undefined) {
+      queryBuilder.andWhere('esimOffer.dataInGb <= :maxDataInGb', {
+        maxDataInGb: searchDto.maxDataInGb,
+      });
+    }
+
+    if (searchDto.minDurationInDays !== undefined) {
+      queryBuilder.andWhere('esimOffer.durationInDays >= :minDurationInDays', {
+        minDurationInDays: searchDto.minDurationInDays,
+      });
+    }
+
+    if (searchDto.maxDurationInDays !== undefined) {
+      queryBuilder.andWhere('esimOffer.durationInDays <= :maxDurationInDays', {
+        maxDurationInDays: searchDto.maxDurationInDays,
+      });
+    }
+
+    if (searchDto.countryIds && searchDto.countryIds.length > 0) {
+      queryBuilder
+        .leftJoin('esimOffer.countries', 'countries')
+        .andWhere('countries.id IN (:...countryIds)', {
+          countryIds: searchDto.countryIds,
+        });
+    }
+
+    if (searchDto.salesChannelIds && searchDto.salesChannelIds.length > 0) {
+      queryBuilder
+        .leftJoin('esimOffer.salesChannels', 'salesChannels')
+        .andWhere('salesChannels.id IN (:...salesChannelIds)', {
+          salesChannelIds: searchDto.salesChannelIds,
+        });
+    }
+
+    if (searchDto.priceIds && searchDto.priceIds.length > 0) {
+      queryBuilder
+        .leftJoin('esimOffer.prices', 'prices')
+        .andWhere('prices.id IN (:...priceIds)', {
+          priceIds: searchDto.priceIds,
+        });
     }
 
     const paginationResult = await paginate<EsimOfferEntity>(
