@@ -1,17 +1,16 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/prices/[price_id]/page.tsx
+
 import { getSalesChannelById } from "@/app/(backend)/server_actions/sales-channels/getSalesChannelById"
 import { getDateRangeById } from "@/app/(backend)/server_actions/date-ranges/getDateRangeById"
 import { updatePrice } from "@/app/(backend)/server_actions/prices/updatePrice"
-import { getPriceById } from "@/app/(backend)/server_actions/prices/getPriceById"
 import Link from "next/link"
-import { RiArrowLeftLine, RiCloseLine } from "@remixicon/react"
+import { RiArrowLeftLine } from "@remixicon/react"
 import { Currency, CURRENCIES } from "@connect-phone/shared-types"
-import { Badge } from "@/components/common/Badge"
 import { PendingOverlay } from "@/components/common/PendingOverlay"
 import DateBasedCheckbox from "./DateBasedCheckbox.client"
 import SalesChannelSelectButton from "./SalesChannelSelectButton.client"
 import DateRangeSelectButton from "./DateRangeSelectButton.client"
-import DeletePriceButton from "./DeletePriceButton"
+import SelectedItemBadge from "./SelectedItemBadge.client"
 
 //------------------------------------------------------------
 
@@ -25,17 +24,12 @@ const Page = async ({
   const { price_id } = await params
   const urlParams = await searchParams
 
-  const price = await getPriceById(Number(price_id))
-
   const salesChannelIds = urlParams.salesChannelIds || ""
   const dateRangeIds = urlParams.dateRangeIds || ""
-  const isDateBased =
-    urlParams.isDateBased !== undefined
-      ? urlParams.isDateBased === "true"
-      : price.isDateBased
-  const name = urlParams.name || price.name
-  const amount = urlParams.amount || price.amount.toString()
-  const currency = (urlParams.currency || price.currency) as Currency
+  const isDateBased = urlParams.isDateBased === "true"
+  const name = urlParams.name || ""
+  const amount = urlParams.amount || ""
+  const currency = (urlParams.currency || "USD") as Currency
 
   const selectedSalesChannelIds = salesChannelIds
     ? salesChannelIds.split(",").map(Number).filter(Boolean)
@@ -81,11 +75,6 @@ const Page = async ({
     if (currency) newParams.set("currency", currency)
 
     return `/inventory/prices/${price_id}?${newParams.toString()}`
-  }
-
-  const priceForDelete = {
-    id: Number(price_id),
-    name: name || "Price",
   }
 
   const formKey = `${name}-${amount}-${currency}-${isDateBased}-${selectedSalesChannelIds.join(",")}-${selectedDateRangeIds.join(",")}`
@@ -223,18 +212,15 @@ const Page = async ({
                 {selectedSalesChannels.length > 0 && (
                   <div className="mt-2 flex flex-wrap gap-2">
                     {selectedSalesChannels.map((channel) => (
-                      <Link
+                      <SelectedItemBadge
                         key={channel.id}
-                        href={buildUrlWithoutItem(
+                        id={channel.id}
+                        label={channel.name}
+                        removeUrl={buildUrlWithoutItem(
                           "salesChannelIds",
                           channel.id,
                         )}
-                      >
-                        <Badge variant="neutral" className="group">
-                          <span>{channel.name}</span>
-                          <RiCloseLine className="ml-1 h-3 w-3 group-hover:text-red-600" />
-                        </Badge>
-                      </Link>
+                      />
                     ))}
                   </div>
                 )}
@@ -256,18 +242,15 @@ const Page = async ({
                   {selectedDateRanges.length > 0 && (
                     <div className="mt-2 flex flex-wrap gap-2">
                       {selectedDateRanges.map((dateRange) => (
-                        <Link
+                        <SelectedItemBadge
                           key={dateRange.id}
-                          href={buildUrlWithoutItem(
+                          id={dateRange.id}
+                          label={dateRange.name}
+                          removeUrl={buildUrlWithoutItem(
                             "dateRangeIds",
                             dateRange.id,
                           )}
-                        >
-                          <Badge variant="neutral" className="group">
-                            <span>{dateRange.name}</span>
-                            <RiCloseLine className="ml-1 h-3 w-3 group-hover:text-red-600" />
-                          </Badge>
-                        </Link>
+                        />
                       ))}
                     </div>
                   )}
@@ -300,8 +283,6 @@ const Page = async ({
                 </PendingOverlay>
               </div>
             </form>
-
-            <DeletePriceButton price={priceForDelete as any} />
           </div>
         </div>
       </div>

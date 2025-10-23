@@ -157,7 +157,7 @@ function CustomPendingWrapper({
     <div onClick={handleClick} className={`relative ${className}`}>
       {children}
       {pending && (
-        <div className="absolute inset-0 flex items-center justify-center bg-white dark:bg-slate-900">
+        <div className="absolute inset-0 flex h-full w-full items-center justify-center bg-white dark:bg-slate-900">
           <DotsLoading />
         </div>
       )}

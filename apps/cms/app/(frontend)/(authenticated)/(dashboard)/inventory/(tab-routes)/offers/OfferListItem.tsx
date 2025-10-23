@@ -30,6 +30,30 @@ export default function OfferListItem({ offer }: OfferListItemProps) {
   const buildEditUrl = () => {
     const urlParams = new URLSearchParams()
 
+    if (offer.title) {
+      urlParams.set("title", offer.title)
+    }
+
+    if (offer.descriptionHtml) {
+      urlParams.set("descriptionHtml", offer.descriptionHtml)
+    }
+
+    if (offer.descriptionText) {
+      urlParams.set("descriptionText", offer.descriptionText)
+    }
+
+    if (offer.durationInDays) {
+      urlParams.set("durationInDays", offer.durationInDays.toString())
+    }
+
+    if (offer.dataInGb !== null && offer.dataInGb !== undefined) {
+      urlParams.set("dataInGb", offer.dataInGb.toString())
+    }
+
+    if (offer.isUnlimitedData) {
+      urlParams.set("isUnlimitedData", "true")
+    }
+
     if (offer.inclusions && offer.inclusions.length > 0) {
       urlParams.set("inclusionIds", offer.inclusions.map((i) => i.id).join(","))
     }

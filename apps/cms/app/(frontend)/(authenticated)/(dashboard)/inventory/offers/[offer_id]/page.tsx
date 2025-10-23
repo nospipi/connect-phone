@@ -1,6 +1,5 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/offers/[offer_id]/page.tsx
 
-import { getEsimOfferById } from "@/app/(backend)/server_actions/esim-offers/getEsimOfferById"
 import { updateEsimOffer } from "@/app/(backend)/server_actions/esim-offers/updateEsimOffer"
 import { getAllCountriesOfOrg } from "@/app/(backend)/server_actions/countries/getAllCountriesOfOrg"
 import { getSalesChannelById } from "@/app/(backend)/server_actions/sales-channels/getSalesChannelById"
@@ -9,8 +8,7 @@ import { getMediaById } from "@/app/(backend)/server_actions/media/getMediaById"
 import { getAllOfferInclusions } from "@/app/(backend)/server_actions/offer-inclusions/getAllOfferInclusions"
 import { getAllOfferExclusions } from "@/app/(backend)/server_actions/offer-exclusions/getAllOfferExclusions"
 import Link from "next/link"
-import { RiArrowLeftLine, RiCloseLine } from "@remixicon/react"
-import { Badge } from "@/components/common/Badge"
+import { RiArrowLeftLine } from "@remixicon/react"
 import { PendingOverlay } from "@/components/common/PendingOverlay"
 import CountrySelectButton from "./CountrySelectButton.client"
 import SalesChannelSelectButton from "./SalesChannelSelectButton.client"
@@ -20,7 +18,7 @@ import ImagesSelectButton from "./ImagesSelectButton.client"
 import InclusionsMultiSelect from "./InclusionsMultiSelect.client"
 import ExclusionsMultiSelect from "./ExclusionsMultiSelect.client"
 import UnlimitedDataCheckbox from "./UnlimitedDataCheckbox.client"
-import DeleteOfferButton from "./DeleteOfferButton"
+import SelectedItemBadge from "./SelectedItemBadge.client"
 
 //------------------------------------------------------------
 
@@ -34,41 +32,19 @@ const Page = async ({
   const { offer_id } = await params
   const urlParams = await searchParams
 
-  const offer = await getEsimOfferById(Number(offer_id))
-
-  const title = urlParams.title || offer.title
-  const descriptionHtml = urlParams.descriptionHtml || offer.descriptionHtml
-  const descriptionText = urlParams.descriptionText || offer.descriptionText
-  const durationInDays =
-    urlParams.durationInDays || offer.durationInDays.toString()
-  const dataInGb = urlParams.dataInGb || offer.dataInGb?.toString() || ""
-  const isUnlimitedData =
-    urlParams.isUnlimitedData !== undefined
-      ? urlParams.isUnlimitedData === "true"
-      : offer.isUnlimitedData
-  const inclusionIds =
-    urlParams.inclusionIds ||
-    (offer.inclusions ? offer.inclusions.map((i) => i.id).join(",") : "")
-  const exclusionIds =
-    urlParams.exclusionIds ||
-    (offer.exclusions ? offer.exclusions.map((e) => e.id).join(",") : "")
-  const mainImageId =
-    urlParams.mainImageId ||
-    (offer.mainImageId ? offer.mainImageId.toString() : "")
-  const imageIds =
-    urlParams.imageIds ||
-    (offer.images ? offer.images.map((img) => img.id).join(",") : "")
-  const countryIds =
-    urlParams.countryIds ||
-    (offer.countries ? offer.countries.map((c) => c.id).join(",") : "")
-  const salesChannelIds =
-    urlParams.salesChannelIds ||
-    (offer.salesChannels
-      ? offer.salesChannels.map((sc) => sc.id).join(",")
-      : "")
-  const priceIds =
-    urlParams.priceIds ||
-    (offer.prices ? offer.prices.map((p) => p.id).join(",") : "")
+  const title = urlParams.title || ""
+  const descriptionHtml = urlParams.descriptionHtml || ""
+  const descriptionText = urlParams.descriptionText || ""
+  const durationInDays = urlParams.durationInDays || ""
+  const dataInGb = urlParams.dataInGb || ""
+  const isUnlimitedData = urlParams.isUnlimitedData === "true"
+  const inclusionIds = urlParams.inclusionIds || ""
+  const exclusionIds = urlParams.exclusionIds || ""
+  const mainImageId = urlParams.mainImageId || ""
+  const imageIds = urlParams.imageIds || ""
+  const countryIds = urlParams.countryIds || ""
+  const salesChannelIds = urlParams.salesChannelIds || ""
+  const priceIds = urlParams.priceIds || ""
 
   const allInclusions = await getAllOfferInclusions()
   const allExclusions = await getAllOfferExclusions()
@@ -401,20 +377,14 @@ const Page = async ({
                 </label>
                 {mainImage && (
                   <div className="mt-2">
-                    <Link
-                      href={buildUrlWithoutItem(
+                    <SelectedItemBadge
+                      id={mainImage.id}
+                      label={`#${mainImage.id} ${mainImage.description || "No description"}`}
+                      removeUrl={buildUrlWithoutItem(
                         "mainImageId",
                         Number(mainImageId),
                       )}
-                    >
-                      <Badge variant="neutral" className="group">
-                        <span>
-                          #{mainImage.id}{" "}
-                          {mainImage.description || "No description"}
-                        </span>
-                        <RiCloseLine className="ml-1 h-3 w-3 group-hover:text-red-600" />
-                      </Badge>
-                    </Link>
+                    />
                   </div>
                 )}
                 <div className="mt-2">
@@ -429,17 +399,12 @@ const Page = async ({
                 {selectedImages.length > 0 && (
                   <div className="mt-2 flex flex-wrap gap-2">
                     {selectedImages.map((image) => (
-                      <Link
+                      <SelectedItemBadge
                         key={image.id}
-                        href={buildUrlWithoutItem("imageIds", image.id)}
-                      >
-                        <Badge variant="neutral" className="group">
-                          <span>
-                            #{image.id} {image.description || "No description"}
-                          </span>
-                          <RiCloseLine className="ml-1 h-3 w-3 group-hover:text-red-600" />
-                        </Badge>
-                      </Link>
+                        id={image.id}
+                        label={`#${image.id} ${image.description || "No description"}`}
+                        removeUrl={buildUrlWithoutItem("imageIds", image.id)}
+                      />
                     ))}
                   </div>
                 )}
@@ -455,15 +420,15 @@ const Page = async ({
                 {selectedCountries.length > 0 && (
                   <div className="mt-2 flex flex-wrap gap-2">
                     {selectedCountries.map((country) => (
-                      <Link
+                      <SelectedItemBadge
                         key={country.id}
-                        href={buildUrlWithoutItem("countryIds", country.id)}
-                      >
-                        <Badge variant="neutral" className="group">
-                          <span>{country.name}</span>
-                          <RiCloseLine className="ml-1 h-3 w-3 group-hover:text-red-600" />
-                        </Badge>
-                      </Link>
+                        id={country.id}
+                        label={country.name}
+                        removeUrl={buildUrlWithoutItem(
+                          "countryIds",
+                          country.id,
+                        )}
+                      />
                     ))}
                   </div>
                 )}
@@ -479,18 +444,15 @@ const Page = async ({
                 {selectedSalesChannels.length > 0 && (
                   <div className="mt-2 flex flex-wrap gap-2">
                     {selectedSalesChannels.map((channel) => (
-                      <Link
+                      <SelectedItemBadge
                         key={channel.id}
-                        href={buildUrlWithoutItem(
+                        id={channel.id}
+                        label={channel.name}
+                        removeUrl={buildUrlWithoutItem(
                           "salesChannelIds",
                           channel.id,
                         )}
-                      >
-                        <Badge variant="neutral" className="group">
-                          <span>{channel.name}</span>
-                          <RiCloseLine className="ml-1 h-3 w-3 group-hover:text-red-600" />
-                        </Badge>
-                      </Link>
+                      />
                     ))}
                   </div>
                 )}
@@ -506,15 +468,12 @@ const Page = async ({
                 {selectedPrices.length > 0 && (
                   <div className="mt-2 flex flex-wrap gap-2">
                     {selectedPrices.map((price) => (
-                      <Link
+                      <SelectedItemBadge
                         key={price.id}
-                        href={buildUrlWithoutItem("priceIds", price.id)}
-                      >
-                        <Badge variant="neutral" className="group">
-                          <span>{price.name}</span>
-                          <RiCloseLine className="ml-1 h-3 w-3 group-hover:text-red-600" />
-                        </Badge>
-                      </Link>
+                        id={price.id}
+                        label={price.name}
+                        removeUrl={buildUrlWithoutItem("priceIds", price.id)}
+                      />
                     ))}
                   </div>
                 )}
@@ -542,8 +501,6 @@ const Page = async ({
                 </PendingOverlay>
               </div>
             </form>
-
-            <DeleteOfferButton offer={offer} />
           </div>
         </div>
       </div>
