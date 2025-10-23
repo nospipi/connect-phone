@@ -1,6 +1,6 @@
 // apps/api/src/database/data-source.ts
 
-import { DataSource } from 'typeorm';
+import { DataSource, DataSourceOptions } from 'typeorm';
 import { OrganizationEntity } from './entities/organization.entity';
 import { SalesChannelEntity } from './entities/sales-channel.entity';
 import { UserEntity } from './entities/user.entity';
@@ -21,7 +21,7 @@ dotenv.config();
 
 //-----------------------------------------------------------------------------
 
-export const AppDataSource = new DataSource({
+export const dataSourceOptions: DataSourceOptions = {
   type: 'postgres',
   url: process.env.DATABASE_URL,
   entities: [
@@ -43,10 +43,13 @@ export const AppDataSource = new DataSource({
   migrations: ['src/database/migrations/*.ts'],
   ssl: {
     rejectUnauthorized: false,
+    requestCert: false,
   },
   synchronize: false,
   logging: true,
-});
+};
+
+export const AppDataSource = new DataSource(dataSourceOptions);
 
 export async function initializeDataSource() {
   if (!AppDataSource.isInitialized) {

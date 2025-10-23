@@ -3,22 +3,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { OrganizationEntity } from './entities/organization.entity';
-import { SalesChannelEntity } from './entities/sales-channel.entity';
-import { UserEntity } from './entities/user.entity';
-import { UserOrganizationEntity } from './entities/user-organization.entity';
-import { AuditLogEntryEntity } from './entities/audit-log.entity';
-import { UserInvitationEntity } from './entities/user-invitation.entity';
-import { CountryEntity } from './entities/country.entity';
-import { PriceEntity } from './entities/price.entity';
-import { DateRangeEntity } from './entities/date-range.entity';
-import { MediaEntity } from './entities/media.entity';
-import { OfferInclusionEntity } from './entities/offer-inclusion.entity';
-import { OfferExclusionEntity } from './entities/offer-exclusion.entity';
-import { EsimOfferEntity } from './entities/esim-offer.entity';
-import { AuditLogSubscriber } from './subscribers/audit-log.subscriber';
-import { UserInvitationSubscriber } from './subscribers/user-invitation.subscriber';
 import { RlsInitializationService } from './services/rls-initialization.service';
+import { dataSourceOptions } from './data-source';
 
 //------------------------------------------------------------
 
@@ -27,28 +13,8 @@ import { RlsInitializationService } from './services/rls-initialization.service'
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        url: configService.get('DATABASE_URL'),
-        entities: [
-          OrganizationEntity,
-          SalesChannelEntity,
-          UserEntity,
-          UserOrganizationEntity,
-          AuditLogEntryEntity,
-          UserInvitationEntity,
-          CountryEntity,
-          PriceEntity,
-          DateRangeEntity,
-          MediaEntity,
-          OfferInclusionEntity,
-          OfferExclusionEntity,
-          EsimOfferEntity,
-        ],
-        subscribers: [AuditLogSubscriber, UserInvitationSubscriber],
+        ...dataSourceOptions,
         synchronize: process.env.NODE_ENV !== 'production',
-        ssl: {
-          rejectUnauthorized: false,
-        },
         logging: process.env.NODE_ENV === 'development',
       }),
       inject: [ConfigService],

@@ -22,7 +22,7 @@ export class RlsInitializationService implements OnModuleInit {
       const isRlsEnabled = await this.checkRlsEnabled();
 
       if (!isRlsEnabled) {
-        this.logger.log(
+        this.logger.warn(
           '🔧 RLS not configured. Enabling RLS and creating policies...'
         );
         await this.enableRls();
