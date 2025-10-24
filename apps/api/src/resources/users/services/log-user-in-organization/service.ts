@@ -12,6 +12,8 @@ import { OrganizationEntity } from '../../../../database/entities/organization.e
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
 import { OrganizationContext } from '../../../../common/context/organization-context';
 
+//-----------------------------------------------------------------s
+
 @Injectable()
 export class LogUserInOrganizationService {
   constructor(

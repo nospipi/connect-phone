@@ -5,6 +5,7 @@ import {
   ExecutionContext,
   UnauthorizedException,
   Scope,
+  Logger,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { CurrentDbUserService } from '../core/current-db-user.service';
@@ -13,20 +14,10 @@ import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
 
 //----------------------------------------------------------------------
 
-/**
- * Database User Guard
- *
- * This guard enforces that the authenticated Clerk user exists in the database
- * unless the route is marked as @Public()
- *
- * Usage:
- * - Apply to controllers or specific routes that require DB user validation
- * - Works in combination with ClerkAuthGuard (authentication must happen first)
- * - Automatically skipped for @Public() routes
- */
-
 @Injectable({ scope: Scope.REQUEST })
 export class DbUserGuard implements CanActivate {
+  private readonly logger = new Logger(DbUserGuard.name);
+
   constructor(
     private readonly reflector: Reflector,
     private readonly currentDbUserService: CurrentDbUserService,
@@ -34,48 +25,51 @@ export class DbUserGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    // Check if route is marked as public (skips DB user requirement)
+    const request = context.switchToHttp().getRequest();
+    const endpoint = `${request.method} ${request.url}`;
+
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
       context.getHandler(),
       context.getClass(),
     ]);
 
     if (isPublic) {
-      console.log('🌍 Public route - skipping database user requirement');
+      this.logger.log(
+        `🌍 [${endpoint}] Public route - skipping database user requirement`
+      );
       return true;
     }
 
-    const request = context.switchToHttp().getRequest();
+    this.logger.log(
+      `🔒👤 [${endpoint}] DB User guard: Enforcing database user requirement...`
+    );
 
-    console.log('🔒👤 DB User guard: Enforcing database user requirement...');
-
-    // Get Clerk user email (this should be available since ClerkAuthGuard runs first)
     const clerkUserEmail = this.currentClerkUserService.getClerkUserEmail();
 
     if (!clerkUserEmail) {
-      console.log('❌ DB User guard: No Clerk user email found');
+      this.logger.log(
+        `❌ [${endpoint}] DB User guard: No Clerk user email found`
+      );
       throw new UnauthorizedException(
         'Database user access required: Authentication information is missing'
       );
     }
 
-    // Check if user exists in database
     const dbUser = await this.currentDbUserService.getCurrentDbUser();
 
     if (!dbUser) {
-      console.log(
-        `❌ DB User guard: User ${clerkUserEmail} not found in database`
+      this.logger.log(
+        `❌ [${endpoint}] DB User guard: User ${clerkUserEmail} not found in database`
       );
       throw new UnauthorizedException(
         'Database user access required: Your account must be set up in our system before you can access this resource'
       );
     }
 
-    console.log(
-      `🔒👤 DB User guard: Access granted for user ${dbUser.email} (ID: ${dbUser.id})`
+    this.logger.log(
+      `🔒👤 [${endpoint}] DB User guard: Access granted for user ${dbUser.email} (ID: ${dbUser.id})`
     );
 
-    // Attach to request for controllers and services to use
     request.currentDbUser = dbUser;
 
     return true;

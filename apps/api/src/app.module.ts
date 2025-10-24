@@ -1,6 +1,7 @@
 // apps/api/src/app.module.ts
 
 import { Module } from '@nestjs/common';
+import { CacheModule } from '@nestjs/cache-manager';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
@@ -9,6 +10,8 @@ import { ClerkClientProvider } from 'src/common/providers/clerk-client.provider'
 import { AuthModule } from './auth/auth.module';
 import { ClerkAuthGuard } from './common/guards/clerk-auth.guard';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+import { CacheLoggingInterceptor } from './common/interceptors/cache-logging.interceptor';
+import { OrganizationCacheInterceptor } from './common/interceptors/organization-cache.interceptor';
 import { AuditContextInterceptor } from './common/interceptors/audit-context-interceptor';
 import { TransactionRlsInterceptor } from './common/interceptors/transaction-rls.interceptor';
 import { DatabaseModule } from './database/database.module';
@@ -33,6 +36,11 @@ import { EsimOffersModule } from './resources/esim-offers/esim-offers.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+    }),
+    CacheModule.register({
+      isGlobal: true,
+      ttl: 300000, // 5 minutes
+      max: 200, // maximum number of items in cache
     }),
     DatabaseModule,
     AuthModule,
@@ -66,6 +74,14 @@ import { EsimOffersModule } from './resources/esim-offers/esim-offers.module';
     {
       provide: APP_INTERCEPTOR,
       useClass: TransactionRlsInterceptor,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: CacheLoggingInterceptor,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: OrganizationCacheInterceptor,
     },
   ],
 })
