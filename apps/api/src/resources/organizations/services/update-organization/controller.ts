@@ -7,6 +7,8 @@ import { DbUserGuard } from '../../../../common/guards/db-user.guard';
 import { DbUserRoleGuard } from '../../../../common/guards/db-user-role.guard';
 import { OrganizationGuard } from '../../../../common/guards/organization.guard';
 
+//------------------------------------------------------
+
 @Controller('organizations')
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN'))
 export class UpdateOrganizationController {

@@ -6,6 +6,8 @@ import { UserEntity } from '../../../../database/entities/user.entity';
 import { IUser } from '@connect-phone/shared-types';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
 
+//------------------------------------------------------
+
 @Injectable()
 export class LogOutUserFromOrganizationService {
   constructor(

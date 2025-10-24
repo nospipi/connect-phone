@@ -5,6 +5,7 @@ import { OrganizationEntity } from '../../../../database/entities/organization.e
 import { UserOrganizationRole } from '@connect-phone/shared-types';
 import { DbUserGuard } from '../../../../common/guards/db-user.guard';
 import { OrganizationGuard } from '../../../../common/guards/organization.guard';
+import { NoCache } from '@/common/decorators/no-cache.decorator';
 
 //-------------------------------------------
 
@@ -15,6 +16,7 @@ export class GetAllOrganizationsOfUserController {
   ) {}
 
   @Get('organizations')
+  @NoCache()
   @UseGuards(DbUserGuard, OrganizationGuard)
   async getAllOrganizations(): Promise<
     (OrganizationEntity & { role: UserOrganizationRole })[]
@@ -23,6 +25,7 @@ export class GetAllOrganizationsOfUserController {
   }
 
   @Get('organizations_accessed_by_user_without_current_org')
+  @NoCache()
   @UseGuards(DbUserGuard) // No OrganizationGuard here
   async getAllOrganizationsAccessedByUserWithoutCurrentOrg(): Promise<
     (OrganizationEntity & { role: UserOrganizationRole })[]

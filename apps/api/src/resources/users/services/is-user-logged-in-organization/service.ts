@@ -2,6 +2,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
 
+//------------------------------------------------------
+
 @Injectable()
 export class IsUserLoggedInOrganizationService {
   constructor(private readonly currentDbUserService: CurrentDbUserService) {}

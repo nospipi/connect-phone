@@ -14,6 +14,8 @@ import {
   createCurrentDbUserServiceProvider,
 } from '../../../../test/factories';
 
+//------------------------------------------------------
+
 describe('LogUserInOrganizationService', () => {
   let service: LogUserInOrganizationService;
   let userRepository: jest.Mocked<Repository<UserEntity>>;

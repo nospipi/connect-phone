@@ -11,6 +11,7 @@ import { DbUserGuard } from '../../../../common/guards/db-user.guard';
 import { DbUserRoleGuard } from '../../../../common/guards/db-user-role.guard';
 import { OrganizationGuard } from '../../../../common/guards/organization.guard';
 import { IUserWithOrganizationRole } from '@connect-phone/shared-types';
+import { NoCache } from '@/common/decorators/no-cache.decorator';
 
 //--------------------------------------------------------------------------------
 
@@ -20,6 +21,7 @@ export class GetUserByIdController {
   constructor(private readonly getUserByIdService: GetUserByIdService) {}
 
   @Get(':id')
+  @NoCache()
   async getUserById(
     @Param('id', ParseIntPipe) id: number
   ): Promise<IUserWithOrganizationRole> {

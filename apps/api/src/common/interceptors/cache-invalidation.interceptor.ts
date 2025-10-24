@@ -17,6 +17,24 @@ import { NO_CACHE_INVALIDATION_KEY } from '../decorators/no-cache-invalidation.d
 
 //------------------------------------------------------------
 
+/**
+ * CacheInvalidationInterceptor - Automatic Cache Clearing on Data Mutations
+ *
+ * Intercepts mutating HTTP methods (POST, PUT, PATCH, DELETE) and clears the entire
+ * cache after successful completion to ensure data consistency. This prevents stale
+ * cached responses from being served after database changes.
+ *
+ * Key Features:
+ * - Triggers on: POST, PUT, PATCH, DELETE methods only
+ * - Clears entire cache store after successful mutations
+ * - Respects @NoCacheInvalidation() decorator to skip clearing on specific endpoints
+ * - Async cache clearing doesn't block response (fire-and-forget)
+ *
+ * Works in tandem with OrganizationCacheInterceptor which handles cache storage.
+ * Use @NoCacheInvalidation() on endpoints where cache clearing is not needed
+ * (e.g., read-only operations disguised as POST, or bulk operations).
+ */
+
 @Injectable()
 export class CacheInvalidationInterceptor implements NestInterceptor {
   private readonly logger = new Logger(CacheInvalidationInterceptor.name);

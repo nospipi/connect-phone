@@ -10,6 +10,7 @@ import { GetAllInvitationsOfOrgPaginatedController } from '../user-invitations/s
 import { GetAllInvitationsOfOrgPaginatedService } from '../user-invitations/services/get-all-invitations-of-org-paginated/service';
 import { DeleteUserInvitationController } from '../user-invitations/services/delete-user-invitation/controller';
 import { DeleteUserInvitationService } from '../user-invitations/services/delete-user-invitation/service';
+
 //-----------------------------------------
 
 @Module({

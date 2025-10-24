@@ -5,6 +5,22 @@ import { CacheInterceptor } from '@nestjs/cache-manager';
 import { NO_CACHE_KEY } from '../decorators/no-cache.decorator';
 //------------------------------------------------------------
 
+/**
+ * OrganizationCacheInterceptor - Organization-scoped HTTP Response Caching
+ *
+ * Extends NestJS CacheInterceptor to provide multi-tenant cache isolation by scoping
+ * cache keys to organization context. Ensures users only receive cached responses
+ * from their own organization's data.
+ *
+ * Key Features:
+ * - Generates cache keys as: `{organizationId}:{url}`
+ * - Only caches GET requests
+ * - Respects @NoCache() decorator to exclude specific endpoints
+ * - Returns undefined (no caching) for non-GET methods or excluded endpoints
+ *
+ * Cache invalidation is handled by CacheInvalidationInterceptor on mutations.
+ */
+
 @Injectable()
 export class OrganizationCacheInterceptor extends CacheInterceptor {
   private readonly logger = new Logger(OrganizationCacheInterceptor.name);

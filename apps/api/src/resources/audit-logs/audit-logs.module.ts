@@ -4,11 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuditLogEntryEntity } from '@/database/entities/audit-log.entity';
 import { OrganizationEntity } from '@/database/entities/organization.entity';
 import { UserEntity } from '@/database/entities/user.entity';
-
-// controllers
 import { FindAllByOrgPaginatedController } from './services/find-all-by-org-paginated/controller';
-
-// services
 import { FindAllByOrgPaginatedService } from './services/find-all-by-org-paginated/service';
 
 //-----------------------------------------
