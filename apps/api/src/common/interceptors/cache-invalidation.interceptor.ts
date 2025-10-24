@@ -46,6 +46,8 @@ export class CacheInvalidationInterceptor implements NestInterceptor {
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const request = context.switchToHttp().getRequest();
+    const organizationId = request.currentOrganization?.id || 'no-org';
+
     const method = request.method;
     const endpoint = `${method} ${request.url}`;
 
@@ -62,6 +64,8 @@ export class CacheInvalidationInterceptor implements NestInterceptor {
       this.logger.warn(`🚫 [${endpoint}] Cache invalidation skipped`);
       return next.handle();
     }
+
+    this.logger.debug(`Organization Context: ${organizationId}`);
 
     return next.handle().pipe(
       tap(() => {
