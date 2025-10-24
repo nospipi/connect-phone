@@ -8,10 +8,12 @@ import {
   Logger,
   Inject,
 } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { NO_CACHE_KEY } from '../decorators/no-cache.decorator';
 
 //------------------------------------------------------------
 
@@ -19,7 +21,10 @@ import { tap } from 'rxjs/operators';
 export class CacheLoggingInterceptor implements NestInterceptor {
   private readonly logger = new Logger(CacheLoggingInterceptor.name);
 
-  constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
+  constructor(
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+    private reflector: Reflector
+  ) {}
 
   async intercept(
     context: ExecutionContext,
@@ -28,16 +33,23 @@ export class CacheLoggingInterceptor implements NestInterceptor {
     const request = context.switchToHttp().getRequest();
     const endpoint = `${request.method} ${request.url}`;
 
-    // Only log for GET requests
     if (request.method !== 'GET') {
       return next.handle();
     }
 
-    // Generate cache key (same logic as OrganizationCacheInterceptor)
+    const noCache = this.reflector.getAllAndOverride<boolean>(NO_CACHE_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
+
+    if (noCache) {
+      this.logger.warn(`🚫 [${endpoint}] Cache excluded`);
+      return next.handle();
+    }
+
     const organizationId = request.currentOrganization?.id || 'no-org';
     const cacheKey = `${organizationId}:${request.url}`;
 
-    // Check if in cache
     const cachedResponse = await this.cacheManager.get(cacheKey);
 
     if (cachedResponse) {
