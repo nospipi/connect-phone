@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../../../../database/entities/user.entity';
 import { OrganizationEntity } from '../../../../database/entities/organization.entity';
-import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
+import { CurrentDbUserService } from '../../../../common/services/current-db-user.service';
 import { UserOrganizationEntity } from '../../../../database/entities/user-organization.entity';
 import { UserOrganizationRole } from '../../../../database/entities/user-organization.entity';
 

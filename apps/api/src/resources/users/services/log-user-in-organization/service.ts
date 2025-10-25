@@ -9,7 +9,7 @@ import { Repository } from 'typeorm';
 import { UserEntity } from '../../../../database/entities/user.entity';
 import { IUser } from '@connect-phone/shared-types';
 import { OrganizationEntity } from '../../../../database/entities/organization.entity';
-import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
+import { CurrentDbUserService } from '../../../../common/services/current-db-user.service';
 import { OrganizationContext } from '../../../../common/context/organization-context';
 
 //-----------------------------------------------------------------s

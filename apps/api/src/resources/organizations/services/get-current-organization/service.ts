@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { OrganizationEntity } from '../../../../database/entities/organization.entity';
-import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
+import { CurrentDbUserService } from '../../../../common/services/current-db-user.service';
 import { IOrganization } from '@connect-phone/shared-types';
 
 //----------------------------------------------------------------------

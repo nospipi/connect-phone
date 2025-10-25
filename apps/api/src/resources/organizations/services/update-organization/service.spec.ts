@@ -6,7 +6,7 @@ import { ForbiddenException } from '@nestjs/common';
 import { UpdateOrganizationService } from './service';
 import { OrganizationEntity } from '../../../../database/entities/organization.entity';
 import { UpdateOrganizationDto } from './update-organization.dto';
-import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
+import { CurrentOrganizationService } from '../../../../common/services/current-organization.service';
 import {
   createMockOrganization,
   createCurrentOrganizationServiceProvider,

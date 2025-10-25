@@ -4,6 +4,8 @@ import { REQUEST } from '@nestjs/core';
 import { Inject } from '@nestjs/common';
 import { Request } from 'express';
 
+//-------------------------------------------------------
+
 @Injectable({ scope: Scope.REQUEST })
 export class CurrentClerkUserService {
   constructor(@Inject(REQUEST) private readonly request: Request) {}
@@ -11,6 +13,7 @@ export class CurrentClerkUserService {
   /**
    * Gets the current user's email from Clerk
    */
+
   getClerkUserEmail(): string | null {
     const user = this.request.user as
       | {
