@@ -5,6 +5,8 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
+import KeyvRedis from '@keyv/redis';
+import { redisStore } from 'cache-manager-redis-yet';
 import { CoreModule } from './common/core/core.module';
 import { ClerkClientProvider } from 'src/common/providers/clerk-client.provider';
 import { AuthModule } from './auth/auth.module';
@@ -38,10 +40,35 @@ import { EsimOffersModule } from './resources/esim-offers/esim-offers.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    CacheModule.register({
+    //in RAM
+    // CacheModule.register({
+    //   isGlobal: true,
+    //   ttl: 300000, // 5 minutes
+    //   max: 200, // maximum number of items in cache
+    // }),
+    //redis KEYV cache
+    // CacheModule.registerAsync({
+    //   isGlobal: true,
+    //   useFactory: async () => {
+    //     const redisUrl = `rediss://default:${process.env.REDIS_PASSWORD}@${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`;
+
+    //     return {
+    //       stores: [new KeyvRedis(redisUrl)],
+    //       ttl: 300000,
+    //     };
+    //   },
+    // }),
+    //redis CACHE MANAGER
+    CacheModule.registerAsync({
       isGlobal: true,
-      ttl: 300000, // 5 minutes
-      max: 200, // maximum number of items in cache
+      useFactory: async () => {
+        const redisUrl = `rediss://default:${process.env.REDIS_PASSWORD}@${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`;
+        const store = await redisStore({
+          url: redisUrl,
+          ttl: 300, // 5 minutes
+        });
+        return { store, ttl: 300 };
+      },
     }),
     DatabaseModule,
     AuthModule,
@@ -82,11 +109,11 @@ import { EsimOffersModule } from './resources/esim-offers/esim-offers.module';
     },
     {
       provide: APP_INTERCEPTOR,
-      useClass: CacheLoggingInterceptor,
+      useClass: OrganizationCacheInterceptor,
     },
     {
       provide: APP_INTERCEPTOR,
-      useClass: OrganizationCacheInterceptor,
+      useClass: CacheLoggingInterceptor,
     },
   ],
 })

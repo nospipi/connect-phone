@@ -55,14 +55,16 @@ export class CacheLoggingInterceptor implements NestInterceptor {
     if (cachedResponse) {
       this.logger.log(`💾 [${endpoint}] CACHE HIT`);
     } else {
-      this.logger.log(`🔄 [${endpoint}] CACHE MISS`);
+      this.logger.error(`🔄 [${endpoint}] CACHE MISS`);
     }
 
     return next.handle().pipe(
-      tap(() => {
-        if (!cachedResponse) {
-          this.logger.log(`✅ [${endpoint}] Response cached`);
-        }
+      tap({
+        next: () => {
+          if (!cachedResponse) {
+            this.logger.log(`✅ [${endpoint}] Response cached`);
+          }
+        },
       })
     );
   }
