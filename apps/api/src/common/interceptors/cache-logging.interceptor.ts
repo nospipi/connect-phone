@@ -14,6 +14,7 @@ import { Cache } from 'cache-manager';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { NO_CACHE_KEY } from '../decorators/no-cache.decorator';
+import { CurrentOrganizationService } from '../services/current-organization.service';
 
 //------------------------------------------------------------
 
@@ -23,7 +24,8 @@ export class CacheLoggingInterceptor implements NestInterceptor {
 
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
-    private reflector: Reflector
+    private reflector: Reflector,
+    private currentOrganizationService: CurrentOrganizationService
   ) {}
 
   async intercept(
@@ -47,21 +49,29 @@ export class CacheLoggingInterceptor implements NestInterceptor {
       return next.handle();
     }
 
-    const organizationId = request.currentOrganization?.id || 'no-org';
+    const organization =
+      await this.currentOrganizationService.getCurrentOrganization();
+    const organizationId = organization?.id || 'no-org';
     const cacheKey = `${organizationId}:${request.url}`;
 
     const cachedResponse = await this.cacheManager.get(cacheKey);
 
     if (cachedResponse) {
-      this.logger.log(`💾 [${endpoint}] CACHE HIT`);
+      this.logger.log(
+        `💾 [${endpoint}] CACHE HIT (org: ${organizationId}, key: ${cacheKey})`
+      );
     } else {
-      this.logger.log(`🔄 [${endpoint}] CACHE MISS`);
+      this.logger.log(
+        `🔄 [${endpoint}] CACHE MISS (org: ${organizationId}, key: ${cacheKey})`
+      );
     }
 
     return next.handle().pipe(
       tap(() => {
         if (!cachedResponse) {
-          this.logger.log(`✅ [${endpoint}] Response cached`);
+          this.logger.log(
+            `✅ [${endpoint}] Response cached (org: ${organizationId}, key: ${cacheKey})`
+          );
         }
       })
     );

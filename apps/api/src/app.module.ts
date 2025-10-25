@@ -82,11 +82,11 @@ import { EsimOffersModule } from './resources/esim-offers/esim-offers.module';
     },
     {
       provide: APP_INTERCEPTOR,
-      useClass: CacheLoggingInterceptor,
+      useClass: OrganizationCacheInterceptor,
     },
     {
       provide: APP_INTERCEPTOR,
-      useClass: OrganizationCacheInterceptor,
+      useClass: CacheLoggingInterceptor,
     },
   ],
 })
