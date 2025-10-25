@@ -6,33 +6,30 @@ import {
   ExecutionContext,
   CallHandler,
   Logger,
-  Inject,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import type { Cache } from 'cache-manager';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { NO_CACHE_INVALIDATION_KEY } from '../decorators/no-cache-invalidation.decorator';
+import { CacheTrackingService } from '../services/cache-tracking.service';
 
 //------------------------------------------------------------
 
 /**
- * CacheInvalidationInterceptor - Automatic Cache Clearing on Data Mutations
+ * CacheInvalidationInterceptor - Organization-scoped Cache Invalidation
  *
- * Intercepts mutating HTTP methods (POST, PUT, PATCH, DELETE) and clears the entire
- * cache after successful completion to ensure data consistency. This prevents stale
- * cached responses from being served after database changes.
+ * Intercepts mutating HTTP methods (POST, PUT, PATCH, DELETE) and clears only
+ * the cache entries for the affected organization after successful completion.
+ * Uses CacheTrackingService for precision invalidation.
  *
  * Key Features:
  * - Triggers on: POST, PUT, PATCH, DELETE methods only
- * - Clears entire cache store after successful mutations
+ * - Clears only organization-specific cache entries
  * - Respects @NoCacheInvalidation() decorator to skip clearing on specific endpoints
  * - Async cache clearing doesn't block response (fire-and-forget)
+ * - Multi-tenant safe: maintains cache isolation between organizations
  *
  * Works in tandem with OrganizationCacheInterceptor which handles cache storage.
- * Use @NoCacheInvalidation() on endpoints where cache clearing is not needed
- * (e.g., read-only operations disguised as POST, or bulk operations).
  */
 
 @Injectable()
@@ -40,7 +37,7 @@ export class CacheInvalidationInterceptor implements NestInterceptor {
   private readonly logger = new Logger(CacheInvalidationInterceptor.name);
 
   constructor(
-    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
+    private readonly cacheTrackingService: CacheTrackingService,
     private reflector: Reflector
   ) {}
 
@@ -65,18 +62,18 @@ export class CacheInvalidationInterceptor implements NestInterceptor {
       return next.handle();
     }
 
-    this.logger.debug(`Organization Context: ${organizationId}`);
-
     return next.handle().pipe(
       tap(() => {
-        this.cacheManager
-          .clear()
+        this.cacheTrackingService
+          .clearOrganizationCache(String(organizationId))
           .then(() => {
-            this.logger.warn(`🗑️ [${endpoint}] Cache cleared after mutation`);
+            this.logger.warn(
+              `🗑️ [${endpoint}] Organization ${organizationId} cache cleared after mutation`
+            );
           })
           .catch((err) => {
             this.logger.error(
-              `❌ Failed to clear cache after ${endpoint}: ${err.message}`
+              `❌ Failed to clear organization ${organizationId} cache after ${endpoint}: ${err.message}`
             );
           });
       })
