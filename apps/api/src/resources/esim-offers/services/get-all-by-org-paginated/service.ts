@@ -10,7 +10,7 @@ import {
   Pagination,
   IPaginationOptions,
 } from 'nestjs-typeorm-paginate';
-import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
+import { CurrentOrganizationService } from '../../../../common/services/current-organization.service';
 import { SearchEsimOffersDto } from './search-esim-offers.dto';
 
 //----------------------------------------------------------------------

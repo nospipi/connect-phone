@@ -7,7 +7,7 @@ import { validate } from 'class-validator';
 import { UpdateDateRangeService } from './service';
 import { DateRangeEntity } from '../../../../database/entities/date-range.entity';
 import { UpdateDateRangeDto } from './update-date-range.dto';
-import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
+import { CurrentOrganizationService } from '../../../../common/services/current-organization.service';
 import {
   createMockOrganization,
   createMockDateRange,

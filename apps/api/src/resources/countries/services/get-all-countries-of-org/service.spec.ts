@@ -9,7 +9,7 @@ import {
   createMockCountry,
   createCurrentOrganizationServiceProvider,
 } from '../../../../test/factories';
-import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
+import { CurrentOrganizationService } from '../../../../common/services/current-organization.service';
 
 //--------------------------------------------------------------------------------
 

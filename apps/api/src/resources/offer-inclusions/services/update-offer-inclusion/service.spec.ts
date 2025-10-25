@@ -6,7 +6,7 @@ import { NotFoundException, ForbiddenException } from '@nestjs/common';
 import { UpdateOfferInclusionService } from './service';
 import { OfferInclusionEntity } from '../../../../database/entities/offer-inclusion.entity';
 import { UpdateOfferInclusionDto } from './update-offer-inclusion.dto';
-import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
+import { CurrentOrganizationService } from '../../../../common/services/current-organization.service';
 import {
   createMockOrganization,
   createMockOfferInclusion,

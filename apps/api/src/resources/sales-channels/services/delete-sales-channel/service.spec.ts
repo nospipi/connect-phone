@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { NotFoundException, ForbiddenException } from '@nestjs/common';
 import { DeleteSalesChannelService } from './service';
 import { SalesChannelEntity } from '../../../../database/entities/sales-channel.entity';
-import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
+import { CurrentOrganizationService } from '../../../../common/services/current-organization.service';
 import {
   createMockOrganization,
   createMockSalesChannel,

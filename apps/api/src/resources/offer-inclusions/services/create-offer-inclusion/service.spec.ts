@@ -6,7 +6,7 @@ import { validate } from 'class-validator';
 import { CreateOfferInclusionService } from './service';
 import { OfferInclusionEntity } from '../../../../database/entities/offer-inclusion.entity';
 import { CreateOfferInclusionDto } from './create-offer-inclusion.dto';
-import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
+import { CurrentOrganizationService } from '../../../../common/services/current-organization.service';
 import {
   createMockOrganization,
   createMockOfferInclusion,

@@ -8,7 +8,7 @@ import { Request } from 'express';
 import { UserEntity } from '../../database/entities/user.entity';
 import { IUser } from '@connect-phone/shared-types';
 import { OrganizationEntity } from '../../database/entities/organization.entity';
-import { CurrentClerkUserService } from './current-clerk-user.service';
+import { CurrentClerkUserService } from '../services/current-clerk-user.service';
 
 //-------------------------------------------------------
 

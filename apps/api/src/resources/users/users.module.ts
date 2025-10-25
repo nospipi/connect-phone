@@ -23,8 +23,8 @@ import { UpdateUserController } from './services/update-user/controller';
 import { UpdateUserService } from './services/update-user/service';
 import { DeleteUserController } from './services/delete-user/controller';
 import { DeleteUserService } from './services/delete-user/service';
-import { CurrentDbUserService } from '../../common/core/current-db-user.service';
-import { CurrentOrganizationService } from '../../common/core/current-organization.service';
+import { CurrentDbUserService } from '@/common/services/current-db-user.service';
+import { CurrentOrganizationService } from '../../common/services/current-organization.service';
 
 //-------------------------------------------------------------------------------------------
 
