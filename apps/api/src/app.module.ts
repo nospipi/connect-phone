@@ -12,7 +12,7 @@ import { ClerkClientProvider } from 'src/common/providers/clerk-client.provider'
 import { AuthModule } from './auth/auth.module';
 import { ClerkAuthGuard } from './common/guards/clerk-auth.guard';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
-import { CacheLoggingInterceptor } from './common/interceptors/cache-logging.interceptor';
+//import { CacheLoggingInterceptor } from './common/interceptors/cache-logging.interceptor';
 import { OrganizationCacheInterceptor } from './common/interceptors/organization-cache.interceptor';
 import { CacheInvalidationInterceptor } from './common/interceptors/cache-invalidation.interceptor';
 import { AuditContextInterceptor } from './common/interceptors/audit-context-interceptor';
@@ -47,29 +47,34 @@ import { EsimOffersModule } from './resources/esim-offers/esim-offers.module';
     //   max: 200, // maximum number of items in cache
     // }),
     //redis KEYV cache
+    CacheModule.registerAsync({
+      isGlobal: true,
+      useFactory: async () => {
+        const keyv = new KeyvRedis(
+          `rediss://default:${process.env.REDIS_PASSWORD}@${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`
+        );
+        return {
+          stores: [keyv],
+          ttl: 300000,
+        };
+      },
+    }),
+    //redis CACHE MANAGER
     // CacheModule.registerAsync({
     //   isGlobal: true,
     //   useFactory: async () => {
     //     const redisUrl = `rediss://default:${process.env.REDIS_PASSWORD}@${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`;
-
+    //     const store = await redisStore({
+    //       url: redisUrl,
+    //       //we dont need it because we intercept the setting in OrganizationCacheInterceptor
+    //       //ttl: 300, // 5 minutes
+    //     });
     //     return {
-    //       stores: [new KeyvRedis(redisUrl)],
-    //       ttl: 300000,
+    //       store,
+    //       //ttl: 300,
     //     };
     //   },
     // }),
-    //redis CACHE MANAGER
-    CacheModule.registerAsync({
-      isGlobal: true,
-      useFactory: async () => {
-        const redisUrl = `rediss://default:${process.env.REDIS_PASSWORD}@${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`;
-        const store = await redisStore({
-          url: redisUrl,
-          ttl: 300, // 5 minutes
-        });
-        return { store, ttl: 300 };
-      },
-    }),
     DatabaseModule,
     AuthModule,
     CoreModule,
@@ -111,10 +116,10 @@ import { EsimOffersModule } from './resources/esim-offers/esim-offers.module';
       provide: APP_INTERCEPTOR,
       useClass: OrganizationCacheInterceptor,
     },
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: CacheLoggingInterceptor,
-    },
+    // {
+    //   provide: APP_INTERCEPTOR,
+    //   useClass: CacheLoggingInterceptor,
+    // },
   ],
 })
 export class AppModule {}
