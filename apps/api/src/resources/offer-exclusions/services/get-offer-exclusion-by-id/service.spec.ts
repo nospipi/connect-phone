@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { NotFoundException, ForbiddenException } from '@nestjs/common';
 import { GetOfferExclusionByIdService } from './service';
 import { OfferExclusionEntity } from '../../../../database/entities/offer-exclusion.entity';
-import { CurrentOrganizationService } from '../../../../common/services/current-organization.service';
+import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 import {
   createMockOrganization,
   createMockOfferExclusion,

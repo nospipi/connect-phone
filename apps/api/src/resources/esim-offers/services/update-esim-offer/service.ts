@@ -10,7 +10,7 @@ import { Repository } from 'typeorm';
 import { EsimOfferEntity } from '../../../../database/entities/esim-offer.entity';
 import { UpdateEsimOfferDto } from './update-esim-offer.dto';
 import { IEsimOffer } from '@connect-phone/shared-types';
-import { CurrentOrganizationService } from '../../../../common/services/current-organization.service';
+import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 
 //----------------------------------------------------------------------
 

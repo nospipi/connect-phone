@@ -9,7 +9,7 @@ import { Repository } from 'typeorm';
 import { MediaEntity } from '../../../../database/entities/media.entity';
 import { UpdateMediaDto } from './update-media.dto';
 import { IMedia } from '@connect-phone/shared-types';
-import { CurrentOrganizationService } from '../../../../common/services/current-organization.service';
+import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 
 //----------------------------------------------------------------------
 

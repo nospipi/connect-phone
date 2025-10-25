@@ -7,7 +7,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CountryEntity } from '../../../../database/entities/country.entity';
-import { CurrentOrganizationService } from '../../../../common/services/current-organization.service';
+import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 import { ICountry } from '@connect-phone/shared-types';
 
 //------------------------------------------------------

@@ -7,7 +7,7 @@ import { UpdateCountryService } from './service';
 import { CountryEntity } from '../../../../database/entities/country.entity';
 import { UpdateCountryDto } from './update-country.dto';
 import { CountryRegion } from '@connect-phone/shared-types';
-import { CurrentOrganizationService } from '../../../../common/services/current-organization.service';
+import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 import {
   createMockOrganization,
   createMockCountry,

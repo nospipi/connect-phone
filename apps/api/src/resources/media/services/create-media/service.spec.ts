@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateMediaService } from './service';
 import { CreateMediaDto } from './create-media.dto';
 import { MediaEntity } from '../../../../database/entities/media.entity';
-import { CurrentOrganizationService } from '../../../../common/services/current-organization.service';
+import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 import { IUploadedFile } from '@connect-phone/shared-types';
 import * as vercelBlob from '@vercel/blob';
 import {

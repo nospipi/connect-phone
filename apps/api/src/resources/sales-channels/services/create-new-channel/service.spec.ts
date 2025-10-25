@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateNewChannelService } from './service';
 import { SalesChannelEntity } from '../../../../database/entities/sales-channel.entity';
 import { CreateSalesChannelDto } from './create-sales-channel.dto';
-import { CurrentOrganizationService } from '../../../../common/services/current-organization.service';
+import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 import {
   createMockOrganization,
   createMockSalesChannel,

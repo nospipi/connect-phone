@@ -9,7 +9,7 @@ import { Repository } from 'typeorm';
 import { OrganizationEntity } from '../../../../database/entities/organization.entity';
 import { UpdateOrganizationDto } from './update-organization.dto';
 import { IOrganization } from '@connect-phone/shared-types';
-import { CurrentOrganizationService } from '../../../../common/services/current-organization.service';
+import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 
 //----------------------------------------------------------------------
 

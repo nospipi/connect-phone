@@ -8,7 +8,7 @@ import { UserEntity } from '../../../../database/entities/user.entity';
 import { UserOrganizationEntity } from '../../../../database/entities/user-organization.entity';
 import { UserOrganizationRole } from '@connect-phone/shared-types';
 import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
-import { CurrentOrganizationService } from '../../../../common/services/current-organization.service';
+import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 import { UpdateUserDto } from './update-user.dto';
 import {
   createMockOrganization,

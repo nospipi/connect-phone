@@ -8,8 +8,8 @@ import {
   Scope,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { CurrentOrganizationService } from '../services/current-organization.service';
-import { CurrentDbUserService } from '../services/current-db-user.service';
+import { CurrentOrganizationService } from '../core/current-organization.service';
+import { CurrentDbUserService } from '../core/current-db-user.service';
 import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
 
 //----------------------------------------------------------------------

@@ -8,8 +8,8 @@ import {
   Logger,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { CurrentDbUserService } from '../services/current-db-user.service';
-import { CurrentClerkUserService } from '../services/current-clerk-user.service';
+import { CurrentDbUserService } from '../core/current-db-user.service';
+import { CurrentClerkUserService } from '../core/current-clerk-user.service';
 import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
 
 //----------------------------------------------------------------------

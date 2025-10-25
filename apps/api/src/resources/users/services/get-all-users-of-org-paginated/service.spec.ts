@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { GetAllUsersOfOrgPaginatedService } from './service';
 import { UserOrganizationEntity } from '../../../../database/entities/user-organization.entity';
 import { UserOrganizationRole } from '@connect-phone/shared-types';
-import { CurrentOrganizationService } from '../../../../common/services/current-organization.service';
+import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 import { paginate } from 'nestjs-typeorm-paginate';
 import {
   createMockOrganization,

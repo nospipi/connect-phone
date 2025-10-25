@@ -6,7 +6,7 @@ import { NotFoundException, ForbiddenException } from '@nestjs/common';
 import { UpdateMediaService } from './service';
 import { MediaEntity } from '../../../../database/entities/media.entity';
 import { UpdateMediaDto } from './update-media.dto';
-import { CurrentOrganizationService } from '../../../../common/services/current-organization.service';
+import { CurrentOrganizationService } from '../../../../common/core/current-organization.service';
 import {
   createMockOrganization,
   createMockMedia,

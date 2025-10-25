@@ -2,11 +2,11 @@
 
 import { Module, Global } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CurrentOrganizationService } from '../services/current-organization.service';
-import { CurrentOrganizationIdService } from '../services/current-organization-id.service';
-import { CurrentDbUserService } from '../services/current-db-user.service';
-import { CurrentClerkUserService } from '../services/current-clerk-user.service';
-import { CurrentDbUserRoleService } from '../services/current-db-user-role.service';
+import { CurrentOrganizationService } from './current-organization.service';
+import { CurrentOrganizationIdService } from './current-organization-id.service';
+import { CurrentDbUserService } from './current-db-user.service';
+import { CurrentClerkUserService } from './current-clerk-user.service';
+import { CurrentDbUserRoleService } from './current-db-user-role.service';
 import { UserEntity } from '@/database/entities/user.entity';
 import { OrganizationEntity } from '@/database/entities/organization.entity';
 import { SalesChannelEntity } from '@/database/entities/sales-channel.entity';
