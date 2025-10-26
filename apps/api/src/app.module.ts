@@ -6,7 +6,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import KeyvRedis from '@keyv/redis';
-import { redisStore } from 'cache-manager-redis-yet';
 import { CoreModule } from './common/core/core.module';
 import { ClerkClientProvider } from 'src/common/providers/clerk-client.provider';
 import { AuthModule } from './auth/auth.module';
