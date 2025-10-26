@@ -11,7 +11,6 @@ import { ClerkClientProvider } from 'src/common/providers/clerk-client.provider'
 import { AuthModule } from './auth/auth.module';
 import { ClerkAuthGuard } from './common/guards/clerk-auth.guard';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
-//import { CacheLoggingInterceptor } from './common/interceptors/cache-logging.interceptor';
 import { OrganizationCacheInterceptor } from './common/interceptors/organization-cache.interceptor';
 import { CacheInvalidationInterceptor } from './common/interceptors/cache-invalidation.interceptor';
 import { AuditContextInterceptor } from './common/interceptors/audit-context-interceptor';
@@ -54,7 +53,9 @@ import { EsimOffersModule } from './resources/esim-offers/esim-offers.module';
         );
         return {
           stores: [keyv],
-          ttl: 300000,
+          // 5 minutes
+          //ttl: 300000,
+          //test if nothing is passed if it takes any default ttl
         };
       },
     }),
