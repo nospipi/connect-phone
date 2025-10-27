@@ -165,7 +165,7 @@ export class CacheInvalidationInterceptor implements NestInterceptor {
       delete registry[resourceName];
       await this.cacheManager.set(this.CACHE_REGISTRY_KEY, registry);
 
-      this.logger.log(
+      this.logger.warn(
         `✅ [${endpoint}] Successfully invalidated cache for resource: ${resourceName}`
       );
       this.logger.debug(

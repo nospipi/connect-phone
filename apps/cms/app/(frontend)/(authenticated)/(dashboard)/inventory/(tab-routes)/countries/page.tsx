@@ -126,7 +126,7 @@ const Page = async ({
                     <div className="flex items-center space-x-4">
                       <div className="flex-shrink-0">
                         {flagUrl ? (
-                          <div className="relative h-10 w-10 overflow-hidden rounded-full shadow-sm group-hover:shadow-md">
+                          <div className="relative h-10 w-10 overflow-hidden rounded-full">
                             <Image
                               src={flagUrl}
                               alt={`${country.name} flag`}
@@ -136,7 +136,7 @@ const Page = async ({
                             />
                           </div>
                         ) : (
-                          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-gray-200 to-gray-300 text-sm font-semibold text-gray-700 shadow-sm group-hover:from-gray-300 group-hover:to-gray-400 group-hover:text-gray-800 dark:from-slate-700/60 dark:to-slate-800/60 dark:text-slate-200 dark:group-hover:from-slate-600/60 dark:group-hover:to-slate-700/60 dark:group-hover:text-slate-100">
+                          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-gray-200 to-gray-300 text-sm font-semibold text-gray-700 shadow-sm dark:from-slate-700/60 dark:to-slate-800/60 dark:text-slate-200">
                             {country.code?.toUpperCase() || "??"}
                           </div>
                         )}
@@ -145,10 +145,10 @@ const Page = async ({
                       <div className="min-w-0 flex-1">
                         <div className="flex items-start justify-between">
                           <div className="min-w-0 flex-1">
-                            <p className="truncate text-sm font-medium text-gray-900 group-hover:text-gray-700 dark:text-slate-200 dark:group-hover:text-slate-100">
+                            <p className="truncate text-sm font-medium text-gray-900 group-hover:underline dark:text-slate-200">
                               {country.name}
                             </p>
-                            <p className="truncate text-sm text-gray-600 group-hover:text-gray-500 dark:text-slate-400 dark:group-hover:text-slate-300">
+                            <p className="truncate text-sm text-gray-600 dark:text-slate-400">
                               {country.code?.toUpperCase()}
                             </p>
                           </div>
