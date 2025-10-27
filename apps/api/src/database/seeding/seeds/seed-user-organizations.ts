@@ -1,5 +1,6 @@
 // apps/api/src/database/seeding/seeds/seed-user-organizations.ts
 
+import { Logger } from '@nestjs/common';
 import { AppDataSource } from '../../data-source';
 import { UserOrganizationEntity } from '../../entities/user-organization.entity';
 import { UserEntity } from '../../entities/user.entity';
@@ -11,6 +12,8 @@ import {
 import { faker } from '@faker-js/faker';
 
 //----------------------------------------------------------------------
+
+const logger = new Logger('SeedUserOrganizations');
 
 export async function seedUserOrganizations(
   users: UserEntity[],
@@ -39,6 +42,6 @@ export async function seedUserOrganizations(
     userOrgEntries
   );
 
-  console.log(`✅ Created ${savedUserOrgs.length} user-organization links`);
+  logger.log(`✅ Created ${savedUserOrgs.length} user-organization links`);
   return savedUserOrgs;
 }

@@ -16,6 +16,8 @@ import { OrganizationEntity } from './organization.entity';
 import { UserEntity } from './user.entity';
 import { IUser, IOrganization } from '@connect-phone/shared-types';
 
+//-------------------------------------------------------
+
 @Entity('user_invitations')
 @Unique(['email', 'organizationId'])
 export class UserInvitationEntity implements IUserInvitation {

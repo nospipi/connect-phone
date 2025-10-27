@@ -1,5 +1,6 @@
 // apps/api/src/database/seeding/seeds/seed-offer-inclusions.ts
 
+import { Logger } from '@nestjs/common';
 import { AppDataSource } from '../../data-source';
 import { OfferInclusionEntity } from '../../entities/offer-inclusion.entity';
 import { OrganizationEntity } from '../../entities/organization.entity';
@@ -7,6 +8,8 @@ import { IOfferInclusion } from '@connect-phone/shared-types';
 import { faker } from '@faker-js/faker';
 
 //----------------------------------------------------------------------
+
+const logger = new Logger('SeedOfferInclusions');
 
 export async function seedOfferInclusions(
   organizations: OrganizationEntity[]
@@ -29,6 +32,6 @@ export async function seedOfferInclusions(
     inclusions
   );
 
-  console.log(`✅ Created ${savedInclusions.length} offer inclusions`);
+  logger.log(`✅ Created ${savedInclusions.length} offer inclusions`);
   return savedInclusions;
 }

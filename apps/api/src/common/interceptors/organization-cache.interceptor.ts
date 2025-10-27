@@ -107,7 +107,7 @@ export class OrganizationCacheInterceptor extends CacheInterceptor {
         return of(cachedValue);
       }
 
-      this.logger.error(`👻 [${endpoint}] CACHE MISS - Key: ${cacheKey}`);
+      console.log(`👻 [${endpoint}] CACHE MISS - Key: ${cacheKey}`);
 
       return next.handle().pipe(
         switchMap((response) =>

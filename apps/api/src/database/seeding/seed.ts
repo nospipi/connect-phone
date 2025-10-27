@@ -1,5 +1,6 @@
-// apps/api/src/database/seeding/seeds/seed.ts
+// apps/api/src/database/seeding/seed.ts
 
+import { Logger } from '@nestjs/common';
 import { AppDataSource } from '../data-source';
 import { seedOrganizations } from './seeds/seed-organizations';
 import { seedUsers } from './seeds/seed-users';
@@ -16,10 +17,12 @@ import { seedUserInvitations } from './seeds/seed-user-invitations';
 
 //----------------------------------------------------------------------
 
+const logger = new Logger('DatabaseSeeding');
+
 async function seed() {
   try {
     await AppDataSource.initialize();
-    console.log('Database connected for seeding');
+    logger.log('Database connected for seeding');
 
     await AppDataSource.query('TRUNCATE TABLE esim_offer_prices CASCADE;');
     await AppDataSource.query(
@@ -58,9 +61,9 @@ async function seed() {
     await seedEsimOffers(savedOrgs);
     await seedUserInvitations(savedOrgs, savedUsers);
 
-    console.log('Seeding completed successfully!');
+    logger.log('Seeding completed successfully!');
   } catch (error) {
-    console.error('Seeding failed:', error);
+    logger.error('Seeding failed:', error);
   } finally {
     await AppDataSource.destroy();
   }

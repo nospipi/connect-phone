@@ -5,6 +5,7 @@ import {
   NestInterceptor,
   ExecutionContext,
   CallHandler,
+  Logger,
 } from '@nestjs/common';
 import { Observable, from } from 'rxjs';
 import { switchMap, finalize } from 'rxjs/operators';
@@ -15,6 +16,8 @@ import { DataSource } from 'typeorm';
 
 @Injectable()
 export class TransactionRlsInterceptor implements NestInterceptor {
+  private readonly logger = new Logger(TransactionRlsInterceptor.name);
+
   constructor(@InjectDataSource() private dataSource: DataSource) {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
@@ -26,7 +29,7 @@ export class TransactionRlsInterceptor implements NestInterceptor {
       finalize(() => {
         if (!queryRunner.isReleased) {
           queryRunner.release().catch((error) => {
-            console.error('Error releasing query runner:', error);
+            this.logger.error('Error releasing query runner:', error);
           });
         }
       })
@@ -54,7 +57,7 @@ export class TransactionRlsInterceptor implements NestInterceptor {
         `🔐 RLS Context: user_id=${userId}, organization_id=${organizationId}`
       );
     } catch (error) {
-      console.error('❌ Error setting RLS context:', error);
+      this.logger.error('❌ Error setting RLS context:', error);
       await queryRunner.release();
       throw error;
     }

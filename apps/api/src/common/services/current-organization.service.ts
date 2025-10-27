@@ -1,5 +1,6 @@
-// src/common/core/current-organization.service.ts
-import { Injectable, Scope } from '@nestjs/common';
+// apps/api/src/common/services/current-organization.service.ts
+
+import { Injectable, Scope, Logger } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,6 +14,7 @@ import { CurrentDbUserService } from './current-db-user.service';
 
 @Injectable({ scope: Scope.REQUEST })
 export class CurrentOrganizationService {
+  private readonly logger = new Logger(CurrentOrganizationService.name);
   private _currentOrganization: IOrganization | null = null;
   private _organizationLoaded = false;
 
@@ -55,7 +57,7 @@ export class CurrentOrganizationService {
       this._organizationLoaded = true;
       return organization;
     } catch (error) {
-      console.error('Error fetching organization from database:', error);
+      this.logger.error('Error fetching organization from database:', error);
       this._organizationLoaded = true;
       this._currentOrganization = null;
       return null;

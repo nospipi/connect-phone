@@ -34,20 +34,20 @@ export class DbUserGuard implements CanActivate {
     ]);
 
     if (isPublic) {
-      this.logger.log(
+      this.logger.debug(
         `🌍 [${endpoint}] Public route - skipping database user requirement`
       );
       return true;
     }
 
-    this.logger.log(
+    console.log(
       `🔒👤 [${endpoint}] DB User guard: Enforcing database user requirement...`
     );
 
     const clerkUserEmail = this.currentClerkUserService.getClerkUserEmail();
 
     if (!clerkUserEmail) {
-      this.logger.log(
+      this.logger.error(
         `❌ [${endpoint}] DB User guard: No Clerk user email found`
       );
       throw new UnauthorizedException(
@@ -58,7 +58,7 @@ export class DbUserGuard implements CanActivate {
     const dbUser = await this.currentDbUserService.getCurrentDbUser();
 
     if (!dbUser) {
-      this.logger.log(
+      this.logger.error(
         `❌ [${endpoint}] DB User guard: User ${clerkUserEmail} not found in database`
       );
       throw new UnauthorizedException(

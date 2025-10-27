@@ -1,5 +1,6 @@
 // apps/api/src/database/seeding/seeds/seed-prices.ts
 
+import { Logger } from '@nestjs/common';
 import { AppDataSource } from '../../data-source';
 import { PriceEntity } from '../../entities/price.entity';
 import { DateRangeEntity } from '../../entities/date-range.entity';
@@ -8,6 +9,8 @@ import { OrganizationEntity } from '../../entities/organization.entity';
 import { generatePrices } from '../factories/price.factory';
 
 //----------------------------------------------------------------------
+
+const logger = new Logger('SeedPrices');
 
 export async function seedPrices(
   organizations: OrganizationEntity[]
@@ -58,6 +61,6 @@ export async function seedPrices(
     }
   }
 
-  console.log(`✅ Created ${savedPrices.length} prices`);
+  logger.log(`✅ Created ${savedPrices.length} prices`);
   return savedPrices;
 }

@@ -1,5 +1,6 @@
 // apps/api/src/database/seeding/seeds/seed-users.ts
 
+import { Logger } from '@nestjs/common';
 import { AppDataSource } from '../../data-source';
 import { UserEntity } from '../../entities/user.entity';
 import { OrganizationEntity } from '../../entities/organization.entity';
@@ -7,6 +8,8 @@ import { IUser } from '@connect-phone/shared-types';
 import { faker } from '@faker-js/faker';
 
 //----------------------------------------------------------------------
+
+const logger = new Logger('SeedUsers');
 
 export async function seedUsers(
   organizations: OrganizationEntity[]
@@ -30,6 +33,6 @@ export async function seedUsers(
 
   const savedUsers = await AppDataSource.manager.save(UserEntity, users);
 
-  console.log(`✅ Created ${savedUsers.length} users`);
+  logger.log(`✅ Created ${savedUsers.length} users`);
   return savedUsers;
 }

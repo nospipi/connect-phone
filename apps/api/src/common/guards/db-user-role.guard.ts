@@ -1,4 +1,5 @@
-// src/common/guards/db-user-role.guard.ts
+// apps/api/src/common/guards/db-user-role.guard.ts
+
 import {
   Injectable,
   CanActivate,
@@ -6,6 +7,7 @@ import {
   ForbiddenException,
   Type,
   Scope,
+  Logger,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { CurrentDbUserRoleService } from '../services/current-db-user-role.service';
@@ -33,50 +35,47 @@ export function DbUserRoleGuard(
 ): Type<CanActivate> {
   @Injectable({ scope: Scope.REQUEST })
   class RoleGuard implements CanActivate {
+    private readonly logger = new Logger(RoleGuard.name);
+
     constructor(
       private readonly reflector: Reflector,
       private readonly currentDbUserRoleService: CurrentDbUserRoleService
     ) {}
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
-      // Check if route is marked as public (skips role requirement)
       const isPublic = this.reflector.getAllAndOverride<boolean>(
         IS_PUBLIC_KEY,
         [context.getHandler(), context.getClass()]
       );
 
       if (isPublic) {
-        console.log('🌍 Public route - skipping role requirement');
+        this.logger.log('🌍 Public route - skipping role requirement');
         return true;
       }
 
-      // If no roles specified in the guard, allow access (no role restriction)
       if (!allowedRoles || allowedRoles.length === 0) {
-        console.log('🔓 No role restrictions specified - allowing access');
+        this.logger.log('🔓 No role restrictions specified - allowing access');
         return true;
       }
 
-      // Convert string keys to enum values
       const enumRoles = allowedRoles.map((role) => UserOrganizationRole[role]);
 
-      console.log(
+      this.logger.log(
         `🔒👑 Role guard: Checking for roles: ${enumRoles.join(', ')}`
       );
 
-      // Get current user's role
       const userRole =
         await this.currentDbUserRoleService.getCurrentDbUserRole();
 
       if (!userRole) {
-        console.log('❌ Role guard: User role not found');
+        this.logger.error('❌ Role guard: User role not found');
         throw new ForbiddenException(
           'Role access denied: Unable to determine your role in this organization'
         );
       }
 
-      // Check if user's role is in the allowed roles
       if (!enumRoles.includes(userRole)) {
-        console.log(
+        this.logger.error(
           `❌ Role guard: User role '${userRole}' not in required roles [${enumRoles.join(', ')}]`
         );
         throw new ForbiddenException(
@@ -84,7 +83,7 @@ export function DbUserRoleGuard(
         );
       }
 
-      console.log(
+      this.logger.log(
         `🔒👑 Role guard: Access granted for user with role '${userRole}'`
       );
 

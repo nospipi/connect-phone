@@ -12,6 +12,8 @@ import {
 import { IMedia, IOrganization } from '@connect-phone/shared-types';
 import { OrganizationEntity } from './organization.entity';
 
+//-------------------------------------------------------
+
 @Entity({ name: 'media' })
 export class MediaEntity implements IMedia {
   @PrimaryGeneratedColumn()

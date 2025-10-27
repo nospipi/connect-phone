@@ -1,11 +1,14 @@
 // apps/api/src/database/seeding/seeds/seed-countries.ts
 
+import { Logger } from '@nestjs/common';
 import { AppDataSource } from '../../data-source';
 import { CountryEntity } from '../../entities/country.entity';
 import { OrganizationEntity } from '../../entities/organization.entity';
 import { generateCountries } from '../factories/countries.factory';
 
 //----------------------------------------------------------------------
+
+const logger = new Logger('SeedCountries');
 
 export async function seedCountries(
   organizations: OrganizationEntity[]
@@ -26,6 +29,6 @@ export async function seedCountries(
     allCountries
   );
 
-  console.log(`✅ Created ${savedCountries.length} countries`);
+  logger.log(`✅ Created ${savedCountries.length} countries`);
   return savedCountries;
 }

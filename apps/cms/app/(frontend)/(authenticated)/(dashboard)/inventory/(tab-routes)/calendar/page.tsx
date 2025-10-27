@@ -22,19 +22,12 @@ const calculateDuration = (startDate: string, endDate: string) => {
   )
 }
 
+// apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/(tab-routes)/calendar/page.tsx
+
 const groupDateRangesByYearMonth = (dateRanges: IDateRange[]) => {
-  const today = new Date()
-  today.setHours(0, 0, 0, 0)
-
-  const presentDateRanges = dateRanges.filter((dr) => {
-    const [endYear, endMonth, endDay] = dr.endDate.split("-").map(Number)
-    const endDate = new Date(endYear, endMonth - 1, endDay)
-    return endDate >= today
-  })
-
   const grouped: Record<string, Record<string, IDateRange[]>> = {}
 
-  presentDateRanges.forEach((dr) => {
+  dateRanges.forEach((dr) => {
     const [year, month] = dr.startDate.split("-")
     const monthName = format(new Date(dr.startDate), "MMMM")
 

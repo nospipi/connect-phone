@@ -1,14 +1,12 @@
-// src/common/core/current-db-user-role.service.ts
-import { Injectable, Scope } from '@nestjs/common';
+// apps/api/src/common/services/current-db-user-role.service.ts
+
+import { Injectable, Scope, Logger } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Request } from 'express';
-import {
-  UserOrganizationEntity,
-  //UserOrganizationRole,
-} from '../../database/entities/user-organization.entity';
+import { UserOrganizationEntity } from '../../database/entities/user-organization.entity';
 import {
   IUserOrganization,
   UserOrganizationRole,
@@ -20,6 +18,7 @@ import { CurrentOrganizationService } from './current-organization.service';
 
 @Injectable({ scope: Scope.REQUEST })
 export class CurrentDbUserRoleService {
+  private readonly logger = new Logger(CurrentDbUserRoleService.name);
   private _currentRole: UserOrganizationRole | null = null;
   private _roleLoaded = false;
 
@@ -63,7 +62,7 @@ export class CurrentDbUserRoleService {
       this._roleLoaded = true;
       return this._currentRole;
     } catch (error) {
-      console.error('Error fetching user role from database:', error);
+      this.logger.error('Error fetching user role from database:', error);
       this._roleLoaded = true;
       this._currentRole = null;
       return null;

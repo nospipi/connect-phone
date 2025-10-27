@@ -1,14 +1,24 @@
+// apps/api/src/common/strategies/clerk.strategy.ts
+
 import { User, verifyToken } from '@clerk/backend';
-import { Injectable, Inject, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  Inject,
+  UnauthorizedException,
+  Logger,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-custom';
-//import { UsersService } from 'src/users/users.service';
 import { Request } from 'express';
 import { ClerkClient } from '@clerk/backend';
 
+//----------------------------------------------------------------------
+
 @Injectable()
 export class ClerkStrategy extends PassportStrategy(Strategy, 'clerk') {
+  private readonly logger = new Logger(ClerkStrategy.name);
+
   constructor(
     @Inject('ClerkClient')
     private readonly clerkClient: ClerkClient,
@@ -33,7 +43,7 @@ export class ClerkStrategy extends PassportStrategy(Strategy, 'clerk') {
 
       return user;
     } catch (error) {
-      console.error(error);
+      this.logger.error(error);
       throw new UnauthorizedException('Invalid token');
     }
   }

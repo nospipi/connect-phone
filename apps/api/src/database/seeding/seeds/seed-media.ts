@@ -1,5 +1,6 @@
 // apps/api/src/database/seeding/seeds/seed-media.ts
 
+import { Logger } from '@nestjs/common';
 import { AppDataSource } from '../../data-source';
 import { MediaEntity } from '../../entities/media.entity';
 import { OrganizationEntity } from '../../entities/organization.entity';
@@ -7,6 +8,8 @@ import { IMedia } from '@connect-phone/shared-types';
 import { faker } from '@faker-js/faker';
 
 //----------------------------------------------------------------------
+
+const logger = new Logger('SeedMedia');
 
 export async function seedMedia(
   organizations: OrganizationEntity[]
@@ -27,6 +30,6 @@ export async function seedMedia(
 
   const savedMedia = await AppDataSource.manager.save(MediaEntity, mediaItems);
 
-  console.log(`✅ Created ${savedMedia.length} media items`);
+  logger.log(`✅ Created ${savedMedia.length} media items`);
   return savedMedia;
 }

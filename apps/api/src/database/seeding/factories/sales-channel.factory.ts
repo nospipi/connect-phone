@@ -2,6 +2,8 @@ import * as Faker from 'faker';
 import { define } from 'typeorm-seeding';
 import { SalesChannelEntity } from '../../entities/sales-channel.entity';
 
+//-------------------------------------------------------
+
 define(SalesChannelEntity, (faker: typeof Faker) => {
   const salesChannel = new SalesChannelEntity();
   salesChannel.name = `${faker.commerce.department()} ${faker.random.arrayElement(['Store', 'Online', 'Mobile', 'Retail'])}`;

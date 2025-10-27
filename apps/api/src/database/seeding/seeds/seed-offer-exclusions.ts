@@ -1,5 +1,6 @@
 // apps/api/src/database/seeding/seeds/seed-offer-exclusions.ts
 
+import { Logger } from '@nestjs/common';
 import { AppDataSource } from '../../data-source';
 import { OfferExclusionEntity } from '../../entities/offer-exclusion.entity';
 import { OrganizationEntity } from '../../entities/organization.entity';
@@ -7,6 +8,8 @@ import { IOfferExclusion } from '@connect-phone/shared-types';
 import { faker } from '@faker-js/faker';
 
 //----------------------------------------------------------------------
+
+const logger = new Logger('SeedOfferExclusions');
 
 export async function seedOfferExclusions(
   organizations: OrganizationEntity[]
@@ -29,6 +32,6 @@ export async function seedOfferExclusions(
     exclusions
   );
 
-  console.log(`✅ Created ${savedExclusions.length} offer exclusions`);
+  logger.log(`✅ Created ${savedExclusions.length} offer exclusions`);
   return savedExclusions;
 }

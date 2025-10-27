@@ -1,5 +1,6 @@
 // apps/api/src/database/seeding/seeds/seed-sales-channels.ts
 
+import { Logger } from '@nestjs/common';
 import { AppDataSource } from '../../data-source';
 import { SalesChannelEntity } from '../../entities/sales-channel.entity';
 import { OrganizationEntity } from '../../entities/organization.entity';
@@ -7,6 +8,8 @@ import { ISalesChannel } from '@connect-phone/shared-types';
 import { faker } from '@faker-js/faker';
 
 //----------------------------------------------------------------------
+
+const logger = new Logger('SeedSalesChannels');
 
 export async function seedSalesChannels(
   organizations: OrganizationEntity[]
@@ -57,6 +60,6 @@ export async function seedSalesChannels(
     salesChannels
   );
 
-  console.log(`✅ Created ${savedChannels.length} sales channels`);
+  logger.log(`✅ Created ${savedChannels.length} sales channels`);
   return savedChannels;
 }

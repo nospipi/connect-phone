@@ -1,5 +1,6 @@
 // apps/api/src/database/seeding/seeds/seed-esim-offers.ts
 
+import { Logger } from '@nestjs/common';
 import { AppDataSource } from '../../data-source';
 import { EsimOfferEntity } from '../../entities/esim-offer.entity';
 import { OrganizationEntity } from '../../entities/organization.entity';
@@ -13,6 +14,8 @@ import { IEsimOffer } from '@connect-phone/shared-types';
 import { faker } from '@faker-js/faker';
 
 //----------------------------------------------------------------------
+
+const logger = new Logger('SeedEsimOffers');
 
 export async function seedEsimOffers(
   organizations: OrganizationEntity[]
@@ -126,6 +129,6 @@ export async function seedEsimOffers(
     }
   }
 
-  console.log(`✅ Created ${savedOffers.length} eSIM offers`);
+  logger.log(`✅ Created ${savedOffers.length} eSIM offers`);
   return savedOffers;
 }

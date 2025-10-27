@@ -1,4 +1,5 @@
-// src/common/guards/organization.guard.ts
+// apps/api/src/common/guards/organization.guard.ts
+
 import {
   Injectable,
   CanActivate,
@@ -6,6 +7,7 @@ import {
   UnauthorizedException,
   NotFoundException,
   Scope,
+  Logger,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { CurrentOrganizationService } from '../services/current-organization.service';
@@ -25,6 +27,8 @@ import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
 
 @Injectable({ scope: Scope.REQUEST })
 export class OrganizationGuard implements CanActivate {
+  private readonly logger = new Logger(OrganizationGuard.name);
+
   constructor(
     private readonly reflector: Reflector,
     private readonly currentOrganizationService: CurrentOrganizationService,
@@ -32,14 +36,13 @@ export class OrganizationGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    // Check if route is marked as public (overrides organization requirement)
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
       context.getHandler(),
       context.getClass(),
     ]);
 
     if (isPublic) {
-      console.log('🌍 Public route - skipping organization requirement');
+      this.logger.log('🌍 Public route - skipping organization requirement');
       return true;
     }
 
@@ -55,14 +58,14 @@ export class OrganizationGuard implements CanActivate {
     ]);
 
     if (!user) {
-      console.log('❌ Organization guard: User not found in database');
+      this.logger.error('❌ Organization guard: User not found in database');
       throw new UnauthorizedException(
         'Organization access required: Your account must be set up in our system to access organization resources'
       );
     }
 
     if (!user.loggedOrganizationId) {
-      console.log(
+      this.logger.error(
         '❌ Organization guard: User not logged into any organization'
       );
       throw new UnauthorizedException(
@@ -71,7 +74,7 @@ export class OrganizationGuard implements CanActivate {
     }
 
     if (!organization) {
-      console.log('❌ Organization guard: Organization not found');
+      this.logger.error('❌ Organization guard: Organization not found');
       throw new NotFoundException(
         'Organization access denied: Your organization could not be found or may have been suspended'
       );
@@ -82,7 +85,7 @@ export class OrganizationGuard implements CanActivate {
     );
 
     if (!belongsToOrganization) {
-      console.log(
+      this.logger.error(
         `❌ Organization guard: User ${user.email} is not part of organization ${organization.name}`
       );
       throw new UnauthorizedException(
@@ -90,11 +93,10 @@ export class OrganizationGuard implements CanActivate {
       );
     }
 
-    console.log(
+    this.logger.log(
       `🔒🏢 Organization guard: Access granted for user ${user.email} in organization ${organization.name} (ID: ${organization.id})`
     );
 
-    // Attach to request
     request.currentUser = user;
     request.currentOrganization = organization;
 

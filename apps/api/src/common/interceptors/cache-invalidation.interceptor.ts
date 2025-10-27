@@ -126,7 +126,7 @@ export class CacheInvalidationInterceptor implements NestInterceptor {
       );
 
       if (!registry || typeof registry !== 'object') {
-        this.logger.log(
+        console.log(
           `🔍 [${endpoint}] No cache registry found or registry is empty`
         );
         return;
@@ -139,13 +139,13 @@ export class CacheInvalidationInterceptor implements NestInterceptor {
         !Array.isArray(cachedKeys) ||
         cachedKeys.length === 0
       ) {
-        this.logger.log(
+        console.log(
           `🔍 [${endpoint}] No cached keys found for resource: ${resourceName}`
         );
         return;
       }
 
-      this.logger.log(
+      console.log(
         `🗑️ [${endpoint}] Invalidating ${cachedKeys.length} cache key(s) for resource: ${resourceName}`
       );
       this.logger.debug(
@@ -165,7 +165,7 @@ export class CacheInvalidationInterceptor implements NestInterceptor {
       delete registry[resourceName];
       await this.cacheManager.set(this.CACHE_REGISTRY_KEY, registry);
 
-      this.logger.warn(
+      this.logger.log(
         `✅ [${endpoint}] Successfully invalidated cache for resource: ${resourceName}`
       );
       this.logger.debug(

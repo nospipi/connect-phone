@@ -1,9 +1,11 @@
-// src/common/interceptors/audit-context-interceptor.ts
+// apps/api/src/common/interceptors/audit-context-interceptor.ts
+
 import {
   Injectable,
   NestInterceptor,
   ExecutionContext,
   CallHandler,
+  Logger,
 } from '@nestjs/common';
 import { Observable, firstValueFrom } from 'rxjs';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -16,6 +18,8 @@ import { OrganizationContext } from '../context/organization-context';
 
 @Injectable()
 export class AuditContextInterceptor implements NestInterceptor {
+  private readonly logger = new Logger(AuditContextInterceptor.name);
+
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>
@@ -39,7 +43,7 @@ export class AuditContextInterceptor implements NestInterceptor {
     next: CallHandler
   ): Promise<any> {
     const request = context.switchToHttp().getRequest();
-    const clerkUser = request.user; // Set by ClerkAuthGuard
+    const clerkUser = request.user;
 
     let userId: number | null = null;
     let organizationId: number | null = null;
@@ -48,7 +52,6 @@ export class AuditContextInterceptor implements NestInterceptor {
       const email = clerkUser.primaryEmailAddress.emailAddress;
 
       try {
-        // Find the database user by email
         const dbUser = await this.userRepository.findOne({
           where: { email },
         });
@@ -57,20 +60,19 @@ export class AuditContextInterceptor implements NestInterceptor {
           userId = dbUser.id;
           organizationId = dbUser.loggedOrganizationId;
 
-          console.log(
+          this.logger.log(
             `🔍 Audit context set for user: ${dbUser.email} (ID: ${dbUser.id}) in organization: ${organizationId || 'none'}`
           );
         } else {
           console.log(`🔍 Clerk user ${email} not found in database`);
         }
       } catch (error) {
-        console.log('🔍 Error getting user for audit:', error.message);
+        this.logger.error('🔍 Error getting user for audit:', error.message);
       }
     } else {
       console.log('🔍 No Clerk user found on request');
     }
 
-    // Run the request within both UserContext and OrganizationContext
     return UserContext.run(userId, async () => {
       return OrganizationContext.run(organizationId, async () => {
         return firstValueFrom(next.handle());

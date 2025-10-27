@@ -1,5 +1,6 @@
-// apps/api/src/common/core/current-db-user.service.ts
-import { Injectable, Scope } from '@nestjs/common';
+// apps/api/src/common/services/current-db-user.service.ts
+
+import { Injectable, Scope, Logger } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -14,6 +15,7 @@ import { CurrentClerkUserService } from './current-clerk-user.service';
 
 @Injectable({ scope: Scope.REQUEST })
 export class CurrentDbUserService {
+  private readonly logger = new Logger(CurrentDbUserService.name);
   private _currentUser: UserEntity | null = null;
   private _userLoaded = false;
 
@@ -58,7 +60,7 @@ export class CurrentDbUserService {
       this._userLoaded = true;
       return user;
     } catch (error) {
-      console.error('Error fetching user from database:', error);
+      this.logger.error('Error fetching user from database:', error);
       this._userLoaded = true;
       this._currentUser = null;
       return null;
