@@ -17,6 +17,7 @@ export const getCountriesByIds = async (ids: number[]): Promise<ICountry[]> => {
     const api = createApiClient()
     const params = new URLSearchParams()
     params.append("ids", ids.join(","))
+    console.log("Fetching countries with IDs:", ids.join(","))
 
     const response = await api.get(`/countries/by-ids?${params.toString()}`)
 

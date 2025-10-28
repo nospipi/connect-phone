@@ -18,15 +18,15 @@ import { GetCountriesByIdsService } from './services/get-by-ids/service';
   imports: [TypeOrmModule.forFeature([CountryEntity])],
   controllers: [
     GetAllCountriesOfOrgController,
+    GetCountriesByIdsController,
     GetCountryByIdController,
     UpdateCountryController,
-    GetCountriesByIdsController,
   ],
   providers: [
     GetAllCountriesOfOrgService,
+    GetCountriesByIdsService,
     GetCountryByIdService,
     UpdateCountryService,
-    GetCountriesByIdsService,
   ],
 })
 export class CountriesModule {}

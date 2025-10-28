@@ -8,6 +8,7 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { GetCountriesByIdsService } from './service';
+import { GetCountriesByIdsQueryDto } from './dto';
 import { DbUserGuard } from '../../../../common/guards/db-user.guard';
 import { OrganizationGuard } from '../../../../common/guards/organization.guard';
 import { DbUserRoleGuard } from '../../../../common/guards/db-user-role.guard';
@@ -24,13 +25,9 @@ export class GetCountriesByIdsController {
 
   @Get('by-ids')
   async getCountriesByIds(
-    @Query('ids') idsString: string
+    @Query() query: GetCountriesByIdsQueryDto
   ): Promise<ICountry[]> {
-    if (!idsString) {
-      throw new BadRequestException('ids parameter is required');
-    }
-
-    const ids = idsString
+    const ids = query.ids
       .split(',')
       .map((id) => parseInt(id.trim(), 10))
       .filter((id) => !isNaN(id));
