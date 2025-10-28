@@ -1,6 +1,8 @@
 import DesktopSidebar from "@/components/ui/navigation/DesktopSidebar"
 import MobileNavbar from "@/components/ui/navigation/MobileNavbar"
 
+//-------------------------------------------------------------------------------
+
 export default function DashboardLayout({
   children,
 }: {

@@ -8,12 +8,12 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { FindAllByOrgPaginatedService } from './service';
-import { AuditLogEntryEntity } from '../../../../database/entities/audit-log.entity';
 import { DbUserGuard } from '../../../../common/guards/db-user.guard';
 import { DbUserRoleGuard } from '../../../../common/guards/db-user-role.guard';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { OrganizationGuard } from '../../../../common/guards/organization.guard';
 import { IAuditLog } from '@connect-phone/shared-types';
+import { NoCache } from '@/common/decorators/no-cache.decorator';
 
 //--------------------------------------------------------------------------------
 
@@ -25,6 +25,7 @@ export class FindAllByOrgPaginatedController {
   ) {}
 
   @Get('paginated')
+  @NoCache() //because audit logs are not added through mutation methods (added with database subscriber), cache is not invalidated, so we disable caching here
   async findAllByOrganizationPaginated(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('limit', new DefaultValuePipe(50), ParseIntPipe) limit: number

@@ -8,6 +8,8 @@ import { dark } from "@clerk/themes"
 import { ToastContainer } from "react-toastify"
 import "./globals.css"
 
+//-------------------------------------------------------------------------------
+
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
@@ -16,8 +18,8 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://yoururl.com"),
-  title: "Dashboard",
-  description: "The only dashboard you will ever need.",
+  title: "ConnectPhone eSim",
+  //description: "The only dashboard you will ever need.",
   keywords: [],
   authors: [
     {
@@ -26,14 +28,14 @@ export const metadata: Metadata = {
     },
   ],
   creator: "Vaggelis Magonezos",
-  openGraph: {
-    type: "website",
-    locale: "en_US",
-    url: "https://dashboard.tremor.so",
-    title: "Dashboard",
-    description: "The only dashboard you will ever need.",
-    siteName: "Dashboard",
-  },
+  // openGraph: {
+  //   type: "website",
+  //   locale: "en_US",
+  //   url: "https://dashboard.tremor.so",
+  //   title: "Dashboard",
+  //   description: "The only dashboard you will ever need.",
+  //   siteName: "Dashboard",
+  // },
   icons: {
     icon: "/favicon.ico",
   },
