@@ -258,7 +258,8 @@ const Page = async ({
                   htmlFor="descriptionHtml"
                   className="block text-sm font-medium text-gray-700 dark:text-slate-300"
                 >
-                  Description (HTML) <span className="text-red-500">*</span>
+                  Description (Formatted){" "}
+                  <span className="text-red-500">*</span>
                 </label>
                 <DescriptionHtmlEditor
                   initialValue={descriptionHtml}

@@ -1,11 +1,8 @@
-// apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/offers/[offer_id]/TinyEditor.client.tsx
 "use client"
 
-import { useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Editor } from "@tinymce/tinymce-react"
 import { Editor as TinyMCEEditor } from "tinymce"
-
-//------------------------------------------------------------
 
 interface TinyEditorProps {
   initialValue: string
@@ -17,15 +14,38 @@ export default function TinyEditor({
   onChange,
 }: TinyEditorProps) {
   const editorRef = useRef<TinyMCEEditor | null>(null)
+  const [isDarkMode, setIsDarkMode] = useState(false)
+
+  useEffect(() => {
+    // Detect Tailwind dark mode via class on <html> or <body>
+    const root = document.documentElement // or document.body if you toggle there
+
+    const observer = new MutationObserver(() => {
+      setIsDarkMode(root.classList.contains("dark"))
+    })
+
+    // Initial check
+    setIsDarkMode(root.classList.contains("dark"))
+
+    observer.observe(root, {
+      attributes: true,
+      attributeFilter: ["class"],
+    })
+
+    return () => observer.disconnect()
+  }, [])
 
   return (
     <Editor
+      key={isDarkMode ? "dark" : "light"} // 👈 Re-initialize TinyMCE when mode changes
       apiKey={process.env.NEXT_PUBLIC_TINYMCE_API_KEY}
       onInit={(_evt, editor) => (editorRef.current = editor)}
       initialValue={initialValue}
       init={{
-        height: 300,
-        menubar: false,
+        height: 500,
+        menubar: true,
+        skin: isDarkMode ? "oxide-dark" : "oxide",
+        content_css: isDarkMode ? "dark" : "default",
         plugins: [
           "advlist",
           "autolink",
@@ -42,7 +62,6 @@ export default function TinyEditor({
           "insertdatetime",
           "media",
           "table",
-          "code",
           "help",
           "wordcount",
         ],
