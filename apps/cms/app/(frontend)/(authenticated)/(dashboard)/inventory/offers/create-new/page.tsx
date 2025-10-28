@@ -19,6 +19,7 @@ import ImagesSelectButton from "./ImagesSelectButton.client"
 import InclusionsMultiSelect from "./InclusionsMultiSelect.client"
 import ExclusionsMultiSelect from "./ExclusionsMultiSelect.client"
 import UnlimitedDataCheckbox from "./UnlimitedDataCheckbox.client"
+import DescriptionHtmlEditor from "./DescriptionHtmlEditor.client"
 
 //------------------------------------------------------------
 
@@ -242,15 +243,7 @@ const Page = async ({
                 >
                   Description (HTML) <span className="text-red-500">*</span>
                 </label>
-                <textarea
-                  id="descriptionHtml"
-                  name="descriptionHtml"
-                  required
-                  rows={4}
-                  defaultValue={descriptionHtml}
-                  placeholder="Enter detailed HTML description..."
-                  className="mt-2 block w-full border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 shadow-sm outline-none focus:border-indigo-500 focus:outline-none focus:ring-0 dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200 dark:placeholder-slate-500 dark:focus:border-slate-700/50"
-                />
+                <DescriptionHtmlEditor initialValue={descriptionHtml} />
               </div>
 
               <div>

@@ -43,7 +43,7 @@ export class CreateEsimOfferDto implements CreateEsimOffer {
 
   @IsString()
   @IsNotEmpty()
-  @Sanitize()
+  //@Sanitize()
   descriptionHtml: string;
 
   @IsString()

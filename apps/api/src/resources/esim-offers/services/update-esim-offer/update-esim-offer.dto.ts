@@ -47,7 +47,7 @@ export class UpdateEsimOfferDto implements UpdateEsimOffer {
 
   @IsString()
   @IsOptional()
-  @Sanitize()
+  //@Sanitize()
   descriptionHtml?: string;
 
   @IsString()

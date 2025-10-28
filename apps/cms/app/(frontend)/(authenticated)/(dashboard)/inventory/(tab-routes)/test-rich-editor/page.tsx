@@ -1,3 +1,5 @@
+//apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/(tab-routes)/test-rich-editor/page.tsx
+
 import TinyEditor from "./TinyEditor"
 import initialContent from "./preload_test"
 

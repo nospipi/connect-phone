@@ -1,3 +1,5 @@
+//apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/(tab-routes)/test-rich-editor/TinyEditor.tsx
+
 "use client"
 
 import { useRef } from "react"
