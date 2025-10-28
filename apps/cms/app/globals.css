@@ -12,3 +12,39 @@ body,
 #__next {
   height: 100%;
 }
+
+
+.tox{
+  border-radius: 0 !important;
+  textarea, input, select, button {
+    background-color: transparent !important;
+  }
+}
+.tox-edit-area__iframe {
+  background-color: transparent !important;
+}
+.tox-edit-area {
+  background-color: transparent !important;
+}
+.tox-sidebar-wrap {
+  background-color: transparent !important;
+}
+.tox-editor-header {
+  background-color: transparent !important;
+}
+.tox-editor-container {
+  background-color: transparent !important;
+}
+#tinymce{
+  background-color: transparent !important;
+}
+.mce-content-body {
+ background-color: transparent !important;
+}
+.tiny-react_19442044251761683389010_ifr{
+  background-color: transparent !important;
+}
+
+iframe{
+  background-color: transparent !important;
+}
