@@ -260,7 +260,10 @@ const Page = async ({
                 >
                   Description (HTML) <span className="text-red-500">*</span>
                 </label>
-                <DescriptionHtmlEditor initialValue={descriptionHtml} />
+                <DescriptionHtmlEditor
+                  initialValue={descriptionHtml}
+                  offerId={offer_id}
+                />
               </div>
 
               <div>

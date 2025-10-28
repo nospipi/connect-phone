@@ -20,10 +20,12 @@ const TinyEditor = dynamic(() => import("./TinyEditor.client"), {
 
 interface DescriptionHtmlEditorProps {
   initialValue: string
+  offerId: string
 }
 
 export default function DescriptionHtmlEditor({
   initialValue,
+  offerId,
 }: DescriptionHtmlEditorProps) {
   const router = useRouter()
   const [content, setContent] = useState(initialValue)
@@ -57,7 +59,7 @@ export default function DescriptionHtmlEditor({
       urlParams.set("descriptionHtml", newContent)
     }
 
-    router.replace(`/inventory/offers/create-new?${urlParams.toString()}`, {
+    router.replace(`/inventory/offers/${offerId}?${urlParams.toString()}`, {
       scroll: false,
     })
   }
