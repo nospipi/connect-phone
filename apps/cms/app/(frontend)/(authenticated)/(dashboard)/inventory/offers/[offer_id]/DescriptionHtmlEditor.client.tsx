@@ -1,4 +1,4 @@
-// apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/offers/create-new/DescriptionHtmlEditor.client.tsx
+// apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/offers/[offer_id]/DescriptionHtmlEditor.client.tsx
 "use client"
 
 import { useState } from "react"

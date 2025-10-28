@@ -1,4 +1,4 @@
-// apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/offers/create-new/TinyEditor.client.tsx
+// apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/offers/[offer_id]/TinyEditor.client.tsx
 "use client"
 
 import { useRef } from "react"
