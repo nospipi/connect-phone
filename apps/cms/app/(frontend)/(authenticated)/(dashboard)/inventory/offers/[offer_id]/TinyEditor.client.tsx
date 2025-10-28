@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react"
 import { Editor } from "@tinymce/tinymce-react"
 import { Editor as TinyMCEEditor } from "tinymce"
 
+//------------------------------------------------------------
+
 interface TinyEditorProps {
   initialValue: string
   onChange: (content: string) => void
@@ -16,39 +18,36 @@ export default function TinyEditor({
   const editorRef = useRef<TinyMCEEditor | null>(null)
   const [isDarkMode, setIsDarkMode] = useState(false)
 
-  // useEffect(() => {
-  //   // Detect Tailwind dark mode via class on <html> or <body>
-  //   const root = document.documentElement // or document.body if you toggle there
+  useEffect(() => {
+    // Detect Tailwind dark mode via class on <html> or <body>
+    const root = document.documentElement // or document.body if you toggle there
 
-  //   const observer = new MutationObserver(() => {
-  //     setIsDarkMode(root.classList.contains("dark"))
-  //   })
+    const observer = new MutationObserver(() => {
+      setIsDarkMode(root.classList.contains("dark"))
+    })
 
-  //   // Initial check
-  //   setIsDarkMode(root.classList.contains("dark"))
+    // Initial check
+    setIsDarkMode(root.classList.contains("dark"))
 
-  //   observer.observe(root, {
-  //     attributes: true,
-  //     attributeFilter: ["class"],
-  //   })
+    observer.observe(root, {
+      attributes: true,
+      attributeFilter: ["class"],
+    })
 
-  //   return () => observer.disconnect()
-  // }, [])
+    return () => observer.disconnect()
+  }, [])
 
   return (
     <Editor
-      //key={isDarkMode ? "dark" : "light"} // 👈 Re-initialize TinyMCE when mode changes
+      key={isDarkMode ? "dark" : "light"} // 👈 Re-initialize TinyMCE when mode changes
       apiKey={process.env.NEXT_PUBLIC_TINYMCE_API_KEY}
       onInit={(_evt, editor) => (editorRef.current = editor)}
       initialValue={initialValue}
       init={{
-        height: 500,
+        height: 800,
         menubar: true,
-        // skin: isDarkMode ? "oxide-dark" : "oxide",
-        // content_css: isDarkMode ? "dark" : "default",
-        //skin: false, // 👈 disables TinyMCE’s default UI skin
-        // content_css: false, // 👈 disables TinyMCE’s default content styles
-
+        skin: isDarkMode ? "oxide-dark" : "oxide",
+        content_css: isDarkMode ? "dark" : "default",
         plugins: [
           "advlist",
           "autolink",

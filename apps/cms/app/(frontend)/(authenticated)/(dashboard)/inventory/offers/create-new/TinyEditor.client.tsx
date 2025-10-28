@@ -42,7 +42,7 @@ export default function TinyEditor({
       onInit={(_evt, editor) => (editorRef.current = editor)}
       initialValue={initialValue}
       init={{
-        height: 500,
+        height: 800,
         menubar: true,
         skin: isDarkMode ? "oxide-dark" : "oxide",
         content_css: isDarkMode ? "dark" : "default",
