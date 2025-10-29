@@ -49,6 +49,16 @@ export default function ImagesSelectButton({
       urlParams.set(key, stringValue)
     }
 
+    const imageIds = formData.get("imageIds")
+    if (imageIds) {
+      try {
+        const parsed = JSON.parse(String(imageIds))
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          urlParams.set("mediaIds", parsed.join(","))
+        }
+      } catch {}
+    }
+
     urlParams.set("previousPage", `/inventory/offers/${offerId}`)
     urlParams.set("targetField", "imageIds")
     urlParams.set("multipleSelection", "true")

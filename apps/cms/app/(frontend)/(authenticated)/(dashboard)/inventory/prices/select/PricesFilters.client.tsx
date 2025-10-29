@@ -117,7 +117,7 @@ export default function PricesFilters({ currentFilters }: PricesFiltersProps) {
     <>
       <input type="checkbox" id="more-filters-drawer" className="peer hidden" />
 
-      <div className="my-2 flex flex-wrap items-center gap-2 px-3">
+      <div className="flex flex-wrap items-center gap-2">
         <div className="relative min-w-[200px] flex-1">
           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
             <RiSearchLine className="h-4 w-4 text-gray-500 dark:text-slate-500" />

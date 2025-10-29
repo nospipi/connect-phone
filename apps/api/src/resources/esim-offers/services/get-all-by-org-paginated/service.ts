@@ -82,27 +82,39 @@ export class GetAllByOrgPaginatedService {
     }
 
     if (searchDto.countryIds && searchDto.countryIds.length > 0) {
-      queryBuilder
-        .leftJoin('esimOffer.countries', 'countries')
-        .andWhere('countries.id IN (:...countryIds)', {
-          countryIds: searchDto.countryIds,
-        });
+      queryBuilder.andWhere(
+        `EXISTS (
+          SELECT 1 
+          FROM esim_offer_countries eoc 
+          WHERE eoc."offerId" = esimOffer.id 
+          AND eoc."countryId" IN (:...countryIds)
+        )`,
+        { countryIds: searchDto.countryIds }
+      );
     }
 
     if (searchDto.salesChannelIds && searchDto.salesChannelIds.length > 0) {
-      queryBuilder
-        .leftJoin('esimOffer.salesChannels', 'salesChannels')
-        .andWhere('salesChannels.id IN (:...salesChannelIds)', {
-          salesChannelIds: searchDto.salesChannelIds,
-        });
+      queryBuilder.andWhere(
+        `EXISTS (
+          SELECT 1 
+          FROM esim_offer_sales_channels eosc 
+          WHERE eosc."offerId" = esimOffer.id 
+          AND eosc."salesChannelId" IN (:...salesChannelIds)
+        )`,
+        { salesChannelIds: searchDto.salesChannelIds }
+      );
     }
 
     if (searchDto.priceIds && searchDto.priceIds.length > 0) {
-      queryBuilder
-        .leftJoin('esimOffer.prices', 'prices')
-        .andWhere('prices.id IN (:...priceIds)', {
-          priceIds: searchDto.priceIds,
-        });
+      queryBuilder.andWhere(
+        `EXISTS (
+          SELECT 1 
+          FROM esim_offer_prices eop 
+          WHERE eop."offerId" = esimOffer.id 
+          AND eop."priceId" IN (:...priceIds)
+        )`,
+        { priceIds: searchDto.priceIds }
+      );
     }
 
     const paginationResult = await paginate<EsimOfferEntity>(

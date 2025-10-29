@@ -49,6 +49,11 @@ export default function MainImageSelectButton({
       urlParams.set(key, stringValue)
     }
 
+    const mainImageId = formData.get("mainImageId")
+    if (mainImageId && String(mainImageId)) {
+      urlParams.set("mediaIds", String(mainImageId))
+    }
+
     urlParams.set("previousPage", `/inventory/offers/${offerId}`)
     urlParams.set("targetField", "mainImageId")
     urlParams.set("multipleSelection", "false")
