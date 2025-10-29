@@ -3,7 +3,7 @@
 import { RiArrowLeftLine, RiSimCardLine } from "@remixicon/react"
 import Link from "next/link"
 import { getAllEsimOffersPaginated } from "@/app/(backend)/server_actions/esim-offers/getAllEsimOffersPaginated"
-import { getCountryById } from "@/app/(backend)/server_actions/countries/getCountryById"
+import { getCountriesByIds } from "@/app/(backend)/server_actions/countries/getCountriesByIds"
 import { getSalesChannelById } from "@/app/(backend)/server_actions/sales-channels/getSalesChannelById"
 import { getPriceById } from "@/app/(backend)/server_actions/prices/getPriceById"
 import OfferGrid from "./OfferGrid.client"
@@ -61,16 +61,8 @@ const Page = async ({ searchParams }: PageProps) => {
     ? priceIds.split(",").map(Number).filter(Boolean)
     : []
 
-  const selectedCountries = await Promise.all(
-    countryIdsArray.map(async (id) => {
-      try {
-        return await getCountryById(id)
-      } catch (error) {
-        console.error(`Failed to fetch country ${id}:`, error)
-        return null
-      }
-    }),
-  ).then((results) => results.filter((c) => c !== null))
+  const selectedCountries =
+    countryIdsArray.length > 0 ? await getCountriesByIds(countryIdsArray) : []
 
   const selectedSalesChannels = await Promise.all(
     salesChannelIdsArray.map(async (id) => {
