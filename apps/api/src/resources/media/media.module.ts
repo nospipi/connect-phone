@@ -1,4 +1,5 @@
 // apps/api/src/resources/media/media.module.ts
+
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MediaEntity } from '@/database/entities/media.entity';
@@ -12,7 +13,10 @@ import { DeleteMediaController } from './services/delete-media/controller';
 import { DeleteMediaService } from './services/delete-media/service';
 import { GetMediaByIdController } from './services/get-media-by-id/controller';
 import { GetMediaByIdService } from './services/get-media-by-id/service';
-//----------------------------------------------------------------------
+import { GetMediaByIdsController } from './services/get-by-ids/controller';
+import { GetMediaByIdsService } from './services/get-by-ids/service';
+
+//------------------------------------------------------------
 
 @Module({
   imports: [TypeOrmModule.forFeature([MediaEntity])],
@@ -21,12 +25,14 @@ import { GetMediaByIdService } from './services/get-media-by-id/service';
     GetAllByOrgPaginatedController,
     UpdateMediaController,
     DeleteMediaController,
+    GetMediaByIdsController,
     GetMediaByIdController,
   ],
   providers: [
     CreateMediaService,
     GetAllByOrgPaginatedService,
     UpdateMediaService,
+    GetMediaByIdsService,
     GetMediaByIdService,
     DeleteMediaService,
   ],
