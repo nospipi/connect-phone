@@ -41,6 +41,14 @@ export class UpdateEsimOfferService {
         id: updateEsimOfferDto.id,
         organizationId: organization.id,
       },
+      relations: [
+        'inclusions',
+        'exclusions',
+        'images',
+        'countries',
+        'salesChannels',
+        'prices',
+      ],
     });
 
     if (!esimOffer) {
@@ -107,6 +115,28 @@ export class UpdateEsimOfferService {
       );
     }
 
-    return this.esimOfferRepository.save(esimOffer);
+    const savedOffer = await this.esimOfferRepository.save(esimOffer);
+
+    const reloadedOffer = await this.esimOfferRepository.findOne({
+      where: { id: savedOffer.id },
+      relations: [
+        'organization',
+        'inclusions',
+        'exclusions',
+        'mainImage',
+        'images',
+        'countries',
+        'salesChannels',
+        'prices',
+      ],
+    });
+
+    if (!reloadedOffer) {
+      throw new NotFoundException(
+        `Esim offer with ID ${savedOffer.id} not found after update`
+      );
+    }
+
+    return reloadedOffer;
   }
 }

@@ -116,6 +116,7 @@ export class GetAllByOrgPaginatedService {
       const offersWithRelations = await this.esimOfferRepository
         .createQueryBuilder('esimOffer')
         .leftJoinAndSelect('esimOffer.mainImage', 'mainImage')
+        .leftJoinAndSelect('esimOffer.images', 'images')
         .leftJoinAndSelect('esimOffer.countries', 'countries')
         .leftJoinAndSelect('esimOffer.salesChannels', 'salesChannels')
         .leftJoinAndSelect('esimOffer.prices', 'prices')

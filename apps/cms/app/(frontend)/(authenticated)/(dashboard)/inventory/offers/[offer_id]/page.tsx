@@ -170,7 +170,7 @@ const Page = async ({
     return `/inventory/offers/${offer_id}?${newParams.toString()}`
   }
 
-  const formKey = `${title}-${durationInDays}-${dataInGb}-${isUnlimitedData}-${selectedCountryIds.join(",")}-${selectedSalesChannelIds.join(",")}-${selectedPriceIds.join(",")}-${selectedInclusionIds.join(",")}-${selectedExclusionIds.join(",")}`
+  const formKey = `${title}-${durationInDays}-${dataInGb}-${isUnlimitedData}-${mainImageId}-${selectedImageIds.join(",")}-${selectedCountryIds.join(",")}-${selectedSalesChannelIds.join(",")}-${selectedPriceIds.join(",")}-${selectedInclusionIds.join(",")}-${selectedExclusionIds.join(",")}`
 
   return (
     <div className="relative flex h-full flex-col overflow-hidden">
