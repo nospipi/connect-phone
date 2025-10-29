@@ -223,7 +223,7 @@ export default function OffersFilters({
         className="invisible fixed inset-0 z-40 bg-black/50 opacity-0 backdrop-blur-sm transition-all duration-300 peer-checked:visible peer-checked:opacity-100"
       />
 
-      <div className="absolute bottom-0 left-0 right-0 z-50 flex translate-y-full transform flex-col overflow-hidden bg-white shadow-2xl transition-transform duration-300 ease-out peer-checked:translate-y-0 dark:bg-gray-950">
+      <div className="absolute bottom-0 left-0 right-0 z-50 flex max-h-[90vh] translate-y-full transform flex-col overflow-hidden bg-white shadow-2xl transition-transform duration-300 ease-out peer-checked:translate-y-0 dark:bg-gray-950">
         <div className="flex flex-shrink-0 items-center justify-between border-b border-gray-200 p-4 dark:border-gray-800">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
             Advanced Filters
@@ -236,7 +236,7 @@ export default function OffersFilters({
           </label>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-4">
+        <div className="min-h-0 flex-1 overflow-y-auto p-4">
           <div className="space-y-8">
             <div className="space-y-4">
               <h4 className="text-sm font-semibold uppercase tracking-wide text-gray-700 dark:text-gray-300">
