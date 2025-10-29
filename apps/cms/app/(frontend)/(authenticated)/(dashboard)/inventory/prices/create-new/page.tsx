@@ -1,8 +1,8 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/prices/create-new/page.tsx
 
 import { createPrice } from "@/app/(backend)/server_actions/prices/createPrice"
-import { getSalesChannelById } from "@/app/(backend)/server_actions/sales-channels/getSalesChannelById"
-import { getDateRangeById } from "@/app/(backend)/server_actions/date-ranges/getDateRangeById"
+import { getSalesChannelsByIds } from "@/app/(backend)/server_actions/sales-channels/getSalesChannelsByIds"
+import { getDateRangesByIds } from "@/app/(backend)/server_actions/date-ranges/getDateRangesByIds"
 import Link from "next/link"
 import { RiArrowLeftLine, RiCloseLine, RiAddLine } from "@remixicon/react"
 import { Currency, CURRENCIES } from "@connect-phone/shared-types"
@@ -35,13 +35,10 @@ const Page = async ({
     ? dateRangeIds.split(",").map(Number).filter(Boolean)
     : []
 
-  const selectedSalesChannels = await Promise.all(
-    selectedSalesChannelIds.map((id) => getSalesChannelById(id)),
-  )
-
-  const selectedDateRanges = await Promise.all(
-    selectedDateRangeIds.map((id) => getDateRangeById(id)),
-  )
+  const [selectedSalesChannels, selectedDateRanges] = await Promise.all([
+    getSalesChannelsByIds(selectedSalesChannelIds),
+    getDateRangesByIds(selectedDateRangeIds),
+  ])
 
   const buildUrlWithoutItem = (
     field: "salesChannelIds" | "dateRangeIds",

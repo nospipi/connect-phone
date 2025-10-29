@@ -3,8 +3,8 @@
 import { RiArrowLeftLine, RiCoinsLine } from "@remixicon/react"
 import Link from "next/link"
 import { getAllPricesPaginated } from "@/app/(backend)/server_actions/prices/getAllPricesPaginated"
-import { getDateRangeById } from "@/app/(backend)/server_actions/date-ranges/getDateRangeById"
-import { getSalesChannelById } from "@/app/(backend)/server_actions/sales-channels/getSalesChannelById"
+import { getDateRangesByIds } from "@/app/(backend)/server_actions/date-ranges/getDateRangesByIds"
+import { getSalesChannelsByIds } from "@/app/(backend)/server_actions/sales-channels/getSalesChannelsByIds"
 import { Currency } from "@connect-phone/shared-types"
 import PriceGrid from "./PriceGrid.client"
 import { Pagination } from "@/components/common/pagination/Pagination"
@@ -55,27 +55,10 @@ const Page = async ({ searchParams }: PageProps) => {
     ? salesChannelIds.split(",").map(Number).filter(Boolean)
     : []
 
-  const selectedDateRanges = await Promise.all(
-    dateRangeIdsArray.map(async (id) => {
-      try {
-        return await getDateRangeById(id)
-      } catch (error) {
-        console.error(`Failed to fetch date range ${id}:`, error)
-        return null
-      }
-    }),
-  ).then((results) => results.filter((dr) => dr !== null))
-
-  const selectedSalesChannels = await Promise.all(
-    salesChannelIdsArray.map(async (id) => {
-      try {
-        return await getSalesChannelById(id)
-      } catch (error) {
-        console.error(`Failed to fetch sales channel ${id}:`, error)
-        return null
-      }
-    }),
-  ).then((results) => results.filter((sc) => sc !== null))
+  const [selectedDateRanges, selectedSalesChannels] = await Promise.all([
+    getDateRangesByIds(dateRangeIdsArray),
+    getSalesChannelsByIds(salesChannelIdsArray),
+  ])
 
   const formData: Record<string, string> = {}
   const excludedParams = [

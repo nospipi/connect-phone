@@ -2,9 +2,10 @@
 
 import { createEsimOffer } from "@/app/(backend)/server_actions/esim-offers/createEsimOffer"
 import { getAllCountriesOfOrg } from "@/app/(backend)/server_actions/countries/getAllCountriesOfOrg"
-import { getSalesChannelById } from "@/app/(backend)/server_actions/sales-channels/getSalesChannelById"
-import { getPriceById } from "@/app/(backend)/server_actions/prices/getPriceById"
+import { getSalesChannelsByIds } from "@/app/(backend)/server_actions/sales-channels/getSalesChannelsByIds"
+import { getPricesByIds } from "@/app/(backend)/server_actions/prices/getPricesByIds"
 import { getMediaById } from "@/app/(backend)/server_actions/media/getMediaById"
+import { getMediaByIds } from "@/app/(backend)/server_actions/media/getMediaByIds"
 import { getAllOfferInclusions } from "@/app/(backend)/server_actions/offer-inclusions/getAllOfferInclusions"
 import { getAllOfferExclusions } from "@/app/(backend)/server_actions/offer-exclusions/getAllOfferExclusions"
 import Link from "next/link"
@@ -43,9 +44,6 @@ const Page = async ({
   const salesChannelIds = params.salesChannelIds || ""
   const priceIds = params.priceIds || ""
 
-  const allInclusions = await getAllOfferInclusions()
-  const allExclusions = await getAllOfferExclusions()
-
   const selectedInclusionIds = inclusionIds
     ? inclusionIds.split(",").map(Number).filter(Boolean)
     : []
@@ -70,23 +68,26 @@ const Page = async ({
     ? imageIds.split(",").map(Number).filter(Boolean)
     : []
 
-  const allCountries = await getAllCountriesOfOrg()
+  const [
+    allInclusions,
+    allExclusions,
+    allCountries,
+    selectedSalesChannels,
+    selectedPrices,
+    mainImage,
+    selectedImages,
+  ] = await Promise.all([
+    getAllOfferInclusions(),
+    getAllOfferExclusions(),
+    getAllCountriesOfOrg(),
+    getSalesChannelsByIds(selectedSalesChannelIds),
+    getPricesByIds(selectedPriceIds),
+    mainImageId ? getMediaById(Number(mainImageId)) : Promise.resolve(null),
+    getMediaByIds(selectedImageIds),
+  ])
+
   const selectedCountries = allCountries.filter((country) =>
     selectedCountryIds.includes(country.id),
-  )
-
-  const selectedSalesChannels = await Promise.all(
-    selectedSalesChannelIds.map((id) => getSalesChannelById(id)),
-  )
-
-  const selectedPrices = await Promise.all(
-    selectedPriceIds.map((id) => getPriceById(id)),
-  )
-
-  const mainImage = mainImageId ? await getMediaById(Number(mainImageId)) : null
-
-  const selectedImages = await Promise.all(
-    selectedImageIds.map((id) => getMediaById(id)),
   )
 
   const inclusionOptions = allInclusions.map((inclusion) => ({

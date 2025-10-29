@@ -2,8 +2,8 @@
 
 import { getAllEsimOffersPaginated } from "@/app/(backend)/server_actions/esim-offers/getAllEsimOffersPaginated"
 import { getCountriesByIds } from "@/app/(backend)/server_actions/countries/getCountriesByIds"
-import { getSalesChannelById } from "@/app/(backend)/server_actions/sales-channels/getSalesChannelById"
-import { getPriceById } from "@/app/(backend)/server_actions/prices/getPriceById"
+import { getSalesChannelsByIds } from "@/app/(backend)/server_actions/sales-channels/getSalesChannelsByIds"
+import { getPricesByIds } from "@/app/(backend)/server_actions/prices/getPricesByIds"
 import { RiSmartphoneLine } from "@remixicon/react"
 import { Pagination } from "@/components/common/pagination/Pagination"
 import OfferListItem from "./OfferListItem"
@@ -40,30 +40,12 @@ const Page = async ({
     ? priceIds.split(",").map(Number).filter(Boolean)
     : []
 
-  const selectedCountries =
-    countryIdsArray.length > 0 ? await getCountriesByIds(countryIdsArray) : []
-
-  const selectedSalesChannels = await Promise.all(
-    salesChannelIdsArray.map(async (id) => {
-      try {
-        return await getSalesChannelById(id)
-      } catch (error) {
-        console.error(`Failed to fetch sales channel ${id}:`, error)
-        return null
-      }
-    }),
-  ).then((results) => results.filter((sc) => sc !== null))
-
-  const selectedPrices = await Promise.all(
-    priceIdsArray.map(async (id) => {
-      try {
-        return await getPriceById(id)
-      } catch (error) {
-        console.error(`Failed to fetch price ${id}:`, error)
-        return null
-      }
-    }),
-  ).then((results) => results.filter((p) => p !== null))
+  const [selectedCountries, selectedSalesChannels, selectedPrices] =
+    await Promise.all([
+      getCountriesByIds(countryIdsArray),
+      getSalesChannelsByIds(salesChannelIdsArray),
+      getPricesByIds(priceIdsArray),
+    ])
 
   const offersData = await getAllEsimOffersPaginated({
     page,
