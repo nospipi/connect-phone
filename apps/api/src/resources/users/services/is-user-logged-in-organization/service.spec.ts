@@ -2,7 +2,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException } from '@nestjs/common';
 import { IsUserLoggedInOrganizationService } from './service';
-import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
+import { CurrentDbUserService } from '../../../../common/services/current-db-user.service';
 import {
   createMockUser,
   createCurrentDbUserServiceProvider,

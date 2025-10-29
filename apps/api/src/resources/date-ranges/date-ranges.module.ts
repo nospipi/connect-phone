@@ -1,4 +1,5 @@
 // apps/api/src/resources/date-ranges/date-ranges.module.ts
+
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DateRangeEntity } from '@/database/entities/date-range.entity';
@@ -12,8 +13,10 @@ import { UpdateDateRangeController } from './services/update-date-range/controll
 import { UpdateDateRangeService } from './services/update-date-range/service';
 import { GetDateRangeByIdController } from './services/get-date-range-by-id/controller';
 import { GetDateRangeByIdService } from './services/get-date-range-by-id/service';
+import { GetDateRangesByIdsController } from './services/get-by-ids/controller';
+import { GetDateRangesByIdsService } from './services/get-by-ids/service';
 
-//------------------------------------------------------
+//------------------------------------------------------------
 
 @Module({
   imports: [TypeOrmModule.forFeature([DateRangeEntity])],
@@ -22,6 +25,7 @@ import { GetDateRangeByIdService } from './services/get-date-range-by-id/service
     DeleteDateRangeController,
     GetAllByOrgPaginatedController,
     UpdateDateRangeController,
+    GetDateRangesByIdsController,
     GetDateRangeByIdController,
   ],
   providers: [
@@ -29,6 +33,7 @@ import { GetDateRangeByIdService } from './services/get-date-range-by-id/service
     DeleteDateRangeService,
     GetAllByOrgPaginatedService,
     UpdateDateRangeService,
+    GetDateRangesByIdsService,
     GetDateRangeByIdService,
   ],
 })

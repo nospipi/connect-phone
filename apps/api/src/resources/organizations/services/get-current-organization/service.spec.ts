@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { GetCurrentOrganizationService } from './service';
 import { OrganizationEntity } from '../../../../database/entities/organization.entity';
-import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
+import { CurrentDbUserService } from '../../../../common/services/current-db-user.service';
 import {
   createMockOrganization,
   createMockUser,

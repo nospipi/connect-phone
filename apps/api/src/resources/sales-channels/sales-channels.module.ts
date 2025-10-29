@@ -1,4 +1,5 @@
 // apps/api/src/resources/sales-channels/sales-channels.module.ts
+
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SalesChannelEntity } from '@/database/entities/sales-channel.entity';
@@ -15,8 +16,10 @@ import { CreateNewChannelService } from './services/create-new-channel/service';
 import { UpdateSalesChannelService } from './services/update-sales-channel/service';
 import { GetSalesChannelByIdService } from './services/get-sales-channel-by-id/service';
 import { DeleteSalesChannelService } from './services/delete-sales-channel/service';
+import { GetSalesChannelsByIdsController } from './services/get-sales-channel-by-id/get-by-ids/controller';
+import { GetSalesChannelsByIdsService } from './services/get-sales-channel-by-id/get-by-ids/service';
 
-//-----------------------------------------
+//------------------------------------------------------------
 
 @Module({
   imports: [
@@ -31,6 +34,7 @@ import { DeleteSalesChannelService } from './services/delete-sales-channel/servi
     FindAllByOrgPaginatedController,
     CreateNewChannelController,
     UpdateSalesChannelController,
+    GetSalesChannelsByIdsController,
     GetSalesChannelByIdController,
     DeleteSalesChannelController,
   ],
@@ -38,6 +42,7 @@ import { DeleteSalesChannelService } from './services/delete-sales-channel/servi
     FindAllByOrgPaginatedService,
     CreateNewChannelService,
     UpdateSalesChannelService,
+    GetSalesChannelsByIdsService,
     GetSalesChannelByIdService,
     DeleteSalesChannelService,
   ],

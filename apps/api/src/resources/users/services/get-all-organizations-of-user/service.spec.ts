@@ -9,7 +9,7 @@ import {
   UserOrganizationEntity,
   UserOrganizationRole,
 } from '../../../../database/entities/user-organization.entity';
-import { CurrentDbUserService } from '../../../../common/core/current-db-user.service';
+import { CurrentDbUserService } from '../../../../common/services/current-db-user.service';
 import {
   createMockUser,
   createMockOrganization,

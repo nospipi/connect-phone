@@ -1,4 +1,5 @@
 // apps/api/src/resources/esim-offers/esim-offers.module.ts
+
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EsimOfferEntity } from '@/database/entities/esim-offer.entity';
@@ -12,8 +13,10 @@ import { UpdateEsimOfferController } from './services/update-esim-offer/controll
 import { UpdateEsimOfferService } from './services/update-esim-offer/service';
 import { GetEsimOfferByIdController } from './services/get-esim-offer-by-id/controller';
 import { GetEsimOfferByIdService } from './services/get-esim-offer-by-id/service';
+import { GetEsimOffersByIdsController } from './services/get-by-ids/controller';
+import { GetEsimOffersByIdsService } from './services/get-by-ids/service';
 
-//----------------------------------------------------------------------
+//------------------------------------------------------------
 
 @Module({
   imports: [TypeOrmModule.forFeature([EsimOfferEntity])],
@@ -22,6 +25,7 @@ import { GetEsimOfferByIdService } from './services/get-esim-offer-by-id/service
     DeleteEsimOfferController,
     GetAllByOrgPaginatedController,
     UpdateEsimOfferController,
+    GetEsimOffersByIdsController,
     GetEsimOfferByIdController,
   ],
   providers: [
@@ -29,6 +33,7 @@ import { GetEsimOfferByIdService } from './services/get-esim-offer-by-id/service
     DeleteEsimOfferService,
     GetAllByOrgPaginatedService,
     UpdateEsimOfferService,
+    GetEsimOffersByIdsService,
     GetEsimOfferByIdService,
   ],
 })

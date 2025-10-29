@@ -1,4 +1,5 @@
 // apps/api/src/resources/prices/prices.module.ts
+
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PriceEntity } from '@/database/entities/price.entity';
@@ -14,8 +15,10 @@ import { GetPriceByIdController } from './services/get-price-by-id/controller';
 import { GetPriceByIdService } from './services/get-price-by-id/service';
 import { UpdatePriceController } from './services/update-price/controller';
 import { UpdatePriceService } from './services/update-price/service';
+import { GetPricesByIdsController } from './services/get-by-ids/controller';
+import { GetPricesByIdsService } from './services/get-by-ids/service';
 
-//----------------------------------------------------------------------
+//------------------------------------------------------------
 
 @Module({
   imports: [
@@ -29,6 +32,7 @@ import { UpdatePriceService } from './services/update-price/service';
     CreatePriceController,
     DeletePriceController,
     GetAllByOrgPaginatedController,
+    GetPricesByIdsController,
     GetPriceByIdController,
     UpdatePriceController,
   ],
@@ -36,6 +40,7 @@ import { UpdatePriceService } from './services/update-price/service';
     CreatePriceService,
     DeletePriceService,
     GetAllByOrgPaginatedService,
+    GetPricesByIdsService,
     GetPriceByIdService,
     UpdatePriceService,
   ],
