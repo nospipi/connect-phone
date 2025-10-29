@@ -197,7 +197,7 @@ const Page = async ({ searchParams }: PageProps) => {
   if (priceIds) paginationParams.priceIds = priceIds
 
   return (
-    <div className="relative flex h-full flex-col overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100/50 dark:from-gray-950 dark:to-gray-900/50">
+    <div className="relative flex h-full flex-col overflow-hidden">
       <div className="flex border-b border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950">
         <Link
           href={buildBackUrl()}
@@ -251,7 +251,7 @@ const Page = async ({ searchParams }: PageProps) => {
         </div>
       </div>
 
-      <div className="flex flex-col gap-2 px-2 pt-2">
+      <div className="my-2 px-2">
         <OffersFilters
           currentFilters={currentFilters}
           previousPage={previousPage}
@@ -260,7 +260,9 @@ const Page = async ({ searchParams }: PageProps) => {
           selectedParam={selectedParam}
           formData={formData}
         />
+      </div>
 
+      <div className="px-2">
         <SelectAllCheckbox
           items={items}
           selectedIds={selectedIds}
@@ -273,25 +275,27 @@ const Page = async ({ searchParams }: PageProps) => {
         />
       </div>
 
-      <div className="flex flex-1 overflow-hidden py-2">
-        <div className="flex-1 overflow-auto px-3 py-1">
-          {items.length === 0 ? (
-            <div className="flex h-full flex-col items-center justify-center gap-6">
-              <div className="rounded-2xl bg-gradient-to-br from-gray-100 to-gray-200/50 p-8 dark:from-gray-800/50 dark:to-gray-900/50">
-                <RiSimCardLine className="h-20 w-20 text-gray-400 dark:text-gray-600" />
-              </div>
-              <div className="text-center">
-                <p className="text-lg font-medium text-gray-700 dark:text-gray-300">
-                  No eSIM offers found
-                </p>
-                <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                  {search
-                    ? "Try adjusting your search or filters"
-                    : "Create an eSIM offer to get started"}
-                </p>
-              </div>
+      {items.length === 0 && (
+        <div className="flex flex-1 items-center justify-center">
+          <div className="text-center">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100 dark:bg-slate-800/50">
+              <RiSimCardLine className="h-8 w-8 text-gray-400 dark:text-slate-600" />
             </div>
-          ) : (
+            <h3 className="mb-2 text-lg font-medium text-gray-900 dark:text-slate-200">
+              No eSIM offers found
+            </h3>
+            <p className="text-sm text-gray-500 dark:text-slate-500">
+              {search
+                ? "Try adjusting your search or filters"
+                : "Create an eSIM offer to get started"}
+            </p>
+          </div>
+        </div>
+      )}
+
+      {items.length > 0 && (
+        <div className="flex-1 overflow-hidden">
+          <div className="h-full overflow-auto px-3 py-2">
             <OfferGrid
               items={items}
               selectedIds={selectedIds}
@@ -302,9 +306,9 @@ const Page = async ({ searchParams }: PageProps) => {
               targetField={targetField}
               formData={formData}
             />
-          )}
+          </div>
         </div>
-      </div>
+      )}
 
       <Pagination
         meta={meta}

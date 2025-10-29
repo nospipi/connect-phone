@@ -167,10 +167,10 @@ export default function PricesFilters({ currentFilters }: PricesFiltersProps) {
 
       <label
         htmlFor="more-filters-drawer"
-        className="invisible absolute inset-0 z-40 bg-black/50 opacity-0 backdrop-blur-sm transition-all duration-300 peer-checked:visible peer-checked:opacity-100"
+        className="invisible fixed inset-0 z-40 bg-black/50 opacity-0 backdrop-blur-sm transition-all duration-300 peer-checked:visible peer-checked:opacity-100"
       />
 
-      <div className="absolute bottom-0 left-0 right-0 top-0 z-50 flex translate-y-full transform flex-col overflow-hidden bg-white shadow-2xl transition-transform duration-300 ease-out peer-checked:translate-y-0 dark:bg-gray-950">
+      <div className="absolute bottom-0 left-0 right-0 z-50 flex translate-y-full transform flex-col overflow-hidden bg-white shadow-2xl transition-transform duration-300 ease-out peer-checked:translate-y-0 dark:bg-gray-950">
         <div className="flex flex-shrink-0 items-center justify-between border-b border-gray-200 p-4 dark:border-gray-800">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
             Advanced Filters
