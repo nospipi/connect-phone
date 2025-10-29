@@ -60,10 +60,6 @@ export function DbUserRoleGuard(
 
       const enumRoles = allowedRoles.map((role) => UserOrganizationRole[role]);
 
-      this.logger.log(
-        `🔒👑 Role guard: Checking for roles: ${enumRoles.join(', ')}`
-      );
-
       const userRole =
         await this.currentDbUserRoleService.getCurrentDbUserRole();
 
@@ -82,10 +78,6 @@ export function DbUserRoleGuard(
           `Role access denied: This action requires ${enumRoles.join(' or ')} role. You have ${userRole} role.`
         );
       }
-
-      this.logger.log(
-        `🔒👑 Role guard: Access granted for user with role '${userRole}'`
-      );
 
       return true;
     }

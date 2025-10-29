@@ -93,10 +93,6 @@ export class OrganizationGuard implements CanActivate {
       );
     }
 
-    this.logger.log(
-      `🔒🏢 Organization guard: Access granted for user ${user.email} in organization ${organization.name} (ID: ${organization.id})`
-    );
-
     request.currentUser = user;
     request.currentOrganization = organization;
 

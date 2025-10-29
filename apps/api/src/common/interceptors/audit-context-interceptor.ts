@@ -59,10 +59,6 @@ export class AuditContextInterceptor implements NestInterceptor {
         if (dbUser) {
           userId = dbUser.id;
           organizationId = dbUser.loggedOrganizationId;
-
-          this.logger.log(
-            `🔍 Audit context set for user: ${dbUser.email} (ID: ${dbUser.id}) in organization: ${organizationId || 'none'}`
-          );
         } else {
           console.log(`🔍 Clerk user ${email} not found in database`);
         }

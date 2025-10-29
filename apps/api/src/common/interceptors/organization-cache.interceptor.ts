@@ -82,7 +82,7 @@ export class OrganizationCacheInterceptor extends CacheInterceptor {
     const url = httpAdapter.getRequestUrl(request);
     const cacheKey = `${organizationId}:${url}`;
 
-    this.logger.debug(`Cache key generated: ${cacheKey}`);
+    //this.logger.debug(`Cache key generated: ${cacheKey}`);
     return cacheKey;
   }
 

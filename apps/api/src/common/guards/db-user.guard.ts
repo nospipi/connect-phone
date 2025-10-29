@@ -66,10 +66,6 @@ export class DbUserGuard implements CanActivate {
       );
     }
 
-    this.logger.log(
-      `🔒👤 [${endpoint}] DB User guard: Access granted for user ${dbUser.email} (ID: ${dbUser.id})`
-    );
-
     request.currentDbUser = dbUser;
 
     return true;

@@ -1,13 +1,14 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/offers/[offer_id]/page.tsx
 
+import Link from "next/link"
 import { updateEsimOffer } from "@/app/(backend)/server_actions/esim-offers/updateEsimOffer"
 import { getCountriesByIds } from "@/app/(backend)/server_actions/countries/getCountriesByIds"
 import { getSalesChannelsByIds } from "@/app/(backend)/server_actions/sales-channels/getSalesChannelsByIds"
 import { getPricesByIds } from "@/app/(backend)/server_actions/prices/getPricesByIds"
 import { getMediaById } from "@/app/(backend)/server_actions/media/getMediaById"
+import { getMediaByIds } from "@/app/(backend)/server_actions/media/getMediaByIds"
 import { getAllOfferInclusions } from "@/app/(backend)/server_actions/offer-inclusions/getAllOfferInclusions"
 import { getAllOfferExclusions } from "@/app/(backend)/server_actions/offer-exclusions/getAllOfferExclusions"
-import Link from "next/link"
 import { RiArrowLeftLine } from "@remixicon/react"
 import { PendingOverlay } from "@/components/common/PendingOverlay"
 import CountrySelectButton from "./CountrySelectButton.client"
@@ -20,6 +21,8 @@ import ExclusionsMultiSelect from "./ExclusionsMultiSelect.client"
 import UnlimitedDataCheckbox from "./UnlimitedDataCheckbox.client"
 import SelectedItemBadge from "./SelectedItemBadge.client"
 import DescriptionHtmlEditor from "./DescriptionHtmlEditor.client"
+import MainImageDisplay from "./MainImageDisplay.client"
+import ImageGalleryItem from "./ImageGalleryItem.client"
 
 //------------------------------------------------------------
 
@@ -47,9 +50,6 @@ const Page = async ({
   const salesChannelIds = urlParams.salesChannelIds || ""
   const priceIds = urlParams.priceIds || ""
 
-  const allInclusions = await getAllOfferInclusions()
-  const allExclusions = await getAllOfferExclusions()
-
   const selectedInclusionIds = inclusionIds
     ? inclusionIds.split(",").map(Number).filter(Boolean)
     : []
@@ -74,19 +74,23 @@ const Page = async ({
     ? imageIds.split(",").map(Number).filter(Boolean)
     : []
 
-  const selectedCountries = await getCountriesByIds(selectedCountryIds)
-
-  const selectedSalesChannels = await getSalesChannelsByIds(
-    selectedSalesChannelIds,
-  )
-
-  const selectedPrices = await getPricesByIds(selectedPriceIds)
-
-  const mainImage = mainImageId ? await getMediaById(Number(mainImageId)) : null
-
-  const selectedImages = await Promise.all(
-    selectedImageIds.map((id) => getMediaById(id)),
-  )
+  const [
+    allInclusions,
+    allExclusions,
+    selectedCountries,
+    selectedSalesChannels,
+    selectedPrices,
+    mainImage,
+    selectedImages,
+  ] = await Promise.all([
+    getAllOfferInclusions(),
+    getAllOfferExclusions(),
+    getCountriesByIds(selectedCountryIds),
+    getSalesChannelsByIds(selectedSalesChannelIds),
+    getPricesByIds(selectedPriceIds),
+    mainImageId ? getMediaById(Number(mainImageId)) : Promise.resolve(null),
+    getMediaByIds(selectedImageIds),
+  ])
 
   const inclusionOptions = allInclusions.map((inclusion) => ({
     value: String(inclusion.id),
@@ -117,6 +121,7 @@ const Page = async ({
       if (salesChannelIds) newParams.set("salesChannelIds", salesChannelIds)
       if (priceIds) newParams.set("priceIds", priceIds)
       if (imageIds) newParams.set("imageIds", imageIds)
+      if (mainImageId) newParams.set("mainImageId", mainImageId)
     } else if (field === "salesChannelIds") {
       const remaining = selectedSalesChannelIds.filter(
         (id) => id !== idToRemove,
@@ -127,6 +132,7 @@ const Page = async ({
       if (countryIds) newParams.set("countryIds", countryIds)
       if (priceIds) newParams.set("priceIds", priceIds)
       if (imageIds) newParams.set("imageIds", imageIds)
+      if (mainImageId) newParams.set("mainImageId", mainImageId)
     } else if (field === "priceIds") {
       const remaining = selectedPriceIds.filter((id) => id !== idToRemove)
       if (remaining.length > 0) {
@@ -135,6 +141,7 @@ const Page = async ({
       if (countryIds) newParams.set("countryIds", countryIds)
       if (salesChannelIds) newParams.set("salesChannelIds", salesChannelIds)
       if (imageIds) newParams.set("imageIds", imageIds)
+      if (mainImageId) newParams.set("mainImageId", mainImageId)
     } else if (field === "imageIds") {
       const remaining = selectedImageIds.filter((id) => id !== idToRemove)
       if (remaining.length > 0) {
@@ -143,6 +150,12 @@ const Page = async ({
       if (countryIds) newParams.set("countryIds", countryIds)
       if (salesChannelIds) newParams.set("salesChannelIds", salesChannelIds)
       if (priceIds) newParams.set("priceIds", priceIds)
+      if (mainImageId) newParams.set("mainImageId", mainImageId)
+    } else if (field === "mainImageId") {
+      if (countryIds) newParams.set("countryIds", countryIds)
+      if (salesChannelIds) newParams.set("salesChannelIds", salesChannelIds)
+      if (priceIds) newParams.set("priceIds", priceIds)
+      if (imageIds) newParams.set("imageIds", imageIds)
     }
 
     if (title) newParams.set("title", title)
@@ -153,9 +166,6 @@ const Page = async ({
     if (isUnlimitedData) newParams.set("isUnlimitedData", "true")
     if (inclusionIds) newParams.set("inclusionIds", inclusionIds)
     if (exclusionIds) newParams.set("exclusionIds", exclusionIds)
-
-    if (field !== "mainImageId" && mainImageId)
-      newParams.set("mainImageId", mainImageId)
 
     return `/inventory/offers/${offer_id}?${newParams.toString()}`
   }
@@ -369,9 +379,9 @@ const Page = async ({
                 </label>
                 {mainImage && (
                   <div className="mt-2">
-                    <SelectedItemBadge
-                      id={mainImage.id}
-                      label={`#${mainImage.id} ${mainImage.description || "No description"}`}
+                    <MainImageDisplay
+                      imageUrl={mainImage.url}
+                      imageAlt={mainImage.description || "Main image"}
                       removeUrl={buildUrlWithoutItem(
                         "mainImageId",
                         Number(mainImageId),
@@ -389,12 +399,12 @@ const Page = async ({
                   Images
                 </label>
                 {selectedImages.length > 0 && (
-                  <div className="mt-2 flex flex-wrap gap-2">
+                  <div className="mt-2 flex flex-wrap gap-4">
                     {selectedImages.map((image) => (
-                      <SelectedItemBadge
+                      <ImageGalleryItem
                         key={image.id}
-                        id={image.id}
-                        label={`#${image.id} ${image.description || "No description"}`}
+                        imageUrl={image.url}
+                        imageAlt={image.description || "Image"}
                         removeUrl={buildUrlWithoutItem("imageIds", image.id)}
                       />
                     ))}
