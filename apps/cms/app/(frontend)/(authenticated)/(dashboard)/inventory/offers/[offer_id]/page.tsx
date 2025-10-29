@@ -1,9 +1,9 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/offers/[offer_id]/page.tsx
 
 import { updateEsimOffer } from "@/app/(backend)/server_actions/esim-offers/updateEsimOffer"
-import { getAllCountriesOfOrg } from "@/app/(backend)/server_actions/countries/getAllCountriesOfOrg"
-import { getSalesChannelById } from "@/app/(backend)/server_actions/sales-channels/getSalesChannelById"
-import { getPriceById } from "@/app/(backend)/server_actions/prices/getPriceById"
+import { getCountriesByIds } from "@/app/(backend)/server_actions/countries/getCountriesByIds"
+import { getSalesChannelsByIds } from "@/app/(backend)/server_actions/sales-channels/getSalesChannelsByIds"
+import { getPricesByIds } from "@/app/(backend)/server_actions/prices/getPricesByIds"
 import { getMediaById } from "@/app/(backend)/server_actions/media/getMediaById"
 import { getAllOfferInclusions } from "@/app/(backend)/server_actions/offer-inclusions/getAllOfferInclusions"
 import { getAllOfferExclusions } from "@/app/(backend)/server_actions/offer-exclusions/getAllOfferExclusions"
@@ -74,18 +74,13 @@ const Page = async ({
     ? imageIds.split(",").map(Number).filter(Boolean)
     : []
 
-  const allCountries = await getAllCountriesOfOrg()
-  const selectedCountries = allCountries.filter((country) =>
-    selectedCountryIds.includes(country.id),
+  const selectedCountries = await getCountriesByIds(selectedCountryIds)
+
+  const selectedSalesChannels = await getSalesChannelsByIds(
+    selectedSalesChannelIds,
   )
 
-  const selectedSalesChannels = await Promise.all(
-    selectedSalesChannelIds.map((id) => getSalesChannelById(id)),
-  )
-
-  const selectedPrices = await Promise.all(
-    selectedPriceIds.map((id) => getPriceById(id)),
-  )
+  const selectedPrices = await getPricesByIds(selectedPriceIds)
 
   const mainImage = mainImageId ? await getMediaById(Number(mainImageId)) : null
 
