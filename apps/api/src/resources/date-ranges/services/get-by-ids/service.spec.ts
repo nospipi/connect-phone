@@ -3,7 +3,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository, In } from 'typeorm';
+import { validate } from 'class-validator';
 import { GetDateRangesByIdsService } from './service';
+import { GetDateRangesByIdsQueryDto } from './dto';
 import { DateRangeEntity } from '../../../../database/entities/date-range.entity';
 import { CurrentOrganizationService } from '../../../../common/services/current-organization.service';
 import {
@@ -117,6 +119,50 @@ describe('GetDateRangesByIdsService', () => {
           name: 'ASC',
         },
       });
+    });
+  });
+
+  describe('GetDateRangesByIdsQueryDto validation', () => {
+    it('should validate successfully with valid comma-separated IDs', async () => {
+      const dto = new GetDateRangesByIdsQueryDto();
+      dto.ids = '1,2,3';
+
+      const errors = await validate(dto);
+      expect(errors.length).toBe(0);
+    });
+
+    it('should validate successfully with single ID', async () => {
+      const dto = new GetDateRangesByIdsQueryDto();
+      dto.ids = '1';
+
+      const errors = await validate(dto);
+      expect(errors.length).toBe(0);
+    });
+
+    it('should validate successfully with IDs containing spaces', async () => {
+      const dto = new GetDateRangesByIdsQueryDto();
+      dto.ids = '1, 2, 3';
+
+      const errors = await validate(dto);
+      expect(errors.length).toBe(0);
+    });
+
+    it('should fail validation when ids is empty', async () => {
+      const dto = new GetDateRangesByIdsQueryDto();
+      dto.ids = '';
+
+      const errors = await validate(dto);
+      expect(errors.length).toBeGreaterThan(0);
+      expect(errors[0].property).toBe('ids');
+    });
+
+    it('should fail validation when ids is not a string', async () => {
+      const dto = new GetDateRangesByIdsQueryDto();
+      (dto as any).ids = 123;
+
+      const errors = await validate(dto);
+      expect(errors.length).toBeGreaterThan(0);
+      expect(errors[0].property).toBe('ids');
     });
   });
 });

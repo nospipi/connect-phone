@@ -16,8 +16,8 @@ import { CreateNewChannelService } from './services/create-new-channel/service';
 import { UpdateSalesChannelService } from './services/update-sales-channel/service';
 import { GetSalesChannelByIdService } from './services/get-sales-channel-by-id/service';
 import { DeleteSalesChannelService } from './services/delete-sales-channel/service';
-import { GetSalesChannelsByIdsController } from './services/get-sales-channel-by-id/get-by-ids/controller';
-import { GetSalesChannelsByIdsService } from './services/get-sales-channel-by-id/get-by-ids/service';
+import { GetSalesChannelsByIdsController } from './services/get-by-ids/controller';
+import { GetSalesChannelsByIdsService } from './services/get-by-ids/service';
 
 //------------------------------------------------------------
 

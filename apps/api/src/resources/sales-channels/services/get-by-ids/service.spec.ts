@@ -3,14 +3,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository, In } from 'typeorm';
+import { validate } from 'class-validator';
 import { GetSalesChannelsByIdsService } from './service';
-import { SalesChannelEntity } from '../../../../../database/entities/sales-channel.entity';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { GetSalesChannelsByIdsQueryDto } from './dto';
+import { SalesChannelEntity } from '../../../../database/entities/sales-channel.entity';
+import { CurrentOrganizationService } from '../../../../common/services/current-organization.service';
 import {
   createMockOrganization,
   createMockSalesChannel,
   createCurrentOrganizationServiceProvider,
-} from '../../../../../test/factories';
+} from '../../../../test/factories';
 
 //------------------------------------------------------------
 
@@ -119,6 +121,50 @@ describe('GetSalesChannelsByIdsService', () => {
           name: 'ASC',
         },
       });
+    });
+  });
+
+  describe('GetSalesChannelsByIdsQueryDto validation', () => {
+    it('should validate successfully with valid comma-separated IDs', async () => {
+      const dto = new GetSalesChannelsByIdsQueryDto();
+      dto.ids = '1,2,3';
+
+      const errors = await validate(dto);
+      expect(errors.length).toBe(0);
+    });
+
+    it('should validate successfully with single ID', async () => {
+      const dto = new GetSalesChannelsByIdsQueryDto();
+      dto.ids = '1';
+
+      const errors = await validate(dto);
+      expect(errors.length).toBe(0);
+    });
+
+    it('should validate successfully with IDs containing spaces', async () => {
+      const dto = new GetSalesChannelsByIdsQueryDto();
+      dto.ids = '1, 2, 3';
+
+      const errors = await validate(dto);
+      expect(errors.length).toBe(0);
+    });
+
+    it('should fail validation when ids is empty', async () => {
+      const dto = new GetSalesChannelsByIdsQueryDto();
+      dto.ids = '';
+
+      const errors = await validate(dto);
+      expect(errors.length).toBeGreaterThan(0);
+      expect(errors[0].property).toBe('ids');
+    });
+
+    it('should fail validation when ids is not a string', async () => {
+      const dto = new GetSalesChannelsByIdsQueryDto();
+      (dto as any).ids = 123;
+
+      const errors = await validate(dto);
+      expect(errors.length).toBeGreaterThan(0);
+      expect(errors[0].property).toBe('ids');
     });
   });
 });
