@@ -11,6 +11,7 @@ import DateBasedCheckbox from "./DateBasedCheckbox.client"
 import SalesChannelSelectButton from "./SalesChannelSelectButton.client"
 import DateRangeSelectButton from "./DateRangeSelectButton.client"
 import SelectedItemBadge from "./SelectedItemBadge.client"
+import DeletePriceButton from "./DeletePriceButton"
 
 //------------------------------------------------------------
 
@@ -99,7 +100,7 @@ const Page = async ({
 
       <div className="flex-1 overflow-hidden py-4">
         <div className="flex h-full w-full justify-center overflow-auto px-4">
-          <div className="flex w-full max-w-3xl flex-col gap-10">
+          <div className="flex w-full max-w-3xl flex-col">
             <form
               key={formKey}
               action={updatePrice}
@@ -280,6 +281,7 @@ const Page = async ({
                 </PendingOverlay>
               </div>
             </form>
+            <DeletePriceButton price={{ id: Number(price_id), name }} />
           </div>
         </div>
       </div>

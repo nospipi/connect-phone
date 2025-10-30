@@ -6,9 +6,9 @@ import { PendingOverlay } from "@/components/common/PendingOverlay"
 
 //----------------------------------------------------------------------
 
-const DeletePriceButton = ({ price }: { price: IPrice }) => {
+const DeletePriceButton = ({ price }: { price: Partial<IPrice> }) => {
   return (
-    <>
+    <div>
       <input
         type="checkbox"
         id={`delete-price-${price.id}`}
@@ -88,7 +88,7 @@ const DeletePriceButton = ({ price }: { price: IPrice }) => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 

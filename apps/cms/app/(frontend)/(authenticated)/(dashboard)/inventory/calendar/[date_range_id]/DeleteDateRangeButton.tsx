@@ -9,7 +9,7 @@ import { PendingOverlay } from "@/components/common/PendingOverlay"
 
 const DeleteDateRangeButton = ({ dateRange }: { dateRange: IDateRange }) => {
   return (
-    <>
+    <div>
       <input
         type="checkbox"
         id={`delete-date-range-${dateRange.id}`}
@@ -89,7 +89,7 @@ const DeleteDateRangeButton = ({ dateRange }: { dateRange: IDateRange }) => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 

@@ -42,6 +42,18 @@ const navigation: NavigationItem[] = [
     name: "Inventory",
     href: "/inventory/countries",
     icon: RiArchive2Line,
+    sections: [
+      {
+        items: [
+          { name: "Countries", href: "/inventory/countries" },
+          { name: "Packages", href: "/inventory/packages" },
+          { name: "Products", href: "/inventory/products" },
+          { name: "Offers", href: "/inventory/offers" },
+          { name: "Prices", href: "/inventory/prices" },
+          { name: "Calendar", href: "/inventory/calendar" },
+        ],
+      },
+    ],
   },
   {
     name: "E-Sims",
@@ -95,6 +107,14 @@ const navigation: NavigationItem[] = [
     name: "Organization",
     href: "/organization/details",
     icon: RiGovernmentLine,
+    sections: [
+      {
+        items: [
+          { name: "Details", href: "/organization/details" },
+          { name: "Audit Log", href: "/organization/audit-log" },
+        ],
+      },
+    ],
   },
   {
     name: "Media",

@@ -5,11 +5,11 @@ import { deleteEsimOfferById } from "@/app/(backend)/server_actions/esim-offers/
 import { IEsimOffer } from "@connect-phone/shared-types"
 import { PendingOverlay } from "@/components/common/PendingOverlay"
 
-//----------------------------------------------------------------------
+//------------------------------------------------------------
 
-const DeleteOfferButton = ({ offer }: { offer: IEsimOffer }) => {
+const DeleteOfferButton = ({ offer }: { offer: Partial<IEsimOffer> }) => {
   return (
-    <>
+    <div>
       <input
         type="checkbox"
         id={`delete-offer-${offer.id}`}
@@ -89,7 +89,7 @@ const DeleteOfferButton = ({ offer }: { offer: IEsimOffer }) => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 

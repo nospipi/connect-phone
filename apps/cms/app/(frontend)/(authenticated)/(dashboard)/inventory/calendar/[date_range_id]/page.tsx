@@ -40,7 +40,7 @@ const Page = async ({
 
       <div className="flex-1 overflow-hidden py-4">
         <div className="flex h-full w-full justify-center overflow-auto px-4">
-          <div className="flex w-full max-w-3xl flex-col gap-10">
+          <div className="flex w-full max-w-3xl flex-col">
             <form
               action={updateDateRange}
               className="flex flex-1 flex-col gap-6"

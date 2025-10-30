@@ -44,7 +44,7 @@ const Page = async ({ params }: { params: Promise<{ user_id: string }> }) => {
 
       <div className="flex-1 overflow-hidden py-4">
         <div className="flex h-full w-full justify-center overflow-auto px-4">
-          <div className="flex w-full max-w-3xl flex-col gap-10">
+          <div className="flex w-full max-w-3xl flex-col">
             <form action={updateUser} className="flex flex-1 flex-col gap-6">
               <input type="hidden" name="id" value={userData.id} />
 

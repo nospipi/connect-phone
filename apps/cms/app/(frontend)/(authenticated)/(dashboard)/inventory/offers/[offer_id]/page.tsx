@@ -199,7 +199,7 @@ const Page = async ({
 
       <div className="flex-1 overflow-hidden py-4">
         <div className="flex h-full w-full justify-center overflow-auto px-4">
-          <div className="flex w-full max-w-3xl flex-col gap-10">
+          <div className="flex w-full max-w-3xl flex-col">
             <form
               key={formKey}
               action={updateEsimOffer}
@@ -529,24 +529,6 @@ const Page = async ({
               offer={{
                 id: Number(offer_id),
                 title,
-                descriptionHtml,
-                descriptionText,
-                durationInDays: Number(durationInDays),
-                dataInGb: dataInGb ? Number(dataInGb) : null,
-                isUnlimitedData,
-                isActive,
-                organizationId: 0,
-                organization: {} as any,
-                inclusions: [],
-                exclusions: [],
-                mainImageId: mainImageId ? Number(mainImageId) : null,
-                mainImage: mainImage,
-                images: selectedImages,
-                countries: selectedCountries,
-                salesChannels: selectedSalesChannels,
-                prices: selectedPrices,
-                createdAt: "",
-                updatedAt: "",
               }}
             />
           </div>

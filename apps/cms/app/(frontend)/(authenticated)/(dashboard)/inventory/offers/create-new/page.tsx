@@ -22,6 +22,8 @@ import ExclusionsMultiSelect from "./ExclusionsMultiSelect.client"
 import UnlimitedDataCheckbox from "./UnlimitedDataCheckbox.client"
 import IsActiveCheckbox from "./IsActiveCheckbox.client"
 import DescriptionHtmlEditor from "./DescriptionHtmlEditor.client"
+import MainImageDisplay from "./MainImageDisplay.client"
+import ImageGalleryItem from "./ImageGalleryItem.client"
 
 //------------------------------------------------------------
 
@@ -358,20 +360,14 @@ const Page = async ({
                 </label>
                 {mainImage && (
                   <div className="mt-2">
-                    <Link
-                      href={buildUrlWithoutItem(
+                    <MainImageDisplay
+                      imageUrl={mainImage.url}
+                      imageAlt={mainImage.description || "Main image"}
+                      removeUrl={buildUrlWithoutItem(
                         "mainImageId",
                         Number(mainImageId),
                       )}
-                    >
-                      <Badge variant="neutral" className="group">
-                        <span>
-                          #{mainImage.id}{" "}
-                          {mainImage.description || "No description"}
-                        </span>
-                        <RiCloseLine className="ml-1 h-3 w-3 group-hover:text-red-600" />
-                      </Badge>
-                    </Link>
+                    />
                   </div>
                 )}
                 <div className="mt-2">
@@ -384,19 +380,14 @@ const Page = async ({
                   Images
                 </label>
                 {selectedImages.length > 0 && (
-                  <div className="mt-2 flex flex-wrap gap-2">
+                  <div className="mt-2 flex flex-wrap gap-4">
                     {selectedImages.map((image) => (
-                      <Link
+                      <ImageGalleryItem
                         key={image.id}
-                        href={buildUrlWithoutItem("imageIds", image.id)}
-                      >
-                        <Badge variant="neutral" className="group">
-                          <span>
-                            #{image.id} {image.description || "No description"}
-                          </span>
-                          <RiCloseLine className="ml-1 h-3 w-3 group-hover:text-red-600" />
-                        </Badge>
-                      </Link>
+                        imageUrl={image.url}
+                        imageAlt={image.description || "Image"}
+                        removeUrl={buildUrlWithoutItem("imageIds", image.id)}
+                      />
                     ))}
                   </div>
                 )}

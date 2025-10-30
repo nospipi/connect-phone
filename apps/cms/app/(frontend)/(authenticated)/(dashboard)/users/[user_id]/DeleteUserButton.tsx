@@ -9,7 +9,7 @@ import { PendingOverlay } from "@/components/common/PendingOverlay"
 
 const DeleteUserButton = ({ user }: { user: IUserWithOrganizationRole }) => {
   return (
-    <>
+    <div>
       <input
         type="checkbox"
         id={`delete-user-${user.id}`}
@@ -89,7 +89,7 @@ const DeleteUserButton = ({ user }: { user: IUserWithOrganizationRole }) => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 
