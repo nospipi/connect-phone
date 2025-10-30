@@ -1,4 +1,4 @@
-// apps/api/src/resources/users/services/get-all-organizations-of-user/controller.ts
+// apps/api/src/resources/cms/users/services/get-all-organizations-of-user/controller.ts
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import { GetAllOrganizationsOfUserService } from './service';
 import { OrganizationEntity } from '../../../../../database/entities/organization.entity';
@@ -9,7 +9,7 @@ import { NoCache } from '@/common/decorators/no-cache.decorator';
 
 //-------------------------------------------
 
-@Controller('users')
+@Controller()
 export class GetAllOrganizationsOfUserController {
   constructor(
     private readonly getAllOrganizationsOfUserService: GetAllOrganizationsOfUserService

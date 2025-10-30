@@ -1,4 +1,4 @@
-// apps/api/src/resources/users/services/update-user/controller.ts
+// apps/api/src/resources/cms/users/services/update-user/controller.ts
 import {
   Controller,
   Put,
@@ -16,7 +16,7 @@ import { OrganizationGuard } from '../../../../../common/guards/organization.gua
 
 //-------------------------------------------
 
-@Controller('users')
+@Controller()
 export class UpdateUserController {
   constructor(private readonly updateUserService: UpdateUserService) {}
 

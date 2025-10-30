@@ -1,4 +1,4 @@
-// apps/api/src/resources/esim-offers/services/update-esim-offer/controller.ts
+// apps/api/src/resources/cms/esim-offers/services/update-esim-offer/controller.ts
 import {
   Controller,
   Put,
@@ -16,7 +16,7 @@ import { OrganizationGuard } from '../../../../../common/guards/organization.gua
 
 //----------------------------------------------------------------------
 
-@Controller('esim-offers')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN', 'OPERATOR'))
 export class UpdateEsimOfferController {
   constructor(

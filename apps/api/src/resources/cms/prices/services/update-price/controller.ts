@@ -1,4 +1,4 @@
-// apps/api/src/resources/prices/services/update-price/controller.ts
+// apps/api/src/resources/cms/prices/services/update-price/controller.ts
 import {
   Controller,
   Put,
@@ -16,7 +16,7 @@ import { OrganizationGuard } from '../../../../../common/guards/organization.gua
 
 //----------------------------------------------------------------------
 
-@Controller('prices')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN', 'OPERATOR'))
 export class UpdatePriceController {
   constructor(private readonly updatePriceService: UpdatePriceService) {}

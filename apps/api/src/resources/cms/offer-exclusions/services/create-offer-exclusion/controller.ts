@@ -1,4 +1,4 @@
-// apps/api/src/resources/offer-exclusions/services/create-offer-exclusion/controller.ts
+// apps/api/src/resources/cms/offer-exclusions/services/create-offer-exclusion/controller.ts
 import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { CreateOfferExclusionService } from './service';
 import { CreateOfferExclusionDto } from './create-offer-exclusion.dto';
@@ -9,7 +9,7 @@ import { IOfferExclusion } from '@connect-phone/shared-types';
 
 //----------------------------------------------------------------------
 
-@Controller('offer-exclusions')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN', 'OPERATOR'))
 export class CreateOfferExclusionController {
   constructor(

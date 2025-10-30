@@ -1,4 +1,4 @@
-// apps/api/src/resources/media/services/get-by-ids/controller.ts
+// apps/api/src/resources/cms/media/services/get-by-ids/controller.ts
 
 import {
   Controller,
@@ -16,7 +16,7 @@ import { IMedia } from '@connect-phone/shared-types';
 
 //------------------------------------------------------------
 
-@Controller('media')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN', 'OPERATOR'))
 export class GetMediaByIdsController {
   constructor(private readonly getMediaByIdsService: GetMediaByIdsService) {}

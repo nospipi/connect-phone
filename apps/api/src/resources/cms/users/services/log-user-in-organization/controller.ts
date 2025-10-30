@@ -1,4 +1,4 @@
-// apps/api/src/resources/users/services/log-user-in-organization/controller.ts
+// apps/api/src/resources/cms/users/services/log-user-in-organization/controller.ts
 import { Controller, Patch, Param, ParseIntPipe } from '@nestjs/common';
 import { LogUserInOrganizationService } from './service';
 import { IUser } from '@connect-phone/shared-types';
@@ -6,7 +6,7 @@ import { NoCacheInvalidation } from '@/common/decorators/no-cache-invalidation.d
 
 //----------------------------------------------------------------------
 
-@Controller('users/log-in-organization')
+@Controller()
 export class LogUserInOrganizationController {
   constructor(private readonly logService: LogUserInOrganizationService) {}
 

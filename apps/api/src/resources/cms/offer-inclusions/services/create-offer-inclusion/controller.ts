@@ -1,4 +1,4 @@
-// apps/api/src/resources/offer-inclusions/services/create-offer-inclusion/controller.ts
+// apps/api/src/resources/cms/offer-inclusions/services/create-offer-inclusion/controller.ts
 import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { CreateOfferInclusionService } from './service';
 import { CreateOfferInclusionDto } from './create-offer-inclusion.dto';
@@ -9,7 +9,7 @@ import { IOfferInclusion } from '@connect-phone/shared-types';
 
 //----------------------------------------------------------------------
 
-@Controller('offer-inclusions')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN', 'OPERATOR'))
 export class CreateOfferInclusionController {
   constructor(

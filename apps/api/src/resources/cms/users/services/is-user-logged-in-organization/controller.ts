@@ -1,11 +1,11 @@
-// src/resources/users/controllers/is-user-logged-in-organization.controller.ts
+// apps/api/src/resources/cms/users/services/is-user-logged-in-organization/controller.ts
 import { Controller, Get } from '@nestjs/common';
 import { IsUserLoggedInOrganizationService } from './service';
 import { NoCache } from '@/common/decorators/no-cache.decorator';
 
 //------------------------------------------------------
 
-@Controller('users')
+@Controller()
 export class IsUserLoggedInOrganizationController {
   constructor(
     private readonly isUserLoggedInOrganizationService: IsUserLoggedInOrganizationService

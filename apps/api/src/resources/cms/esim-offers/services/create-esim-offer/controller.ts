@@ -1,4 +1,4 @@
-// apps/api/src/resources/esim-offers/services/create-esim-offer/controller.ts
+// apps/api/src/resources/cms/esim-offers/services/create-esim-offer/controller.ts
 import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { CreateEsimOfferService } from './service';
 import { CreateEsimOfferDto } from './create-esim-offer.dto';
@@ -9,7 +9,7 @@ import { IEsimOffer } from '@connect-phone/shared-types';
 
 //----------------------------------------------------------------------
 
-@Controller('esim-offers')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN', 'OPERATOR'))
 export class CreateEsimOfferController {
   constructor(

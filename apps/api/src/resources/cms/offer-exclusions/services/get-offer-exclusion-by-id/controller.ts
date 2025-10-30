@@ -1,4 +1,4 @@
-// apps/api/src/resources/offer-exclusions/services/get-offer-exclusion-by-id/controller.ts
+// apps/api/src/resources/cms/offer-exclusions/services/get-offer-exclusion-by-id/controller.ts
 import {
   Controller,
   Get,
@@ -14,7 +14,7 @@ import { IOfferExclusion } from '@connect-phone/shared-types';
 
 //----------------------------------------------------------------------
 
-@Controller('offer-exclusions')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN', 'OPERATOR'))
 export class GetOfferExclusionByIdController {
   constructor(

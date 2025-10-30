@@ -1,4 +1,4 @@
-// apps/api/src/resources/offer-inclusions/services/delete-offer-inclusion/controller.ts
+// apps/api/src/resources/cms/offer-inclusions/services/delete-offer-inclusion/controller.ts
 import {
   Controller,
   Delete,
@@ -14,7 +14,7 @@ import { IOfferInclusion } from '@connect-phone/shared-types';
 
 //----------------------------------------------------------------------
 
-@Controller('offer-inclusions')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN'))
 export class DeleteOfferInclusionController {
   constructor(

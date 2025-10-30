@@ -1,4 +1,4 @@
-// apps/api/src/resources/date-ranges/services/get-all-by-org-paginated/controller.ts
+// apps/api/src/resources/cms/date-ranges/services/get-all-by-org-paginated/controller.ts
 import {
   Controller,
   Get,
@@ -17,7 +17,7 @@ import { SearchDateRangesDto } from './search-date-ranges.dto';
 
 //----------------------------------------------------------------------
 
-@Controller('date-ranges')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN', 'OPERATOR'))
 export class GetAllByOrgPaginatedController {
   constructor(

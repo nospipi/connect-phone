@@ -1,4 +1,4 @@
-// apps/api/src/resources/sales-channels/services/delete-sales-channel/controller.ts
+// apps/api/src/resources/cms/sales-channels/services/delete-sales-channel/controller.ts
 import {
   Controller,
   Delete,
@@ -16,7 +16,7 @@ import { ISalesChannel } from '@connect-phone/shared-types';
 //-------------------------------------------
 
 @Injectable()
-@Controller('sales-channels')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN'))
 export class DeleteSalesChannelController {
   constructor(

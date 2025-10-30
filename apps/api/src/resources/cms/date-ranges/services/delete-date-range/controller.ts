@@ -1,4 +1,4 @@
-// apps/api/src/resources/date-ranges/services/delete-date-range/controller.ts
+// apps/api/src/resources/cms/date-ranges/services/delete-date-range/controller.ts
 import {
   Controller,
   Delete,
@@ -14,7 +14,7 @@ import { IDateRange } from '@connect-phone/shared-types';
 
 //----------------------------------------------------------------------
 
-@Controller('date-ranges')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN'))
 export class DeleteDateRangeController {
   constructor(

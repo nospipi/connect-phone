@@ -1,4 +1,4 @@
-// apps/api/src/resources/prices/services/create-price/controller.ts
+// apps/api/src/resources/cms/prices/services/create-price/controller.ts
 import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { CreatePriceService } from './service';
 import { CreatePriceDto } from './create-price.dto';
@@ -9,7 +9,7 @@ import { IPrice } from '@connect-phone/shared-types';
 
 //----------------------------------------------------------------------
 
-@Controller('prices')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN', 'OPERATOR'))
 export class CreatePriceController {
   constructor(private readonly createPriceService: CreatePriceService) {}

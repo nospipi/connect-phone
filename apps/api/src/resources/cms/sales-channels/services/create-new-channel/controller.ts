@@ -1,4 +1,4 @@
-// apps/api/src/resources/sales-channels/services/create-new-channel/controller.ts
+// apps/api/src/resources/cms/sales-channels/services/create-new-channel/controller.ts
 import {
   Controller,
   Post,
@@ -20,7 +20,7 @@ import { ISalesChannel } from '@connect-phone/shared-types';
 //-------------------------------------------
 
 @Injectable()
-@Controller('sales-channels')
+@Controller()
 @UseGuards(OrganizationGuard, DbUserGuard)
 export class CreateNewChannelController {
   constructor(

@@ -1,4 +1,4 @@
-// apps/api/src/resources/media/services/delete-media/controller.ts
+// apps/api/src/resources/cms/media/services/delete-media/controller.ts
 import {
   Controller,
   Delete,
@@ -14,7 +14,7 @@ import { IMedia } from '@connect-phone/shared-types';
 
 //----------------------------------------------------------------------
 
-@Controller('media')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN'))
 export class DeleteMediaController {
   constructor(private readonly deleteMediaService: DeleteMediaService) {}

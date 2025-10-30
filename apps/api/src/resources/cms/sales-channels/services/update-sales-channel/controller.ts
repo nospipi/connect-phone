@@ -1,4 +1,4 @@
-// apps/api/src/resources/sales-channels/services/update-sales-channel/controller.ts
+// apps/api/src/resources/cms/sales-channels/services/update-sales-channel/controller.ts
 import {
   Controller,
   Put,
@@ -16,7 +16,7 @@ import { OrganizationGuard } from '../../../../../common/guards/organization.gua
 
 //-------------------------------------------
 
-@Controller('sales-channels')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN'))
 export class UpdateSalesChannelController {
   constructor(

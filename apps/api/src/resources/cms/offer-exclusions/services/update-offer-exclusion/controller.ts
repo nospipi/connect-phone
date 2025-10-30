@@ -1,4 +1,4 @@
-// apps/api/src/resources/offer-exclusions/services/update-offer-exclusion/controller.ts
+// apps/api/src/resources/cms/offer-exclusions/services/update-offer-exclusion/controller.ts
 import {
   Controller,
   Put,
@@ -16,7 +16,7 @@ import { OrganizationGuard } from '../../../../../common/guards/organization.gua
 
 //----------------------------------------------------------------------
 
-@Controller('offer-exclusions')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN', 'OPERATOR'))
 export class UpdateOfferExclusionController {
   constructor(

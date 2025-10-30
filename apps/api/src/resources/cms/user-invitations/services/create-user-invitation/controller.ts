@@ -1,4 +1,4 @@
-// apps/api/src/resources/users/services/create-user-invitation/controller.ts
+// apps/api/src/resources/cms/user-invitations/services/create-user-invitation/controller.ts
 import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
 import { CreateUserInvitationService } from './service';
@@ -11,7 +11,7 @@ import { IUserInvitation } from '@connect-phone/shared-types';
 //-------------------------------------------
 
 @Injectable()
-@Controller('invitations')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN'))
 export class CreateUserInvitationController {
   constructor(

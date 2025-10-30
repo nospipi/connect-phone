@@ -1,4 +1,4 @@
-// apps/api/src/resources/date-ranges/services/update-date-range/controller.ts
+// apps/api/src/resources/cms/date-ranges/services/update-date-range/controller.ts
 import {
   Controller,
   Put,
@@ -16,7 +16,7 @@ import { OrganizationGuard } from '../../../../../common/guards/organization.gua
 
 //----------------------------------------------------------------------
 
-@Controller('date-ranges')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN', 'OPERATOR'))
 export class UpdateDateRangeController {
   constructor(

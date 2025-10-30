@@ -1,4 +1,4 @@
-// apps/api/src/resources/sales-channels/services/get-by-ids/controller.ts
+// apps/api/src/resources/cms/sales-channels/services/get-by-ids/controller.ts
 
 import {
   Controller,
@@ -16,7 +16,7 @@ import { ISalesChannel } from '@connect-phone/shared-types';
 
 //------------------------------------------------------------
 
-@Controller('sales-channels')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN', 'OPERATOR'))
 export class GetSalesChannelsByIdsController {
   constructor(

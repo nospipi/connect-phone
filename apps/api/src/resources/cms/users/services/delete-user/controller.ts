@@ -1,4 +1,4 @@
-// apps/api/src/resources/users/services/delete-user/controller.ts
+// apps/api/src/resources/cms/users/services/delete-user/controller.ts
 import {
   Controller,
   Delete,
@@ -16,7 +16,7 @@ import { IUser } from '@connect-phone/shared-types';
 //-------------------------------------------
 
 @Injectable()
-@Controller('users')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN'))
 export class DeleteUserController {
   constructor(private readonly deleteUserService: DeleteUserService) {}

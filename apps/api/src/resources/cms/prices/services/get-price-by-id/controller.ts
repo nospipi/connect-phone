@@ -1,4 +1,4 @@
-// apps/api/src/resources/prices/services/get-price-by-id/controller.ts
+// apps/api/src/resources/cms/prices/services/get-price-by-id/controller.ts
 import {
   Controller,
   Get,
@@ -14,7 +14,7 @@ import { IPrice } from '@connect-phone/shared-types';
 
 //----------------------------------------------------------------------
 
-@Controller('prices')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN', 'OPERATOR'))
 export class GetPriceByIdController {
   constructor(private readonly getPriceByIdService: GetPriceByIdService) {}

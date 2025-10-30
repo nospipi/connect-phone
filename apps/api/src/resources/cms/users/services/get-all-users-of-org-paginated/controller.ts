@@ -1,4 +1,4 @@
-// apps/api/src/resources/users/services/get-all-users-of-org-paginated/controller.ts
+// apps/api/src/resources/cms/users/services/get-all-users-of-org-paginated/controller.ts
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { GetAllUsersOfOrgPaginatedService } from './service';
 import { UserOrganizationEntity } from '../../../../../database/entities/user-organization.entity';
@@ -10,7 +10,7 @@ import { SearchUsersDto } from './search-users.dto';
 
 //--------------------------------------------------------------------------------
 
-@Controller('users')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN', 'OPERATOR'))
 export class GetAllUsersOfOrgPaginatedController {
   constructor(

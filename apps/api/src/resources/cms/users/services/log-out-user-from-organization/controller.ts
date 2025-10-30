@@ -1,4 +1,4 @@
-// apps/api/src/resources/users/services/log-out-user-from-organization/controller.ts
+// apps/api/src/resources/cms/users/services/log-out-user-from-organization/controller.ts
 import { Controller, Patch } from '@nestjs/common';
 import { LogOutUserFromOrganizationService } from './service';
 import { IUser } from '@connect-phone/shared-types';
@@ -6,7 +6,7 @@ import { NoCacheInvalidation } from '@/common/decorators/no-cache-invalidation.d
 
 //----------------------------------------------------------------------
 
-@Controller('users/log-out-organization')
+@Controller()
 @NoCacheInvalidation()
 export class LogOutUserFromOrganizationController {
   constructor(

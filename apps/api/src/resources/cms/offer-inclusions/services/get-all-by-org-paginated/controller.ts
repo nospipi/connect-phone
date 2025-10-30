@@ -1,4 +1,4 @@
-// apps/api/src/resources/offer-inclusions/services/get-all-by-org-paginated/controller.ts
+// apps/api/src/resources/cms/offer-inclusions/services/get-all-by-org-paginated/controller.ts
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { GetAllByOrgPaginatedService } from './service';
 import { DbUserGuard } from '../../../../../common/guards/db-user.guard';
@@ -10,7 +10,7 @@ import { SearchOfferInclusionsDto } from './search-offer-inclusions.dto';
 
 //----------------------------------------------------------------------
 
-@Controller('offer-inclusions')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN', 'OPERATOR'))
 export class GetAllByOrgPaginatedController {
   constructor(

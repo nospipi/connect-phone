@@ -1,4 +1,4 @@
-// apps/api/src/resources/organizations/services/update-organization/controller.ts
+// apps/api/src/resources/cms/organizations/services/update-organization/controller.ts
 import { Controller, Put, Body, UseGuards } from '@nestjs/common';
 import { UpdateOrganizationService } from './service';
 import { UpdateOrganizationDto } from './update-organization.dto';
@@ -9,7 +9,7 @@ import { OrganizationGuard } from '../../../../../common/guards/organization.gua
 
 //------------------------------------------------------
 
-@Controller('organizations')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN'))
 export class UpdateOrganizationController {
   constructor(

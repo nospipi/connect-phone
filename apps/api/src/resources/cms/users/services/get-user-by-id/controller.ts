@@ -1,4 +1,4 @@
-// apps/api/src/resources/users/services/get-user-by-id/controller.ts
+// apps/api/src/resources/cms/users/services/get-user-by-id/controller.ts
 import {
   Controller,
   Get,
@@ -14,7 +14,7 @@ import { IUserWithOrganizationRole } from '@connect-phone/shared-types';
 
 //--------------------------------------------------------------------------------
 
-@Controller('users')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN'))
 export class GetUserByIdController {
   constructor(private readonly getUserByIdService: GetUserByIdService) {}

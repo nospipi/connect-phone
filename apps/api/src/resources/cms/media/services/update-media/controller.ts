@@ -1,4 +1,4 @@
-// apps/api/src/resources/media/services/update-media/controller.ts
+// apps/api/src/resources/cms/media/services/update-media/controller.ts
 import {
   Controller,
   Put,
@@ -16,7 +16,7 @@ import { OrganizationGuard } from '../../../../../common/guards/organization.gua
 
 //----------------------------------------------------------------------
 
-@Controller('media')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN', 'OPERATOR'))
 export class UpdateMediaController {
   constructor(private readonly updateMediaService: UpdateMediaService) {}

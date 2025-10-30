@@ -1,4 +1,4 @@
-// apps/api/src/resources/date-ranges/services/create-date-range/controller.ts
+// apps/api/src/resources/cms/date-ranges/services/create-date-range/controller.ts
 import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { CreateDateRangeService } from './service';
 import { CreateDateRangeDto } from './create-date-range.dto';
@@ -9,7 +9,7 @@ import { IDateRange } from '@connect-phone/shared-types';
 
 //----------------------------------------------------------------------
 
-@Controller('date-ranges')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN', 'OPERATOR'))
 export class CreateDateRangeController {
   constructor(

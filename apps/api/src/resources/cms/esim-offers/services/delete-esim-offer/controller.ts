@@ -1,4 +1,4 @@
-// apps/api/src/resources/esim-offers/services/delete-esim-offer/controller.ts
+// apps/api/src/resources/cms/esim-offers/services/delete-esim-offer/controller.ts
 import {
   Controller,
   Delete,
@@ -14,7 +14,7 @@ import { IEsimOffer } from '@connect-phone/shared-types';
 
 //----------------------------------------------------------------------
 
-@Controller('esim-offers')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN'))
 export class DeleteEsimOfferController {
   constructor(

@@ -1,4 +1,4 @@
-// apps/api/src/resources/prices/services/delete-price/controller.ts
+// apps/api/src/resources/cms/prices/services/delete-price/controller.ts
 import {
   Controller,
   Delete,
@@ -14,7 +14,7 @@ import { IPrice } from '@connect-phone/shared-types';
 
 //----------------------------------------------------------------------
 
-@Controller('prices')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN'))
 export class DeletePriceController {
   constructor(private readonly deletePriceService: DeletePriceService) {}

@@ -1,4 +1,4 @@
-// apps/api/src/resources/users/services/get-all-invitations-of-org-paginated/controller.ts
+// apps/api/src/resources/cms/user-invitations/services/get-all-invitations-of-org-paginated/controller.ts
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { GetAllInvitationsOfOrgPaginatedService } from './service';
 import { UserInvitationEntity } from '../../../../../database/entities/user-invitation.entity';
@@ -10,7 +10,7 @@ import { SearchInvitationsDto } from './search-invitations.dto';
 
 //--------------------------------------------------------------------------------
 
-@Controller('invitations')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN', 'OPERATOR'))
 export class GetAllInvitationsOfOrgPaginatedController {
   constructor(

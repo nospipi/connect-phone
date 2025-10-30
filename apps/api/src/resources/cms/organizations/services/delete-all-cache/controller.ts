@@ -1,4 +1,4 @@
-// apps/api/src/resources/organizations/services/delete-all-cache/controller.ts
+// apps/api/src/resources/cms/organizations/services/delete-all-cache/controller.ts
 
 import { Controller, Delete, UseGuards } from '@nestjs/common';
 import { DeleteAllCacheService } from './service';
@@ -9,7 +9,7 @@ import { NoCacheInvalidation } from '@/common/decorators/no-cache-invalidation.d
 
 //------------------------------------------------------------
 
-@Controller('organizations')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN'))
 export class DeleteAllCacheController {
   constructor(private readonly deleteAllCacheService: DeleteAllCacheService) {}

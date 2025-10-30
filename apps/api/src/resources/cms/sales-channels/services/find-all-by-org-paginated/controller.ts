@@ -1,4 +1,4 @@
-// apps/api/src/resources/sales-channels/services/find-all-by-org-paginated/controller.ts
+// apps/api/src/resources/cms/sales-channels/services/find-all-by-org-paginated/controller.ts
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { FindAllByOrgPaginatedService } from './service';
 import { SalesChannelEntity } from '../../../../../database/entities/sales-channel.entity';
@@ -10,7 +10,7 @@ import { SearchSalesChannelsDto } from './search-sales-channels.dto';
 
 //----------------------------------------------------------------------
 
-@Controller('sales-channels')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN', 'OPERATOR'))
 export class FindAllByOrgPaginatedController {
   constructor(

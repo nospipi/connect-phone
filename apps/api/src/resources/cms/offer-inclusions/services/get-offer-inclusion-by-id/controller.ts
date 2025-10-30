@@ -1,4 +1,4 @@
-// apps/api/src/resources/offer-inclusions/services/get-offer-inclusion-by-id/controller.ts
+// apps/api/src/resources/cms/offer-inclusions/services/get-offer-inclusion-by-id/controller.ts
 import {
   Controller,
   Get,
@@ -14,7 +14,7 @@ import { IOfferInclusion } from '@connect-phone/shared-types';
 
 //----------------------------------------------------------------------
 
-@Controller('offer-inclusions')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN', 'OPERATOR'))
 export class GetOfferInclusionByIdController {
   constructor(

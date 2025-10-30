@@ -1,4 +1,4 @@
-// apps/api/src/resources/date-ranges/services/get-by-ids/controller.ts
+// apps/api/src/resources/cms/date-ranges/services/get-by-ids/controller.ts
 
 import {
   Controller,
@@ -16,7 +16,7 @@ import { IDateRange } from '@connect-phone/shared-types';
 
 //------------------------------------------------------------
 
-@Controller('date-ranges')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN', 'OPERATOR'))
 export class GetDateRangesByIdsController {
   constructor(

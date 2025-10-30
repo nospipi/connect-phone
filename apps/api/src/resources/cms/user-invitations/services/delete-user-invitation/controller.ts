@@ -1,4 +1,4 @@
-// apps/api/src/resources/user-invitations/services/delete-user-invitation/controller.ts
+// apps/api/src/resources/cms/user-invitations/services/delete-user-invitation/controller.ts
 import {
   Controller,
   Delete,
@@ -16,7 +16,7 @@ import { IUserInvitation } from '@connect-phone/shared-types';
 //-------------------------------------------
 
 @Injectable()
-@Controller('invitations')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN'))
 export class DeleteUserInvitationController {
   constructor(

@@ -1,4 +1,4 @@
-// apps/api/src/resources/media/services/create-media/controller.ts
+// apps/api/src/resources/cms/media/services/create-media/controller.ts
 import {
   Controller,
   Post,
@@ -18,7 +18,7 @@ import { IMedia, IUploadedFile } from '@connect-phone/shared-types';
 
 //----------------------------------------------------------------------
 
-@Controller('media')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN', 'OPERATOR'))
 export class CreateMediaController {
   constructor(private readonly createMediaService: CreateMediaService) {}
