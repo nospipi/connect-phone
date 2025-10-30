@@ -19,10 +19,12 @@ import ImagesSelectButton from "./ImagesSelectButton.client"
 import InclusionsMultiSelect from "./InclusionsMultiSelect.client"
 import ExclusionsMultiSelect from "./ExclusionsMultiSelect.client"
 import UnlimitedDataCheckbox from "./UnlimitedDataCheckbox.client"
+import IsActiveCheckbox from "./IsActiveCheckbox.client"
 import SelectedItemBadge from "./SelectedItemBadge.client"
 import DescriptionHtmlEditor from "./DescriptionHtmlEditor.client"
 import MainImageDisplay from "./MainImageDisplay.client"
 import ImageGalleryItem from "./ImageGalleryItem.client"
+import DeleteOfferButton from "./DeleteOfferButton"
 
 //------------------------------------------------------------
 
@@ -42,6 +44,7 @@ const Page = async ({
   const durationInDays = urlParams.durationInDays || ""
   const dataInGb = urlParams.dataInGb || ""
   const isUnlimitedData = urlParams.isUnlimitedData === "true"
+  const isActive = urlParams.isActive !== "false"
   const inclusionIds = urlParams.inclusionIds || ""
   const exclusionIds = urlParams.exclusionIds || ""
   const mainImageId = urlParams.mainImageId || ""
@@ -164,13 +167,14 @@ const Page = async ({
     if (durationInDays) newParams.set("durationInDays", durationInDays)
     if (dataInGb) newParams.set("dataInGb", dataInGb)
     if (isUnlimitedData) newParams.set("isUnlimitedData", "true")
+    if (!isActive) newParams.set("isActive", "false")
     if (inclusionIds) newParams.set("inclusionIds", inclusionIds)
     if (exclusionIds) newParams.set("exclusionIds", exclusionIds)
 
     return `/inventory/offers/${offer_id}?${newParams.toString()}`
   }
 
-  const formKey = `${title}-${durationInDays}-${dataInGb}-${isUnlimitedData}-${mainImageId}-${selectedImageIds.join(",")}-${selectedCountryIds.join(",")}-${selectedSalesChannelIds.join(",")}-${selectedPriceIds.join(",")}-${selectedInclusionIds.join(",")}-${selectedExclusionIds.join(",")}`
+  const formKey = `${title}-${durationInDays}-${dataInGb}-${isUnlimitedData}-${isActive}-${mainImageId}-${selectedImageIds.join(",")}-${selectedCountryIds.join(",")}-${selectedSalesChannelIds.join(",")}-${selectedPriceIds.join(",")}-${selectedInclusionIds.join(",")}-${selectedExclusionIds.join(",")}`
 
   return (
     <div className="relative flex h-full flex-col overflow-hidden">
@@ -237,6 +241,11 @@ const Page = async ({
                 type="hidden"
                 name="isUnlimitedData"
                 value={isUnlimitedData ? "true" : "false"}
+              />
+              <input
+                type="hidden"
+                name="isActive"
+                value={isActive ? "true" : "false"}
               />
 
               <div>
@@ -484,6 +493,18 @@ const Page = async ({
                 </div>
               </div>
 
+              <div>
+                <label className="flex items-center gap-2">
+                  <IsActiveCheckbox isChecked={isActive} offerId={offer_id} />
+                  <span className="text-sm font-medium text-gray-700 dark:text-slate-300">
+                    Active
+                  </span>
+                </label>
+                <p className="ml-6 mt-1 text-xs text-gray-500 dark:text-slate-400">
+                  Active offers are visible and available for purchase
+                </p>
+              </div>
+
               <div className="flex flex-col gap-3 border-t border-gray-200 pt-6 sm:flex-row sm:justify-end dark:border-gray-800">
                 <PendingOverlay mode="navigation" href="/inventory/offers">
                   <button
@@ -503,6 +524,31 @@ const Page = async ({
                 </PendingOverlay>
               </div>
             </form>
+
+            <DeleteOfferButton
+              offer={{
+                id: Number(offer_id),
+                title,
+                descriptionHtml,
+                descriptionText,
+                durationInDays: Number(durationInDays),
+                dataInGb: dataInGb ? Number(dataInGb) : null,
+                isUnlimitedData,
+                isActive,
+                organizationId: 0,
+                organization: {} as any,
+                inclusions: [],
+                exclusions: [],
+                mainImageId: mainImageId ? Number(mainImageId) : null,
+                mainImage: mainImage,
+                images: selectedImages,
+                countries: selectedCountries,
+                salesChannels: selectedSalesChannels,
+                prices: selectedPrices,
+                createdAt: "",
+                updatedAt: "",
+              }}
+            />
           </div>
         </div>
       </div>

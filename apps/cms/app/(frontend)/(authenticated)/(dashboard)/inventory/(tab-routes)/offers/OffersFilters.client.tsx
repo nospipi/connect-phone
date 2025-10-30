@@ -19,6 +19,7 @@ interface OffersFiltersProps {
     isUnlimitedData: string
     minDurationInDays: string
     maxDurationInDays: string
+    isActive: string
     countries: ICountry[]
     salesChannels: ISalesChannel[]
     prices: IPrice[]
@@ -38,6 +39,7 @@ export default function OffersFilters({ currentFilters }: OffersFiltersProps) {
   const [maxDurationInDays, setMaxDurationInDays] = useState(
     currentFilters.maxDurationInDays,
   )
+  const [isActive, setIsActive] = useState(currentFilters.isActive)
   const [countries, setCountries] = useState<ICountry[]>(
     currentFilters.countries,
   )
@@ -53,6 +55,7 @@ export default function OffersFilters({ currentFilters }: OffersFiltersProps) {
     setIsUnlimitedData(currentFilters.isUnlimitedData)
     setMinDurationInDays(currentFilters.minDurationInDays)
     setMaxDurationInDays(currentFilters.maxDurationInDays)
+    setIsActive(currentFilters.isActive)
     setCountries(currentFilters.countries)
     setSalesChannels(currentFilters.salesChannels)
     setPrices(currentFilters.prices)
@@ -65,6 +68,7 @@ export default function OffersFilters({ currentFilters }: OffersFiltersProps) {
     isUnlimitedData !== "" ||
     minDurationInDays !== "" ||
     maxDurationInDays !== "" ||
+    isActive !== "" ||
     countries.length > 0 ||
     salesChannels.length > 0 ||
     prices.length > 0
@@ -75,6 +79,7 @@ export default function OffersFilters({ currentFilters }: OffersFiltersProps) {
     isUnlimitedData !== "" ||
     minDurationInDays !== "" ||
     maxDurationInDays !== "" ||
+    isActive !== "" ||
     countries.length > 0 ||
     salesChannels.length > 0 ||
     prices.length > 0
@@ -89,6 +94,7 @@ export default function OffersFilters({ currentFilters }: OffersFiltersProps) {
     if (isUnlimitedData) urlParams.set("isUnlimitedData", isUnlimitedData)
     if (minDurationInDays) urlParams.set("minDurationInDays", minDurationInDays)
     if (maxDurationInDays) urlParams.set("maxDurationInDays", maxDurationInDays)
+    if (isActive) urlParams.set("isActive", isActive)
     if (countries.length > 0) {
       urlParams.set("countryIds", countries.map((c) => c.id).join(","))
     }
@@ -124,6 +130,7 @@ export default function OffersFilters({ currentFilters }: OffersFiltersProps) {
     isUnlimitedData,
     minDurationInDays,
     maxDurationInDays,
+    isActive,
     countryIds: countries.map((c) => c.id).join(","),
     salesChannelIds: salesChannels.map((sc) => sc.id).join(","),
     priceIds: prices.map((p) => p.id).join(","),
@@ -201,6 +208,23 @@ export default function OffersFilters({ currentFilters }: OffersFiltersProps) {
 
         <div className="flex-1 overflow-y-auto p-4">
           <div className="space-y-8">
+            <div className="space-y-4">
+              <h4 className="text-sm font-semibold uppercase tracking-wide text-gray-700 dark:text-gray-300">
+                Status
+              </h4>
+              <div className="space-y-3">
+                <select
+                  value={isActive}
+                  onChange={(e) => setIsActive(e.target.value)}
+                  className="block w-full border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 outline-none dark:border-slate-700/50 dark:bg-slate-900/50 dark:text-slate-200"
+                >
+                  <option value="">All Offers</option>
+                  <option value="true">Active Only</option>
+                  <option value="false">Inactive Only</option>
+                </select>
+              </div>
+            </div>
+
             <div className="space-y-4">
               <h4 className="text-sm font-semibold uppercase tracking-wide text-gray-700 dark:text-gray-300">
                 Data Options

@@ -20,6 +20,7 @@ import ImagesSelectButton from "./ImagesSelectButton.client"
 import InclusionsMultiSelect from "./InclusionsMultiSelect.client"
 import ExclusionsMultiSelect from "./ExclusionsMultiSelect.client"
 import UnlimitedDataCheckbox from "./UnlimitedDataCheckbox.client"
+import IsActiveCheckbox from "./IsActiveCheckbox.client"
 import DescriptionHtmlEditor from "./DescriptionHtmlEditor.client"
 
 //------------------------------------------------------------
@@ -36,6 +37,7 @@ const Page = async ({
   const durationInDays = params.durationInDays || ""
   const dataInGb = params.dataInGb || ""
   const isUnlimitedData = params.isUnlimitedData === "true"
+  const isActive = params.isActive !== "false"
   const inclusionIds = params.inclusionIds || ""
   const exclusionIds = params.exclusionIds || ""
   const mainImageId = params.mainImageId || ""
@@ -141,6 +143,7 @@ const Page = async ({
     if (durationInDays) urlParams.set("durationInDays", durationInDays)
     if (dataInGb) urlParams.set("dataInGb", dataInGb)
     if (isUnlimitedData) urlParams.set("isUnlimitedData", "true")
+    if (!isActive) urlParams.set("isActive", "false")
     if (inclusionIds) urlParams.set("inclusionIds", inclusionIds)
     if (exclusionIds) urlParams.set("exclusionIds", exclusionIds)
 
@@ -216,6 +219,11 @@ const Page = async ({
                 type="hidden"
                 name="isUnlimitedData"
                 value={isUnlimitedData ? "true" : "false"}
+              />
+              <input
+                type="hidden"
+                name="isActive"
+                value={isActive ? "true" : "false"}
               />
 
               <div>
@@ -470,6 +478,18 @@ const Page = async ({
                 <div className="mt-2">
                   <PriceSelectButton />
                 </div>
+              </div>
+
+              <div>
+                <label className="flex items-center gap-2">
+                  <IsActiveCheckbox isChecked={isActive} />
+                  <span className="text-sm font-medium text-gray-700 dark:text-slate-300">
+                    Active
+                  </span>
+                </label>
+                <p className="ml-6 mt-1 text-xs text-gray-500 dark:text-slate-400">
+                  Active offers are visible and available for purchase
+                </p>
               </div>
 
               <div className="flex flex-col gap-3 border-t border-gray-200 pt-6 sm:flex-row sm:justify-end dark:border-gray-800">

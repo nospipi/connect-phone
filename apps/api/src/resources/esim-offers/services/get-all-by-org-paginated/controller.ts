@@ -21,7 +21,7 @@ export class GetAllByOrgPaginatedController {
   async getAllEsimOffersPaginated(
     @Query() searchEsimOffersDto: SearchEsimOffersDto
   ): Promise<Pagination<IEsimOffer>> {
-    console.log('Received DTO:', searchEsimOffersDto);
+    console.log('esim-offers/paginated Received DTO:', searchEsimOffersDto);
     return this.getAllByOrgPaginatedService.getAllEsimOffersPaginated(
       searchEsimOffersDto
     );

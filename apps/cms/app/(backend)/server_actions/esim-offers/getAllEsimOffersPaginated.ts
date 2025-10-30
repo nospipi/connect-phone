@@ -14,6 +14,7 @@ interface PaginationParams {
   minDataInGb?: string | number
   maxDataInGb?: string | number
   isUnlimitedData?: boolean
+  isActive?: boolean
   minDurationInDays?: string | number
   maxDurationInDays?: string | number
   countryIds?: number[]
@@ -28,6 +29,7 @@ export const getAllEsimOffersPaginated = async ({
   minDataInGb,
   maxDataInGb,
   isUnlimitedData,
+  isActive,
   minDurationInDays,
   maxDurationInDays,
   countryIds,
@@ -54,6 +56,10 @@ export const getAllEsimOffersPaginated = async ({
 
     if (isUnlimitedData !== undefined) {
       params.append("isUnlimitedData", String(isUnlimitedData))
+    }
+
+    if (isActive !== undefined) {
+      params.append("isActive", String(isActive))
     }
 
     if (minDurationInDays !== undefined) {

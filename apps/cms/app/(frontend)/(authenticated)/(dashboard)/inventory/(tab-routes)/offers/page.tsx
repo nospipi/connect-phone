@@ -23,6 +23,7 @@ const Page = async ({
     minDataInGb,
     maxDataInGb,
     isUnlimitedData,
+    isActive,
     minDurationInDays,
     maxDurationInDays,
     countryIds,
@@ -53,6 +54,7 @@ const Page = async ({
     minDataInGb: minDataInGb ? Number(minDataInGb) : undefined,
     maxDataInGb: maxDataInGb ? Number(maxDataInGb) : undefined,
     isUnlimitedData: isUnlimitedData === "true" ? true : undefined,
+    isActive: isActive !== undefined ? isActive === "true" : undefined,
     minDurationInDays: minDurationInDays
       ? Number(minDurationInDays)
       : undefined,
@@ -72,6 +74,7 @@ const Page = async ({
     minDataInGb: minDataInGb || "",
     maxDataInGb: maxDataInGb || "",
     isUnlimitedData: isUnlimitedData || "",
+    isActive: isActive || "",
     minDurationInDays: minDurationInDays || "",
     maxDurationInDays: maxDurationInDays || "",
     countries: selectedCountries,
@@ -84,6 +87,7 @@ const Page = async ({
     minDataInGb !== undefined ||
     maxDataInGb !== undefined ||
     isUnlimitedData !== undefined ||
+    isActive !== undefined ||
     minDurationInDays !== undefined ||
     maxDurationInDays !== undefined ||
     countryIdsArray.length > 0 ||

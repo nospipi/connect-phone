@@ -51,6 +51,11 @@ export class SearchEsimOffersDto {
   @IsOptional()
   @Type(() => Boolean)
   @IsBoolean()
+  isActive?: boolean;
+
+  @IsOptional()
+  @Type(() => Boolean)
+  @IsBoolean()
   isUnlimitedData?: boolean;
 
   @IsOptional()

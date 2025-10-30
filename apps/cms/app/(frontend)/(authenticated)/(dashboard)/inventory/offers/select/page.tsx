@@ -24,6 +24,7 @@ interface PageProps {
     targetField?: string
     minDataInGb?: string
     maxDataInGb?: string
+    isActive?: string
     isUnlimitedData?: string
     minDurationInDays?: string
     maxDurationInDays?: string
@@ -45,6 +46,7 @@ const Page = async ({ searchParams }: PageProps) => {
   const minDataInGb = params.minDataInGb
   const maxDataInGb = params.maxDataInGb
   const isUnlimitedData = params.isUnlimitedData === "true" ? true : undefined
+  const isActive = params.isActive === "true" ? true : undefined
   const minDurationInDays = params.minDurationInDays
   const maxDurationInDays = params.maxDurationInDays
   const countryIds = params.countryIds
@@ -79,6 +81,7 @@ const Page = async ({ searchParams }: PageProps) => {
     "minDataInGb",
     "maxDataInGb",
     "isUnlimitedData",
+    "isActive",
     "minDurationInDays",
     "maxDurationInDays",
     "countryIds",
@@ -101,6 +104,7 @@ const Page = async ({ searchParams }: PageProps) => {
     minDataInGb: minDataInGb ? Number(minDataInGb) : undefined,
     maxDataInGb: maxDataInGb ? Number(maxDataInGb) : undefined,
     isUnlimitedData,
+    isActive,
     minDurationInDays: minDurationInDays
       ? Number(minDurationInDays)
       : undefined,
@@ -120,6 +124,7 @@ const Page = async ({ searchParams }: PageProps) => {
     minDataInGb: minDataInGb || "",
     maxDataInGb: maxDataInGb || "",
     isUnlimitedData: params.isUnlimitedData || "",
+    isActive: isActive || "",
     minDurationInDays: minDurationInDays || "",
     maxDurationInDays: maxDurationInDays || "",
     countries: selectedCountries,
@@ -152,6 +157,7 @@ const Page = async ({ searchParams }: PageProps) => {
     if (maxDataInGb) urlParams.set("maxDataInGb", maxDataInGb)
     if (params.isUnlimitedData)
       urlParams.set("isUnlimitedData", params.isUnlimitedData)
+    if (isActive !== undefined) urlParams.set("isActive", String(isActive))
     if (minDurationInDays) urlParams.set("minDurationInDays", minDurationInDays)
     if (maxDurationInDays) urlParams.set("maxDurationInDays", maxDurationInDays)
     if (countryIds) urlParams.set("countryIds", countryIds)
@@ -190,6 +196,7 @@ const Page = async ({ searchParams }: PageProps) => {
   if (maxDataInGb) paginationParams.maxDataInGb = maxDataInGb
   if (params.isUnlimitedData)
     paginationParams.isUnlimitedData = params.isUnlimitedData
+
   if (minDurationInDays) paginationParams.minDurationInDays = minDurationInDays
   if (maxDurationInDays) paginationParams.maxDurationInDays = maxDurationInDays
   if (countryIds) paginationParams.countryIds = countryIds

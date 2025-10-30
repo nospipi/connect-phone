@@ -51,6 +51,12 @@ export class GetAllByOrgPaginatedService {
       );
     }
 
+    if (searchDto.isActive !== undefined) {
+      queryBuilder.andWhere('esimOffer.isActive = :isActive', {
+        isActive: searchDto.isActive,
+      });
+    }
+
     if (searchDto.isUnlimitedData !== undefined) {
       queryBuilder.andWhere('esimOffer.isUnlimitedData = :isUnlimitedData', {
         isUnlimitedData: searchDto.isUnlimitedData,
