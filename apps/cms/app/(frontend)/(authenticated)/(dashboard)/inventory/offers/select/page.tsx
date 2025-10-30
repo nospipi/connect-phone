@@ -210,7 +210,7 @@ const Page = async ({ searchParams }: PageProps) => {
   if (priceIds) paginationParams.priceIds = priceIds
 
   return (
-    <div className="relative flex h-full flex-col overflow-hidden">
+    <div className="flex h-full flex-col overflow-hidden">
       <div className="flex border-b border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950">
         <Link
           href={buildBackUrl()}
@@ -322,13 +322,13 @@ const Page = async ({ searchParams }: PageProps) => {
             </div>
           )}
         </div>
+        <Pagination
+          meta={meta}
+          searchParams={paginationParams}
+          itemLabel="eSIM offers"
+          basePath="/inventory/offers/select"
+        />
       </div>
-      <Pagination
-        meta={meta}
-        searchParams={paginationParams}
-        itemLabel="eSIM offers"
-        basePath="/inventory/offers/select"
-      />
     </div>
   )
 }

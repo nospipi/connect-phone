@@ -47,11 +47,11 @@ const SalesChannelItem = ({ channel }: SalesChannelItemProps) => {
                     <span className="flex-shrink-0 text-sm font-medium text-gray-500 dark:text-slate-500">
                       #{channel.id}
                     </span>
-                    <span className="min-w-0 flex-1 truncate text-sm font-medium text-gray-900 group-hover:text-gray-700 dark:text-gray-50 dark:group-hover:text-gray-100">
+                    <span className="min-w-0 flex-1 truncate text-sm font-medium text-gray-900 group-hover:underline dark:text-gray-50">
                       {channel.name}
                     </span>
                   </p>
-                  <p className="mt-1 truncate text-sm text-gray-600 group-hover:text-gray-500 dark:text-gray-400 dark:group-hover:text-gray-300">
+                  <p className="mt-1 truncate text-sm text-gray-600 dark:text-gray-400">
                     {channel.description || "No description provided"}
                   </p>
                 </div>

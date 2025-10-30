@@ -1,18 +1,18 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/organization/details/page.tsx
+
 import { getCurrentOrganization } from "@/app/(backend)/server_actions/organizations/getCurrentOrganization"
 import { getMediaById } from "@/app/(backend)/server_actions/media/getMediaById"
 import { redirect } from "next/navigation"
-import { revalidatePath } from "next/cache"
+import DeleteCacheButton from "./DeleteCacheButton"
 import { updateOrganization } from "@/app/(backend)/server_actions/organizations/updateOrganization"
 import { CURRENCIES } from "@connect-phone/shared-types"
 import LogoSection from "./LogoSection.client"
 import { PendingOverlay } from "@/components/common/PendingOverlay"
 
-//----------------------------------------------------------------------
+//------------------------------------------------------------
 
 async function refreshPageAction() {
   "use server"
-  //revalidatePath("/organization/details")
   redirect("/organization/details")
 }
 
@@ -23,7 +23,6 @@ interface PageProps {
 const Page = async ({ searchParams }: PageProps) => {
   const params = await searchParams
   const organizationData = await getCurrentOrganization()
-  //console.log("Organization data fetched:", organizationData)
 
   const name = params.name || organizationData?.name || ""
   const mainCurrency =
@@ -48,12 +47,12 @@ const Page = async ({ searchParams }: PageProps) => {
   }
 
   return (
-    <form
-      key={organizationData?.id}
-      action={updateOrganization}
-      className="relative flex h-full overflow-hidden"
-    >
-      <div className="flex h-full flex-1 flex-col gap-2 overflow-hidden">
+    <div className="relative flex h-full flex-col">
+      <form
+        key={organizationData?.id}
+        action={updateOrganization}
+        className="flex h-full flex-1 flex-col gap-2 overflow-hidden"
+      >
         <div className="flex h-full w-full flex-1 overflow-auto">
           <div className="flex h-full w-full max-w-3xl flex-col gap-10 px-3 pb-2">
             <div className="flex flex-1 flex-col gap-6 px-1">
@@ -137,8 +136,9 @@ const Page = async ({ searchParams }: PageProps) => {
             </button>
           </PendingOverlay>
         </div>
-      </div>
-    </form>
+      </form>
+      <DeleteCacheButton />
+    </div>
   )
 }
 

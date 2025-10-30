@@ -1,4 +1,5 @@
 // apps/api/src/resources/esim-offers/services/get-all-by-org-paginated/search-esim-offers.dto.ts
+
 import {
   IsString,
   IsOptional,
@@ -49,12 +50,20 @@ export class SearchEsimOffersDto {
   maxDataInGb?: number;
 
   @IsOptional()
-  @Type(() => Boolean)
+  @Transform(({ value }) => {
+    if (value === 'true' || value === true) return true;
+    if (value === 'false' || value === false) return false;
+    return undefined;
+  })
   @IsBoolean()
   isActive?: boolean;
 
   @IsOptional()
-  @Type(() => Boolean)
+  @Transform(({ value }) => {
+    if (value === 'true' || value === true) return true;
+    if (value === 'false' || value === false) return false;
+    return undefined;
+  })
   @IsBoolean()
   isUnlimitedData?: boolean;
 

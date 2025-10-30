@@ -1,11 +1,11 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/users/(tab-routes)/users/page.tsx
+
 import { getAllUsersOfOrganizationPaginated } from "@/app/(backend)/server_actions/organizations/getAllUsersOfOrganizationPaginated"
-import Link from "next/link"
-import { Badge } from "@/components/common/Badge"
 import { RiUser2Fill } from "@remixicon/react"
 import { UserOrganizationRole } from "@connect-phone/shared-types"
 import { Pagination } from "@/components/common/pagination/Pagination"
 import { PendingOverlay } from "@/components/common/PendingOverlay"
+import { UserItem } from "./UserItem"
 
 //------------------------------------------------------------
 
@@ -16,20 +16,6 @@ const USER_ROLES = [
     label: role.charAt(0).toUpperCase() + role.slice(1).toLowerCase(),
   })),
 ] as const
-
-const getInitials = (firstName: string, lastName: string): string => {
-  const first = firstName?.trim() || ""
-  const last = lastName?.trim() || ""
-
-  if (first && last) {
-    return (first[0] + last[0]).toUpperCase()
-  } else if (first) {
-    return first.substring(0, 2).toUpperCase()
-  } else if (last) {
-    return last.substring(0, 2).toUpperCase()
-  }
-  return "??"
-}
 
 const Page = async ({
   searchParams,
@@ -121,57 +107,12 @@ const Page = async ({
           </div>
         ) : (
           <div className="divide-y divide-gray-200 px-5 dark:divide-slate-800/30">
-            {items.map((userOrganization: any, index: number) => {
-              const user = userOrganization.user
-              const role = userOrganization.role
-              const initials = getInitials(user.firstName, user.lastName)
-              const fullName =
-                `${user.firstName || ""} ${user.lastName || ""}`.trim() ||
-                user.email
-
-              return (
-                <Link
-                  key={user.id}
-                  href={`/users/${user.id}`}
-                  className="block"
-                >
-                  <div className="duration-2000 group py-4 transition-all">
-                    <div className="flex items-center space-x-4">
-                      <div className="flex-shrink-0">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-gray-200 to-gray-300 text-sm font-semibold text-gray-700 shadow-sm group-hover:from-gray-300 group-hover:to-gray-400 group-hover:text-gray-800 dark:from-slate-700/60 dark:to-slate-800/60 dark:text-slate-200 dark:group-hover:from-slate-600/60 dark:group-hover:to-slate-700/60 dark:group-hover:text-slate-100">
-                          {initials}
-                        </div>
-                      </div>
-
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-start justify-between">
-                          <div className="min-w-0 flex-1">
-                            <p className="truncate text-sm font-medium text-gray-900 group-hover:text-gray-700 dark:text-slate-200 dark:group-hover:text-slate-100">
-                              {fullName}
-                            </p>
-                            <p className="truncate text-sm text-gray-600 group-hover:text-gray-500 dark:text-slate-400 dark:group-hover:text-slate-300">
-                              {user.email}
-                            </p>
-                          </div>
-
-                          <div className="ml-4 flex-shrink-0">
-                            <Badge
-                              variant={
-                                role === UserOrganizationRole.ADMIN
-                                  ? "warning"
-                                  : "default"
-                              }
-                            >
-                              {role.charAt(0).toUpperCase() + role.slice(1)}
-                            </Badge>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              )
-            })}
+            {items.map((userOrganization: any) => (
+              <UserItem
+                key={userOrganization.user.id}
+                userOrganization={userOrganization}
+              />
+            ))}
           </div>
         )}
       </div>

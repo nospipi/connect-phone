@@ -1,7 +1,8 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/(tab-routes)/offers/OffersFilters.client.tsx
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useTransition } from "react"
+import { useRouter } from "next/navigation"
 import { RiSearchLine, RiFilter3Line, RiCloseLine } from "@remixicon/react"
 import { ICountry, ISalesChannel, IPrice } from "@connect-phone/shared-types"
 import { PendingOverlay } from "@/components/common/PendingOverlay"
@@ -27,6 +28,9 @@ interface OffersFiltersProps {
 }
 
 export default function OffersFilters({ currentFilters }: OffersFiltersProps) {
+  const [isPending, startTransition] = useTransition()
+  const router = useRouter()
+
   const [search, setSearch] = useState(currentFilters.search)
   const [minDataInGb, setMinDataInGb] = useState(currentFilters.minDataInGb)
   const [maxDataInGb, setMaxDataInGb] = useState(currentFilters.maxDataInGb)
@@ -60,6 +64,17 @@ export default function OffersFilters({ currentFilters }: OffersFiltersProps) {
     setSalesChannels(currentFilters.salesChannels)
     setPrices(currentFilters.prices)
   }, [currentFilters])
+
+  useEffect(() => {
+    if (!isPending) {
+      const checkbox = document.getElementById(
+        "more-filters-drawer",
+      ) as HTMLInputElement
+      if (checkbox && checkbox.checked) {
+        checkbox.checked = false
+      }
+    }
+  }, [isPending])
 
   const hasActiveFilters =
     search !== "" ||
@@ -111,6 +126,12 @@ export default function OffersFilters({ currentFilters }: OffersFiltersProps) {
     return `/inventory/offers?${urlParams.toString()}`
   }
 
+  const handleApplyFilters = () => {
+    startTransition(() => {
+      router.push(buildApplyUrl())
+    })
+  }
+
   const handleRemoveCountry = (id: number) => {
     setCountries(countries.filter((c) => c.id !== id))
   }
@@ -134,6 +155,15 @@ export default function OffersFilters({ currentFilters }: OffersFiltersProps) {
     countryIds: countries.map((c) => c.id).join(","),
     salesChannelIds: salesChannels.map((sc) => sc.id).join(","),
     priceIds: prices.map((p) => p.id).join(","),
+  }
+
+  const handleCloseDrawer = () => {
+    const drawerCheckbox = document.getElementById(
+      "more-filters-drawer",
+    ) as HTMLInputElement
+    if (drawerCheckbox) {
+      drawerCheckbox.checked = false
+    }
   }
 
   return (
@@ -357,10 +387,15 @@ export default function OffersFilters({ currentFilters }: OffersFiltersProps) {
           >
             Close
           </label>
-          <PendingOverlay mode="navigation" href={buildApplyUrl()}>
+          <PendingOverlay
+            mode="custom"
+            onClick={handleApplyFilters}
+            isPending={isPending}
+          >
             <button
+              disabled={isPending}
               type="button"
-              className="border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700"
+              className="border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 disabled:opacity-50"
             >
               Apply Filters
             </button>
