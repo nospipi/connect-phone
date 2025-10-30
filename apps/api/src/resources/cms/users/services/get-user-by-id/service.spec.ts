@@ -1,0 +1,243 @@
+// apps/api/src/resources/users/services/get-user-by-id/service.spec.ts
+import { Test, TestingModule } from '@nestjs/testing';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { NotFoundException, ForbiddenException } from '@nestjs/common';
+import { GetUserByIdService } from './service';
+import { UserEntity } from '../../../../../database/entities/user.entity';
+import { UserOrganizationEntity } from '../../../../../database/entities/user-organization.entity';
+import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { UserOrganizationRole } from '@connect-phone/shared-types';
+import {
+  createMockOrganization,
+  createMockUser,
+  createMockUserOrganization,
+  createCurrentOrganizationServiceProvider,
+} from '../../../../../test/factories';
+
+describe('GetUserByIdService', () => {
+  let service: GetUserByIdService;
+  let userOrganizationRepository: jest.Mocked<
+    Repository<UserOrganizationEntity>
+  >;
+  let currentOrganizationService: jest.Mocked<CurrentOrganizationService>;
+
+  const mockOrganization = createMockOrganization();
+  const mockUser = createMockUser({
+    loggedOrganizationId: null,
+    loggedOrganization: null,
+  });
+  const mockUserOrganization = createMockUserOrganization({
+    role: UserOrganizationRole.ADMIN,
+    user: mockUser,
+  });
+
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        GetUserByIdService,
+        {
+          provide: getRepositoryToken(UserEntity),
+          useValue: {
+            findOne: jest.fn(),
+          },
+        },
+        {
+          provide: getRepositoryToken(UserOrganizationEntity),
+          useValue: {
+            findOne: jest.fn(),
+          },
+        },
+        createCurrentOrganizationServiceProvider(),
+      ],
+    }).compile();
+
+    service = module.get<GetUserByIdService>(GetUserByIdService);
+    userOrganizationRepository = module.get(
+      getRepositoryToken(UserOrganizationEntity)
+    );
+    currentOrganizationService = module.get(CurrentOrganizationService);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should be defined', () => {
+    expect(service).toBeDefined();
+  });
+
+  describe('getUserById', () => {
+    it('should return user with role when user exists and belongs to organization', async () => {
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
+      userOrganizationRepository.findOne.mockResolvedValue(
+        mockUserOrganization
+      );
+
+      const result = await service.getUserById(1);
+
+      expect(
+        currentOrganizationService.getCurrentOrganization
+      ).toHaveBeenCalledTimes(1);
+      expect(userOrganizationRepository.findOne).toHaveBeenCalledWith({
+        where: {
+          userId: 1,
+          organizationId: 1,
+        },
+        relations: [
+          'user',
+          'user.loggedOrganization',
+          'user.userOrganizations',
+          'user.userOrganizations.organization',
+        ],
+      });
+      expect(result).toEqual({
+        ...mockUser,
+        role: UserOrganizationRole.ADMIN,
+      });
+      expect(result.role).toBe(UserOrganizationRole.ADMIN);
+    });
+
+    it('should throw ForbiddenException when organization context is null', async () => {
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(null);
+
+      await expect(service.getUserById(1)).rejects.toThrow(
+        new ForbiddenException('Organization context required')
+      );
+
+      expect(userOrganizationRepository.findOne).not.toHaveBeenCalled();
+    });
+
+    it('should throw NotFoundException when user does not belong to organization', async () => {
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
+      userOrganizationRepository.findOne.mockResolvedValue(null);
+
+      await expect(service.getUserById(1)).rejects.toThrow(
+        new NotFoundException(
+          'User with ID 1 not found in current organization'
+        )
+      );
+
+      expect(userOrganizationRepository.findOne).toHaveBeenCalledWith({
+        where: {
+          userId: 1,
+          organizationId: 1,
+        },
+        relations: [
+          'user',
+          'user.loggedOrganization',
+          'user.userOrganizations',
+          'user.userOrganizations.organization',
+        ],
+      });
+    });
+
+    it('should throw NotFoundException when user does not exist in user-organization', async () => {
+      const userOrgWithoutUser = createMockUserOrganization({
+        user: undefined,
+      });
+
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
+      userOrganizationRepository.findOne.mockResolvedValue(userOrgWithoutUser);
+
+      await expect(service.getUserById(1)).rejects.toThrow(
+        new NotFoundException('User with ID 1 not found')
+      );
+
+      expect(userOrganizationRepository.findOne).toHaveBeenCalledTimes(1);
+    });
+
+    it('should handle different user IDs correctly', async () => {
+      const userId = 999;
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
+      userOrganizationRepository.findOne.mockResolvedValue(
+        mockUserOrganization
+      );
+
+      await service.getUserById(userId);
+
+      expect(userOrganizationRepository.findOne).toHaveBeenCalledWith({
+        where: {
+          userId: userId,
+          organizationId: 1,
+        },
+        relations: [
+          'user',
+          'user.loggedOrganization',
+          'user.userOrganizations',
+          'user.userOrganizations.organization',
+        ],
+      });
+    });
+
+    it('should handle different roles correctly', async () => {
+      const operatorUserOrganization = createMockUserOrganization({
+        role: UserOrganizationRole.OPERATOR,
+        user: mockUser,
+      });
+
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
+      userOrganizationRepository.findOne.mockResolvedValue(
+        operatorUserOrganization
+      );
+
+      const result = await service.getUserById(1);
+
+      expect(result.role).toBe(UserOrganizationRole.OPERATOR);
+      expect(result).toEqual({
+        ...mockUser,
+        role: UserOrganizationRole.OPERATOR,
+      });
+    });
+
+    it('should handle database errors during user organization lookup', async () => {
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
+      userOrganizationRepository.findOne.mockRejectedValue(
+        new Error('Database error')
+      );
+
+      await expect(service.getUserById(1)).rejects.toThrow('Database error');
+
+      expect(userOrganizationRepository.findOne).toHaveBeenCalledTimes(1);
+    });
+
+    it('should return user with complete relations and role', async () => {
+      const userWithRelations = {
+        ...mockUser,
+        userOrganizations: [mockUserOrganization],
+      };
+
+      const userOrganizationWithRelations = createMockUserOrganization({
+        user: userWithRelations,
+      });
+
+      currentOrganizationService.getCurrentOrganization.mockResolvedValue(
+        mockOrganization
+      );
+      userOrganizationRepository.findOne.mockResolvedValue(
+        userOrganizationWithRelations
+      );
+
+      const result = await service.getUserById(1);
+
+      expect(result).toEqual({
+        ...userWithRelations,
+        role: UserOrganizationRole.OPERATOR,
+      });
+      expect(result.userOrganizations).toHaveLength(1);
+      expect(result.role).toBe(UserOrganizationRole.OPERATOR);
+    });
+  });
+});
