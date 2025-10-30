@@ -4,16 +4,16 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { NotFoundException, ForbiddenException } from '@nestjs/common';
 import { GetUserByIdService } from './service';
-import { UserEntity } from '../../../../../database/entities/user.entity';
-import { UserOrganizationEntity } from '../../../../../database/entities/user-organization.entity';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { UserEntity } from '@/database/entities/user.entity';
+import { UserOrganizationEntity } from '@/database/entities/user-organization.entity';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
 import { UserOrganizationRole } from '@connect-phone/shared-types';
 import {
   createMockOrganization,
   createMockUser,
   createMockUserOrganization,
   createCurrentOrganizationServiceProvider,
-} from '../../../../../test/factories';
+} from '@/test/factories';
 
 describe('GetUserByIdService', () => {
   let service: GetUserByIdService;

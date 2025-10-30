@@ -1,11 +1,11 @@
 // apps/api/src/resources/cms/user-invitations/services/get-all-invitations-of-org-paginated/controller.ts
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { GetAllInvitationsOfOrgPaginatedService } from './service';
-import { UserInvitationEntity } from '../../../../../database/entities/user-invitation.entity';
-import { DbUserGuard } from '../../../../../common/guards/db-user.guard';
-import { DbUserRoleGuard } from '../../../../../common/guards/db-user-role.guard';
+import { UserInvitationEntity } from '@/database/entities/user-invitation.entity';
+import { DbUserGuard } from '@/common/guards/db-user.guard';
+import { DbUserRoleGuard } from '@/common/guards/db-user-role.guard';
 import { Pagination } from 'nestjs-typeorm-paginate';
-import { OrganizationGuard } from '../../../../../common/guards/organization.guard';
+import { OrganizationGuard } from '@/common/guards/organization.guard';
 import { SearchInvitationsDto } from './search-invitations.dto';
 
 //--------------------------------------------------------------------------------

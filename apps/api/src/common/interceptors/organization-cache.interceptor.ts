@@ -11,7 +11,7 @@ import { Reflector } from '@nestjs/core';
 import { CacheInterceptor } from '@nestjs/cache-manager';
 import { Observable, of, from } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { NO_CACHE_KEY } from '../decorators/no-cache.decorator';
+import { NO_CACHE_KEY } from '@/common/decorators/no-cache.decorator';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 

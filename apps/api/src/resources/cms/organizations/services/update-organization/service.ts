@@ -6,10 +6,10 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { OrganizationEntity } from '../../../../../database/entities/organization.entity';
+import { OrganizationEntity } from '@/database/entities/organization.entity';
 import { UpdateOrganizationDto } from './update-organization.dto';
 import { IOrganization } from '@connect-phone/shared-types';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
 
 //----------------------------------------------------------------------
 

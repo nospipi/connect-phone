@@ -10,9 +10,9 @@ import {
   Logger,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { CurrentOrganizationService } from '../services/current-organization.service';
-import { CurrentDbUserService } from '../services/current-db-user.service';
-import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
+import { CurrentDbUserService } from '@/common/services/current-db-user.service';
+import { IS_PUBLIC_KEY } from '@/common/decorators/public.decorator';
 
 //----------------------------------------------------------------------
 

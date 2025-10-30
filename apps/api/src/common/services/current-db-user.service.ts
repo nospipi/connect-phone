@@ -6,9 +6,9 @@ import { Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Request } from 'express';
-import { UserEntity } from '../../database/entities/user.entity';
+import { UserEntity } from '@/database/entities/user.entity';
 import { IUser } from '@connect-phone/shared-types';
-import { OrganizationEntity } from '../../database/entities/organization.entity';
+import { OrganizationEntity } from '@/database/entities/organization.entity';
 import { CurrentClerkUserService } from './current-clerk-user.service';
 
 //-------------------------------------------------------

@@ -2,9 +2,9 @@
 import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { CreatePriceService } from './service';
 import { CreatePriceDto } from './create-price.dto';
-import { DbUserGuard } from '../../../../../common/guards/db-user.guard';
-import { OrganizationGuard } from '../../../../../common/guards/organization.guard';
-import { DbUserRoleGuard } from '../../../../../common/guards/db-user-role.guard';
+import { DbUserGuard } from '@/common/guards/db-user.guard';
+import { OrganizationGuard } from '@/common/guards/organization.guard';
+import { DbUserRoleGuard } from '@/common/guards/db-user-role.guard';
 import { IPrice } from '@connect-phone/shared-types';
 
 //----------------------------------------------------------------------

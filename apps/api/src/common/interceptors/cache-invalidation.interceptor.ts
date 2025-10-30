@@ -13,7 +13,7 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import type { Cache } from 'cache-manager';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { NO_CACHE_INVALIDATION_KEY } from '../decorators/no-cache-invalidation.decorator';
+import { NO_CACHE_INVALIDATION_KEY } from '@/common/decorators/no-cache-invalidation.decorator';
 
 //------------------------------------------------------------
 

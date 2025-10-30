@@ -2,13 +2,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { GetCurrentOrganizationService } from './service';
-import { OrganizationEntity } from '../.././../../../database/entities/organization.entity';
-import { CurrentDbUserService } from '../../../../../common/services/current-db-user.service';
+import { OrganizationEntity } from '@/database/entities/organization.entity';
+import { CurrentDbUserService } from '@/common/services/current-db-user.service';
 import {
   createMockOrganization,
   createMockUser,
   createCurrentDbUserServiceProvider,
-} from '../../../../../test/factories';
+} from '@/test/factories';
 
 //----------------------------------------------------------------------
 

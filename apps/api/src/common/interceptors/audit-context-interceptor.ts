@@ -11,8 +11,8 @@ import { Observable, firstValueFrom } from 'rxjs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from '@/database/entities/user.entity';
-import { UserContext } from '../context/user-context';
-import { OrganizationContext } from '../context/organization-context';
+import { UserContext } from '@/common/context/user-context';
+import { OrganizationContext } from '@/common/context/organization-context';
 
 //-------------------------------------------------------
 

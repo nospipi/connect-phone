@@ -10,9 +10,9 @@ import {
 import { UpdatePriceService } from './service';
 import { UpdatePriceDto } from './update-price.dto';
 import { IPrice } from '@connect-phone/shared-types';
-import { DbUserGuard } from '../../../../../common/guards/db-user.guard';
-import { DbUserRoleGuard } from '../../../../../common/guards/db-user-role.guard';
-import { OrganizationGuard } from '../../../../../common/guards/organization.guard';
+import { DbUserGuard } from '@/common/guards/db-user.guard';
+import { DbUserRoleGuard } from '@/common/guards/db-user-role.guard';
+import { OrganizationGuard } from '@/common/guards/organization.guard';
 
 //----------------------------------------------------------------------
 

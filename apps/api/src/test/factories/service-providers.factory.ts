@@ -1,8 +1,8 @@
 // apps/api/src/test/factories/service-providers.factory.ts
 
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { CurrentOrganizationService } from '../../common/services/current-organization.service';
-import { CurrentDbUserService } from '../../common/services/current-db-user.service';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
+import { CurrentDbUserService } from '@/common/services/current-db-user.service';
 
 export function createMockRepositoryProvider<T>(entity: any) {
   return {

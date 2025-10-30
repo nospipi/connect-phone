@@ -6,7 +6,7 @@ import { Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Request } from 'express';
-import { UserOrganizationEntity } from '../../database/entities/user-organization.entity';
+import { UserOrganizationEntity } from '@/database/entities/user-organization.entity';
 import {
   IUserOrganization,
   UserOrganizationRole,

@@ -31,3 +31,12 @@ npx jest -t "test_name1 | test_name2"
 _________________________________________________________________________________________
 # Custom create resource
 npm run create-service "users" "test-service"  
+
+
+---- 
+
+in apps/api/src/
+
+1. go through all files in all folders and replace all the import paths from relative imports like for example import { OrganizationGuard } from '../../../../../common/guards/organization.guard' to aliased imports like for example --> import { OrganizationGuard } from '@/common/guards/organization.guard';
+
+* do it manually one by one, dont create and run any scripts

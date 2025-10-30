@@ -9,9 +9,9 @@ import {
 } from '@nestjs/common';
 import { GetSalesChannelsByIdsService } from './service';
 import { GetSalesChannelsByIdsQueryDto } from './dto';
-import { DbUserGuard } from '../../../../../common/guards/db-user.guard';
-import { OrganizationGuard } from '../../../../../common/guards/organization.guard';
-import { DbUserRoleGuard } from '../../../../../common/guards/db-user-role.guard';
+import { DbUserGuard } from '@/common/guards/db-user.guard';
+import { OrganizationGuard } from '@/common/guards/organization.guard';
+import { DbUserRoleGuard } from '@/common/guards/db-user-role.guard';
 import { ISalesChannel } from '@connect-phone/shared-types';
 
 //------------------------------------------------------------

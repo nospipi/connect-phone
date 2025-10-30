@@ -3,7 +3,7 @@ import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
 import { CreateUserInvitationService } from './service';
 import { CreateUserInvitationDto } from './create-user-invitation.dto';
-import { OrganizationGuard } from '../../../../../common/guards/organization.guard';
+import { OrganizationGuard } from '@/common/guards/organization.guard';
 import { DbUserGuard } from '@/common/guards/db-user.guard';
 import { DbUserRoleGuard } from '@/common/guards/db-user-role.guard';
 import { IUserInvitation } from '@connect-phone/shared-types';

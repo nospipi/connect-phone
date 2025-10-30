@@ -10,9 +10,9 @@ import {
 import { UpdateSalesChannelService } from './service';
 import { UpdateSalesChannelDto } from './update-sales-channel.dto';
 import { ISalesChannel } from '@connect-phone/shared-types';
-import { DbUserGuard } from '../../../../../common/guards/db-user.guard';
-import { DbUserRoleGuard } from '../../../../../common/guards/db-user-role.guard';
-import { OrganizationGuard } from '../../../../../common/guards/organization.guard';
+import { DbUserGuard } from '@/common/guards/db-user.guard';
+import { DbUserRoleGuard } from '@/common/guards/db-user-role.guard';
+import { OrganizationGuard } from '@/common/guards/organization.guard';
 
 //-------------------------------------------
 

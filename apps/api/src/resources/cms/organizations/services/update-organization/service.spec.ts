@@ -4,13 +4,13 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ForbiddenException } from '@nestjs/common';
 import { UpdateOrganizationService } from './service';
-import { OrganizationEntity } from '../../../../../database/entities/organization.entity';
+import { OrganizationEntity } from '@/database/entities/organization.entity';
 import { UpdateOrganizationDto } from './update-organization.dto';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
 import {
   createMockOrganization,
   createCurrentOrganizationServiceProvider,
-} from '../../../../../test/factories';
+} from '@/test/factories';
 import { Currency } from '@connect-phone/shared-types';
 
 //----------------------------------------------------------------------
