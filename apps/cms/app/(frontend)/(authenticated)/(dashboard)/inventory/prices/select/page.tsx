@@ -68,6 +68,11 @@ const Page = async ({ searchParams }: PageProps) => {
     "priceIds",
     "multipleSelection",
     "targetField",
+    "minAmount",
+    "maxAmount",
+    "currencies",
+    "dateRangeIds",
+    "salesChannelIds",
   ]
   Object.entries(params).forEach(([key, value]) => {
     if (!excludedParams.includes(key) && value !== undefined) {
@@ -123,6 +128,11 @@ const Page = async ({ searchParams }: PageProps) => {
     })
     urlParams.set("page", page)
     if (search) urlParams.set("search", search)
+    if (minAmount) urlParams.set("minAmount", minAmount)
+    if (maxAmount) urlParams.set("maxAmount", maxAmount)
+    if (currencies) urlParams.set("currencies", currencies)
+    if (dateRangeIds) urlParams.set("dateRangeIds", dateRangeIds)
+    if (salesChannelIds) urlParams.set("salesChannelIds", salesChannelIds)
     return `/inventory/prices/select?${urlParams.toString()}`
   }
 
@@ -152,6 +162,11 @@ const Page = async ({ searchParams }: PageProps) => {
   }
   if (search) paginationParams.search = search
   if (selectedParam) paginationParams.priceIds = selectedParam
+  if (minAmount) paginationParams.minAmount = minAmount
+  if (maxAmount) paginationParams.maxAmount = maxAmount
+  if (currencies) paginationParams.currencies = currencies
+  if (dateRangeIds) paginationParams.dateRangeIds = dateRangeIds
+  if (salesChannelIds) paginationParams.salesChannelIds = salesChannelIds
 
   return (
     <div className="relative flex h-full flex-col overflow-hidden">
@@ -208,58 +223,58 @@ const Page = async ({ searchParams }: PageProps) => {
         </div>
       </div>
 
-      <div className="my-2 px-2">
-        <PricesFilters currentFilters={currentFilters} />
-      </div>
+      <div className="relative flex h-full flex-col overflow-hidden">
+        <div className="flex w-full items-center gap-2 p-2">
+          <SelectAllCheckbox
+            items={items}
+            selectedIds={selectedIds}
+            multipleSelection={multipleSelection}
+            page={page}
+            search={search}
+            previousPage={previousPage}
+            targetField={targetField}
+            formData={formData}
+          />
 
-      <div className="px-2">
-        <SelectAllCheckbox
-          items={items}
-          selectedIds={selectedIds}
-          multipleSelection={multipleSelection}
-          page={page}
-          search={search}
-          previousPage={previousPage}
-          targetField={targetField}
-          formData={formData}
-        />
-      </div>
-
-      {items.length === 0 && (
-        <div className="flex flex-1 items-center justify-center">
-          <div className="text-center">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100 dark:bg-slate-800/50">
-              <RiCoinsLine className="h-8 w-8 text-gray-400 dark:text-slate-600" />
+          <PricesFilters currentFilters={currentFilters} />
+        </div>
+        <div className="flex-1 overflow-auto px-2">
+          {items.length === 0 && (
+            <div className="flex flex-1 items-center justify-center">
+              <div className="text-center">
+                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100 dark:bg-slate-800/50">
+                  <RiCoinsLine className="h-8 w-8 text-gray-400 dark:text-slate-600" />
+                </div>
+                <h3 className="mb-2 text-lg font-medium text-gray-900 dark:text-slate-200">
+                  No prices found
+                </h3>
+                <p className="text-sm text-gray-500 dark:text-slate-500">
+                  {search
+                    ? "Try adjusting your search or filters"
+                    : "Create a price to get started"}
+                </p>
+              </div>
             </div>
-            <h3 className="mb-2 text-lg font-medium text-gray-900 dark:text-slate-200">
-              No prices found
-            </h3>
-            <p className="text-sm text-gray-500 dark:text-slate-500">
-              {search
-                ? "Try adjusting your search"
-                : "Create a price to get started"}
-            </p>
-          </div>
-        </div>
-      )}
+          )}
 
-      {items.length > 0 && (
-        <div className="flex-1 overflow-hidden">
-          <div className="h-full overflow-auto px-3 py-2">
-            <PriceGrid
-              items={items}
-              selectedIds={selectedIds}
-              multipleSelection={multipleSelection}
-              page={page}
-              search={search}
-              previousPage={previousPage}
-              targetField={targetField}
-              formData={formData}
-            />
-          </div>
+          {items.length > 0 && (
+            <div className="flex-1 overflow-hidden">
+              <div className="h-full overflow-y-auto">
+                <PriceGrid
+                  items={items}
+                  selectedIds={selectedIds}
+                  multipleSelection={multipleSelection}
+                  page={page}
+                  search={search}
+                  previousPage={previousPage}
+                  targetField={targetField}
+                  formData={formData}
+                />
+              </div>
+            </div>
+          )}
         </div>
-      )}
-
+      </div>
       <Pagination
         meta={meta}
         searchParams={paginationParams}
