@@ -19,6 +19,7 @@ interface SalesChannelSelectorProps {
     isUnlimitedData: string
     minDurationInDays: string
     maxDurationInDays: string
+    isActive: string
     countryIds: string
     priceIds: string
   }
@@ -52,6 +53,8 @@ export default function SalesChannelSelector({
       urlParams.set("minDurationInDays", currentFilters.minDurationInDays)
     if (currentFilters.maxDurationInDays)
       urlParams.set("maxDurationInDays", currentFilters.maxDurationInDays)
+    if (currentFilters.isActive)
+      urlParams.set("isActive", currentFilters.isActive)
     if (currentFilters.countryIds)
       urlParams.set("countryIds", currentFilters.countryIds)
     if (currentFilters.priceIds)

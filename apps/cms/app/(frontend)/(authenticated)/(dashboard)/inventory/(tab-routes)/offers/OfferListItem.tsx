@@ -4,6 +4,7 @@ import { IEsimOffer } from "@connect-phone/shared-types"
 import Image from "next/image"
 import Link from "next/link"
 import { RiImageLine } from "@remixicon/react"
+import { Badge } from "@/components/common/Badge"
 
 //------------------------------------------------------------
 
@@ -117,6 +118,12 @@ export default function OfferListItem({ offer }: OfferListItemProps) {
                 <h3 className="min-w-0 flex-1 truncate text-lg font-semibold text-gray-900 group-hover:underline dark:text-slate-100">
                   {offer.title}
                 </h3>
+                <Badge
+                  variant={offer.isActive ? "success" : "error"}
+                  className="flex-shrink-0"
+                >
+                  {offer.isActive ? "Active" : "Inactive"}
+                </Badge>
               </div>
 
               <div className="mt-2 flex items-center gap-4">

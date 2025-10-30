@@ -19,6 +19,7 @@ interface CountrySelectorProps {
     isUnlimitedData: string
     minDurationInDays: string
     maxDurationInDays: string
+    isActive: string
     salesChannelIds: string
     priceIds: string
   }
@@ -52,6 +53,8 @@ export default function CountrySelector({
       urlParams.set("minDurationInDays", currentFilters.minDurationInDays)
     if (currentFilters.maxDurationInDays)
       urlParams.set("maxDurationInDays", currentFilters.maxDurationInDays)
+    if (currentFilters.isActive)
+      urlParams.set("isActive", currentFilters.isActive)
     if (currentFilters.salesChannelIds)
       urlParams.set("salesChannelIds", currentFilters.salesChannelIds)
     if (currentFilters.priceIds)

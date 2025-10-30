@@ -1,4 +1,5 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/offers/select/page.tsx
+// apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/offers/select/page.tsx
 
 import { RiArrowLeftLine, RiSimCardLine } from "@remixicon/react"
 import Link from "next/link"
@@ -46,7 +47,12 @@ const Page = async ({ searchParams }: PageProps) => {
   const minDataInGb = params.minDataInGb
   const maxDataInGb = params.maxDataInGb
   const isUnlimitedData = params.isUnlimitedData === "true" ? true : undefined
-  const isActive = params.isActive === "true" ? true : undefined
+  const isActive =
+    params.isActive === "true"
+      ? true
+      : params.isActive === "false"
+        ? false
+        : undefined
   const minDurationInDays = params.minDurationInDays
   const maxDurationInDays = params.maxDurationInDays
   const countryIds = params.countryIds
@@ -124,7 +130,7 @@ const Page = async ({ searchParams }: PageProps) => {
     minDataInGb: minDataInGb || "",
     maxDataInGb: maxDataInGb || "",
     isUnlimitedData: params.isUnlimitedData || "",
-    isActive: isActive || "",
+    isActive: params.isActive || "",
     minDurationInDays: minDurationInDays || "",
     maxDurationInDays: maxDurationInDays || "",
     countries: selectedCountries,
@@ -157,7 +163,7 @@ const Page = async ({ searchParams }: PageProps) => {
     if (maxDataInGb) urlParams.set("maxDataInGb", maxDataInGb)
     if (params.isUnlimitedData)
       urlParams.set("isUnlimitedData", params.isUnlimitedData)
-    if (isActive !== undefined) urlParams.set("isActive", String(isActive))
+    if (params.isActive) urlParams.set("isActive", params.isActive)
     if (minDurationInDays) urlParams.set("minDurationInDays", minDurationInDays)
     if (maxDurationInDays) urlParams.set("maxDurationInDays", maxDurationInDays)
     if (countryIds) urlParams.set("countryIds", countryIds)
@@ -196,7 +202,7 @@ const Page = async ({ searchParams }: PageProps) => {
   if (maxDataInGb) paginationParams.maxDataInGb = maxDataInGb
   if (params.isUnlimitedData)
     paginationParams.isUnlimitedData = params.isUnlimitedData
-
+  if (params.isActive) paginationParams.isActive = params.isActive
   if (minDurationInDays) paginationParams.minDurationInDays = minDurationInDays
   if (maxDurationInDays) paginationParams.maxDurationInDays = maxDurationInDays
   if (countryIds) paginationParams.countryIds = countryIds

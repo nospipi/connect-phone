@@ -91,6 +91,9 @@ export default function OfferItemButton({
               </div>
 
               <div className="flex flex-wrap items-center gap-2">
+                <Badge variant={offer.isActive ? "success" : "error"}>
+                  {offer.isActive ? "Active" : "Inactive"}
+                </Badge>
                 <Badge variant="neutral">
                   {offer.durationInDays}{" "}
                   {offer.durationInDays === 1 ? "day" : "days"}

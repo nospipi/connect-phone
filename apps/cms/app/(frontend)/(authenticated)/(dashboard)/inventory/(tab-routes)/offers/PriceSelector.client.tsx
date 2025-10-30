@@ -19,6 +19,7 @@ interface PriceSelectorProps {
     isUnlimitedData: string
     minDurationInDays: string
     maxDurationInDays: string
+    isActive: string
     countryIds: string
     salesChannelIds: string
   }
@@ -52,6 +53,8 @@ export default function PriceSelector({
       urlParams.set("minDurationInDays", currentFilters.minDurationInDays)
     if (currentFilters.maxDurationInDays)
       urlParams.set("maxDurationInDays", currentFilters.maxDurationInDays)
+    if (currentFilters.isActive)
+      urlParams.set("isActive", currentFilters.isActive)
     if (currentFilters.countryIds)
       urlParams.set("countryIds", currentFilters.countryIds)
     if (currentFilters.salesChannelIds)
