@@ -1,4 +1,4 @@
-// apps/api/src/resources/organizations/organizations.module.ts
+// apps/api/src/resources/cms/organizations/organizations.module.ts
 
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';

@@ -17,7 +17,7 @@ import { NoCache } from '@/common/decorators/no-cache.decorator';
 
 //--------------------------------------------------------------------------------
 
-@Controller('audit-logs')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN', 'OPERATOR'))
 export class FindAllByOrgPaginatedController {
   constructor(

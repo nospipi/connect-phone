@@ -1,4 +1,4 @@
-// apps/api/src/resources/organizations/services/get-current-organization/controller.ts
+// apps/api/src/resources/cms/organizations/services/get-current-organization/controller.ts
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import { GetCurrentOrganizationService } from './service';
 import { DbUserGuard } from '../../../../../common/guards/db-user.guard';
@@ -9,7 +9,7 @@ import { NoCache } from '@/common/decorators/no-cache.decorator';
 
 //------------------------------------------------------
 
-@Controller('organizations')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN', 'OPERATOR'))
 export class GetCurrentOrganizationController {
   constructor(

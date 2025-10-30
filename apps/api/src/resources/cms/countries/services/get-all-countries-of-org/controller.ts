@@ -9,7 +9,7 @@ import { SearchCountriesDto } from './search-countries.dto';
 
 //------------------------------------------------------
 
-@Controller('countries')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN', 'OPERATOR'))
 export class GetAllCountriesOfOrgController {
   constructor(

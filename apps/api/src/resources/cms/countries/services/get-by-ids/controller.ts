@@ -16,7 +16,7 @@ import { ICountry } from '@connect-phone/shared-types';
 
 //------------------------------------------------------------
 
-@Controller('countries')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN', 'OPERATOR'))
 export class GetCountriesByIdsController {
   constructor(

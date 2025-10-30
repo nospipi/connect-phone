@@ -16,7 +16,7 @@ import { OrganizationGuard } from '../../../../../common/guards/organization.gua
 
 //------------------------------------------------------
 
-@Controller('countries')
+@Controller()
 @UseGuards(DbUserGuard, OrganizationGuard, DbUserRoleGuard('ADMIN'))
 export class UpdateCountryController {
   constructor(private readonly updateCountryService: UpdateCountryService) {}
