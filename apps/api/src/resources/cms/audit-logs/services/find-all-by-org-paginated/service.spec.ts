@@ -3,8 +3,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { FindAllByOrgPaginatedService } from './service';
-import { AuditLogEntryEntity } from '../../../../../database/entities/audit-log.entity';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { AuditLogEntryEntity } from '@/database/entities/audit-log.entity';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
 import { paginate } from 'nestjs-typeorm-paginate';
 import {
   createMockOrganization,
