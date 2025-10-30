@@ -81,6 +81,9 @@ export class UpdateEsimOfferService {
     ) {
       esimOffer.dataInGb = updateEsimOfferDto.dataInGb;
     }
+    if (updateEsimOfferDto.isActive !== undefined) {
+      esimOffer.isActive = updateEsimOfferDto.isActive;
+    }
     if (updateEsimOfferDto.mainImageId !== undefined) {
       esimOffer.mainImageId = updateEsimOfferDto.mainImageId;
     }

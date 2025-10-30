@@ -24,6 +24,7 @@ type UpdateEsimOffer = Partial<
     | 'durationInDays'
     | 'dataInGb'
     | 'isUnlimitedData'
+    | 'isActive'
   >
 > & {
   id?: number;
@@ -72,6 +73,11 @@ export class UpdateEsimOfferDto implements UpdateEsimOffer {
   @IsOptional()
   @Type(() => Boolean)
   isUnlimitedData?: boolean;
+
+  @IsBoolean()
+  @IsOptional()
+  @Type(() => Boolean)
+  isActive?: boolean;
 
   @IsOptional()
   @IsArray()

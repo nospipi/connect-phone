@@ -17,6 +17,7 @@ export const createEsimOffer = async (formData: FormData): Promise<void> => {
     const durationInDays = formData.get("durationInDays") as string
     const dataInGb = formData.get("dataInGb") as string
     const isUnlimitedData = formData.get("isUnlimitedData") as string
+    const isActive = formData.get("isActive") as string
     const inclusionIds = formData.get("inclusionIds") as string
     const exclusionIds = formData.get("exclusionIds") as string
     const mainImageId = formData.get("mainImageId") as string
@@ -42,6 +43,7 @@ export const createEsimOffer = async (formData: FormData): Promise<void> => {
       durationInDays: parseInt(durationInDays, 10),
       dataInGb: isUnlimited ? null : parseFloat(dataInGb),
       isUnlimitedData: isUnlimited,
+      isActive: isActive ? isActive === "true" : true,
       inclusionIds: inclusionIds ? JSON.parse(inclusionIds) : [],
       exclusionIds: exclusionIds ? JSON.parse(exclusionIds) : [],
       mainImageId: mainImageId ? parseInt(mainImageId, 10) : null,

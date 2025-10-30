@@ -18,6 +18,7 @@ export interface IEsimOffer {
   durationInDays: number;
   dataInGb: number | null;
   isUnlimitedData: boolean;
+  isActive: boolean;
   organizationId: number;
   organization: IOrganization;
   inclusions: IOfferInclusion[];

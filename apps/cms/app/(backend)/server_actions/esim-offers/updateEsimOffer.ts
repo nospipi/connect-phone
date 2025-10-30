@@ -18,6 +18,7 @@ export const updateEsimOffer = async (formData: FormData): Promise<void> => {
     const durationInDays = formData.get("durationInDays") as string
     const dataInGb = formData.get("dataInGb") as string
     const isUnlimitedData = formData.get("isUnlimitedData") as string
+    const isActive = formData.get("isActive") as string
     const inclusionIds = formData.get("inclusionIds") as string
     const exclusionIds = formData.get("exclusionIds") as string
     const mainImageId = formData.get("mainImageId") as string
@@ -45,6 +46,9 @@ export const updateEsimOffer = async (formData: FormData): Promise<void> => {
     }
     if (isUnlimitedData !== null && isUnlimitedData !== undefined) {
       payload.isUnlimitedData = isUnlimitedData === "true"
+    }
+    if (isActive !== null && isActive !== undefined) {
+      payload.isActive = isActive === "true"
     }
     if (inclusionIds) {
       payload.inclusionIds = JSON.parse(inclusionIds)

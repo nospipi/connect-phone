@@ -22,8 +22,6 @@ const calculateDuration = (startDate: string, endDate: string) => {
   )
 }
 
-// apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/(tab-routes)/calendar/page.tsx
-
 const groupDateRangesByYearMonth = (dateRanges: IDateRange[]) => {
   const grouped: Record<string, Record<string, IDateRange[]>> = {}
 

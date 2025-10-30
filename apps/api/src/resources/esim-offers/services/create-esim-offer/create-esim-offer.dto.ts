@@ -26,6 +26,7 @@ type CreateEsimOffer = Pick<
   | 'dataInGb'
   | 'isUnlimitedData'
 > & {
+  isActive?: boolean;
   inclusionIds?: number[];
   exclusionIds?: number[];
   mainImageId?: number | null;
@@ -66,6 +67,11 @@ export class CreateEsimOfferDto implements CreateEsimOffer {
   @IsBoolean()
   @Type(() => Boolean)
   isUnlimitedData: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  @Type(() => Boolean)
+  isActive?: boolean;
 
   @IsOptional()
   @IsArray()

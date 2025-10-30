@@ -33,6 +33,7 @@ export class CreateEsimOfferService {
         ? null
         : createEsimOfferDto.dataInGb,
       isUnlimitedData: createEsimOfferDto.isUnlimitedData,
+      isActive: createEsimOfferDto.isActive ?? true,
       organizationId: organization?.id,
       mainImageId: createEsimOfferDto.mainImageId || null,
       inclusions:

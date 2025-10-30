@@ -54,6 +54,9 @@ export class EsimOfferEntity implements IEsimOffer {
   @Column({ type: 'boolean', default: false })
   isUnlimitedData: boolean;
 
+  @Column({ type: 'boolean', default: true })
+  isActive: boolean;
+
   @Column()
   organizationId: number;
 
