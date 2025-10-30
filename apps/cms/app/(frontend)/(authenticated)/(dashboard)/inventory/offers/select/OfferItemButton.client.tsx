@@ -47,10 +47,10 @@ export default function OfferItemButton({
       className="group relative w-full text-left disabled:cursor-wait"
     >
       <div
-        className={`relative flex h-full min-h-[200px] flex-col overflow-hidden rounded-xl border bg-white p-5 transition-all duration-300 dark:bg-gray-900 ${
+        className={`relative flex h-full min-h-[200px] flex-col overflow-hidden rounded-xl bg-white p-5 transition-all duration-300 dark:bg-gray-900 ${
           isSelected
-            ? "border-gray-200 shadow-lg shadow-indigo-500/20 ring-2 ring-indigo-500 ring-offset-2 ring-offset-gray-50 dark:border-gray-800 dark:shadow-indigo-400/20 dark:ring-indigo-400 dark:ring-offset-gray-950"
-            : "border-gray-200 shadow-sm hover:border-gray-300 hover:shadow-md dark:border-gray-800 dark:hover:border-gray-700"
+            ? "border-2 border-indigo-500 shadow-lg shadow-indigo-500/20 dark:border-indigo-400 dark:shadow-indigo-400/20"
+            : "border border-gray-200 shadow-sm hover:border-gray-300 hover:shadow-md dark:border-gray-800 dark:hover:border-gray-700"
         }`}
       >
         <div className="flex min-w-0 flex-1 flex-col justify-between gap-3">
