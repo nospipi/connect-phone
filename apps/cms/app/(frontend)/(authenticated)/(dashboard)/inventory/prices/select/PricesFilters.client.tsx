@@ -1,8 +1,8 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/prices/select/PricesFilters.client.tsx
-
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useTransition } from "react"
+import { useRouter } from "next/navigation"
 import { RiSearchLine, RiFilter3Line, RiCloseLine } from "@remixicon/react"
 import {
   CURRENCIES,
@@ -25,9 +25,24 @@ interface PricesFiltersProps {
     dateRanges: IDateRange[]
     salesChannels: ISalesChannel[]
   }
+  previousPage: string
+  targetField: string
+  multipleSelection: boolean
+  selectedParam: string
+  formData: Record<string, string>
 }
 
-export default function PricesFilters({ currentFilters }: PricesFiltersProps) {
+export default function PricesFilters({
+  currentFilters,
+  previousPage,
+  targetField,
+  multipleSelection,
+  selectedParam,
+  formData,
+}: PricesFiltersProps) {
+  const [isPending, startTransition] = useTransition()
+  const router = useRouter()
+
   const [search, setSearch] = useState(currentFilters.search)
   const [minAmount, setMinAmount] = useState(currentFilters.minAmount)
   const [maxAmount, setMaxAmount] = useState(currentFilters.maxAmount)
@@ -49,6 +64,17 @@ export default function PricesFilters({ currentFilters }: PricesFiltersProps) {
     setDateRanges(currentFilters.dateRanges)
     setSalesChannels(currentFilters.salesChannels)
   }, [currentFilters])
+
+  useEffect(() => {
+    if (!isPending) {
+      const checkbox = document.getElementById(
+        "more-filters-drawer",
+      ) as HTMLInputElement
+      if (checkbox && checkbox.checked) {
+        checkbox.checked = false
+      }
+    }
+  }, [isPending])
 
   const currencyOptions = CURRENCIES.map((curr) => ({
     value: curr.code,
@@ -73,7 +99,15 @@ export default function PricesFilters({ currentFilters }: PricesFiltersProps) {
   const buildApplyUrl = () => {
     const urlParams = new URLSearchParams()
     urlParams.set("page", "1")
+    urlParams.set("previousPage", previousPage)
+    urlParams.set("targetField", targetField)
+    urlParams.set("multipleSelection", String(multipleSelection))
 
+    Object.entries(formData).forEach(([key, value]) => {
+      urlParams.set(key, value)
+    })
+
+    if (selectedParam) urlParams.set("priceIds", selectedParam)
     if (search) urlParams.set("search", search)
     if (minAmount) urlParams.set("minAmount", minAmount)
     if (maxAmount) urlParams.set("maxAmount", maxAmount)
@@ -93,8 +127,20 @@ export default function PricesFilters({ currentFilters }: PricesFiltersProps) {
 
   const buildClearUrl = () => {
     const urlParams = new URLSearchParams()
-    urlParams.set("page", "1")
+    urlParams.set("previousPage", previousPage)
+    urlParams.set("targetField", targetField)
+    urlParams.set("multipleSelection", String(multipleSelection))
+    Object.entries(formData).forEach(([key, value]) => {
+      urlParams.set(key, value)
+    })
+    if (selectedParam) urlParams.set("priceIds", selectedParam)
     return `/inventory/prices/select?${urlParams.toString()}`
+  }
+
+  const handleApplyFilters = () => {
+    startTransition(() => {
+      router.push(buildApplyUrl())
+    })
   }
 
   const handleRemoveDateRange = (id: number) => {
@@ -112,6 +158,10 @@ export default function PricesFilters({ currentFilters }: PricesFiltersProps) {
     currencies,
     dateRangeIds: dateRanges.map((dr) => dr.id).join(","),
     salesChannelIds: salesChannels.map((sc) => sc.id).join(","),
+    previousPage,
+    targetField,
+    multipleSelection: String(multipleSelection),
+    ...formData,
   }
 
   return (
@@ -266,10 +316,15 @@ export default function PricesFilters({ currentFilters }: PricesFiltersProps) {
           >
             Close
           </label>
-          <PendingOverlay mode="navigation" href={buildApplyUrl()}>
+          <PendingOverlay
+            mode="custom"
+            onClick={handleApplyFilters}
+            isPending={isPending}
+          >
             <button
+              disabled={isPending}
               type="button"
-              className="border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700"
+              className="border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 disabled:opacity-50"
             >
               Apply Filters
             </button>

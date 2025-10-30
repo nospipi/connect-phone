@@ -10,11 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/common/Dropdown"
 import { cx, focusInput } from "@/lib/utils"
-import {
-  RiArrowRightSLine,
-  RiExpandUpDownLine,
-  RiCheckLine,
-} from "@remixicon/react"
+import { RiExpandUpDownLine, RiCheckLine } from "@remixicon/react"
 import React from "react"
 import { useRouter } from "next/navigation"
 import { IOrganizationWithUserRole } from "@connect-phone/shared-types"

@@ -1,4 +1,5 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/prices/select/page.tsx
+// apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/prices/select/page.tsx
 
 import { RiArrowLeftLine, RiCoinsLine } from "@remixicon/react"
 import Link from "next/link"
@@ -169,7 +170,7 @@ const Page = async ({ searchParams }: PageProps) => {
   if (salesChannelIds) paginationParams.salesChannelIds = salesChannelIds
 
   return (
-    <div className="relative flex h-full flex-col overflow-hidden">
+    <div className="flex h-full flex-col overflow-hidden">
       <div className="flex border-b border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950">
         <Link
           href={buildBackUrl()}
@@ -236,7 +237,14 @@ const Page = async ({ searchParams }: PageProps) => {
             formData={formData}
           />
 
-          <PricesFilters currentFilters={currentFilters} />
+          <PricesFilters
+            currentFilters={currentFilters}
+            previousPage={previousPage}
+            targetField={targetField}
+            multipleSelection={multipleSelection}
+            selectedParam={selectedParam}
+            formData={formData}
+          />
         </div>
         <div className="flex-1 overflow-auto px-2">
           {items.length === 0 && (
@@ -274,13 +282,13 @@ const Page = async ({ searchParams }: PageProps) => {
             </div>
           )}
         </div>
+        <Pagination
+          meta={meta}
+          searchParams={paginationParams}
+          itemLabel="prices"
+          basePath="/inventory/prices/select"
+        />
       </div>
-      <Pagination
-        meta={meta}
-        searchParams={paginationParams}
-        itemLabel="prices"
-        basePath="/inventory/prices/select"
-      />
     </div>
   )
 }

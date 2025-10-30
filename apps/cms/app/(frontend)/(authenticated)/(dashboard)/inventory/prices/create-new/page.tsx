@@ -189,38 +189,6 @@ const Page = async ({
                 </p>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-slate-300">
-                  Sales Channels <span className="text-red-500">*</span>
-                </label>
-
-                {selectedSalesChannels.length > 0 && (
-                  <div className="mt-2 flex flex-wrap gap-2">
-                    {selectedSalesChannels.map((channel) => (
-                      <Link
-                        key={channel.id}
-                        href={buildUrlWithoutItem(
-                          "salesChannelIds",
-                          channel.id,
-                        )}
-                      >
-                        <Badge variant="neutral" className="group">
-                          <span>{channel.name}</span>
-                          <RiCloseLine className="ml-1 h-3 w-3 group-hover:text-red-600" />
-                        </Badge>
-                      </Link>
-                    ))}
-                  </div>
-                )}
-
-                <div className="mt-2">
-                  <SalesChannelSelectButton />
-                </div>
-                <p className="mt-2 text-xs text-gray-500 dark:text-slate-500">
-                  Choose which sales channels this price applies to
-                </p>
-              </div>
-
               {isDateBased && (
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-slate-300">
@@ -254,6 +222,38 @@ const Page = async ({
                   </p>
                 </div>
               )}
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-slate-300">
+                  Sales Channels <span className="text-red-500">*</span>
+                </label>
+
+                {selectedSalesChannels.length > 0 && (
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {selectedSalesChannels.map((channel) => (
+                      <Link
+                        key={channel.id}
+                        href={buildUrlWithoutItem(
+                          "salesChannelIds",
+                          channel.id,
+                        )}
+                      >
+                        <Badge variant="neutral" className="group">
+                          <span>{channel.name}</span>
+                          <RiCloseLine className="ml-1 h-3 w-3 group-hover:text-red-600" />
+                        </Badge>
+                      </Link>
+                    ))}
+                  </div>
+                )}
+
+                <div className="mt-2">
+                  <SalesChannelSelectButton />
+                </div>
+                <p className="mt-2 text-xs text-gray-500 dark:text-slate-500">
+                  Choose which sales channels this price applies to
+                </p>
+              </div>
 
               <div className="flex flex-col gap-3 border-t border-gray-200 pt-6 sm:flex-row sm:justify-end dark:border-gray-800">
                 <PendingOverlay mode="navigation" href="/inventory/prices">

@@ -1,7 +1,8 @@
 // apps/cms/app/(frontend)/(authenticated)/(dashboard)/inventory/(tab-routes)/prices/PricesFilters.client.tsx
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useTransition } from "react"
+import { useRouter } from "next/navigation"
 import { RiSearchLine, RiFilter3Line, RiCloseLine } from "@remixicon/react"
 import {
   CURRENCIES,
@@ -27,6 +28,9 @@ interface PricesFiltersProps {
 }
 
 export default function PricesFilters({ currentFilters }: PricesFiltersProps) {
+  const [isPending, startTransition] = useTransition()
+  const router = useRouter()
+
   const [search, setSearch] = useState(currentFilters.search)
   const [minAmount, setMinAmount] = useState(currentFilters.minAmount)
   const [maxAmount, setMaxAmount] = useState(currentFilters.maxAmount)
@@ -48,6 +52,17 @@ export default function PricesFilters({ currentFilters }: PricesFiltersProps) {
     setDateRanges(currentFilters.dateRanges)
     setSalesChannels(currentFilters.salesChannels)
   }, [currentFilters])
+
+  useEffect(() => {
+    if (!isPending) {
+      const checkbox = document.getElementById(
+        "more-filters-drawer",
+      ) as HTMLInputElement
+      if (checkbox && checkbox.checked) {
+        checkbox.checked = false
+      }
+    }
+  }, [isPending])
 
   const currencyOptions = CURRENCIES.map((curr) => ({
     value: curr.code,
@@ -88,6 +103,12 @@ export default function PricesFilters({ currentFilters }: PricesFiltersProps) {
     }
 
     return `/inventory/prices?${urlParams.toString()}`
+  }
+
+  const handleApplyFilters = () => {
+    startTransition(() => {
+      router.push(buildApplyUrl())
+    })
   }
 
   const handleRemoveDateRange = (id: number) => {
@@ -259,10 +280,15 @@ export default function PricesFilters({ currentFilters }: PricesFiltersProps) {
           >
             Close
           </label>
-          <PendingOverlay mode="navigation" href={buildApplyUrl()}>
+          <PendingOverlay
+            mode="custom"
+            onClick={handleApplyFilters}
+            isPending={isPending}
+          >
             <button
+              disabled={isPending}
               type="button"
-              className="border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700"
+              className="border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 disabled:opacity-50"
             >
               Apply Filters
             </button>
