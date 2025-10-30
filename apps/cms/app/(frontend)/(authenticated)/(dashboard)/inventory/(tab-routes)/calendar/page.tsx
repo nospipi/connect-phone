@@ -3,7 +3,7 @@
 import { getAllDateRangesPaginated } from "@/app/(backend)/server_actions/date-ranges/getAllDateRangesPaginated"
 import { PendingOverlay } from "@/components/common/PendingOverlay"
 import Link from "next/link"
-import { RiAddLine, RiCalendarEventLine } from "@remixicon/react"
+import { RiCalendarEventLine } from "@remixicon/react"
 import { IDateRange } from "@connect-phone/shared-types"
 import { format } from "date-fns"
 import { Pagination } from "@/components/common/pagination/Pagination"
