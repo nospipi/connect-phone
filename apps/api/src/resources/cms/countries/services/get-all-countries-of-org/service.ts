@@ -1,4 +1,4 @@
-// apps/api/src/resources/countries/services/get-all-countries-of-org/service.ts
+// apps/api/src/resources/cms/countries/services/get-all-countries-of-org/service.ts
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';

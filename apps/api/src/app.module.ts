@@ -16,20 +16,9 @@ import { CacheInvalidationInterceptor } from './common/interceptors/cache-invali
 import { AuditContextInterceptor } from './common/interceptors/audit-context-interceptor';
 import { TransactionRlsInterceptor } from './common/interceptors/transaction-rls.interceptor';
 import { DatabaseModule } from './database/database.module';
-import { SalesChannelsModule } from './resources/cms/sales-channels/sales-channels.module';
-import { UsersModule } from './resources/cms/users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './database/entities/user.entity';
-import { AuditLogsModule } from './resources/cms/audit-logs/audit-logs.module';
-import { UserInvitationsModule } from './resources/cms/user-invitations/user-invitations.module';
-import { CountriesModule } from './resources/cms/countries/countries.module';
-import { OrganizationsModule } from './resources/cms/organizations/organizations.module';
-import { DateRangesModule } from './resources/cms/date-ranges/date-ranges.module';
-import { PricesModule } from './resources/cms/prices/prices.module';
-import { MediaModule } from './resources/cms/media/media.module';
-import { OfferInclusionsModule } from './resources/cms/offer-inclusions/offer-inclusions.module';
-import { OfferExclusionsModule } from './resources/cms/offer-exclusions/offer-exclusions.module';
-import { EsimOffersModule } from './resources/cms/esim-offers/esim-offers.module';
+import { CmsModule } from './resources/cms/cms.module';
 
 //------------------------------------------------------------
 
@@ -78,19 +67,8 @@ import { EsimOffersModule } from './resources/cms/esim-offers/esim-offers.module
     DatabaseModule,
     AuthModule,
     CoreModule,
-    SalesChannelsModule,
-    UsersModule,
     TypeOrmModule.forFeature([UserEntity]),
-    AuditLogsModule,
-    UserInvitationsModule,
-    CountriesModule,
-    OrganizationsModule,
-    DateRangesModule,
-    PricesModule,
-    MediaModule,
-    EsimOffersModule,
-    OfferInclusionsModule,
-    OfferExclusionsModule,
+    CmsModule,
   ],
   controllers: [AppController],
   providers: [

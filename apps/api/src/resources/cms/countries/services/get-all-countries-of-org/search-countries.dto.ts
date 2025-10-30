@@ -1,4 +1,4 @@
-// apps/api/src/resources/countries/services/get-all-countries-of-org/search-countries.dto.ts
+// apps/api/src/resources/cms/countries/services/get-all-countries-of-org/search-countries.dto.ts
 import { IsString, IsOptional, IsIn } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { Sanitize } from '@/common/decorators/sanitize.decorator';

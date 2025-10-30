@@ -1,4 +1,4 @@
-// apps/api/src/resources/countries/services/get-all-countries-of-org/controller.ts
+// apps/api/src/resources/cms/countries/services/get-all-countries-of-org/controller.ts
 import { Controller, Get, UseGuards, Query } from '@nestjs/common';
 import { GetAllCountriesOfOrgService } from './service';
 import { DbUserGuard } from '../../../../../common/guards/db-user.guard';
