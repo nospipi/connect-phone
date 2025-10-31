@@ -1,6 +1,10 @@
 "use client"
 
-import { RiSimCardLine, RiBuildingLine } from "@remixicon/react"
+import {
+  RiSimCardLine,
+  RiBuildingLine,
+  RiDashboardLine,
+} from "@remixicon/react"
 import {
   TabNavigation,
   TabNavigationLink,
@@ -14,6 +18,11 @@ const TabNavigationWrapper = () => {
   const pathname = usePathname()
 
   const navigationSettings = [
+    {
+      name: "Overview",
+      href: "/e-sims",
+      icon: RiDashboardLine,
+    },
     {
       name: "My E-Sims",
       href: "/e-sims/my-esims",

@@ -189,7 +189,6 @@ const countriesData: Record<string, { name: string; region: CountryRegion }> = {
   sb: { name: 'Solomon Islands', region: CountryRegion.OCEANIA },
   so: { name: 'Somalia', region: CountryRegion.AFRICA },
   za: { name: 'South Africa', region: CountryRegion.AFRICA },
-  gs: { name: 'South Georgia', region: CountryRegion.AMERICA },
   kr: { name: 'South Korea', region: CountryRegion.ASIA },
   ss: { name: 'South Sudan', region: CountryRegion.AFRICA },
   es: { name: 'Spain', region: CountryRegion.EUROPE },

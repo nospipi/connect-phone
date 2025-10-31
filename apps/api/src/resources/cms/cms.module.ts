@@ -38,7 +38,7 @@ import { EsimOffersModule } from './esim-offers/esim-offers.module';
           { path: 'audit-logs', module: AuditLogsModule },
           { path: 'sales-channels', module: SalesChannelsModule },
           { path: 'users', module: UsersModule },
-          { path: 'user-invitations', module: UserInvitationsModule },
+          { path: 'invitations', module: UserInvitationsModule },
           { path: 'countries', module: CountriesModule },
           { path: 'organizations', module: OrganizationsModule },
           { path: 'date-ranges', module: DateRangesModule },

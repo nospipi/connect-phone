@@ -184,11 +184,11 @@ export function SidebarNavigation() {
   }, [pathname, searchParams])
 
   return (
-    <>
-      <nav
-        aria-label="core navigation links"
-        className="flex flex-1 flex-col space-y-10"
-      >
+    <nav
+      aria-label="core navigation links"
+      className="flex flex-1 flex-col overflow-hidden"
+    >
+      <div className="flex-1 space-y-0.5 overflow-y-auto">
         <ul role="list" className="space-y-0.5">
           {navigation.map((item) => {
             const isExpanded = expandedItems.has(item.name)
@@ -206,7 +206,7 @@ export function SidebarNavigation() {
                         hasActiveSub
                           ? "text-indigo-600 dark:text-indigo-400"
                           : "text-gray-700 hover:text-gray-900 dark:text-gray-400 hover:dark:text-gray-50",
-                        "relative flex w-full items-center justify-between overflow-hidden px-2 py-1.5 text-sm font-medium transition hover:bg-gray-100 hover:dark:bg-gray-900",
+                        "sticky top-0 z-10 flex w-full items-center justify-between overflow-hidden bg-white px-2 py-1.5 text-sm font-medium transition hover:bg-gray-100 dark:bg-gray-950 hover:dark:bg-gray-900",
                         focusRing,
                       )}
                     >
@@ -257,14 +257,18 @@ export function SidebarNavigation() {
                                     isActive(subItem.href)
                                       ? "bg-gray-100 text-indigo-600 dark:bg-gray-900 dark:text-indigo-400"
                                       : "text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-500 hover:dark:bg-gray-900/50 hover:dark:text-gray-50",
-                                    "relative flex items-center overflow-hidden py-1.5 pl-9 pr-2 text-sm transition",
+                                    "relative flex items-center justify-between overflow-hidden py-1.5 pl-9 pr-2 text-sm transition",
                                     focusRing,
                                   )}
                                 >
+                                  <span>{subItem.name}</span>
                                   {loadingHref === subItem.href && (
-                                    <div className="absolute inset-0 animate-[shimmer_1.8s_infinite] bg-gradient-to-r from-transparent via-gray-900/20 to-transparent dark:via-white/20"></div>
+                                    <div className="flex items-center gap-1">
+                                      <div className="h-1 w-1 animate-pulse rounded-full bg-gray-500 [animation-delay:-0.6s] [animation-duration:1.2s] dark:bg-gray-600"></div>
+                                      <div className="h-1 w-1 animate-pulse rounded-full bg-gray-500 [animation-delay:-0.3s] [animation-duration:1.2s] dark:bg-gray-600"></div>
+                                      <div className="h-1 w-1 animate-pulse rounded-full bg-gray-500 [animation-duration:1.2s] dark:bg-gray-600"></div>
+                                    </div>
                                   )}
-                                  {subItem.name}
                                 </Link>
                               ))}
                             </div>
@@ -283,32 +287,31 @@ export function SidebarNavigation() {
                       isActive(item.href)
                         ? "text-indigo-600 dark:text-indigo-400"
                         : "text-gray-700 hover:text-gray-900 dark:text-gray-400 hover:dark:text-gray-50",
-                      "relative flex items-center gap-x-2.5 overflow-hidden px-2 py-1.5 text-sm font-medium transition hover:bg-gray-100 hover:dark:bg-gray-900",
+                      "relative flex items-center justify-between overflow-hidden px-2 py-1.5 text-sm font-medium transition hover:bg-gray-100 hover:dark:bg-gray-900",
                       focusRing,
                     )}
                   >
+                    <div className="flex items-center gap-x-2.5">
+                      <item.icon
+                        className="size-4 shrink-0"
+                        aria-hidden="true"
+                      />
+                      {item.name}
+                    </div>
                     {loadingHref === item.href && (
-                      <div className="absolute inset-0 animate-[shimmer_1.8s_infinite] bg-gradient-to-r from-transparent via-gray-900/20 to-transparent dark:via-white/20"></div>
+                      <div className="flex items-center gap-1">
+                        <div className="h-1 w-1 animate-pulse rounded-full bg-gray-500 [animation-delay:-0.6s] [animation-duration:1.2s] dark:bg-gray-600"></div>
+                        <div className="h-1 w-1 animate-pulse rounded-full bg-gray-500 [animation-delay:-0.3s] [animation-duration:1.2s] dark:bg-gray-600"></div>
+                        <div className="h-1 w-1 animate-pulse rounded-full bg-gray-500 [animation-duration:1.2s] dark:bg-gray-600"></div>
+                      </div>
                     )}
-                    <item.icon className="size-4 shrink-0" aria-hidden="true" />
-                    {item.name}
                   </Link>
                 )}
               </li>
             )
           })}
         </ul>
-      </nav>
-      <style jsx>{`
-        @keyframes shimmer {
-          0% {
-            transform: translateX(-100%) skewX(-12deg);
-          }
-          100% {
-            transform: translateX(200%) skewX(-12deg);
-          }
-        }
-      `}</style>
-    </>
+      </div>
+    </nav>
   )
 }
