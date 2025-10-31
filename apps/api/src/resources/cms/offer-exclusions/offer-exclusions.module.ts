@@ -1,4 +1,4 @@
-// apps/api/src/resources/offer-exclusions/offer-exclusions.module.ts
+// apps/api/src/resources/cms/offer-exclusions/offer-exclusions.module.ts
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { OfferExclusionEntity } from '@/database/entities/offer-exclusion.entity';

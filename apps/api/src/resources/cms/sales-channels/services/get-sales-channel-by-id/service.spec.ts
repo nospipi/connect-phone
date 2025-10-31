@@ -1,4 +1,4 @@
-// apps/api/src/resources/sales-channels/services/get-sales-channel-by-id/service.spec.ts
+// apps/api/src/resources/cms/sales-channels/services/get-sales-channel-by-id/service.spec.ts
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';

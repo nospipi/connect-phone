@@ -1,4 +1,4 @@
-// apps/api/src/resources/sales-channels/services/get-sales-channel-by-id/service.ts
+// apps/api/src/resources/cms/sales-channels/services/get-sales-channel-by-id/service.ts
 import {
   Injectable,
   NotFoundException,

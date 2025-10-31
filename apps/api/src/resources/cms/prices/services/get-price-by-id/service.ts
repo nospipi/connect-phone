@@ -1,4 +1,4 @@
-// apps/api/src/resources/prices/services/get-price-by-id/service.ts
+// apps/api/src/resources/cms/prices/services/get-price-by-id/service.ts
 import {
   Injectable,
   NotFoundException,

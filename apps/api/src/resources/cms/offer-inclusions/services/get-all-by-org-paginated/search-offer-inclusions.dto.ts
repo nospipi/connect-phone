@@ -1,4 +1,4 @@
-// apps/api/src/resources/offer-inclusions/services/get-all-by-org-paginated/search-offer-inclusions.dto.ts
+// apps/api/src/resources/cms/offer-inclusions/services/get-all-by-org-paginated/search-offer-inclusions.dto.ts
 import { IsString, IsOptional, IsInt, Min, Max } from 'class-validator';
 import { Type, Transform } from 'class-transformer';
 import { Sanitize } from '@/common/decorators/sanitize.decorator';

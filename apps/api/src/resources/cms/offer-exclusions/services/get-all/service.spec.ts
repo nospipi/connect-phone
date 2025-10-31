@@ -1,4 +1,4 @@
-// apps/api/src/resources/offer-exclusions/services/get-all/service.spec.ts
+// apps/api/src/resources/cms/offer-exclusions/services/get-all/service.spec.ts
 
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';

@@ -1,4 +1,4 @@
-// apps/api/src/resources/sales-channels/services/find-all-by-org-paginated/search-sales-channels.dto.ts
+// apps/api/src/resources/cms/sales-channels/services/find-all-by-org-paginated/search-sales-channels.dto.ts
 import { IsString, IsOptional, IsInt, Min, Max } from 'class-validator';
 import { Type, Transform } from 'class-transformer';
 import { Sanitize } from '@/common/decorators/sanitize.decorator';

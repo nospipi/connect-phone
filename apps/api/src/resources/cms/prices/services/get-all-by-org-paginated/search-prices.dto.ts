@@ -1,4 +1,4 @@
-// apps/api/src/resources/prices/services/get-all-by-org-paginated/search-prices.dto.ts
+// apps/api/src/resources/cms/prices/services/get-all-by-org-paginated/search-prices.dto.ts
 
 import {
   IsString,

@@ -1,4 +1,4 @@
-// apps/api/src/resources/media/services/delete-media/service.ts
+// apps/api/src/resources/cms/media/services/delete-media/service.ts
 import {
   Injectable,
   NotFoundException,

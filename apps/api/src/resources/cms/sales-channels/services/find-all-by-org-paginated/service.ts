@@ -1,4 +1,4 @@
-// apps/api/src/resources/sales-channels/services/find-all-by-org-paginated/service.ts
+// apps/api/src/resources/cms/sales-channels/services/find-all-by-org-paginated/service.ts
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';

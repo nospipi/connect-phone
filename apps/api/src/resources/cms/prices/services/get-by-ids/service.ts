@@ -1,4 +1,4 @@
-// apps/api/src/resources/prices/services/get-by-ids/service.ts
+// apps/api/src/resources/cms/prices/services/get-by-ids/service.ts
 
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';

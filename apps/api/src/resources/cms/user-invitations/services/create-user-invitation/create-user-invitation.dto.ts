@@ -1,4 +1,4 @@
-// apps/api/src/resources/users/services/create-user-invitation/create-user-invitation.dto.ts
+// apps/api/src/resources/cms/user-invitations/services/create-user-invitation/create-user-invitation.dto.ts
 import { IsString, IsEmail, IsNotEmpty, IsEnum } from 'class-validator';
 import {
   IUserInvitation,

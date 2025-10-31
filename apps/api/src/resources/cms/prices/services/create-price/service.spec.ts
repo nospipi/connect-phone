@@ -1,4 +1,4 @@
-// apps/api/src/resources/prices/services/create-price/service.spec.ts
+// apps/api/src/resources/cms/prices/services/create-price/service.spec.ts
 
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';

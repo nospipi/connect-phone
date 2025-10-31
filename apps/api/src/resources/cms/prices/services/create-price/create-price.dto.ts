@@ -1,4 +1,4 @@
-// apps/api/src/resources/prices/services/create-price/create-price.dto.ts
+// apps/api/src/resources/cms/prices/services/create-price/create-price.dto.ts
 import {
   IsString,
   IsNotEmpty,

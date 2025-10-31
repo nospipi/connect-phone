@@ -1,4 +1,4 @@
-// apps/api/src/resources/prices/prices.module.ts
+// apps/api/src/resources/cms/prices/prices.module.ts
 
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';

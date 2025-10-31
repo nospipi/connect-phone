@@ -1,4 +1,4 @@
-// apps/api/src/resources/prices/services/update-price/update-price.dto.ts
+// apps/api/src/resources/cms/prices/services/update-price/update-price.dto.ts
 import {
   IsString,
   IsOptional,

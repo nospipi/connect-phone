@@ -1,4 +1,4 @@
-// apps/api/src/resources/sales-channels/services/update-sales-channel/update-sales-channel.dto.ts
+// apps/api/src/resources/cms/sales-channels/services/update-sales-channel/update-sales-channel.dto.ts
 import { IsString, IsOptional, IsBoolean, IsNumber } from 'class-validator';
 import { ISalesChannel } from '@connect-phone/shared-types';
 

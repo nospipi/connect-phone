@@ -1,4 +1,4 @@
-// apps/api/src/resources/offer-inclusions/services/create-offer-inclusion/service.ts
+// apps/api/src/resources/cms/offer-inclusions/services/create-offer-inclusion/service.ts
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';

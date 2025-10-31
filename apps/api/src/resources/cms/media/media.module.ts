@@ -1,4 +1,4 @@
-// apps/api/src/resources/media/media.module.ts
+// apps/api/src/resources/cms/media/media.module.ts
 
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';

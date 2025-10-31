@@ -1,4 +1,4 @@
-// apps/api/src/resources/offer-inclusions/services/update-offer-inclusion/update-offer-inclusion.dto.ts
+// apps/api/src/resources/cms/offer-inclusions/services/update-offer-inclusion/update-offer-inclusion.dto.ts
 import { IsString, IsOptional } from 'class-validator';
 import { IOfferInclusion } from '@connect-phone/shared-types';
 import { Sanitize } from '@/common/decorators/sanitize.decorator';

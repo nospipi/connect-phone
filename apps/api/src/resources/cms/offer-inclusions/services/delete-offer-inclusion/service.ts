@@ -1,4 +1,4 @@
-// apps/api/src/resources/offer-inclusions/services/delete-offer-inclusion/service.ts
+// apps/api/src/resources/cms/offer-inclusions/services/delete-offer-inclusion/service.ts
 import {
   Injectable,
   NotFoundException,

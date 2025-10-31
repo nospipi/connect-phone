@@ -1,4 +1,4 @@
-// apps/api/src/resources/sales-channels/services/create-new-channel/create-sales-channel.dto.ts
+// apps/api/src/resources/cms/sales-channels/services/create-new-channel/create-sales-channel.dto.ts
 import {
   IsString,
   IsOptional,

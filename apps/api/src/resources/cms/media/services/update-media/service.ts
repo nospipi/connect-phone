@@ -1,4 +1,4 @@
-// apps/api/src/resources/media/services/update-media/service.ts
+// apps/api/src/resources/cms/media/services/update-media/service.ts
 import {
   Injectable,
   NotFoundException,

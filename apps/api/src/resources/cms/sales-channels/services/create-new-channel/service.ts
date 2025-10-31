@@ -1,4 +1,4 @@
-// apps/api/src/resources/sales-channels/services/create-new-channel/service.ts
+// apps/api/src/resources/cms/sales-channels/services/create-new-channel/service.ts
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';

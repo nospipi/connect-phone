@@ -1,4 +1,4 @@
-// apps/api/src/resources/media/services/get-all-by-org-paginated/search-media.dto.ts
+// apps/api/src/resources/cms/media/services/get-all-by-org-paginated/search-media.dto.ts
 import { IsString, IsOptional, IsInt, Min, Max } from 'class-validator';
 import { Type, Transform } from 'class-transformer';
 import { Sanitize } from '@/common/decorators/sanitize.decorator';

@@ -1,4 +1,4 @@
-// src/resources/users/services/log-user-in-organization/service.ts
+// apps/api/src/resources/cms/users/services/log-user-in-organization/service.ts
 import {
   Injectable,
   NotFoundException,

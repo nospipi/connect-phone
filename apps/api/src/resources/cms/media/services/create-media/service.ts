@@ -1,4 +1,4 @@
-// apps/api/src/resources/media/services/create-media/service.ts
+// apps/api/src/resources/cms/media/services/create-media/service.ts
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';

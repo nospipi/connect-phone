@@ -1,4 +1,4 @@
-// apps/api/src/resources/media/services/create-media/service.spec.ts
+// apps/api/src/resources/cms/media/services/create-media/service.spec.ts
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';

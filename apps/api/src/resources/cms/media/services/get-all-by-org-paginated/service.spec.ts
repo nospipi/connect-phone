@@ -1,4 +1,4 @@
-// apps/api/src/resources/media/services/get-all-by-org-paginated/service.spec.ts
+// apps/api/src/resources/cms/media/services/get-all-by-org-paginated/service.spec.ts
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';

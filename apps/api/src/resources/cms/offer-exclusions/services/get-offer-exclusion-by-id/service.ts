@@ -1,4 +1,4 @@
-// apps/api/src/resources/offer-exclusions/services/get-offer-exclusion-by-id/service.ts
+// apps/api/src/resources/cms/offer-exclusions/services/get-offer-exclusion-by-id/service.ts
 import {
   Injectable,
   NotFoundException,

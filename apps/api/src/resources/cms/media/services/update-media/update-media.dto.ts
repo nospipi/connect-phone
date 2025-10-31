@@ -1,4 +1,4 @@
-// apps/api/src/resources/media/services/update-media/update-media.dto.ts
+// apps/api/src/resources/cms/media/services/update-media/update-media.dto.ts
 import { IsString, IsOptional, MaxLength } from 'class-validator';
 import { IMedia } from '@connect-phone/shared-types';
 import { Sanitize } from '@/common/decorators/sanitize.decorator';
