@@ -3,9 +3,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In } from 'typeorm';
-import { PriceEntity } from '../../../../../database/entities/price.entity';
+import { PriceEntity } from '@/database/entities/price.entity';
 import { IPrice } from '@connect-phone/shared-types';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
 
 //------------------------------------------------------------
 

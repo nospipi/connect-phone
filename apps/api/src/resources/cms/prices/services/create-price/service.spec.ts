@@ -5,19 +5,19 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { NotFoundException } from '@nestjs/common';
 import { CreatePriceService } from './service';
-import { PriceEntity } from '../../../../../database/entities/price.entity';
-import { DateRangeEntity } from '../../../../../database/entities/date-range.entity';
-import { SalesChannelEntity } from '../../../../../database/entities/sales-channel.entity';
+import { PriceEntity } from '@/database/entities/price.entity';
+import { DateRangeEntity } from '@/database/entities/date-range.entity';
+import { SalesChannelEntity } from '@/database/entities/sales-channel.entity';
 import { CreatePriceDto } from './create-price.dto';
 import { Currency } from '@connect-phone/shared-types';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
 import {
   createMockOrganization,
   createMockPrice,
   createMockDateRange,
   createMockSalesChannel,
   createCurrentOrganizationServiceProvider,
-} from '../../../../../test/factories';
+} from '@/test/factories';
 
 //----------------------------------------------------------------------
 

@@ -2,10 +2,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserInvitationEntity } from '../../../../../database/entities/user-invitation.entity';
+import { UserInvitationEntity } from '@/database/entities/user-invitation.entity';
 import { CreateUserInvitationDto } from './create-user-invitation.dto';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
-import { CurrentDbUserService } from '../../../../../common/services/current-db-user.service';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
+import { CurrentDbUserService } from '@/common/services/current-db-user.service';
 import { IUserInvitation } from '@connect-phone/shared-types';
 
 //-------------------------------------------

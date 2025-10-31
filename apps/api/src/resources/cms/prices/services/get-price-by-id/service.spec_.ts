@@ -4,13 +4,13 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { NotFoundException, ForbiddenException } from '@nestjs/common';
 import { GetPriceByIdService } from './service';
-import { PriceEntity } from '../../../../../database/entities/price.entity';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { PriceEntity } from '@/database/entities/price.entity';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
 import {
   createMockOrganization,
   createMockPrice,
   createCurrentOrganizationServiceProvider,
-} from '../../../../../test/factories';
+} from '@/test/factories';
 
 //--------------------------------------------------------------------------------
 

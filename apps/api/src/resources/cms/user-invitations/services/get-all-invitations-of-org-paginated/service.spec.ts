@@ -3,8 +3,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetAllInvitationsOfOrgPaginatedService } from './service';
-import { UserInvitationEntity } from '../../../../../database/entities/user-invitation.entity';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { UserInvitationEntity } from '@/database/entities/user-invitation.entity';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
 import { paginate } from 'nestjs-typeorm-paginate';
 import { UserOrganizationRole } from '@connect-phone/shared-types';
 import {
@@ -12,7 +12,7 @@ import {
   createMockUser,
   createMockUserInvitation,
   createCurrentOrganizationServiceProvider,
-} from '../../../../../test/factories';
+} from '@/test/factories';
 
 //--------------------------------------------------------------------------------
 

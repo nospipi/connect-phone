@@ -6,9 +6,9 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { SalesChannelEntity } from '../../../../../database/entities/sales-channel.entity';
+import { SalesChannelEntity } from '@/database/entities/sales-channel.entity';
 import { UpdateSalesChannelDto } from './update-sales-channel.dto';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
 import { ISalesChannel } from '@connect-phone/shared-types';
 
 //-------------------------------------------

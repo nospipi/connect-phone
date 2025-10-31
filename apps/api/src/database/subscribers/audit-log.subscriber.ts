@@ -6,9 +6,9 @@ import {
   UpdateEvent,
   RemoveEvent,
 } from 'typeorm';
-import { AuditLogEntryEntity } from '../entities/audit-log.entity';
-import { UserContext } from '../../common/context/user-context';
-import { OrganizationContext } from '../../common/context/organization-context';
+import { AuditLogEntryEntity } from '@/database/entities/audit-log.entity';
+import { UserContext } from '@/common/context/user-context';
+import { OrganizationContext } from '@/common/context/organization-context';
 
 @EventSubscriber()
 export class AuditLogSubscriber implements EntitySubscriberInterface {

@@ -4,13 +4,13 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { NotFoundException, ForbiddenException } from '@nestjs/common';
 import { DeleteUserInvitationService } from './service';
-import { UserInvitationEntity } from '../../../../../database/entities/user-invitation.entity';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { UserInvitationEntity } from '@/database/entities/user-invitation.entity';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
 import {
   createMockOrganization,
   createMockUserInvitation,
   createCurrentOrganizationServiceProvider,
-} from '../../../../../test/factories';
+} from '@/test/factories';
 
 //--------------------------------------------------------------------------------
 

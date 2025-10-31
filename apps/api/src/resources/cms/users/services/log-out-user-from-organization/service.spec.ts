@@ -4,12 +4,12 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { NotFoundException } from '@nestjs/common';
 import { LogOutUserFromOrganizationService } from './service';
-import { UserEntity } from '../../../../../database/entities/user.entity';
-import { CurrentDbUserService } from '../../../../../common/services/current-db-user.service';
+import { UserEntity } from '@/database/entities/user.entity';
+import { CurrentDbUserService } from '@/common/services/current-db-user.service';
 import {
   createMockUser,
   createCurrentDbUserServiceProvider,
-} from '../../../../../test/factories';
+} from '@/test/factories';
 
 //--------------------------------------------------------------------------------
 

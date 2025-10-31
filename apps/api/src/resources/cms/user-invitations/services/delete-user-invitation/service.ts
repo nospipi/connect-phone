@@ -6,8 +6,8 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserInvitationEntity } from '../../../../../database/entities/user-invitation.entity';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { UserInvitationEntity } from '@/database/entities/user-invitation.entity';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
 import { IUserInvitation } from '@connect-phone/shared-types';
 
 //-------------------------------------------

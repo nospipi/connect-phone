@@ -6,12 +6,12 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { PriceEntity } from '../../../../../database/entities/price.entity';
-import { DateRangeEntity } from '../../../../../database/entities/date-range.entity';
-import { SalesChannelEntity } from '../../../../../database/entities/sales-channel.entity';
+import { PriceEntity } from '@/database/entities/price.entity';
+import { DateRangeEntity } from '@/database/entities/date-range.entity';
+import { SalesChannelEntity } from '@/database/entities/sales-channel.entity';
 import { UpdatePriceDto } from './update-price.dto';
 import { IPrice } from '@connect-phone/shared-types';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
 
 //----------------------------------------------------------------------
 

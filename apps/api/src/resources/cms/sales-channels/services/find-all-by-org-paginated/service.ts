@@ -2,8 +2,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { SalesChannelEntity } from '../../../../../database/entities/sales-channel.entity';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { SalesChannelEntity } from '@/database/entities/sales-channel.entity';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
 import {
   paginate,
   Pagination,

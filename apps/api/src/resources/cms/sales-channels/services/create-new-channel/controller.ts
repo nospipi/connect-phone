@@ -13,7 +13,7 @@ import {
 import { Injectable } from '@nestjs/common';
 import { CreateNewChannelService } from './service';
 import { CreateSalesChannelDto } from './create-sales-channel.dto';
-import { OrganizationGuard } from '../../../../../common/guards/organization.guard';
+import { OrganizationGuard } from '@/common/guards/organization.guard';
 import { DbUserGuard } from '@/common/guards/db-user.guard';
 import { ISalesChannel } from '@connect-phone/shared-types';
 

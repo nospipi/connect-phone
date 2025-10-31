@@ -4,18 +4,18 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UnauthorizedException } from '@nestjs/common';
 import { GetAllOrganizationsOfUserService } from './service';
-import { UserEntity } from '../../../../../database/entities/user.entity';
+import { UserEntity } from '@/database/entities/user.entity';
 import {
   UserOrganizationEntity,
   UserOrganizationRole,
-} from '../../../../../database/entities/user-organization.entity';
-import { CurrentDbUserService } from '../../../../../common/services/current-db-user.service';
+} from '@/database/entities/user-organization.entity';
+import { CurrentDbUserService } from '@/common/services/current-db-user.service';
 import {
   createMockUser,
   createMockOrganization,
   createMockUserOrganization,
   createCurrentDbUserServiceProvider,
-} from '../../../../../test/factories';
+} from '@/test/factories';
 
 //--------------------------------------------------------------------------------
 

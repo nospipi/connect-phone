@@ -3,10 +3,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserInvitationService } from './service';
-import { UserInvitationEntity } from '../../../../../database/entities/user-invitation.entity';
+import { UserInvitationEntity } from '@/database/entities/user-invitation.entity';
 import { CreateUserInvitationDto } from './create-user-invitation.dto';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
-import { CurrentDbUserService } from '../../../../../common/services/current-db-user.service';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
+import { CurrentDbUserService } from '@/common/services/current-db-user.service';
 import { UserOrganizationRole } from '@connect-phone/shared-types';
 import {
   createMockOrganization,
@@ -14,7 +14,7 @@ import {
   createMockUserInvitation,
   createCurrentOrganizationServiceProvider,
   createCurrentDbUserServiceProvider,
-} from '../../../../../test/factories';
+} from '@/test/factories';
 
 //--------------------------------------------------------------------------------
 

@@ -6,13 +6,13 @@ import { Repository, In } from 'typeorm';
 import { validate } from 'class-validator';
 import { GetSalesChannelsByIdsService } from './service';
 import { GetSalesChannelsByIdsQueryDto } from './dto';
-import { SalesChannelEntity } from '../../../../../database/entities/sales-channel.entity';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { SalesChannelEntity } from '@/database/entities/sales-channel.entity';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
 import {
   createMockOrganization,
   createMockSalesChannel,
   createCurrentOrganizationServiceProvider,
-} from '../../../../../test/factories';
+} from '@/test/factories';
 
 //------------------------------------------------------------
 
