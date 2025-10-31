@@ -7,9 +7,9 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 import { DeleteOfferExclusionService } from './service';
-import { DbUserGuard } from '../../../../../common/guards/db-user.guard';
-import { OrganizationGuard } from '../../../../../common/guards/organization.guard';
-import { DbUserRoleGuard } from '../../../../../common/guards/db-user-role.guard';
+import { DbUserGuard } from '@/common/guards/db-user.guard';
+import { OrganizationGuard } from '@/common/guards/organization.guard';
+import { DbUserRoleGuard } from '@/common/guards/db-user-role.guard';
 import { IOfferExclusion } from '@connect-phone/shared-types';
 
 //----------------------------------------------------------------------

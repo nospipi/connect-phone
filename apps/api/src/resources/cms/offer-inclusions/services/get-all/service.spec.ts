@@ -4,13 +4,13 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetAllOfferInclusionsService } from './service';
-import { OfferInclusionEntity } from '../../../../../database/entities/offer-inclusion.entity';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { OfferInclusionEntity } from '@/database/entities/offer-inclusion.entity';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
 import {
   createMockOrganization,
   createMockOfferInclusion,
   createCurrentOrganizationServiceProvider,
-} from '../../../../../test/factories';
+} from '@/test/factories';
 
 //----------------------------------------------------------------------
 

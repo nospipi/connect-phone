@@ -7,9 +7,9 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 import { GetOfferInclusionByIdService } from './service';
-import { DbUserGuard } from '../../../../../common/guards/db-user.guard';
-import { OrganizationGuard } from '../../../../../common/guards/organization.guard';
-import { DbUserRoleGuard } from '../../../../../common/guards/db-user-role.guard';
+import { DbUserGuard } from '@/common/guards/db-user.guard';
+import { OrganizationGuard } from '@/common/guards/organization.guard';
+import { DbUserRoleGuard } from '@/common/guards/db-user-role.guard';
 import { IOfferInclusion } from '@connect-phone/shared-types';
 
 //----------------------------------------------------------------------

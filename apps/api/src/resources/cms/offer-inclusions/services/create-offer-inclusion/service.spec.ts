@@ -4,14 +4,14 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { validate } from 'class-validator';
 import { CreateOfferInclusionService } from './service';
-import { OfferInclusionEntity } from '../../../../../database/entities/offer-inclusion.entity';
+import { OfferInclusionEntity } from '@/database/entities/offer-inclusion.entity';
 import { CreateOfferInclusionDto } from './create-offer-inclusion.dto';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
 import {
   createMockOrganization,
   createMockOfferInclusion,
   createCurrentOrganizationServiceProvider,
-} from '../../../../../test/factories';
+} from '@/test/factories';
 
 //----------------------------------------------------------------------
 

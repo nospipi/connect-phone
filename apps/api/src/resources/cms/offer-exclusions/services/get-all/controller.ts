@@ -1,9 +1,9 @@
 // apps/api/src/resources/cms/offer-exclusions/services/get-all/controller.ts
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import { GetAllOfferExclusionsService } from './service';
-import { DbUserGuard } from '../../../../../common/guards/db-user.guard';
-import { OrganizationGuard } from '../../../../../common/guards/organization.guard';
-import { DbUserRoleGuard } from '../../../../../common/guards/db-user-role.guard';
+import { DbUserGuard } from '@/common/guards/db-user.guard';
+import { OrganizationGuard } from '@/common/guards/organization.guard';
+import { DbUserRoleGuard } from '@/common/guards/db-user-role.guard';
 import { IOfferExclusion } from '@connect-phone/shared-types';
 
 //----------------------------------------------------------------------

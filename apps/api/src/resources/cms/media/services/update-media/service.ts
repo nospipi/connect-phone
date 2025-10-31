@@ -6,10 +6,10 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { MediaEntity } from '../../../../../database/entities/media.entity';
+import { MediaEntity } from '@/database/entities/media.entity';
 import { UpdateMediaDto } from './update-media.dto';
 import { IMedia } from '@connect-phone/shared-types';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
 
 //----------------------------------------------------------------------
 

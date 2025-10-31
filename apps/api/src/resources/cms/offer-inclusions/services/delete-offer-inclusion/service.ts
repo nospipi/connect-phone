@@ -6,9 +6,9 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { OfferInclusionEntity } from '../../../../../database/entities/offer-inclusion.entity';
+import { OfferInclusionEntity } from '@/database/entities/offer-inclusion.entity';
 import { IOfferInclusion } from '@connect-phone/shared-types';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
 
 //----------------------------------------------------------------------
 

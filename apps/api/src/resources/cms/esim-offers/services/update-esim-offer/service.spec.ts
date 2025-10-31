@@ -5,14 +5,14 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { NotFoundException, ForbiddenException } from '@nestjs/common';
 import { UpdateEsimOfferService } from './service';
-import { EsimOfferEntity } from '../../../../../database/entities/esim-offer.entity';
+import { EsimOfferEntity } from '@/database/entities/esim-offer.entity';
 import { UpdateEsimOfferDto } from './update-esim-offer.dto';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
 import {
   createMockOrganization,
   createMockEsimOffer,
   createCurrentOrganizationServiceProvider,
-} from '../../../../../test/factories';
+} from '@/test/factories';
 
 //----------------------------------------------------------------------
 

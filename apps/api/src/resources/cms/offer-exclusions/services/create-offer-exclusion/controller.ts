@@ -2,9 +2,9 @@
 import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { CreateOfferExclusionService } from './service';
 import { CreateOfferExclusionDto } from './create-offer-exclusion.dto';
-import { DbUserGuard } from '../../../../../common/guards/db-user.guard';
-import { OrganizationGuard } from '../../../../../common/guards/organization.guard';
-import { DbUserRoleGuard } from '../../../../../common/guards/db-user-role.guard';
+import { DbUserGuard } from '@/common/guards/db-user.guard';
+import { OrganizationGuard } from '@/common/guards/organization.guard';
+import { DbUserRoleGuard } from '@/common/guards/db-user-role.guard';
 import { IOfferExclusion } from '@connect-phone/shared-types';
 
 //----------------------------------------------------------------------

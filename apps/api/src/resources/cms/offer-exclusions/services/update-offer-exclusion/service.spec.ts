@@ -5,14 +5,14 @@ import { Repository } from 'typeorm';
 import { NotFoundException, ForbiddenException } from '@nestjs/common';
 import { validate } from 'class-validator';
 import { UpdateOfferExclusionService } from './service';
-import { OfferExclusionEntity } from '../../../../../database/entities/offer-exclusion.entity';
+import { OfferExclusionEntity } from '@/database/entities/offer-exclusion.entity';
 import { UpdateOfferExclusionDto } from './update-offer-exclusion.dto';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
 import {
   createMockOrganization,
   createMockOfferExclusion,
   createCurrentOrganizationServiceProvider,
-} from '../../../../../test/factories';
+} from '@/test/factories';
 
 //----------------------------------------------------------------------
 
