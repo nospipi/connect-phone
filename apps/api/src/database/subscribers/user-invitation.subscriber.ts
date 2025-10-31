@@ -1,4 +1,4 @@
-// src/database/subscribers/user-invitation.subscriber.ts
+// apps/api/src/database/subscribers/user-invitation.subscriber.ts
 import {
   EventSubscriber,
   EntitySubscriberInterface,

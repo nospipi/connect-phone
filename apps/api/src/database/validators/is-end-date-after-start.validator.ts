@@ -1,4 +1,4 @@
-// apps/api/src/common/validators/is-end-date-after-start.validator.ts
+// apps/api/src/database/validators/is-end-date-after-start.validator.ts
 import {
   registerDecorator,
   ValidationOptions,

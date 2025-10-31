@@ -1,4 +1,4 @@
-// apps/api/src/resources/users/services/get-all-users-of-org-paginated/search-users.dto.ts
+// apps/api/src/resources/cms/users/services/get-all-users-of-org-paginated/search-users.dto.ts
 import { IsString, IsOptional, IsInt, Min, Max, IsIn } from 'class-validator';
 import { Type, Transform } from 'class-transformer';
 import { Sanitize } from '@/common/decorators/sanitize.decorator';

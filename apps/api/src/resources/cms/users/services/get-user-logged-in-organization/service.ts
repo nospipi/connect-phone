@@ -1,4 +1,4 @@
-// apps/api/src/resources/users/services/get-user-logged-in-organization/service.ts
+// apps/api/src/resources/cms/users/services/get-user-logged-in-organization/service.ts
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CurrentDbUserService } from '@/common/services/current-db-user.service';
 import { IOrganization } from '@connect-phone/shared-types';

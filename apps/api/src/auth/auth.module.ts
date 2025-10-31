@@ -1,3 +1,4 @@
+// apps/api/src/auth/auth.module.ts
 import { Module } from '@nestjs/common';
 import { ClerkStrategy } from './clerk.strategy';
 import { PassportModule } from '@nestjs/passport';

@@ -1,4 +1,4 @@
-// src/common/context/organization-context.ts
+// apps/api/src/common/context/organization-context.ts
 
 /**
  * OrganizationContext - Request-scoped Organization ID Storage

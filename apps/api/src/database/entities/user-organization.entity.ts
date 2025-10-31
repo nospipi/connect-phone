@@ -1,4 +1,4 @@
-// src/database/entities/user-organization.entity.ts
+// apps/api/src/database/entities/user-organization.entity.ts
 import {
   Entity,
   PrimaryGeneratedColumn,

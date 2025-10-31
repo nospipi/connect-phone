@@ -1,4 +1,4 @@
-// src/database/entities/sales-channel.entity.ts
+// apps/api/src/database/entities/sales-channel.entity.ts
 
 import {
   Entity,

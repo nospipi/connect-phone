@@ -1,4 +1,4 @@
-// apps/api/src/resources/date-ranges/services/get-date-range-by-id/service.ts
+// apps/api/src/resources/cms/date-ranges/services/get-date-range-by-id/service.ts
 import {
   Injectable,
   NotFoundException,

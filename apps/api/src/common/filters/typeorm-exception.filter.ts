@@ -1,3 +1,4 @@
+// apps/api/src/common/filters/typeorm-exception.filter.ts
 import { ExceptionFilter, Catch, ArgumentsHost } from '@nestjs/common';
 import { Response } from 'express';
 import { QueryFailedError } from 'typeorm';

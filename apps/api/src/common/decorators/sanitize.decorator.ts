@@ -1,3 +1,4 @@
+// apps/api/src/common/decorators/sanitize.decorator.ts
 import { Transform } from 'class-transformer';
 import sanitizeHtml, { IOptions } from 'sanitize-html';
 

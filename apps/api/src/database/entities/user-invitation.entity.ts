@@ -1,4 +1,4 @@
-// src/database/entities/user-invitation.entity.ts
+// apps/api/src/database/entities/user-invitation.entity.ts
 import {
   Entity,
   Column,

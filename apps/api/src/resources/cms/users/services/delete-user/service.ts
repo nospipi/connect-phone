@@ -1,4 +1,4 @@
-// apps/api/src/resources/users/services/delete-user/service.ts
+// apps/api/src/resources/cms/users/services/delete-user/service.ts
 import {
   Injectable,
   NotFoundException,

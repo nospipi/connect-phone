@@ -1,4 +1,4 @@
-// apps/api/src/resources/users/services/log-user-in-organization/service.spec.ts
+// apps/api/src/resources/cms/users/services/log-user-in-organization/service.spec.ts
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';

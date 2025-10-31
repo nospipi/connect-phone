@@ -1,3 +1,4 @@
+// apps/api/src/database/reset-db.ts
 import { AppDataSource } from './data-source';
 
 async function resetDb() {

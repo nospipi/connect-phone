@@ -1,4 +1,4 @@
-// apps/api/src/resources/users/services/create-user-invitation/service.ts
+// apps/api/src/resources/cms/user-invitations/services/create-user-invitation/service.ts
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';

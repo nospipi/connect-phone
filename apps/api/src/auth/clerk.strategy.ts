@@ -1,4 +1,4 @@
-// apps/api/src/common/strategies/clerk.strategy.ts
+// apps/api/src/auth/clerk.strategy.ts
 
 import { User, verifyToken } from '@clerk/backend';
 import {

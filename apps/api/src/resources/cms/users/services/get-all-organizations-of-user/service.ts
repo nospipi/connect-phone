@@ -1,4 +1,4 @@
-// apps/api/src/resources/users/services/get-all-organizations-of-user/service.ts
+// apps/api/src/resources/cms/users/services/get-all-organizations-of-user/service.ts
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';

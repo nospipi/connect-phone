@@ -1,4 +1,4 @@
-// apps/api/src/resources/cms/sales-channels/services/find-all-by-org-paginated/controller.ts
+// apps/api/src/resources/cms/audit-logs/services/find-all-by-org-paginated/controller.ts
 import {
   Controller,
   Get,

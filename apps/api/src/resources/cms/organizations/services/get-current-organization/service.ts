@@ -1,4 +1,4 @@
-// apps/api/src/resources/organizations/services/get-current-organization/service.ts
+// apps/api/src/resources/cms/organizations/services/get-current-organization/service.ts
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';

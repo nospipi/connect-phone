@@ -1,4 +1,4 @@
-// apps/api/src/resources/countries/services/update-country/service.ts
+// apps/api/src/resources/cms/countries/services/update-country/service.ts
 
 import {
   Injectable,

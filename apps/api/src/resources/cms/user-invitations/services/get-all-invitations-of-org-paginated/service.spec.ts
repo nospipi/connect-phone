@@ -1,4 +1,4 @@
-// apps/api/src/resources/user-invitations/services/get-all-invitations-of-org-paginated/service.spec.ts
+// apps/api/src/resources/cms/user-invitations/services/get-all-invitations-of-org-paginated/service.spec.ts
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -316,4 +316,4 @@ describe('GetAllInvitationsOfOrgPaginatedService', () => {
   });
 });
 
-// apps/api/src/resources/user-invitations/services/get-all-invitations-of-org-paginated/service.spec.ts
+// apps/api/src/resources/cms/user-invitations/services/get-all-invitations-of-org-paginated/service.spec.ts

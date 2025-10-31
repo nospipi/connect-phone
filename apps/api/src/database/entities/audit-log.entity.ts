@@ -1,4 +1,4 @@
-// src/database/entities/audit-log.entity.ts
+// apps/api/src/database/entities/audit-log.entity.ts
 import {
   Entity,
   PrimaryGeneratedColumn,

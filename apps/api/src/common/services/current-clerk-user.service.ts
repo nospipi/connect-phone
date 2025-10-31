@@ -1,4 +1,4 @@
-// src/common/core/current-clerk-user.service.ts
+// apps/api/src/common/services/current-clerk-user.service.ts
 import { Injectable, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { Inject } from '@nestjs/common';

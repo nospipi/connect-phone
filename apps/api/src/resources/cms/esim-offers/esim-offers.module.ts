@@ -1,4 +1,4 @@
-// apps/api/src/resources/esim-offers/esim-offers.module.ts
+// apps/api/src/resources/cms/esim-offers/esim-offers.module.ts
 
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';

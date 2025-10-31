@@ -1,4 +1,4 @@
-// apps/api/src/resources/countries/services/get-by-ids/dto.ts
+// apps/api/src/resources/cms/countries/services/get-by-ids/dto.ts
 
 import { IsString, IsNotEmpty } from 'class-validator';
 

@@ -1,4 +1,4 @@
-// apps/api/src/resources/esim-offers/services/get-by-ids/service.spec.ts
+// apps/api/src/resources/cms/esim-offers/services/get-by-ids/service.spec.ts
 
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';

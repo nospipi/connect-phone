@@ -1,4 +1,4 @@
-// apps/api/src/resources/user-invitations/user-invitations.module.ts
+// apps/api/src/resources/cms/user-invitations/user-invitations.module.ts
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserInvitationEntity } from '@/database/entities/user-invitation.entity';

@@ -1,4 +1,4 @@
-// src/database/entities/user.entity.ts
+// apps/api/src/database/entities/user.entity.ts
 import {
   Entity,
   Column,

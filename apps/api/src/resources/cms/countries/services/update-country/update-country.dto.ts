@@ -1,4 +1,4 @@
-// apps/api/src/resources/countries/services/update-country/update-country.dto.ts
+// apps/api/src/resources/cms/countries/services/update-country/update-country.dto.ts
 import { IsString, IsOptional, IsUrl } from 'class-validator';
 import { ICountry } from '@connect-phone/shared-types';
 import { Sanitize } from '@/common/decorators/sanitize.decorator';

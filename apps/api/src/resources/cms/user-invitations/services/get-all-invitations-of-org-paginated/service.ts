@@ -1,4 +1,4 @@
-// apps/api/src/resources/users/services/get-all-invitations-of-org-paginated/service.ts
+// apps/api/src/resources/cms/user-invitations/services/get-all-invitations-of-org-paginated/service.ts
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';

@@ -1,4 +1,4 @@
-// src/common/guards/db-user.guard.ts
+// apps/api/src/common/guards/db-user.guard.ts
 import {
   Injectable,
   CanActivate,

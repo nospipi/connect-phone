@@ -1,4 +1,4 @@
-// apps/api/src/resources/users/services/update-user/service.ts
+// apps/api/src/resources/cms/users/services/update-user/service.ts
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';

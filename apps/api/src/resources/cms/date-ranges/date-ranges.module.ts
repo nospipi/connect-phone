@@ -1,4 +1,4 @@
-// apps/api/src/resources/date-ranges/date-ranges.module.ts
+// apps/api/src/resources/cms/date-ranges/date-ranges.module.ts
 
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';

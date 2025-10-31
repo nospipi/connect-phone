@@ -1,4 +1,4 @@
-// apps/api/src/resources/users/services/get-all-invitations-of-org-paginated/search-invitations.dto.ts
+// apps/api/src/resources/cms/user-invitations/services/get-all-invitations-of-org-paginated/search-invitations.dto.ts
 import { IsString, IsOptional, IsInt, Min, Max, IsIn } from 'class-validator';
 import { Type, Transform } from 'class-transformer';
 import { Sanitize } from '@/common/decorators/sanitize.decorator';

@@ -1,4 +1,4 @@
-// apps/api/src/resources/user-invitations/services/create-user-invitation/service.spec.ts
+// apps/api/src/resources/cms/user-invitations/services/create-user-invitation/service.spec.ts
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -185,4 +185,4 @@ describe('CreateUserInvitationService', () => {
   });
 });
 
-// apps/api/src/resources/user-invitations/services/create-user-invitation/service.spec.ts
+// apps/api/src/resources/cms/user-invitations/services/create-user-invitation/service.spec.ts

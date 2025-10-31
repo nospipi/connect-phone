@@ -1,4 +1,4 @@
-// apps/api/src/resources/date-ranges/services/get-all-by-org-paginated/search-date-ranges.dto.ts
+// apps/api/src/resources/cms/date-ranges/services/get-all-by-org-paginated/search-date-ranges.dto.ts
 import {
   IsString,
   IsOptional,

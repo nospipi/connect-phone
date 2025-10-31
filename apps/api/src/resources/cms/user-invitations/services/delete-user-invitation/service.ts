@@ -1,4 +1,4 @@
-// apps/api/src/resources/user-invitations/services/delete-user-invitation/service.ts
+// apps/api/src/resources/cms/user-invitations/services/delete-user-invitation/service.ts
 import {
   Injectable,
   NotFoundException,

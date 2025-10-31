@@ -1,4 +1,4 @@
-// apps/api/src/resources/users/services/get-user-logged-in-organization/service.spec.ts
+// apps/api/src/resources/cms/users/services/get-user-logged-in-organization/service.spec.ts
 import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException } from '@nestjs/common';
 import { GetUserLoggedInOrganizationService } from './service';

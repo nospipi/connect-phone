@@ -1,4 +1,4 @@
-// apps/api/src/resources/users/users.module.ts
+// apps/api/src/resources/cms/users/users.module.ts
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from '@/database/entities/user.entity';

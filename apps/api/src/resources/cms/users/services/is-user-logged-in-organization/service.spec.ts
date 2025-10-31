@@ -1,4 +1,4 @@
-// apps/api/src/resources/users/services/is-user-logged-in-organization/service.spec.ts
+// apps/api/src/resources/cms/users/services/is-user-logged-in-organization/service.spec.ts
 import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException } from '@nestjs/common';
 import { IsUserLoggedInOrganizationService } from './service';
@@ -134,4 +134,4 @@ describe('IsUserLoggedInOrganizationService', () => {
   });
 });
 
-// apps/api/src/resources/users/services/is-user-logged-in-organization/service.spec.ts
+// apps/api/src/resources/cms/users/services/is-user-logged-in-organization/service.spec.ts

@@ -1,4 +1,4 @@
-// apps/api/src/resources/organizations/services/delete-all-cache/service.ts
+// apps/api/src/resources/cms/organizations/services/delete-all-cache/service.ts
 
 import { Injectable, Logger, Inject } from '@nestjs/common';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';

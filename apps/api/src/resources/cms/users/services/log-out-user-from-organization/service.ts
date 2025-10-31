@@ -1,4 +1,4 @@
-// apps/api/src/resources/users/services/log-out-user-from-organization/service.ts
+// apps/api/src/resources/cms/users/services/log-out-user-from-organization/service.ts
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';

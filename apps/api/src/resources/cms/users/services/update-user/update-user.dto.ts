@@ -1,4 +1,4 @@
-// apps/api/src/resources/users/services/update-user/update-user.dto.ts
+// apps/api/src/resources/cms/users/services/update-user/update-user.dto.ts
 import {
   IsString,
   IsEmail,

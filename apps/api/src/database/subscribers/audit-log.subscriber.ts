@@ -1,4 +1,4 @@
-// src/database/subscribers/audit-log.subscriber.ts
+// apps/api/src/database/subscribers/audit-log.subscriber.ts
 import {
   EventSubscriber,
   EntitySubscriberInterface,

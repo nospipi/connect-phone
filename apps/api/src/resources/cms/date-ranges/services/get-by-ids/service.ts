@@ -1,4 +1,4 @@
-// apps/api/src/resources/date-ranges/services/get-by-ids/service.ts
+// apps/api/src/resources/cms/date-ranges/services/get-by-ids/service.ts
 
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';

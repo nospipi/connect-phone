@@ -1,4 +1,4 @@
-// apps/api/src/resources/users/services/get-user-by-id/service.ts
+// apps/api/src/resources/cms/users/services/get-user-by-id/service.ts
 import {
   Injectable,
   NotFoundException,

@@ -1,4 +1,4 @@
-// apps/api/src/resources/date-ranges/services/get-by-ids/service.spec.ts
+// apps/api/src/resources/cms/date-ranges/services/get-by-ids/service.spec.ts
 
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';

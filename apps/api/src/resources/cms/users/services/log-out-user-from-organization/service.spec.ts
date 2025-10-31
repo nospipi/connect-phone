@@ -1,4 +1,4 @@
-// apps/api/src/resources/users/services/log-out-user-from-organization/service.spec.ts
+// apps/api/src/resources/cms/users/services/log-out-user-from-organization/service.spec.ts
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -95,4 +95,4 @@ describe('LogOutUserFromOrganizationService', () => {
   });
 });
 
-// apps/api/src/resources/users/services/log-out-user-from-organization/service.spec.ts
+// apps/api/src/resources/cms/users/services/log-out-user-from-organization/service.spec.ts

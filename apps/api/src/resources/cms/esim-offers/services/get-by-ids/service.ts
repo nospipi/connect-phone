@@ -1,4 +1,4 @@
-// apps/api/src/resources/esim-offers/services/get-by-ids/service.ts
+// apps/api/src/resources/cms/esim-offers/services/get-by-ids/service.ts
 
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';

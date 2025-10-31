@@ -1,4 +1,4 @@
-// apps/api/src/resources/organizations/services/update-organization/service.ts
+// apps/api/src/resources/cms/organizations/services/update-organization/service.ts
 import {
   Injectable,
   NotFoundException,

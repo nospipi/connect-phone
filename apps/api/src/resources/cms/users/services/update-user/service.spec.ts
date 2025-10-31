@@ -1,4 +1,4 @@
-// apps/api/src/resources/users/services/update-user/service.spec.ts
+// apps/api/src/resources/cms/users/services/update-user/service.spec.ts
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -181,4 +181,4 @@ describe('UpdateUserService', () => {
   });
 });
 
-// apps/api/src/resources/users/services/update-user/service.spec.ts
+// apps/api/src/resources/cms/users/services/update-user/service.spec.ts

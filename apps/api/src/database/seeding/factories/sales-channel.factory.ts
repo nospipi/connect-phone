@@ -1,3 +1,4 @@
+// apps/api/src/database/seeding/factories/sales-channel.factory.ts
 import * as Faker from 'faker';
 import { define } from 'typeorm-seeding';
 import { SalesChannelEntity } from '../../entities/sales-channel.entity';

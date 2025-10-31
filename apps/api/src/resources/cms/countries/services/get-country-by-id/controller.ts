@@ -1,4 +1,4 @@
-// apps/api/src/resources/countries/services/get-country-by-id/controller.ts
+// apps/api/src/resources/cms/countries/services/get-country-by-id/controller.ts
 import {
   Controller,
   Get,

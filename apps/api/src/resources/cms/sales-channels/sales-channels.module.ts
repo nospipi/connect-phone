@@ -1,4 +1,4 @@
-// apps/api/src/resources/sales-channels/sales-channels.module.ts
+// apps/api/src/resources/cms/sales-channels/sales-channels.module.ts
 
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';

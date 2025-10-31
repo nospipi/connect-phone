@@ -1,4 +1,4 @@
-//apps/api/src/common/core/current-organization-id.service.ts
+// apps/api/src/common/services/current-organization-id.service.ts
 import { Injectable, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { Inject } from '@nestjs/common';
