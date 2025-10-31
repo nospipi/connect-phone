@@ -115,6 +115,62 @@ const Page = async ({ searchParams }: PageProps) => {
                   Optional: Select a logo to represent your organization
                 </p>
               </div>
+
+              <div className="mt-6 border-t border-gray-200 pt-6 dark:border-gray-700">
+                <h3 className="mb-4 text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Software Details
+                </h3>
+                <div className="grid grid-cols-2 gap-x-6 gap-y-3 text-sm">
+                  <div>
+                    <span className="text-gray-500 dark:text-gray-400">
+                      Serial Number
+                    </span>
+                    <p className="mt-0.5 font-medium text-gray-900 dark:text-gray-100">
+                      CON-ERP-2025-005
+                    </p>
+                  </div>
+                  <div>
+                    <span className="text-gray-500 dark:text-gray-400">
+                      Registration Date
+                    </span>
+                    <p className="mt-0.5 font-medium text-gray-900 dark:text-gray-100">
+                      01 July 2025
+                    </p>
+                  </div>
+                  <div className="col-span-2">
+                    <span className="text-gray-500 dark:text-gray-400">
+                      Registered to
+                    </span>
+                    <p className="mt-0.5 font-medium text-gray-900 dark:text-gray-100">
+                      CONNECT PHONE ΤΗΛΕΠΙΚΟΙΝΩΝΙΕΣ ΑΝΩΝΥΜΟΣ ΕΤΑΙΡΕΙΑ
+                    </p>
+                  </div>
+                  <div>
+                    <span className="text-gray-500 dark:text-gray-400">
+                      VAT No
+                    </span>
+                    <p className="mt-0.5 font-medium text-gray-900 dark:text-gray-100">
+                      999544570
+                    </p>
+                  </div>
+                  <div>
+                    <span className="text-gray-500 dark:text-gray-400">
+                      Software
+                    </span>
+                    <p className="mt-0.5 font-medium text-gray-900 dark:text-gray-100">
+                      ConnectPhone eSim CMS
+                    </p>
+                  </div>
+                  <div className="col-span-2">
+                    <span className="text-gray-500 dark:text-gray-400">
+                      Author
+                    </span>
+                    <p className="mt-0.5 font-medium text-gray-900 dark:text-gray-100">
+                      APPIFY PC
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
