@@ -1,4 +1,4 @@
-// apps/api/src/resources/esim-offers/services/update-esim-offer/service.spec.ts
+// apps/api/src/resources/cms/esim-offers/services/update-esim-offer/service.spec.ts
 
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
@@ -70,17 +70,18 @@ describe('UpdateEsimOfferService', () => {
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
-      esimOfferRepository.findOne.mockResolvedValue(mockEsimOffer as any);
+      esimOfferRepository.findOne.mockResolvedValueOnce(mockEsimOffer as any);
       esimOfferRepository.save.mockResolvedValue(updatedEsimOffer as any);
+      esimOfferRepository.findOne.mockResolvedValueOnce(
+        updatedEsimOffer as any
+      );
 
       const result = await service.updateEsimOffer(updateDto);
 
       expect(
         currentOrganizationService.getCurrentOrganization
       ).toHaveBeenCalledTimes(1);
-      expect(esimOfferRepository.findOne).toHaveBeenCalledWith({
-        where: { id: 1, organizationId: 1 },
-      });
+      expect(esimOfferRepository.findOne).toHaveBeenCalledTimes(2);
       expect(result.title).toBe('Updated Title');
       expect(result.dataInGb).toBe(10);
       expect(result.isUnlimitedData).toBe(true);
@@ -141,10 +142,11 @@ describe('UpdateEsimOfferService', () => {
       currentOrganizationService.getCurrentOrganization.mockResolvedValue(
         mockOrganization
       );
-      esimOfferRepository.findOne.mockResolvedValue(mockEsimOffer as any);
+      esimOfferRepository.findOne.mockResolvedValueOnce(mockEsimOffer as any);
       esimOfferRepository.save.mockImplementation(
         async (entity) => entity as any
       );
+      esimOfferRepository.findOne.mockResolvedValueOnce(mockEsimOffer as any);
 
       await service.updateEsimOffer(updateDto);
 

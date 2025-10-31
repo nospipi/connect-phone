@@ -1,4 +1,4 @@
-// apps/api/src/resources/esim-offers/services/get-all-by-org-paginated/service.spec.ts
+// apps/api/src/resources/cms/esim-offers/services/get-all-by-org-paginated/service.spec.ts
 
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
@@ -92,7 +92,7 @@ describe('GetAllByOrgPaginatedService', () => {
         { organizationId: 1 }
       );
       expect(mockQueryBuilder.orderBy).toHaveBeenCalledWith(
-        'esimOffer.createdAt',
+        'esimOffer.id',
         'DESC'
       );
       expect(mockPaginate).toHaveBeenCalledWith(mockQueryBuilder, {

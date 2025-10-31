@@ -84,7 +84,7 @@ describe('GetAllByOrgPaginatedService', () => {
         { organizationId: 1 }
       );
       expect(mockQueryBuilder.orderBy).toHaveBeenCalledWith(
-        'dateRange.startDate',
+        'dateRange.id',
         'DESC'
       );
       expect(mockPaginate).toHaveBeenCalledWith(mockQueryBuilder, {

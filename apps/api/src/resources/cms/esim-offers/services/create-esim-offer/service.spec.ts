@@ -1,4 +1,4 @@
-// apps/api/src/resources/esim-offers/services/create-esim-offer/service.spec.ts
+// apps/api/src/resources/cms/esim-offers/services/create-esim-offer/service.spec.ts
 
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
@@ -12,7 +12,7 @@ import {
   createMockOrganization,
   createMockEsimOffer,
   createCurrentOrganizationServiceProvider,
-} from '../../../../../test/factories';
+} from '@/test/factories';
 
 //----------------------------------------------------------------------
 
@@ -87,6 +87,7 @@ describe('CreateEsimOfferService', () => {
         durationInDays: 30,
         dataInGb: 5,
         isUnlimitedData: false,
+        isActive: true,
         organizationId: 31,
         mainImageId: 1,
         inclusions: [{ id: 1 }, { id: 2 }],
@@ -139,6 +140,7 @@ describe('CreateEsimOfferService', () => {
         durationInDays: 7,
         dataInGb: 1,
         isUnlimitedData: false,
+        isActive: true,
         organizationId: 31,
         mainImageId: null,
         inclusions: [],
