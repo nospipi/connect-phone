@@ -19,6 +19,18 @@ import { EsimOffersModule } from './esim-offers/esim-offers.module';
 
 @Module({
   imports: [
+    AuditLogsModule,
+    SalesChannelsModule,
+    UsersModule,
+    UserInvitationsModule,
+    CountriesModule,
+    OrganizationsModule,
+    DateRangesModule,
+    PricesModule,
+    MediaModule,
+    OfferInclusionsModule,
+    OfferExclusionsModule,
+    EsimOffersModule,
     RouterModule.register([
       {
         path: 'cms',
@@ -38,18 +50,6 @@ import { EsimOffersModule } from './esim-offers/esim-offers.module';
         ],
       },
     ]),
-    AuditLogsModule,
-    SalesChannelsModule,
-    UsersModule,
-    UserInvitationsModule,
-    CountriesModule,
-    OrganizationsModule,
-    DateRangesModule,
-    PricesModule,
-    MediaModule,
-    OfferInclusionsModule,
-    OfferExclusionsModule,
-    EsimOffersModule,
   ],
 })
 export class CmsModule {}
