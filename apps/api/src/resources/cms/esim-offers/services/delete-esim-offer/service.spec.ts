@@ -4,13 +4,13 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { NotFoundException, ForbiddenException } from '@nestjs/common';
 import { DeleteEsimOfferService } from './service';
-import { EsimOfferEntity } from '../../../../../database/entities/esim-offer.entity';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { EsimOfferEntity } from '@/database/entities/esim-offer.entity';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
 import {
   createMockOrganization,
   createMockEsimOffer,
   createCurrentOrganizationServiceProvider,
-} from '../../../../../test/factories';
+} from '@/test/factories';
 
 //----------------------------------------------------------------------
 

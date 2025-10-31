@@ -10,9 +10,9 @@ import {
 import { UpdateMediaService } from './service';
 import { UpdateMediaDto } from './update-media.dto';
 import { IMedia } from '@connect-phone/shared-types';
-import { DbUserGuard } from '../../../../../common/guards/db-user.guard';
-import { DbUserRoleGuard } from '../../../../../common/guards/db-user-role.guard';
-import { OrganizationGuard } from '../../../../../common/guards/organization.guard';
+import { DbUserGuard } from '@/common/guards/db-user.guard';
+import { DbUserRoleGuard } from '@/common/guards/db-user-role.guard';
+import { OrganizationGuard } from '@/common/guards/organization.guard';
 
 //----------------------------------------------------------------------
 

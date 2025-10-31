@@ -3,9 +3,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In } from 'typeorm';
-import { MediaEntity } from '../../../../../database/entities/media.entity';
+import { MediaEntity } from '@/database/entities/media.entity';
 import { IMedia } from '@connect-phone/shared-types';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
 
 //------------------------------------------------------------
 

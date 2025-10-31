@@ -6,13 +6,13 @@ import { Repository, In } from 'typeorm';
 import { validate } from 'class-validator';
 import { GetMediaByIdsService } from './service';
 import { GetMediaByIdsQueryDto } from './dto';
-import { MediaEntity } from '../../../../../database/entities/media.entity';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { MediaEntity } from '@/database/entities/media.entity';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
 import {
   createMockOrganization,
   createMockMedia,
   createCurrentOrganizationServiceProvider,
-} from '../../../../../test/factories';
+} from '@/test/factories';
 
 //------------------------------------------------------------
 

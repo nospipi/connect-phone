@@ -4,8 +4,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetAllByOrgPaginatedService } from './service';
-import { EsimOfferEntity } from '../../../../../database/entities/esim-offer.entity';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { EsimOfferEntity } from '@/database/entities/esim-offer.entity';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
 import { paginate } from 'nestjs-typeorm-paginate';
 import { SearchEsimOffersDto } from './search-esim-offers.dto';
 import {
@@ -14,7 +14,7 @@ import {
   createMockQueryBuilder,
   createMockPagination,
   createCurrentOrganizationServiceProvider,
-} from '../../../../../test/factories';
+} from '@/test/factories';
 
 //----------------------------------------------------------------------
 

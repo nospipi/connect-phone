@@ -9,9 +9,9 @@ import {
 } from '@nestjs/common';
 import { GetEsimOffersByIdsService } from './service';
 import { GetEsimOffersByIdsQueryDto } from './dto';
-import { DbUserGuard } from '../../../../../common/guards/db-user.guard';
-import { OrganizationGuard } from '../../../../../common/guards/organization.guard';
-import { DbUserRoleGuard } from '../../../../../common/guards/db-user-role.guard';
+import { DbUserGuard } from '@/common/guards/db-user.guard';
+import { OrganizationGuard } from '@/common/guards/organization.guard';
+import { DbUserRoleGuard } from '@/common/guards/db-user-role.guard';
 import { IEsimOffer } from '@connect-phone/shared-types';
 
 //------------------------------------------------------------

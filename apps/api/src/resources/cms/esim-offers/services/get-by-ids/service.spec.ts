@@ -6,13 +6,13 @@ import { Repository, In } from 'typeorm';
 import { validate } from 'class-validator';
 import { GetEsimOffersByIdsService } from './service';
 import { GetEsimOffersByIdsQueryDto } from './dto';
-import { EsimOfferEntity } from '../../../../../database/entities/esim-offer.entity';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { EsimOfferEntity } from '@/database/entities/esim-offer.entity';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
 import {
   createMockOrganization,
   createMockEsimOffer,
   createCurrentOrganizationServiceProvider,
-} from '../../../../../test/factories';
+} from '@/test/factories';
 
 //------------------------------------------------------------
 

@@ -3,14 +3,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In } from 'typeorm';
-import { EsimOfferEntity } from '../../../../../database/entities/esim-offer.entity';
+import { EsimOfferEntity } from '@/database/entities/esim-offer.entity';
 import { IEsimOffer } from '@connect-phone/shared-types';
 import {
   paginate,
   Pagination,
   IPaginationOptions,
 } from 'nestjs-typeorm-paginate';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
 import { SearchEsimOffersDto } from './search-esim-offers.dto';
 
 //----------------------------------------------------------------------
