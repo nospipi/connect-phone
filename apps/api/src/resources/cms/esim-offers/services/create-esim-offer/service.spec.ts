@@ -5,9 +5,9 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { validate } from 'class-validator';
 import { CreateEsimOfferService } from './service';
-import { EsimOfferEntity } from '../../../../../database/entities/esim-offer.entity';
+import { EsimOfferEntity } from '@/database/entities/esim-offer.entity';
 import { CreateEsimOfferDto } from './create-esim-offer.dto';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
 import {
   createMockOrganization,
   createMockEsimOffer,

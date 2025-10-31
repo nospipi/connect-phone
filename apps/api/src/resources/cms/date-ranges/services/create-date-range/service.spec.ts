@@ -4,9 +4,9 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { validate } from 'class-validator';
 import { CreateDateRangeService } from './service';
-import { DateRangeEntity } from '../../../../../database/entities/date-range.entity';
+import { DateRangeEntity } from '@/database/entities/date-range.entity';
 import { CreateDateRangeDto } from './create-date-range.dto';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
 import {
   createMockOrganization,
   createMockDateRange,

@@ -3,8 +3,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetAllByOrgPaginatedService } from './service';
-import { DateRangeEntity } from '../../../../../database/entities/date-range.entity';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { DateRangeEntity } from '@/database/entities/date-range.entity';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
 import { paginate } from 'nestjs-typeorm-paginate';
 import {
   createMockOrganization,
@@ -12,7 +12,7 @@ import {
   createMockQueryBuilder,
   createMockPagination,
   createCurrentOrganizationServiceProvider,
-} from '../../../../../test/factories';
+} from '@/test/factories';
 
 //--------------------------------------------------------------------------------
 

@@ -2,14 +2,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { DateRangeEntity } from '../../../../../database/entities/date-range.entity';
+import { DateRangeEntity } from '@/database/entities/date-range.entity';
 import { IDateRange } from '@connect-phone/shared-types';
 import {
   paginate,
   Pagination,
   IPaginationOptions,
 } from 'nestjs-typeorm-paginate';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
 
 //----------------------------------------------------------------------
 

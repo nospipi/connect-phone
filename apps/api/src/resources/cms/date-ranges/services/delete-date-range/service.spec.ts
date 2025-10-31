@@ -4,8 +4,8 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { NotFoundException, ForbiddenException } from '@nestjs/common';
 import { DeleteDateRangeService } from './service';
-import { DateRangeEntity } from '../../../../../database/entities/date-range.entity';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { DateRangeEntity } from '@/database/entities/date-range.entity';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
 import {
   createMockOrganization,
   createMockDateRange,

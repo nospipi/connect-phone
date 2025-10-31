@@ -3,9 +3,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In } from 'typeorm';
-import { DateRangeEntity } from '../../../../../database/entities/date-range.entity';
+import { DateRangeEntity } from '@/database/entities/date-range.entity';
 import { IDateRange } from '@connect-phone/shared-types';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
 
 //------------------------------------------------------------
 

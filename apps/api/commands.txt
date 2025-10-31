@@ -40,3 +40,13 @@ in apps/api/src/
 1. go through all files in all folders and replace all the import paths from relative imports like for example import { OrganizationGuard } from '../../../../../common/guards/organization.guard' to aliased imports like for example --> import { OrganizationGuard } from '@/common/guards/organization.guard';
 
 * do it manually one by one, dont create and run any scripts
+
+---- 
+
+in apps/api/src/
+
+1. go through all files in all folders and check at the top of the file, i have in each file a comment with the file path lime for example : // apps/api/src/resources/cms/user-invitations/services/get-all-invitations-of-org-paginated/controller.ts, make sure this comment represents the correct file path of its file, for instance most of these comments
+are outdated and the miss the /cms like you may find // apps/api/src/resources/user-invitations/services/get-all-invitations-of-org-paginated/controller.ts and not the correct // apps/api/src/resources/cms/user-invitations/services/get-all-invitations-of-org-paginated/controller.ts
+, nevertheless, you have to make sure the file path is correct
+
+* do it manually one by one, dont create and run any scripts

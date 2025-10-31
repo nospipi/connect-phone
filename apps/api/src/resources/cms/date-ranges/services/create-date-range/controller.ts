@@ -2,9 +2,9 @@
 import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { CreateDateRangeService } from './service';
 import { CreateDateRangeDto } from './create-date-range.dto';
-import { DbUserGuard } from '../../../../../common/guards/db-user.guard';
-import { OrganizationGuard } from '../../../../../common/guards/organization.guard';
-import { DbUserRoleGuard } from '../../../../../common/guards/db-user-role.guard';
+import { DbUserGuard } from '@/common/guards/db-user.guard';
+import { OrganizationGuard } from '@/common/guards/organization.guard';
+import { DbUserRoleGuard } from '@/common/guards/db-user-role.guard';
 import { IDateRange } from '@connect-phone/shared-types';
 
 //----------------------------------------------------------------------

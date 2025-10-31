@@ -4,15 +4,15 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { NotFoundException, ForbiddenException } from '@nestjs/common';
 import { UpdateCountryService } from './service';
-import { CountryEntity } from '../../../../../database/entities/country.entity';
+import { CountryEntity } from '@/database/entities/country.entity';
 import { UpdateCountryDto } from './update-country.dto';
 import { CountryRegion } from '@connect-phone/shared-types';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
 import {
   createMockOrganization,
   createMockCountry,
   createCurrentOrganizationServiceProvider,
-} from '../../../../../test/factories';
+} from '@/test/factories';
 
 //--------------------------------------------------------------------------------
 

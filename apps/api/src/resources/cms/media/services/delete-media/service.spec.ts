@@ -4,13 +4,13 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { NotFoundException, ForbiddenException } from '@nestjs/common';
 import { DeleteMediaService } from './service';
-import { MediaEntity } from '../../../../../database/entities/media.entity';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { MediaEntity } from '@/database/entities/media.entity';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
 import {
   createMockOrganization,
   createMockMedia,
   createCurrentOrganizationServiceProvider,
-} from '../../../../../test/factories';
+} from '@/test/factories';
 
 //----------------------------------------------------------------------
 

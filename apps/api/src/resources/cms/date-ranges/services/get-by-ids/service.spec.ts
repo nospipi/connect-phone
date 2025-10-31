@@ -6,13 +6,13 @@ import { Repository, In } from 'typeorm';
 import { validate } from 'class-validator';
 import { GetDateRangesByIdsService } from './service';
 import { GetDateRangesByIdsQueryDto } from './dto';
-import { DateRangeEntity } from '../../../../../database/entities/date-range.entity';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { DateRangeEntity } from '@/database/entities/date-range.entity';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
 import {
   createMockOrganization,
   createMockDateRange,
   createCurrentOrganizationServiceProvider,
-} from '../../../../../test/factories';
+} from '@/test/factories';
 
 //------------------------------------------------------------
 

@@ -2,9 +2,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CountryEntity } from '../../../../../database/entities/country.entity';
+import { CountryEntity } from '@/database/entities/country.entity';
 import { ICountry } from '@connect-phone/shared-types';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
 
 //------------------------------------------------------
 

@@ -3,13 +3,13 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetAllCountriesOfOrgService } from './service';
-import { CountryEntity } from '../../../../../database/entities/country.entity';
+import { CountryEntity } from '@/database/entities/country.entity';
 import {
   createMockOrganization,
   createMockCountry,
   createCurrentOrganizationServiceProvider,
 } from '../../../../../test/factories';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
 
 //--------------------------------------------------------------------------------
 

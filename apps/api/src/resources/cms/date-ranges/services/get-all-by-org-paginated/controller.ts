@@ -8,10 +8,10 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { GetAllByOrgPaginatedService } from './service';
-import { DbUserGuard } from '../../../../../common/guards/db-user.guard';
-import { DbUserRoleGuard } from '../../../../../common/guards/db-user-role.guard';
+import { DbUserGuard } from '@/common/guards/db-user.guard';
+import { DbUserRoleGuard } from '@/common/guards/db-user-role.guard';
 import { Pagination } from 'nestjs-typeorm-paginate';
-import { OrganizationGuard } from '../../../../../common/guards/organization.guard';
+import { OrganizationGuard } from '@/common/guards/organization.guard';
 import { IDateRange } from '@connect-phone/shared-types';
 import { SearchDateRangesDto } from './search-date-ranges.dto';
 

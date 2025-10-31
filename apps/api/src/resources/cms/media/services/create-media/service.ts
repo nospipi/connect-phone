@@ -3,10 +3,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { put } from '@vercel/blob';
-import { MediaEntity } from '../../../../../database/entities/media.entity';
+import { MediaEntity } from '@/database/entities/media.entity';
 import { CreateMediaDto } from './create-media.dto';
 import { IMedia, IUploadedFile } from '@connect-phone/shared-types';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
 
 //----------------------------------------------------------------------
 

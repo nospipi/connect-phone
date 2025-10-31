@@ -1,9 +1,9 @@
 // apps/api/src/resources/cms/countries/services/get-all-countries-of-org/controller.ts
 import { Controller, Get, UseGuards, Query } from '@nestjs/common';
 import { GetAllCountriesOfOrgService } from './service';
-import { DbUserGuard } from '../../../../../common/guards/db-user.guard';
-import { OrganizationGuard } from '../../../../../common/guards/organization.guard';
-import { DbUserRoleGuard } from '../../../../../common/guards/db-user-role.guard';
+import { DbUserGuard } from '@/common/guards/db-user.guard';
+import { OrganizationGuard } from '@/common/guards/organization.guard';
+import { DbUserRoleGuard } from '@/common/guards/db-user-role.guard';
 import { ICountry } from '@connect-phone/shared-types';
 import { SearchCountriesDto } from './search-countries.dto';
 

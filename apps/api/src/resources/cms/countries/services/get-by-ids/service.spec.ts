@@ -6,8 +6,8 @@ import { Repository, In } from 'typeorm';
 import { validate } from 'class-validator';
 import { GetCountriesByIdsService } from './service';
 import { GetCountriesByIdsQueryDto } from './dto';
-import { CountryEntity } from '../../../../../database/entities/country.entity';
-import { CurrentOrganizationService } from '../../../../../common/services/current-organization.service';
+import { CountryEntity } from '@/database/entities/country.entity';
+import { CurrentOrganizationService } from '@/common/services/current-organization.service';
 import {
   createMockOrganization,
   createMockCountry,
